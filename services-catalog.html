@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Wildrose Automations — Services Catalog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--accent:#f2b705;--accent-light:#ffd24d;--dark:#0e1724;--charcoal:#152337;--bg:#f4f5f7;--surface:#fff;--border:#e2e6ee;--warm:#f0f2f8;--muted:#6a7890;--text:#1d2939}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    .container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+    /* COVER */
+    .cover{background:var(--dark);color:#fff;padding:80px 0 60px;text-align:center;position:relative;overflow:hidden}
+    .cover::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#0e1724 0%,#1a3050 50%,#0e1724 100%)}
+    .cover>*{position:relative;z-index:1}
+    .cover .tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(242,183,5,.4);padding:6px 14px;border-radius:999px;margin-bottom:24px}
+    .cover h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;text-transform:uppercase;line-height:1;margin-bottom:16px}
+    .cover h1 span{color:var(--accent)}
+    .cover p{font-size:1.05rem;color:rgba(255,255,255,.5);max-width:600px;margin:0 auto 32px}
+    .cover .price{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--accent);margin-bottom:8px}
+    .cover .price-note{font-size:.85rem;color:rgba(255,255,255,.35)}
+
+    /* NAV */
+    .catnav{background:var(--charcoal);border-bottom:2px solid var(--accent);position:sticky;top:0;z-index:10}
+    .catnav .inner{display:flex;justify-content:center;gap:2rem;padding:14px 0;flex-wrap:wrap}
+    .catnav a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+    .catnav a:hover{color:#fff}
+
+    /* SECTIONS */
+    section{padding:56px 0}
+    .sec-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.7rem;margin-bottom:8px}
+    .sec-eyebrow::before{content:'';width:20px;height:2px;background:var(--accent)}
+    .sec-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;text-transform:uppercase;line-height:1.1;margin-bottom:8px}
+    .sec-sub{color:var(--muted);font-size:.9rem;max-width:600px;margin-bottom:32px}
+
+    /* SERVICE CARDS */
+    .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px 24px;transition:box-shadow .2s,transform .2s}
+    .card:hover{box-shadow:0 8px 24px rgba(14,23,36,.06);transform:translateY(-2px)}
+    .card .icon{font-size:1.5rem;margin-bottom:12px;display:block;color:var(--accent);font-weight:700;font-family:'Barlow Condensed',sans-serif}
+    .card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;text-transform:uppercase;margin-bottom:8px}
+    .card p{font-size:.82rem;color:var(--muted);line-height:1.7}
+    .card .price-tag{display:inline-block;margin-top:12px;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.04em}
+
+    /* PRICING */
+    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .price-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px 24px;text-align:center;position:relative}
+    .price-card.featured{border:2px solid var(--accent);box-shadow:0 8px 32px rgba(242,183,5,.12)}
+    .price-card.featured::before{content:'MOST POPULAR';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--dark);font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:4px 12px;border-radius:999px}
+    .price-card .tier{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+    .price-card .amount{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:800;color:var(--dark)}
+    .price-card .period{font-size:.8rem;color:var(--muted)}
+    .price-card ul{list-style:none;text-align:left;margin:20px 0;padding:0}
+    .price-card li{font-size:.82rem;color:var(--muted);padding:6px 0;border-bottom:1px solid var(--border)}
+    .price-card li:last-child{border-bottom:none}
+    .price-card li::before{content:'';display:inline-block;width:5px;height:5px;background:var(--accent);border-radius:50%;margin-right:10px;vertical-align:middle}
+    .price-card .cta{display:block;background:var(--accent);color:var(--dark);text-decoration:none;padding:10px;border-radius:6px;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;text-align:center;margin-top:16px}
+    .price-card .cta:hover{background:var(--accent-light)}
+
+    /* CTA BANNER */
+    .cta-banner{background:var(--dark);border-radius:16px;padding:40px;text-align:center;margin:40px 0}
+    .cta-banner h2{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:8px}
+    .cta-banner p{color:rgba(255,255,255,.45);font-size:.9rem;margin-bottom:20px}
+    .cta-banner a{display:inline-block;background:var(--accent);color:var(--dark);padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+
+    /* FOOTER */
+    footer{background:var(--dark);border-top:2px solid var(--accent);padding:28px 0;color:rgba(255,255,255,.3);font-size:.75rem;text-align:center}
+    footer span{color:var(--accent)}
+
+    @media(max-width:900px){.card-grid,.pricing-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:600px){.card-grid,.pricing-grid{grid-template-columns:1fr}.cover h1{font-size:2.2rem}.catnav .inner{gap:1rem}}
+    @media print{.catnav{position:static}body{font-size:12pt}}
+  </style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="container">
+      <div class="tag">Services Catalog 2026</div>
+      <h1>Wildrose <span>Automations</span></h1>
+      <p>Websites, automation, and AI — built for Alberta businesses. Everything you need to look professional, capture leads, and grow without the overhead.</p>
+      <div class="price">Starting at $29/month</div>
+      <div class="price-note">No setup fee. No contract. Cancel anytime.</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="catnav">
+    <div class="inner">
+      <a href="#websites">Websites</a>
+      <a href="#automation">Automation</a>
+      <a href="#ai">AI Services</a>
+      <a href="#marketing">Marketing</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+
+  <!-- WEBSITES -->
+  <section id="websites">
+    <div class="container">
+      <div class="sec-eyebrow">Web Design & Development</div>
+      <div class="sec-title">Professional Websites</div>
+      <p class="sec-sub">A clean, modern website is your hardest-working employee — online 24/7, turning visitors into customers.</p>
+      <div class="card-grid">
+        <div class="card">
+          <span class="icon">01</span>
+          <h3>Custom Website Design</h3>
+          <p>Mobile-responsive, fast-loading websites built to convert. Tailored to your brand, your industry, your customers. No templates.</p>
+          <span class="price-tag">INCLUDED — $29/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">02</span>
+          <h3>Free Demo Build</h3>
+          <p>We build you a working demo of your new website before you pay a cent. See exactly what you're getting — no surprises, no risk.</p>
+          <span class="price-tag">FREE — NO OBLIGATION</span>
+        </div>
+        <div class="card">
+          <span class="icon">03</span>
+          <h3>Hosting & Maintenance</h3>
+          <p>Secure hosting, SSL, regular updates, backups, and performance monitoring. Your site stays fast and safe — we handle it all.</p>
+          <span class="price-tag">INCLUDED — $29/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">04</span>
+          <h3>SEO Optimization</h3>
+          <p>On-page SEO, Google Business integration, local search optimization, and meta tagging so customers actually find you.</p>
+          <span class="price-tag">INCLUDED — $29/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">05</span>
+          <h3>Website Redesign</h3>
+          <p>Already have a site but it's outdated? We facelift your existing content into a clean, modern layout that actually converts.</p>
+          <span class="price-tag">INCLUDED — $29/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">06</span>
+          <h3>Contact Forms & Lead Capture</h3>
+          <p>Smart contact forms, quote request flows, and lead capture systems that turn website traffic into real business inquiries.</p>
+          <span class="price-tag">INCLUDED — $29/MO</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTOMATION -->
+  <section id="automation" style="background:var(--warm)">
+    <div class="container">
+      <div class="sec-eyebrow">Workflow Automation</div>
+      <div class="sec-title">Business Automation</div>
+      <p class="sec-sub">Stop doing repetitive tasks by hand. We build systems that run themselves — saving you hours every week.</p>
+      <div class="card-grid">
+        <div class="card">
+          <span class="icon">01</span>
+          <h3>Booking & Scheduling</h3>
+          <p>Online appointment booking with automated confirmations, reminders, and no-show follow-ups. Works while you're on the job.</p>
+          <span class="price-tag">ADD-ON — FROM $99/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">02</span>
+          <h3>Email Automation</h3>
+          <p>Automated follow-up sequences, quote reminders, review requests, and nurture campaigns. Never lose a lead to silence again.</p>
+          <span class="price-tag">ADD-ON — FROM $99/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">03</span>
+          <h3>CRM & Lead Management</h3>
+          <p>Track every lead, every conversation, every deal. Custom CRM dashboards built around how your business actually works.</p>
+          <span class="price-tag">ADD-ON — FROM $149/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">04</span>
+          <h3>Invoice & Payment Flows</h3>
+          <p>Automated invoicing, payment reminders, and receipt generation. Get paid faster without chasing clients manually.</p>
+          <span class="price-tag">ADD-ON — FROM $99/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">05</span>
+          <h3>Webhook Integrations</h3>
+          <p>Connect your tools — Google Sheets, Slack, QuickBooks, Stripe, and 500+ apps. One seamless system, zero manual data entry.</p>
+          <span class="price-tag">ADD-ON — FROM $149/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">06</span>
+          <h3>Custom Workflows</h3>
+          <p>Have a unique process? We'll automate it. Custom n8n workflows built around your exact business operations.</p>
+          <span class="price-tag">CUSTOM QUOTE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI SERVICES -->
+  <section id="ai">
+    <div class="container">
+      <div class="sec-eyebrow">Artificial Intelligence</div>
+      <div class="sec-title">AI-Powered Services</div>
+      <p class="sec-sub">Leverage AI to handle customer inquiries, generate content, and make smarter business decisions — without hiring more staff.</p>
+      <div class="card-grid">
+        <div class="card">
+          <span class="icon">01</span>
+          <h3>AI Chatbots</h3>
+          <p>24/7 customer service chatbots on your website. Answer common questions, book appointments, and capture leads while you sleep.</p>
+          <span class="price-tag">ADD-ON — FROM $149/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">02</span>
+          <h3>AI Voice Agents</h3>
+          <p>Inbound and outbound AI phone agents. Handle appointment calls, follow-ups, and customer service without a receptionist.</p>
+          <span class="price-tag">ADD-ON — FROM $199/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">03</span>
+          <h3>Content Generation</h3>
+          <p>AI-generated social media posts, blog articles, email copy, and ad creatives — on brand, on schedule, on autopilot.</p>
+          <span class="price-tag">ADD-ON — FROM $99/MO</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKETING -->
+  <section id="marketing" style="background:var(--warm)">
+    <div class="container">
+      <div class="sec-eyebrow">Growth & Marketing</div>
+      <div class="sec-title">Digital Marketing</div>
+      <p class="sec-sub">Get found online and stay top-of-mind with your customers. We handle the strategy and execution.</p>
+      <div class="card-grid">
+        <div class="card">
+          <span class="icon">01</span>
+          <h3>Social Media Management</h3>
+          <p>Consistent posting across Facebook, Instagram, and Google Business. Industry-relevant content that builds trust and attracts customers.</p>
+          <span class="price-tag">ADD-ON — FROM $149/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">02</span>
+          <h3>Google Business Optimization</h3>
+          <p>Profile setup, review management, photo updates, and posting — the local SEO foundation that gets you found on Google Maps.</p>
+          <span class="price-tag">ADD-ON — FROM $99/MO</span>
+        </div>
+        <div class="card">
+          <span class="icon">03</span>
+          <h3>Email Marketing Campaigns</h3>
+          <p>Targeted email campaigns to your customer list — promotions, newsletters, seasonal offers. Written, designed, and sent for you.</p>
+          <span class="price-tag">ADD-ON — FROM $99/MO</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="container">
+      <div class="sec-eyebrow">Pricing</div>
+      <div class="sec-title">Simple, Transparent Pricing</div>
+      <p class="sec-sub">No hidden fees. No long-term contracts. Start small, upgrade as you grow.</p>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="tier">Starter</div>
+          <div class="amount">$29<span style="font-size:1rem">/mo</span></div>
+          <div class="period">billed monthly</div>
+          <ul>
+            <li>Custom website design</li>
+            <li>Mobile responsive</li>
+            <li>SSL & secure hosting</li>
+            <li>Contact form</li>
+            <li>SEO basics</li>
+            <li>Monthly updates</li>
+            <li>Support via email</li>
+          </ul>
+          <a href="mailto:jack@wildroseautomations.ca" class="cta">Get Started</a>
+        </div>
+        <div class="price-card featured">
+          <div class="tier">Growth</div>
+          <div class="amount">$149<span style="font-size:1rem">/mo</span></div>
+          <div class="period">billed monthly</div>
+          <ul>
+            <li>Everything in Starter</li>
+            <li>Booking & scheduling system</li>
+            <li>Email automation</li>
+            <li>Google Business optimization</li>
+            <li>Social media posting</li>
+            <li>CRM & lead tracking</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="mailto:jack@wildroseautomations.ca" class="cta">Get Started</a>
+        </div>
+        <div class="price-card">
+          <div class="tier">Full Automation</div>
+          <div class="amount">Custom</div>
+          <div class="period">tailored to your business</div>
+          <ul>
+            <li>Everything in Growth</li>
+            <li>AI chatbot or voice agent</li>
+            <li>Custom workflow automation</li>
+            <li>Multi-app integrations</li>
+            <li>Email marketing campaigns</li>
+            <li>Dedicated account manager</li>
+            <li>Strategy sessions</li>
+          </ul>
+          <a href="mailto:jack@wildroseautomations.ca" class="cta">Book a Call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Ready to Look Professional Online?</h2>
+      <p>We'll build you a free demo website — no strings attached. See what your business could look like.</p>
+      <a href="mailto:jack@wildroseautomations.ca">Request Your Free Demo</a>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact" style="background:var(--charcoal);padding:48px 0">
+    <div class="container" style="text-align:center">
+      <div class="sec-eyebrow" style="justify-content:center">Get in Touch</div>
+      <div class="sec-title" style="color:#fff">Let's Talk</div>
+      <p style="color:rgba(255,255,255,.45);margin:16px 0 28px;max-width:500px;margin-left:auto;margin-right:auto">
+        Whether you need a website, automation, or a full digital overhaul — we're here to help Alberta businesses grow.
+      </p>
+      <p style="color:var(--accent);font-weight:600;font-size:.9rem">
+        jack@wildroseautomations.ca<br/>
+        wildroseautomations.ca
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      Wildrose <span>Automations</span> — Websites & Automation for Alberta Businesses<br/>
+      &copy; 2026 Wildrose Automations. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>
