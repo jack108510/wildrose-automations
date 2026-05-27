@@ -4,289 +4,284 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wildrose Automations</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root{--black:#000;--dark:#0a0a0a;--card:#111;--border:#1a1a1a;--gray:#555;--light-gray:#888;--off-white:#ccc;--white:#fff;--gold:#c9a84c;--gold-light:#dbb95e}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0a0a0a;--card:#111111;--card-border:#1a1a1a;--text:#e5e5e5;--muted:#737373;--accent:#d4af37;--accent-light:#e8c84a;--local:#10b981;--labs:#8b5cf6;--license:#3b82f6}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
-a{color:var(--accent);text-decoration:none}
-.container{max-width:1200px;margin:0 auto;padding:0 24px}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);line-height:1.6;overflow-x:hidden}
+::selection{background:var(--gold);color:var(--black)}
+a{color:inherit;text-decoration:none}
+
+/* Layout */
+.wrap{max-width:1200px;margin:0 auto;padding:0 48px}
+@media(max-width:768px){.wrap{padding:0 24px}}
 
 /* Nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:all .3s}
-nav.scrolled{background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);padding:14px 0}
-nav .container{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:20px;font-weight:800;color:var(--accent);letter-spacing:-.5px}
-.logo span{color:var(--text);font-weight:400}
-nav ul{list-style:none;display:flex;gap:32px}
-nav a{color:var(--muted);font-size:14px;font-weight:500;transition:color .2s}
-nav a:hover{color:var(--text)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.scrolled{background:rgba(0,0,0,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;letter-spacing:.5px;color:var(--white)}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:40px}
+.nav-links a{font-size:13px;font-weight:500;color:var(--light-gray);letter-spacing:.5px;text-transform:uppercase;transition:color .3s}
+.nav-links a:hover{color:var(--white)}
 
 /* Hero */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,175,55,.08) 0%,transparent 60%);pointer-events:none}
-.hero h1{font-size:clamp(40px,8vw,80px);font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:24px}
-.hero h1 .gold{background:linear-gradient(135deg,var(--accent),var(--accent-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:clamp(16px,2.5vw,22px);color:var(--muted);max-width:600px;margin:0 auto 48px;font-weight:300}
-.hero-tags{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
-.hero-tag{padding:8px 20px;border-radius:100px;font-size:13px;font-weight:600;border:1px solid var(--card-border);color:var(--muted)}
-.ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:10px;font-weight:600;font-size:15px;border:none;cursor:pointer;transition:all .25s}
-.btn-primary{background:var(--accent);color:#000}.btn-primary:hover{background:var(--accent-light);transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--card-border)}.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.hero-text{}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,56px);font-weight:500;line-height:1.15;letter-spacing:-1px;margin-bottom:28px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{font-size:17px;color:var(--light-gray);max-width:440px;line-height:1.8;font-weight:300;margin-bottom:40px}
+.hero-right{display:flex;flex-direction:column;gap:1px}
+.hero-stat{background:var(--card);border:1px solid var(--border);padding:32px 36px;display:flex;justify-content:space-between;align-items:center;transition:border-color .3s}
+.hero-stat:hover{border-color:var(--gold)}
+.hero-stat:first-child{border-radius:12px 12px 0 0}
+.hero-stat:last-child{border-radius:0 0 12px 12px}
+.hero-stat .label{font-size:12px;font-weight:500;color:var(--light-gray);letter-spacing:1px;text-transform:uppercase}
+.hero-stat .value{font-family:'Playfair Display',serif;font-size:28px;color:var(--white)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:16px 36px;border-radius:0;border:1px solid var(--gold);color:var(--gold);background:transparent;cursor:pointer;transition:all .3s}
+.btn:hover{background:var(--gold);color:var(--black)}
+.btn-fill{background:var(--gold);color:var(--black);border-color:var(--gold)}
+.btn-fill:hover{background:var(--gold-light);border-color:var(--gold-light)}
 
 /* Divisions */
-.divisions{padding:120px 0}
-.section-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);text-align:center;margin-bottom:12px}
-.section-title{font-size:clamp(28px,4vw,42px);font-weight:800;text-align:center;margin-bottom:16px;letter-spacing:-1px}
-.section-desc{text-align:center;color:var(--muted);max-width:550px;margin:0 auto 64px;font-size:16px}
-.division-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
-.division-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:40px 32px;position:relative;overflow:hidden;transition:all .3s}
-.division-card:hover{transform:translateY(-4px);border-color:#333}
-.division-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.division-card.local::before{background:var(--local)}
-.division-card.labs::before{background:var(--labs)}
-.division-card.license::before{background:var(--license)}
-.division-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;font-size:28px}
-.division-card.local .division-icon{background:rgba(16,185,129,.1)}
-.division-card.labs .division-icon{background:rgba(139,92,246,.1)}
-.division-card.license .division-icon{background:rgba(59,130,246,.1)}
-.division-card h3{font-size:22px;font-weight:700;margin-bottom:4px}
-.division-card h3 span{font-size:14px;font-weight:400;color:var(--muted);display:block;margin-top:4px}
-.division-card p{color:var(--muted);margin:16px 0 24px;font-size:15px;line-height:1.7}
-.division-features{list-style:none}
-.division-features li{padding:8px 0;font-size:14px;color:var(--muted);border-top:1px solid var(--card-border);display:flex;align-items:center;gap:10px}
-.division-features li::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.division-card.local .division-features li::before{background:var(--local)}
-.division-card.labs .division-features li::before{background:var(--labs)}
-.division-card.license .division-features li::before{background:var(--license)}
+.divisions{padding:160px 0;position:relative}
+.divisions::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.section-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,44px);font-weight:500;letter-spacing:-0.5px;margin-bottom:16px}
+.section-desc{color:var(--light-gray);font-size:16px;max-width:500px;line-height:1.8;font-weight:300;margin-bottom:72px}
 
-/* Stats */
-.stats{padding:80px 0;border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border)}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
-.stat-number{font-size:clamp(32px,5vw,48px);font-weight:900;color:var(--accent);letter-spacing:-1px}
-.stat-label{font-size:13px;color:var(--muted);margin-top:4px;font-weight:500}
+.division-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border)}
+.division{background:var(--black);padding:56px 48px;position:relative;transition:all .4s}
+.division:hover{background:var(--card)}
+.division-num{font-family:'Playfair Display',serif;font-size:64px;font-weight:400;color:var(--dark);position:absolute;top:32px;right:40px;line-height:1}
+.division:hover .division-num{color:var(--border)}
+.division h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;margin-bottom:6px}
+.division .tagline{font-size:13px;color:var(--gold);font-weight:500;letter-spacing:.5px;margin-bottom:20px}
+.division p{font-size:14px;color:var(--light-gray);line-height:1.8;margin-bottom:32px;font-weight:300}
+.division ul{list-style:none}
+.division ul li{font-size:13px;color:var(--off-white);padding:10px 0;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;font-weight:300}
+.division ul li::before{content:'';width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0}
 
 /* Products */
-.products{padding:120px 0}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-.product-card{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:24px;transition:all .2s}
-.product-card:hover{border-color:#333}
-.product-badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
-.badge-local{background:rgba(16,185,129,.1);color:var(--local)}
-.badge-labs{background:rgba(139,92,246,.1);color:var(--labs)}
-.badge-license{background:rgba(59,130,246,.1);color:var(--license)}
-.product-card h4{font-size:17px;font-weight:700;margin-bottom:6px}
-.product-card p{font-size:13px;color:var(--muted);line-height:1.6}
-.product-card .status{font-size:12px;color:var(--accent);margin-top:12px;font-weight:600}
+.products{padding:160px 0;background:var(--dark);position:relative}
+.products::before,.products::after{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.products::before{top:0}
+.products::after{bottom:0}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+.product{background:var(--dark);padding:36px 28px;transition:all .3s}
+.product:hover{background:#151515}
+.product-badge{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
+.product h4{font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-.2px}
+.product p{font-size:13px;color:var(--light-gray);line-height:1.7;font-weight:300}
+.product .status{margin-top:16px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gray)}
 
 /* CTA */
-.cta{padding:120px 0;text-align:center}
-.cta h2{font-size:clamp(28px,4vw,42px);font-weight:800;margin-bottom:16px;letter-spacing:-1px}
-.cta p{color:var(--muted);margin-bottom:32px;font-size:16px}
+.cta{padding:160px 0;text-align:center}
+.cta h2{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,48px);font-weight:500;margin-bottom:16px;letter-spacing:-.5px}
+.cta p{color:var(--light-gray);font-size:16px;margin-bottom:40px;font-weight:300}
+.cta .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 
 /* Footer */
-footer{padding:40px 0;border-top:1px solid var(--card-border);text-align:center}
-footer p{color:var(--muted);font-size:13px}
-footer .footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px}
-footer .footer-links a{color:var(--muted);font-size:13px}
-footer .footer-links a:hover{color:var(--accent)}
+footer{padding:48px 0;border-top:1px solid var(--border)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center}
+footer p{font-size:12px;color:var(--gray);letter-spacing:.5px}
+footer .links{display:flex;gap:32px}
+footer .links a{font-size:12px;color:var(--gray);letter-spacing:.5px;transition:color .3s}
+footer .links a:hover{color:var(--gold)}
 
 /* Mobile */
-@media(max-width:768px){
-nav ul{display:none}
-.division-cards{grid-template-columns:1fr}
-.stats-grid{grid-template-columns:repeat(2,1fr)}
+@media(max-width:1024px){
+.hero-inner{grid-template-columns:1fr;gap:48px}
+.hero-right{flex-direction:row;flex-wrap:wrap}
+.hero-stat{flex:1;min-width:140px}
+.hero-stat:first-child,.hero-stat:last-child{border-radius:0}
+.division-grid{grid-template-columns:1fr}
+.products-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+nav{padding:0 24px}
+.nav-links{display:none}
+.wrap{padding:0 20px}
+.hero{padding-top:100px}
+.products-grid{grid-template-columns:1fr}
+.hero-right{flex-direction:column}
+.division{padding:40px 28px}
+.footer-inner{flex-direction:column;gap:16px;text-align:center}
 }
 </style>
 </head>
 <body>
 
-<!-- Nav -->
 <nav id="nav">
-  <div class="container">
-    <div class="logo">Wildrose <span>Automations</span></div>
-    <ul>
-      <li><a href="#divisions">Divisions</a></li>
-      <li><a href="#products">Products</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+  <div class="logo">Wildrose <span>Automations</span></div>
+  <div class="nav-links">
+    <a href="#divisions">Divisions</a>
+    <a href="#products">Products</a>
+    <a href="#contact">Contact</a>
   </div>
 </nav>
 
-<!-- Hero -->
 <section class="hero">
-  <div>
-    <div class="hero-tags">
-      <div class="hero-tag">Local Business</div>
-      <div class="hero-tag">App Development</div>
-      <div class="hero-tag">Software Licensing</div>
-    </div>
-    <h1>We build the tools<br>that <span class="gold">run businesses</span></h1>
-    <p>Three divisions. One mission. Automate everything from your local shop's website to enterprise-grade AI tools.</p>
-    <div class="ctas">
-      <a href="#divisions" class="btn btn-primary">Explore Divisions</a>
-      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-label">Technology Group</div>
+        <h1>We engineer the systems that <em>power business</em></h1>
+        <p>Three divisions. One mandate. Build software that replaces complexity with precision.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <a href="#divisions" class="btn btn-fill">Our Divisions</a>
+          <a href="#contact" class="btn">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stat"><span class="label">Divisions</span><span class="value">3</span></div>
+        <div class="hero-stat"><span class="label">Products</span><span class="value">10+</span></div>
+        <div class="hero-stat"><span class="label">Systems</span><span class="value">24/7</span></div>
+        <div class="hero-stat"><span class="label">Founded</span><span class="value">2025</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Divisions -->
 <section class="divisions" id="divisions">
-  <div class="container">
-    <div class="section-label">What We Do</div>
-    <div class="section-title">Three Divisions. One Engine.</div>
-    <div class="section-desc">Each division operates independently but shares the same foundation: build fast, ship often, solve real problems.</div>
-
-    <div class="division-cards">
-      <!-- Local -->
-      <div class="division-card local">
-        <div class="division-icon">&#127968;</div>
-        <h3>Wildrose Local <span>Business Automation</span></h3>
-        <p>Websites, hosting, and automation for small businesses. No setup fees, no contracts. Just clean sites that work, backed by AI-powered support.</p>
-        <ul class="division-features">
-          <li>Custom websites with hosting included</li>
-          <li>AI-powered chat and support tools</li>
-          <li>Automated social media management</li>
-          <li>Lead generation and email outreach</li>
-          <li>Monthly reporting and analytics</li>
+  <div class="wrap">
+    <div class="section-label">Divisions</div>
+    <div class="section-title">Built for purpose.</div>
+    <div class="section-desc">Each division is a standalone operation with its own focus, its own products, and the same standard of execution.</div>
+    <div class="division-grid">
+      <div class="division">
+        <div class="division-num">01</div>
+        <h3>Wildrose Local</h3>
+        <div class="tagline">Business Automation</div>
+        <p>Websites, hosting, AI support, and automated marketing for local businesses. Everything a small business needs, nothing it doesn't.</p>
+        <ul>
+          <li>Custom websites with managed hosting</li>
+          <li>AI-powered customer engagement</li>
+          <li>Automated social media & outreach</li>
+          <li>Lead generation pipelines</li>
+          <li>Flat-rate monthly pricing</li>
         </ul>
       </div>
-
-      <!-- Labs -->
-      <div class="division-card labs">
-        <div class="division-icon">&#9879;</div>
-        <h3>Wildrose Labs <span>App & Tool Development</span></h3>
-        <p>We build software. From AI sales trainers to YouTube automation pipelines to poker coaching apps. If it can be automated, we build it.</p>
-        <ul class="division-features">
-          <li>AI voice agents and sales simulators</li>
-          <li>YouTube Shorts automation pipelines</li>
-          <li>Prediction market and data tools</li>
-          <li>Pinterest and social media automation</li>
-          <li>Custom internal tools and dashboards</li>
+      <div class="division">
+        <div class="division-num">02</div>
+        <h3>Wildrose Labs</h3>
+        <div class="tagline">Software & AI Development</div>
+        <p>We build products. AI sales trainers, content automation pipelines, revenue intelligence platforms, predictive analytics tools.</p>
+        <ul>
+          <li>AI voice agents & simulators</li>
+          <li>Content automation at scale</li>
+          <li>Revenue intelligence platforms</li>
+          <li>Predictive data tools</li>
+          <li>Custom internal systems</li>
         </ul>
       </div>
-
-      <!-- License -->
-      <div class="division-card license">
-        <div class="division-icon">&#128273;</div>
-        <h3>Wildrose License <span>Software Licensing</span></h3>
-        <p>White-label software solutions and cloning tools. License our tech, slap your brand on it, and sell it as your own. We handle the code, you handle the business.</p>
-        <ul class="division-features">
-          <li>White-label website builders</li>
-          <li>Cloning and deployment tools</li>
+      <div class="division">
+        <div class="division-num">03</div>
+        <h3>Wildrose License</h3>
+        <div class="tagline">White-Label Solutions</div>
+        <p>Our technology, your brand. License battle-tested tools, deploy them under your own name, and keep the margin. We maintain the code.</p>
+        <ul>
+          <li>White-label website platforms</li>
+          <li>Cloning & deployment tools</li>
           <li>Reseller licensing programs</li>
           <li>Branded app deployments</li>
-          <li>API access and integrations</li>
+          <li>API & integration access</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Stats -->
-<section class="stats">
-  <div class="container">
-    <div class="stats-grid">
-      <div><div class="stat-number">3</div><div class="stat-label">Active Divisions</div></div>
-      <div><div class="stat-number">10+</div><div class="stat-label">Products Built</div></div>
-      <div><div class="stat-number">24/7</div><div class="stat-label">Automated Systems</div></div>
-      <div><div class="stat-number">AI</div><div class="stat-label">First Approach</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- Products -->
 <section class="products" id="products">
-  <div class="container">
-    <div class="section-label">Our Work</div>
-    <div class="section-title">Live Products</div>
-    <div class="section-desc">Real tools solving real problems. All built in-house, all running 24/7.</div>
-
+  <div class="wrap">
+    <div class="section-label">Products</div>
+    <div class="section-title">Live systems.</div>
+    <div class="section-desc">Real products running in production. Built internally, deployed globally, maintained continuously.</div>
     <div class="products-grid">
-      <div class="product-card">
-        <span class="product-badge badge-labs">Labs</span>
+      <div class="product">
+        <span class="product-badge">Labs</span>
         <h4>PitchForge</h4>
-        <p>AI-powered sales training simulator. Practice cold calls against a realistic AI buyer with real-time voice feedback.</p>
-        <div class="status">Live</div>
+        <p>AI sales training simulator with real-time voice feedback and dynamic difficulty.</p>
+        <span class="status">Live</span>
       </div>
-      <div class="product-card">
-        <span class="product-badge badge-labs">Labs</span>
+      <div class="product">
+        <span class="product-badge">Labs</span>
         <h4>ClipForge</h4>
-        <p>Automated YouTube Shorts pipeline. Sources, edits, and uploads viral clips across multiple channels on autopilot.</p>
-        <div class="status">Live</div>
+        <p>Automated YouTube Shorts pipeline. Source, edit, upload across multiple channels.</p>
+        <span class="status">Live</span>
       </div>
-      <div class="product-card">
-        <span class="product-badge badge-labs">Labs</span>
+      <div class="product">
+        <span class="product-badge">Labs</span>
         <h4>Vet INC</h4>
-        <p>Revenue intelligence platform for veterinary clinics. AI analyzes fee schedules against regional benchmarks to find missed revenue.</p>
-        <div class="status">Live</div>
+        <p>Revenue intelligence for veterinary clinics. AI-driven fee schedule analysis.</p>
+        <span class="status">Live</span>
       </div>
-      <div class="product-card">
-        <span class="product-badge badge-labs">Labs</span>
+      <div class="product">
+        <span class="product-badge">Labs</span>
         <h4>PokerTime</h4>
-        <p>Poker training app with preflop ranges, hand analysis, and strategic lessons for all skill levels.</p>
-        <div class="status">Beta</div>
+        <p>Poker training app with preflop ranges, hand analysis, and strategy modules.</p>
+        <span class="status">Beta</span>
       </div>
-      <div class="product-card">
-        <span class="product-badge badge-labs">Labs</span>
-        <h4>Uncle Sam's Procurement</h4>
-        <p>Automated SAM.gov scraper that finds government contracts matching your business. Daily digests, zero manual searching.</p>
-        <div class="status">Live</div>
+      <div class="product">
+        <span class="product-badge">Labs</span>
+        <h4>Uncle Sam's</h4>
+        <p>Automated SAM.gov contract discovery with daily digest delivery.</p>
+        <span class="status">Live</span>
       </div>
-      <div class="product-card">
-        <span class="product-badge badge-local">Local</span>
-        <h4>Wildrose Websites</h4>
-        <p>Clean business websites with hosting, updates, and support. $29/month, no setup fee, no contract.</p>
-        <div class="status">Live</div>
+      <div class="product">
+        <span class="product-badge">Local</span>
+        <h4>Managed Websites</h4>
+        <p>Business websites with hosting, AI support, and automated marketing.</p>
+        <span class="status">Live</span>
       </div>
-      <div class="product-card">
-        <span class="product-badge badge-labs">Labs</span>
-        <h4>Pinterest Automation</h4>
-        <p>AI-generated pins posted automatically. Affiliate link rotation, content scheduling, and engagement tracking.</p>
-        <div class="status">Live</div>
+      <div class="product">
+        <span class="product-badge">Labs</span>
+        <h4>Pinterest Engine</h4>
+        <p>AI-generated visual content with automated posting and affiliate integration.</p>
+        <span class="status">Live</span>
       </div>
-      <div class="product-card">
-        <span class="product-badge badge-license">License</span>
+      <div class="product">
+        <span class="product-badge">License</span>
         <h4>Site Cloner</h4>
-        <p>White-label website deployment tool. Clone, customize, and deploy branded sites in minutes. License it for your agency.</p>
-        <div class="status">In Development</div>
+        <p>White-label deployment tool. Clone, brand, and ship in minutes.</p>
+        <span class="status">In Development</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta" id="contact">
-  <div class="container">
-    <div class="section-label">Get Started</div>
-    <h2>Let's build something.</h2>
-    <p>Whether you need a website, a custom tool, or software to license — we're here.</p>
-    <div class="ctas">
-      <a href="mailto:jack@wildroseautomations.ca" class="btn btn-primary">Email Us</a>
-      <a href="https://twitter.com/wildroseai" class="btn btn-ghost" target="_blank">Follow @wildroseai</a>
+  <div class="wrap">
+    <div class="section-label">Contact</div>
+    <h2>Let's build.</h2>
+    <p>Whether it's a website, a custom tool, or software to license.</p>
+    <div class="btns">
+      <a href="mailto:jack@wildroseautomations.ca" class="btn btn-fill">jack@wildroseautomations.ca</a>
+      <a href="https://twitter.com/wildroseai" class="btn" target="_blank">@wildroseai</a>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
-  <div class="container">
-    <div class="footer-links">
-      <a href="https://twitter.com/wildroseai" target="_blank">X / Twitter</a>
-      <a href="mailto:jack@wildroseautomations.ca">Email</a>
+  <div class="wrap">
+    <div class="footer-inner">
+      <p>Wildrose Automations. Edmonton, AB.</p>
+      <div class="links">
+        <a href="https://twitter.com/wildroseai" target="_blank">X</a>
+        <a href="mailto:jack@wildroseautomations.ca">Email</a>
+      </div>
     </div>
-    <p>Wildrose Automations. Edmonton, AB.</p>
   </div>
 </footer>
 
 <script>
-// Nav scroll effect
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-});
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
 </script>
-
 </body>
 </html>
