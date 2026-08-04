@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wildrose Automations — Professional Websites for $29/mo</title>
-<meta name="description" content="Professional websites, apps, and automation built by Jack Wilde. Based in Edmonton, AB. Websites from $29/mo — no setup fee, no contract.">
+<title>Wildrose Automations — Professional Websites from $5.99/mo</title>
+<meta name="description" content="Professional websites built fast and priced fair. Based in Edmonton, AB. Simple sites from $5.99/mo — hosting, SSL, and unlimited edits included.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -49,7 +49,6 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .hero h1{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-3px;line-height:1.02;margin-bottom:24px}
 .hero h1 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;letter-spacing:-1px}
-.hero h1 .strike{text-decoration:line-through;text-decoration-color:var(--hl);text-decoration-thickness:4px}
 .hero p.lead{font-size:19px;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:520px}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .hero-meta{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap}
@@ -90,18 +89,6 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .section-dark .sec-sub{color:#999}
 .section-dark .eyebrow{color:var(--hl)}
 
-/* SERVICES */
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.svc{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:36px 32px;transition:all .2s}
-.svc:hover{box-shadow:0 12px 40px rgba(0,0,0,.06);transform:translateY(-3px);border-color:var(--ink)}
-.svc-num{font-family:'Instrument Serif',serif;font-size:32px;font-style:italic;color:var(--hl);margin-bottom:16px;line-height:1}
-.svc h3{font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-.5px}
-.svc p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px}
-.svc ul{list-style:none}
-.svc ul li{font-size:14px;color:var(--ink);padding:8px 0;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
-.svc ul li:last-child{border-bottom:1px solid var(--line)}
-.svc ul li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--hl);flex-shrink:0}
-
 /* HOW IT WORKS */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .step{position:relative}
@@ -122,8 +109,14 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .plan ul li{font-size:14px;padding:10px 0;color:var(--ink);display:flex;align-items:flex-start;gap:10px}
 .plan ul li::before{content:'✓';color:var(--hl);font-weight:700;flex-shrink:0}
 .plan .btn{width:100%;justify-content:center}
+.plan-note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
 
 /* PORTFOLIO */
+.port-group{margin-bottom:64px}
+.port-group:last-child{margin-bottom:0}
+.port-group-header{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.port-group-header h3{font-size:24px;font-weight:700;letter-spacing:-.5px}
+.port-group-header .pg-count{font-size:13px;color:var(--muted);background:var(--bg);padding:4px 12px;border-radius:100px}
 .port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
 .port-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:all .2s;display:flex;flex-direction:column}
 .port-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.08);transform:translateY(-3px)}
@@ -142,6 +135,12 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .stat{text-align:center}
 .stat-num{font-family:'Instrument Serif',serif;font-size:clamp(48px,6vw,72px);font-style:italic;color:var(--hl);line-height:1;margin-bottom:8px}
 .stat-label{font-size:14px;color:#999;font-weight:500}
+
+/* AUTOMATION MENTION */
+.auto-mention{padding:80px 0;text-align:center}
+.auto-mention p{font-size:20px;color:var(--muted);margin-bottom:20px}
+.auto-mention a{font-size:16px;font-weight:600;color:var(--hl);display:inline-flex;align-items:center;gap:8px;transition:gap .2s}
+.auto-mention a:hover{gap:12px}
 
 /* FAQ */
 .faq-list{max-width:760px;margin:0 auto}
@@ -174,7 +173,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 @media(max-width:900px){
   .hero .wrap{grid-template-columns:1fr;gap:40px}
   .hero{text-align:left}
-  .svc-grid,.pricing-grid,.port-grid,.steps{grid-template-columns:1fr}
+  .pricing-grid,.port-grid,.steps{grid-template-columns:1fr}
   .stats-row{grid-template-columns:repeat(2,1fr)}
   .nav-links{display:none}
 }
@@ -193,10 +192,10 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       Wildrose
     </div>
     <div class="nav-links">
-      <a href="#services">Services</a>
       <a href="#how">Process</a>
       <a href="#pricing">Pricing</a>
       <a href="#work">Work</a>
+      <a href="automations.html">Automation & AI</a>
       <a href="#faq">FAQ</a>
     </div>
     <a href="#cta" class="btn btn-hl">Get Started →</a>
@@ -209,18 +208,18 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
     <div>
       <div class="pill"><span class="dot"></span> Available for new projects</div>
       <h1>
-        Professional websites<br>
-        shouldn't cost<br>
-        <span class="serif">a fortune.</span>
+        Professional websites,<br>
+        built fast,<br>
+        <span class="serif">priced fair.</span>
       </h1>
-      <p class="lead">Custom websites, apps, and automation — built by one person in Edmonton, AB. No agency overhead. No setup fees. No contracts. Just <strong>$29/mo</strong> and a site that actually works.</p>
+      <p class="lead">Clean, mobile-responsive websites for small businesses and trades. Hosting, SSL, and unlimited edits included — starting at <strong>$5.99/mo</strong>. No setup fee, no contract.</p>
       <div class="hero-cta">
         <a href="#pricing" class="btn btn-dark">See Pricing</a>
         <a href="#work" class="btn btn-ol">View Work</a>
       </div>
       <div class="hero-meta">
         <div class="hero-meta-item">
-          <strong>$29/mo</strong>
+          <strong>$5.99/mo</strong>
           Starting price
         </div>
         <div class="hero-meta-item">
@@ -234,14 +233,14 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       </div>
     </div>
     <div class="price-card">
-      <div class="pc-tag">★ Most Popular</div>
-      <div class="pc-amount"><sup>$</sup>29<span>/mo</span></div>
-      <div style="color:#888;font-size:14px;margin-top:4px;position:relative">Professional website, done.</div>
+      <div class="pc-tag">★ Basic Site</div>
+      <div class="pc-amount"><sup>$</sup>5.99<span>/mo</span></div>
+      <div style="color:#888;font-size:14px;margin-top:4px;position:relative">Simple, clean, professional.</div>
       <ul class="pc-includes">
-        <li>Custom-designed website</li>
-        <li>Mobile responsive</li>
+        <li>Mobile-responsive site</li>
+        <li>Contact info, services, photos</li>
         <li>Hosting & SSL included</li>
-        <li>Unlimited edits</li>
+        <li>Unlimited content edits</li>
         <li>No setup fee, no contract</li>
       </ul>
       <a href="#cta" class="pc-cta">Start Your Site →</a>
@@ -259,50 +258,6 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
     </div>
   </div>
 </div>
-
-<!-- SERVICES -->
-<section class="section" id="services">
-  <div class="wrap">
-    <div class="eyebrow">What I Do</div>
-    <h2 class="sec-title">Three things, <span class="serif">done well.</span></h2>
-    <p class="sec-sub">I don't do everything. I do the things that matter for small businesses — and I do them completely.</p>
-    <div class="svc-grid">
-      <div class="svc">
-        <div class="svc-num">01</div>
-        <h3>Websites</h3>
-        <p>Custom-designed, mobile-first websites. From single landing pages to multi-page business sites with contact forms, booking, and payments.</p>
-        <ul>
-          <li>Custom design — no templates</li>
-          <li>Mobile responsive</li>
-          <li>SEO & fast loading</li>
-          <li>Hosting & SSL included</li>
-        </ul>
-      </div>
-      <div class="svc">
-        <div class="svc-num">02</div>
-        <h3>Automation</h3>
-        <p>Stop doing repetitive tasks by hand. I build workflows that connect your tools, sync your data, and run 24/7 without you thinking about them.</p>
-        <ul>
-          <li>n8n & API integrations</li>
-          <li>Email & SMS automation</li>
-          <li>Data sync & pipelines</li>
-          <li>Scheduled tasks & cron</li>
-        </ul>
-      </div>
-      <div class="svc">
-        <div class="svc-num">03</div>
-        <h3>AI Tools</h3>
-        <p>Voice agents, content pipelines, smart dashboards. AI that does real work — not chatbots that sound clever but accomplish nothing.</p>
-        <ul>
-          <li>AI voice & call agents</li>
-          <li>Content generation pipelines</li>
-          <li>Custom LLM integrations</li>
-          <li>Smart business dashboards</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- HOW IT WORKS -->
 <section class="section section-light" id="how">
@@ -329,7 +284,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       <div class="step">
         <div class="step-n">4</div>
         <h3>I maintain it</h3>
-        <p>$29/mo covers hosting, edits, updates. Something needs changing? Just message me.</p>
+        <p>Monthly covers hosting, edits, updates. Something needs changing? Just message me.</p>
       </div>
     </div>
   </div>
@@ -342,49 +297,46 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
     <h2 class="sec-title">Simple, honest <span class="serif">pricing.</span></h2>
     <p class="sec-sub">No quotes that change. No hidden fees. Pick what you need, pay monthly, cancel anytime.</p>
     <div class="pricing-grid">
-      <div class="plan">
-        <div class="plan-name">Starter Site</div>
-        <div class="plan-price">$29<span>/mo</span></div>
-        <div class="plan-desc">A professional website for your business. Perfect for getting online fast.</div>
-        <ul>
-          <li>Up to 5 custom pages</li>
-          <li>Mobile responsive design</li>
-          <li>Contact form integration</li>
-          <li>Hosting & SSL included</li>
-          <li>Unlimited text edits</li>
-          <li>Email support</li>
-        </ul>
-        <a href="#cta" class="btn btn-ol">Get Started</a>
-      </div>
       <div class="plan featured">
         <div class="plan-badge">Most Popular</div>
-        <div class="plan-name">Business Site</div>
-        <div class="plan-price">$49<span>/mo</span></div>
-        <div class="plan-desc">Everything you need to run your business online. Booking, payments, automation.</div>
+        <div class="plan-name">Basic Site</div>
+        <div class="plan-price">$5.99<span>/mo</span></div>
+        <div class="plan-desc">Simple info site for trades and small businesses. No payments, no scheduling, no backend — just a clean professional site.</div>
         <ul>
-          <li>Unlimited pages</li>
-          <li>Booking / scheduling system</li>
-          <li>Online payments (Stripe)</li>
-          <li>Custom dashboard / portal</li>
+          <li>Mobile-responsive design</li>
+          <li>Contact info, service list, photos</li>
           <li>Hosting & SSL included</li>
-          <li>Priority support</li>
-          <li>1 automation workflow</li>
+          <li>Unlimited text/content edits</li>
+          <li>Email support</li>
         </ul>
         <a href="#cta" class="btn btn-dark">Get Started</a>
       </div>
       <div class="plan">
-        <div class="plan-name">Custom Build</div>
-        <div class="plan-price">Let's talk</div>
-        <div class="plan-desc">Apps, AI tools, complex automation. Custom projects scoped and quoted upfront.</div>
+        <div class="plan-name">Business Site</div>
+        <div class="plan-price">By Quote</div>
+        <div class="plan-desc">For businesses needing booking, payments, custom dashboards, or more complex functionality. Scoped and quoted individually.</div>
+        <ul>
+          <li>Booking / scheduling system</li>
+          <li>Online payments (Stripe)</li>
+          <li>Custom dashboards & portals</li>
+          <li>Multi-page custom build</li>
+          <li>Hosting & SSL included</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#cta" class="btn btn-ol">Get a Quote</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">App Development</div>
+        <div class="plan-price">$999<span>+</span></div>
+        <div class="plan-desc">Custom web or mobile apps, scoped upfront. Optional ongoing maintenance, hosting, and support.</div>
         <ul>
           <li>Web & mobile apps</li>
-          <li>AI voice agents & tools</li>
-          <li>Multi-system automation</li>
           <li>Database & API architecture</li>
-          <li>Ongoing maintenance</li>
+          <li>Scoped upfront — no surprises</li>
           <li>Direct line to me</li>
         </ul>
         <a href="#cta" class="btn btn-ol">Get a Quote</a>
+        <div class="plan-note">+ $39.99/mo optional maintenance (updates, hosting, support)</div>
       </div>
     </div>
   </div>
@@ -395,57 +347,95 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
   <div class="wrap">
     <div class="eyebrow">Portfolio</div>
     <h2 class="sec-title">Real projects, <span class="serif">live now.</span></h2>
-    <p class="sec-sub">Everything below is running in production right now. Not mockups — real businesses, real users, real revenue.</p>
-    <div class="port-grid">
-      <div class="port-card">
-        <div class="port-visual">
-          <div class="pv-bg" style="background:linear-gradient(135deg,#0f766e,#14b8a6)"></div>
-          <span class="pv-text">Vet INC</span>
-        </div>
-        <div class="port-body">
-          <div class="port-tag">SaaS Platform</div>
-          <h3>Vet INC</h3>
-          <p>Pricing intelligence platform for veterinary clinics. AI analyzes fee schedules, identifies revenue gaps, and tracks impact over time. Live with paying clinics.</p>
-          <a href="https://vetinc.ca" target="_blank" class="port-link">vetinc.ca →</a>
-        </div>
+    <p class="sec-sub">Everything below is running in production right now. Not mockups — real businesses, real users.</p>
+
+    <!-- WEBSITES -->
+    <div class="port-group">
+      <div class="port-group-header">
+        <h3>Websites</h3>
+        <span class="pg-count">Simple business sites</span>
       </div>
-      <div class="port-card">
-        <div class="port-visual">
-          <div class="pv-bg" style="background:linear-gradient(135deg,#7c2d12,#ea580c)"></div>
-          <span class="pv-text">Sales Sparring</span>
+      <div class="port-grid">
+        <div class="port-card">
+          <div class="port-visual">
+            <div class="pv-bg" style="background:linear-gradient(135deg,#86198f,#d946ef)"></div>
+            <span class="pv-text">Pure Wellness Joy</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">Business Website</div>
+            <h3>Pure Wellness Joy</h3>
+            <p>Wellness brand website with clean, mobile-first design. Fast loading, optimized for conversions.</p>
+            <a href="https://jack108510.github.io/pure-wellness-joy/" target="_blank" class="port-link">Live Site →</a>
+          </div>
         </div>
-        <div class="port-body">
-          <div class="port-tag">AI Voice App</div>
-          <h3>Sales Sparring</h3>
-          <p>AI sales call practice tool with real-time voice scenarios, scoring, and transcripts. Built for individual sales reps to train cold calls. On the App Store.</p>
-          <a href="https://salessparring.ca" target="_blank" class="port-link">salessparring.ca →</a>
-        </div>
-      </div>
-      <div class="port-card">
-        <div class="port-visual">
-          <div class="pv-bg" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)"></div>
-          <span class="pv-text">Empty Slot</span>
-        </div>
-        <div class="port-body">
-          <div class="port-tag">Marketplace</div>
-          <h3>Empty Slot</h3>
-          <p>Veterinary appointment slot marketplace. Clinics fill cancelled appointments, pet owners find last-minute care. Two-sided marketplace with real-time matching.</p>
-          <a href="https://emptyslot.ca" target="_blank" class="port-link">emptyslot.ca →</a>
-        </div>
-      </div>
-      <div class="port-card">
-        <div class="port-visual">
-          <div class="pv-bg" style="background:linear-gradient(135deg,#86198f,#d946ef)"></div>
-          <span class="pv-text">Pure Wellness Joy</span>
-        </div>
-        <div class="port-body">
-          <div class="port-tag">Business Website</div>
-          <h3>Pure Wellness Joy</h3>
-          <p>Wellness brand website with clean, mobile-first design. Fast loading, optimized for conversions, and easy for the owner to update.</p>
-          <a href="https://jack108510.github.io/pure-wellness-joy/" target="_blank" class="port-link">Live Site →</a>
+        <div class="port-card">
+          <div class="port-visual">
+            <div class="pv-bg" style="background:linear-gradient(135deg,#059669,#34d399)"></div>
+            <span class="pv-text">Wilde Maui</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">Business Website</div>
+            <h3>Wilde Maui</h3>
+            <p>Luxury vacation rental site with photo galleries, guest portal, and admin dashboard. Mobile-first.</p>
+            <a href="https://jack108510.github.io/kuaua-option-a/" target="_blank" class="port-link">Live Site →</a>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- APPS & PLATFORMS -->
+    <div class="port-group">
+      <div class="port-group-header">
+        <h3>Apps & Platforms</h3>
+        <span class="pg-count">Custom builds & SaaS</span>
+      </div>
+      <div class="port-grid">
+        <div class="port-card">
+          <div class="port-visual">
+            <div class="pv-bg" style="background:linear-gradient(135deg,#0f766e,#14b8a6)"></div>
+            <span class="pv-text">Vet INC</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">SaaS Platform</div>
+            <h3>Vet INC</h3>
+            <p>Pricing intelligence platform for veterinary clinics. AI analyzes fee schedules, identifies revenue gaps, and tracks impact. Live with paying clinics.</p>
+            <a href="https://vetinc.ca" target="_blank" class="port-link">vetinc.ca →</a>
+          </div>
+        </div>
+        <div class="port-card">
+          <div class="port-visual">
+            <div class="pv-bg" style="background:linear-gradient(135deg,#7c2d12,#ea580c)"></div>
+            <span class="pv-text">Sales Sparring</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">AI Voice App</div>
+            <h3>Sales Sparring</h3>
+            <p>AI sales call practice tool with real-time voice scenarios, scoring, and transcripts. On the App Store.</p>
+            <a href="https://salessparring.ca" target="_blank" class="port-link">salessparring.ca →</a>
+          </div>
+        </div>
+        <div class="port-card">
+          <div class="port-visual">
+            <div class="pv-bg" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)"></div>
+            <span class="pv-text">Empty Slot</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">Marketplace</div>
+            <h3>Empty Slot</h3>
+            <p>Veterinary appointment slot marketplace. Clinics fill cancelled appointments, pet owners find last-minute care.</p>
+            <a href="https://emptyslot.ca" target="_blank" class="port-link">emptyslot.ca →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOMATION MENTION -->
+<section class="auto-mention">
+  <div class="wrap">
+    <p>Need more than a website?</p>
+    <a href="automations.html">See what else we build →</a>
   </div>
 </section>
 
@@ -483,7 +473,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
     <div class="faq-list" style="margin-top:48px">
       <div class="faq-item">
         <div class="faq-q">Really no setup fee?<span class="icon">+</span></div>
-        <div class="faq-a"><p>Really. $29/mo for a Starter Site includes everything — design, build, hosting, SSL. The only time there's an upfront cost is custom app/AI projects, and those are quoted upfront with no surprises.</p></div>
+        <div class="faq-a"><p>Really. $5.99/mo for a Basic Site includes everything — design, build, hosting, SSL. The only time there's an upfront cost is custom app development, and those are quoted upfront with no surprises.</p></div>
       </div>
       <div class="faq-item">
         <div class="faq-q">What if I want to leave?<span class="icon">+</span></div>
@@ -491,7 +481,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       </div>
       <div class="faq-item">
         <div class="faq-q">How fast can you build it?<span class="icon">+</span></div>
-        <div class="faq-a"><p>First draft within 48 hours for standard sites. Most business sites are live within a week. Larger projects (apps, AI tools) are scoped with a timeline upfront.</p></div>
+        <div class="faq-a"><p>First draft within 48 hours for standard sites. Most business sites are live within a week. Larger projects (apps, platforms) are scoped with a timeline upfront.</p></div>
       </div>
       <div class="faq-item">
         <div class="faq-q">Are you really just one person?<span class="icon">+</span></div>
@@ -499,7 +489,11 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       </div>
       <div class="faq-item">
         <div class="faq-q">What about ongoing changes?<span class="icon">+</span></div>
-        <div class="faq-a"><p>Text and image changes are unlimited on all plans. Need a new page, a new feature, or design changes? Just message me. Bigger changes are included on Business and Custom plans.</p></div>
+        <div class="faq-a"><p>Text and content edits are unlimited on the Basic Site plan. Need a new page, a new feature, or more complex functionality? That falls under Business Site or App Development — just message me and I'll scope it.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the difference between Basic and Business Site?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Basic Site ($5.99/mo) is a simple info site — contact info, services, photos. No payments, no booking, no backend. Business Site is for anything that needs functionality: scheduling, payments, custom portals, dashboards. Those are quoted based on scope.</p></div>
       </div>
       <div class="faq-item">
         <div class="faq-q">Where are you based?<span class="icon">+</span></div>
@@ -513,7 +507,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 <section class="cta" id="cta">
   <div class="wrap">
     <h2>Let's build <span class="serif">something.</span></h2>
-    <p>Website, app, automation, or something custom. Tell me what you need.</p>
+    <p>Tell me what you need — I'll give you a straight answer.</p>
     <div class="cta-btns">
       <a href="mailto:jack@wildroseautomations.ca" class="btn btn-hl">jack@wildroseautomations.ca</a>
       <a href="https://twitter.com/wildroseai" target="_blank" class="btn btn-ol" style="border-color:#444;color:#fff">@wildroseai</a>
@@ -526,6 +520,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
     <div class="ft-brand">Wildrose Automations</div>
     <div style="font-size:13px;color:#444">Edmonton, AB · Built by Jack Wilde</div>
     <div class="ft-links">
+      <a href="automations.html">Automation & AI</a>
       <a href="https://twitter.com/wildroseai" target="_blank">X / Twitter</a>
       <a href="mailto:jack@wildroseautomations.ca">Email</a>
     </div>

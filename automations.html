@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation & AI — Wildrose Automations</title>
+<meta name="description" content="Web automation, communication automation, social media automation, and AI tools built by Wildrose Automations. Custom quoted for your business.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+  --bg:#faf8f5;
+  --ink:#1a1a1a;
+  --muted:#6b6b6b;
+  --line:#e8e4dd;
+  --surface:#fff;
+  --hl:#ff5722;
+  --dark:#141414;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;font-size:16px;line-height:1.6}
+::selection{background:var(--hl);color:#fff}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .3s;padding:20px 0}
+nav.scrolled{background:rgba(250,248,245,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:14px 0}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.3px}
+.brand-mark{width:36px;height:36px;background:var(--dark);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--hl);font-weight:900;font-size:18px;font-family:'Instrument Serif',serif;font-style:italic}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;font-size:14px;font-weight:600;border-radius:100px;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-dark{background:var(--dark);color:#fff}
+.btn-dark:hover{background:#000;transform:translateY(-1px)}
+.btn-hl{background:var(--hl);color:#fff}
+.btn-hl:hover{background:#e64a19;transform:translateY(-1px)}
+.btn-ol{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-ol:hover{background:var(--ink);color:#fff}
+
+/* PAGE HERO */
+.page-hero{padding:160px 0 80px}
+.page-hero .eyebrow{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:12px}
+.page-hero h1{font-size:clamp(36px,5.5vw,64px);font-weight:800;letter-spacing:-2.5px;line-height:1.05;margin-bottom:24px}
+.page-hero h1 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;letter-spacing:-1px}
+.page-hero p.lead{font-size:19px;color:var(--muted);line-height:1.7;max-width:600px}
+
+/* SECTION */
+.section{padding:80px 0}
+.section-light{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:12px}
+.sec-title{font-size:clamp(32px,4.5vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:16px}
+.sec-title .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic}
+.sec-sub{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:56px}
+
+/* AUTOMATION CARDS */
+.auto-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.auto-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px 36px;transition:all .2s}
+.auto-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.06);transform:translateY(-3px);border-color:var(--ink)}
+.auto-num{font-family:'Instrument Serif',serif;font-size:32px;font-style:italic;color:var(--hl);margin-bottom:16px;line-height:1}
+.auto-card h3{font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-.5px}
+.auto-card p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.auto-card ul{list-style:none}
+.auto-card ul li{font-size:14px;color:var(--ink);padding:8px 0;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.auto-card ul li:last-child{border-bottom:1px solid var(--line)}
+.auto-card ul li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--hl);flex-shrink:0}
+
+/* CTA */
+.cta{padding:120px 0;text-align:center;background:var(--dark);color:#fff;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,87,34,.08),transparent 70%);border-radius:50%}
+.cta .wrap{position:relative;z-index:1}
+.cta h2{font-size:clamp(36px,5vw,60px);font-weight:800;letter-spacing:-2px;margin-bottom:16px}
+.cta h2 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;color:var(--hl)}
+.cta p{font-size:18px;color:#888;margin-bottom:36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:var(--dark);color:#666;padding:48px 0;border-top:1px solid #222}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.ft-brand{color:#fff;font-weight:800;font-size:18px}
+.ft-links{display:flex;gap:24px}
+.ft-links a{font-size:13px;color:#666;transition:color .2s}
+.ft-links a:hover{color:#fff}
+
+@media(max-width:900px){
+  .auto-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">W</div>
+      Wildrose
+    </div>
+    <div class="nav-links">
+      <a href="index.html#how">Process</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#work">Work</a>
+      <a href="index.html">Home</a>
+    </div>
+    <a href="#cta" class="btn btn-hl">Get a Quote →</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow">Beyond Websites</div>
+    <h1>Everything else <span class="serif">we build.</span></h1>
+    <p class="lead">Automation, AI tools, and systems that save time and make money. These projects are custom-quoted based on what you actually need — no cookie-cutter packages.</p>
+  </div>
+</section>
+
+<!-- AUTOMATION CATEGORIES -->
+<section class="section section-light">
+  <div class="wrap">
+    <div class="auto-grid">
+      <!-- WEB AUTOMATION -->
+      <div class="auto-card">
+        <div class="auto-num">01</div>
+        <h3>Web Automation</h3>
+        <p>Connect your tools and eliminate manual data work. Workflows that sync, move, and transform data across your stack — running 24/7 without intervention.</p>
+        <ul>
+          <li>Workflow & API integrations</li>
+          <li>Data sync & pipelines</li>
+          <li>Scheduled tasks & cron jobs</li>
+          <li>Database automation (Supabase, etc.)</li>
+        </ul>
+      </div>
+
+      <!-- COMMUNICATION AUTOMATION -->
+      <div class="auto-card">
+        <div class="auto-num">02</div>
+        <h3>Communication Automation</h3>
+        <p>Never miss a lead or lose a customer to silence. Automated follow-ups, reminders, and review requests that run the moment something happens.</p>
+        <ul>
+          <li>Email & SMS automation</li>
+          <li>Missed-call text-back</li>
+          <li>Review request flows</li>
+          <li>Booking & appointment reminders</li>
+        </ul>
+      </div>
+
+      <!-- SOCIAL MEDIA AUTOMATION -->
+      <div class="auto-card">
+        <div class="auto-num">03</div>
+        <h3>Social Media Automation</h3>
+        <p>Stay consistent without spending hours posting. Schedule content, repurpose across platforms, and keep your feeds active on autopilot.</p>
+        <ul>
+          <li>Scheduled posting across platforms</li>
+          <li>Content pipelines & generation</li>
+          <li>Auto-repurposing (long-form → posts)</li>
+          <li>Multi-platform publishing</li>
+        </ul>
+      </div>
+
+      <!-- AI TOOLS -->
+      <div class="auto-card">
+        <div class="auto-num">04</div>
+        <h3>AI Tools</h3>
+        <p>Voice agents that handle calls, LLM integrations that do real work, smart dashboards that surface what matters. AI that earns its keep.</p>
+        <ul>
+          <li>AI voice & call agents</li>
+          <li>Custom LLM integrations</li>
+          <li>Smart business dashboards</li>
+          <li>Predictive & analysis systems</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="wrap">
+    <h2>Get a <span class="serif">custom quote.</span></h2>
+    <p>Tell me what you're trying to automate — I'll tell you what it'll take.</p>
+    <div class="cta-btns">
+      <a href="mailto:jack@wildroseautomations.ca" class="btn btn-hl">jack@wildroseautomations.ca</a>
+      <a href="https://twitter.com/wildroseai" target="_blank" class="btn btn-ol" style="border-color:#444;color:#fff">@wildroseai</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="ft-brand">Wildrose Automations</div>
+    <div style="font-size:13px;color:#444">Edmonton, AB · Built by Jack Wilde</div>
+    <div class="ft-links">
+      <a href="index.html">Home</a>
+      <a href="https://twitter.com/wildroseai" target="_blank">X / Twitter</a>
+      <a href="mailto:jack@wildroseautomations.ca">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>30)
+});
+</script>
+</body>
+</html>
