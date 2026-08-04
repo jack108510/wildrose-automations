@@ -3,350 +3,551 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wildrose Automations — Jack Wilde</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>Wildrose Automations — Professional Websites for $29/mo</title>
+<meta name="description" content="Professional websites, apps, and automation built by Jack Wilde. Based in Edmonton, AB. Websites from $29/mo — no setup fee, no contract.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:#050505;color:#e5e5e5;overflow-x:hidden}
-::selection{background:#10b981;color:#000}
-a{text-decoration:none;color:inherit}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(16,185,129,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-body>*{position:relative;z-index:1}
-.container{max-width:1100px;margin:0 auto;padding:0 24px}
-
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;height:64px;display:flex;align-items:center;transition:all .4s}
-nav.scrolled{background:rgba(5,5,5,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(16,185,129,.1)}
-nav .container{display:flex;align-items:center;justify-content:space-between;width:100%}
-.nav-logo{height:36px;width:36px;border-radius:8px}
-.nav-brand{font-size:16px;font-weight:700;margin-left:12px;color:#fff}
-.nav-brand span{color:#10b981}
-.nav-left{display:flex;align-items:center}
-.nav-links{display:flex;gap:32px;margin-left:48px}
-.nav-links a{font-size:13px;font-weight:500;color:#52525b;transition:color .2s}
-.nav-links a:hover{color:#10b981}
-.nav-right{display:flex;align-items:center;gap:16px}
-.btn-sm{padding:8px 20px;font-size:12px;font-weight:600;border-radius:6px;border:none;cursor:pointer;transition:all .2s}
-.btn-g{background:#10b981;color:#000}.btn-g:hover{background:#34d399}
-
-.hero{min-height:100vh;display:flex;align-items:center;padding-top:64px}
-.hero .container{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.hero-tag{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#10b981;margin-bottom:24px;display:flex;align-items:center;gap:10px}
-.hero-tag::before{content:'';width:32px;height:1px;background:#10b981}
-.hero h1{font-size:clamp(40px,6vw,68px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:24px}
-.hero h1 .em{background:linear-gradient(135deg,#10b981,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-desc{font-size:17px;color:#52525b;line-height:1.8;margin-bottom:40px;max-width:460px}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn{padding:14px 32px;font-size:14px;font-weight:600;border-radius:8px;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
-.btn-primary{background:#10b981;color:#000}.btn-primary:hover{background:#34d399;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:#a3a3a3;border:1px solid #262626}.btn-ghost:hover{border-color:#10b981;color:#10b981}
-
-.terminal{background:#0a0a0a;border:1px solid #171717;border-radius:12px;overflow:hidden;box-shadow:0 0 80px rgba(16,185,129,.06)}
-.terminal-bar{height:36px;background:#0a0a0a;border-bottom:1px solid #171717;display:flex;align-items:center;padding:0 16px;gap:6px}
-.terminal-dot{width:10px;height:10px;border-radius:50%}
-.terminal-dot.r{background:#ef4444}.terminal-dot.y{background:#f59e0b}.terminal-dot.g{background:#10b981}
-.terminal-title{font-size:11px;color:#404040;margin-left:8px;font-weight:500}
-.terminal-body{padding:24px;font-family:'SF Mono',Monaco,'Cascadia Code',monospace;font-size:13px;line-height:2}
-.t-line{opacity:0;animation:fadeIn .3s forwards}
-.t-line:nth-child(1){animation-delay:.3s}
-.t-line:nth-child(2){animation-delay:.6s}
-.t-line:nth-child(3){animation-delay:.9s}
-.t-line:nth-child(4){animation-delay:1.2s}
-.t-line:nth-child(5){animation-delay:1.5s}
-.t-line:nth-child(6){animation-delay:1.8s}
-@keyframes fadeIn{to{opacity:1}}
-.t-green{color:#10b981}.t-gray{color:#404040}.t-white{color:#e5e5e5}.t-dim{color:#262626}
-.terminal-cursor{display:inline-block;width:8px;height:16px;background:#10b981;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:4px}
-@keyframes blink{50%{opacity:0}}
-
-.section{padding:120px 0}
-.section-tag{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#10b981;margin-bottom:12px}
-.section-title{font-size:clamp(32px,4.5vw,48px);font-weight:800;letter-spacing:-1px;margin-bottom:12px}
-.section-desc{color:#404040;font-size:16px;max-width:500px;line-height:1.7;margin-bottom:64px}
-
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#171717;border-radius:16px;overflow:hidden}
-.svc-card{background:#050505;padding:48px 40px;transition:all .3s}
-.svc-card:hover{background:#0a0a0a}
-.svc-icon{font-size:28px;margin-bottom:24px}
-.svc-card h3{font-size:22px;font-weight:700;margin-bottom:12px}
-.svc-card p{font-size:14px;color:#52525b;line-height:1.8;margin-bottom:28px}
-.svc-list{list-style:none}
-.svc-list li{font-size:13px;color:#737373;padding:8px 0;border-top:1px solid #0f0f0f;display:flex;align-items:center;gap:10px}
-.svc-list li::before{content:'';width:3px;height:3px;background:#10b981;border-radius:50%;flex-shrink:0}
-
-.portfolio-section{background:#080808;border-top:1px solid #111;border-bottom:1px solid #111}
-.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#111;border-radius:12px;overflow:hidden}
-.port-card{background:#080808;padding:32px;transition:all .3s;display:flex;flex-direction:column}
-.port-card:hover{background:#0c0c0c}
-.port-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#10b981;margin-bottom:16px}
-.port-card h4{font-size:18px;font-weight:700;margin-bottom:8px}
-.port-card h4 a:hover{color:#10b981}
-.port-card p{font-size:13px;color:#52525b;line-height:1.7;margin-bottom:16px;flex:1}
-.port-link{font-size:12px;font-weight:600;color:#404040;transition:color .2s;display:flex;align-items:center;gap:6px}
-.port-link:hover{color:#10b981}
-
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
-.stat{text-align:center}
-.stat-num{font-size:clamp(36px,5vw,56px);font-weight:900;background:linear-gradient(135deg,#10b981,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:8px}
-.stat-label{font-size:13px;color:#52525b;font-weight:500;line-height:1.5}
-
-.about-section{background:#080808;border-top:1px solid #111;border-bottom:1px solid #111}
-.about-content{max-width:700px}
-.about-content p{font-size:17px;color:#737373;line-height:1.9;margin-bottom:20px}
-.about-content p strong{color:#e5e5e5;font-weight:600}
-
-.cta-section{padding:120px 0;text-align:center}
-.cta-glow{max-width:680px;margin:0 auto;padding:64px 48px;border-radius:24px;background:radial-gradient(ellipse at center,rgba(16,185,129,.06) 0%,transparent 70%);border:1px solid rgba(16,185,129,.12)}
-.cta-glow h2{font-size:36px;font-weight:800;margin-bottom:12px;letter-spacing:-.5px}
-.cta-glow p{color:#404040;margin-bottom:36px;font-size:16px}
-.cta-glow .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-footer{padding:48px 0;border-top:1px solid #111}
-.ft-inner{display:flex;justify-content:space-between;align-items:center}
-.ft-logo{height:28px;width:28px;border-radius:6px}
-.ft-brand{font-size:14px;font-weight:600;margin-left:10px}
-.ft-brand span{color:#10b981}
-.ft-left{display:flex;align-items:center}
-.ft-copy{font-size:11px;color:#262626}
-.ft-links{display:flex;gap:24px}
-.ft-links a{font-size:11px;color:#262626;transition:color .2s}.ft-links a:hover{color:#10b981}
-
-@media(max-width:1024px){
-.hero .container{grid-template-columns:1fr;text-align:center}
-.hero-tag{justify-content:center}
-.hero-desc{margin:0 auto 40px}
-.hero-btns{justify-content:center}
-.hero-visual{max-width:480px;margin:0 auto}
-.services-grid{grid-template-columns:1fr}
-.port-grid{grid-template-columns:1fr 1fr}
-.stats-grid{grid-template-columns:repeat(2,1fr)}
+:root{
+  --bg:#faf8f5;
+  --ink:#1a1a1a;
+  --muted:#6b6b6b;
+  --line:#e8e4dd;
+  --surface:#fff;
+  --accent:#1a1a1a;
+  --hl:#ff5722;
+  --dark:#141414;
 }
-@media(max-width:640px){
-.nav-links{display:none}
-.port-grid{grid-template-columns:1fr}
-.stats-grid{grid-template-columns:1fr 1fr}
-.ft-inner{flex-direction:column;gap:16px;text-align:center}
-.ft-left{flex-direction:column;gap:8px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;font-size:16px;line-height:1.6}
+::selection{background:var(--hl);color:#fff}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .3s;padding:20px 0}
+nav.scrolled{background:rgba(250,248,245,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:14px 0}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.3px}
+.brand-mark{width:36px;height:36px;background:var(--dark);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--hl);font-weight:900;font-size:18px;font-family:'Instrument Serif',serif;font-style:italic}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;font-size:14px;font-weight:600;border-radius:100px;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-dark{background:var(--dark);color:#fff}
+.btn-dark:hover{background:#000;transform:translateY(-1px)}
+.btn-hl{background:var(--hl);color:#fff}
+.btn-hl:hover{background:#e64a19;transform:translateY(-1px)}
+.btn-ol{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-ol:hover{background:var(--ink);color:#fff}
+
+/* HERO */
+.hero{padding:160px 0 100px;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:60px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#fff;border:1px solid var(--line);border-radius:100px;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:28px}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-3px;line-height:1.02;margin-bottom:24px}
+.hero h1 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;letter-spacing:-1px}
+.hero h1 .strike{text-decoration:line-through;text-decoration-color:var(--hl);text-decoration-thickness:4px}
+.hero p.lead{font-size:19px;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:520px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.hero-meta{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap}
+.hero-meta-item{font-size:13px;color:var(--muted)}
+.hero-meta-item strong{display:block;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px}
+
+/* PRICE CARD (hero right) */
+.price-card{background:var(--dark);color:#fff;border-radius:24px;padding:40px 36px;position:relative;overflow:hidden}
+.price-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,87,34,.2),transparent 70%);border-radius:50%}
+.price-card .pc-tag{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:20px;position:relative}
+.price-card .pc-amount{font-size:64px;font-weight:800;letter-spacing:-2px;line-height:1;position:relative}
+.price-card .pc-amount sup{font-size:28px;font-weight:600;vertical-align:super;color:#999}
+.price-card .pc-amount span{font-size:18px;font-weight:400;color:#888}
+.price-card .pc-includes{list-style:none;margin:28px 0;padding-top:28px;border-top:1px solid #333}
+.price-card .pc-includes li{padding:8px 0;font-size:14px;color:#ccc;display:flex;align-items:center;gap:10px}
+.price-card .pc-includes li::before{content:'';width:16px;height:16px;border-radius:50%;background:rgba(255,87,34,.15);flex-shrink:0;position:relative}
+.price-card .pc-includes li::after{content:'✓';position:absolute;left:34px;color:var(--hl);font-size:11px;font-weight:700}
+.price-card .pc-cta{display:block;text-align:center;margin-top:24px;padding:14px;background:var(--hl);color:#fff;border-radius:12px;font-weight:600;font-size:15px;transition:background .2s}
+.price-card .pc-cta:hover{background:#e64a19}
+
+/* LOGO BAR */
+.logos{padding:60px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.logos .wrap{text-align:center}
+.logos-label{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+.logo-row{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap}
+.logo-item{font-weight:800;font-size:20px;color:#ccc;transition:color .2s;letter-spacing:-.5px}
+.logo-item:hover{color:var(--ink)}
+
+/* SECTION GENERIC */
+.section{padding:110px 0}
+.section-light{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.section-dark{background:var(--dark);color:#fff}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:12px}
+.sec-title{font-size:clamp(32px,4.5vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:16px}
+.sec-title .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic}
+.sec-sub{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:56px}
+.section-dark .sec-sub{color:#999}
+.section-dark .eyebrow{color:var(--hl)}
+
+/* SERVICES */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.svc{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:36px 32px;transition:all .2s}
+.svc:hover{box-shadow:0 12px 40px rgba(0,0,0,.06);transform:translateY(-3px);border-color:var(--ink)}
+.svc-num{font-family:'Instrument Serif',serif;font-size:32px;font-style:italic;color:var(--hl);margin-bottom:16px;line-height:1}
+.svc h3{font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:-.5px}
+.svc p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.svc ul{list-style:none}
+.svc ul li{font-size:14px;color:var(--ink);padding:8px 0;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.svc ul li:last-child{border-bottom:1px solid var(--line)}
+.svc ul li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--hl);flex-shrink:0}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{position:relative}
+.step-n{font-family:'Instrument Serif',serif;font-size:56px;font-style:italic;color:var(--hl);line-height:1;margin-bottom:16px;opacity:.8}
+.step h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.step p{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px 32px;position:relative}
+.plan.featured{border:2px solid var(--dark);box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--hl);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 16px;border-radius:100px}
+.plan-name{font-size:16px;font-weight:700;margin-bottom:8px}
+.plan-price{font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
+.plan-price span{font-size:16px;font-weight:400;color:var(--muted)}
+.plan-desc{font-size:14px;color:var(--muted);margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.plan ul{list-style:none;margin-bottom:28px}
+.plan ul li{font-size:14px;padding:10px 0;color:var(--ink);display:flex;align-items:flex-start;gap:10px}
+.plan ul li::before{content:'✓';color:var(--hl);font-weight:700;flex-shrink:0}
+.plan .btn{width:100%;justify-content:center}
+
+/* PORTFOLIO */
+.port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.port-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:all .2s;display:flex;flex-direction:column}
+.port-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.08);transform:translateY(-3px)}
+.port-visual{height:200px;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.port-visual .pv-text{font-size:32px;font-weight:800;letter-spacing:-1px;color:rgba(255,255,255,.9);font-family:'Inter',sans-serif}
+.port-visual .pv-bg{position:absolute;inset:0;opacity:.15}
+.port-body{padding:28px;flex:1;display:flex;flex-direction:column}
+.port-tag{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hl);margin-bottom:8px}
+.port-body h3{font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
+.port-body p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;flex:1}
+.port-link{font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+.port-link:hover{gap:10px;color:var(--hl)}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.stat{text-align:center}
+.stat-num{font-family:'Instrument Serif',serif;font-size:clamp(48px,6vw,72px);font-style:italic;color:var(--hl);line-height:1;margin-bottom:8px}
+.stat-label{font-size:14px;color:#999;font-weight:500}
+
+/* FAQ */
+.faq-list{max-width:760px;margin:0 auto}
+.faq-item{border-bottom:1px solid #333;padding:0}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:24px 0;cursor:pointer;font-size:17px;font-weight:600;user-select:none}
+.faq-q .icon{font-size:24px;color:var(--hl);transition:transform .2s}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding-left:0}
+.faq-a p{padding:0 0 24px;color:#999;font-size:15px;line-height:1.7}
+.faq-item.open .faq-a{max-height:300px}
+.faq-item.open .faq-q .icon{transform:rotate(45deg)}
+
+/* CTA */
+.cta{padding:120px 0;text-align:center;background:var(--dark);color:#fff;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,87,34,.08),transparent 70%);border-radius:50%}
+.cta .wrap{position:relative;z-index:1}
+.cta h2{font-size:clamp(36px,5vw,60px);font-weight:800;letter-spacing:-2px;margin-bottom:16px}
+.cta h2 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;color:var(--hl)}
+.cta p{font-size:18px;color:#888;margin-bottom:36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:var(--dark);color:#666;padding:48px 0;border-top:1px solid #222}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.ft-brand{color:#fff;font-weight:800;font-size:18px}
+.ft-links{display:flex;gap:24px}
+.ft-links a{font-size:13px;color:#666;transition:color .2s}
+.ft-links a:hover{color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero .wrap{grid-template-columns:1fr;gap:40px}
+  .hero{text-align:left}
+  .svc-grid,.pricing-grid,.port-grid,.steps{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none}
+}
+@media(max-width:560px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .hero-meta{gap:20px}
 }
 </style>
 </head>
 <body>
 
 <nav id="nav">
-  <div class="container">
-    <div class="nav-left">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAABgAElEQVR4nO1dB5xdRfWemVte217TQw8kUiT0tqEIKCpFdkGFgKARxb/BgIoobNaCBREUKYYmIAhZhNAD0gKhEwgtgoRA6vb+6r13Zv6/MzO3vE0CCSzF7Hy67O7r+/LOmVO+8x2ENDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0/pfAm4n40tDQGGWIGr52AhoaowiPNZvwre6uX+9T03r+gdHLNDQ0tmQoQy+/9bzd4+tu7o2t/PtQdet5e0Sv09DQ2BLx2GPCwGtuPW93e+WNPUbHrZysvZlby6/rrr5FO4HRCF0AGi2A0/3gg72q+T/ZK7vXDg/RmF2FBnIMpwuMWlZ19vNbPVQ//7y90MEtno4ERg/wp/0CND6hk//gg73Ku1v2ze48+T4ai1WywQxFhBiYMYQ8SnncNsxcobd06dtH9px88QvSYbR4+t9ny4aOAEaJ8dfc/5uG/C5bP+hZViUfylKEiYEpQ5wxxBEycDpLPcusyk6bvLD6uh/uqSOB0QHtAEaB8Vc/8KsZgzuNv6eAcSkayFLEuYEoRZxRhBhHiIMTwAYazDDHMKqGpm61sOpv399bO4EtH9oBbKn4298skfMv+PlhmW3G3udxVIoH05QjbiCXInAAiLLwy/MQRpzgoSxlhFTlpkxcWHfNmftqJ7BlQ9cAtkSo/L3qrpYvZLYfu8A1zSTO5SnC2BDXi1OfI845sIDE71g5BPG94DGUMImZdfpT/117eM+ZV+qawBYKHQGMJJqbifj6DBh/5YLzj8ptW3+3h3ASp3OMc25wyPn9vB/Cf3X6+8YfRAUYEZzOU2oaFfmt6x+s/ct39/9MRAKcY8hVPtXXsIVBv5kfB/h8A6FGhjCGI/aTw4uzLLTHPLdqwfnHprcde5vHiYULDkMGIXDSw4mPORanP+T94jsYPEQE0A0QHQGGMKMIMwRpAUWWZZgFJ51c131MzxlXPPIpdQcw4vMJwk30E37eLR46AhgJqFN/0tVnT9/qou9PFh9UMH4wFji1PkHjr5z/02/kJtTd7rnMxLkCWDlB6uTHFAxd5f8eRdxTJz589zzxHYuf1WWMGziboxThknxt5T3Vl3/vK59oJACnvXCm8FMT3fHck6sn3tI8LrhO4yNDO4CRwAz5PjplsT0HGqa8XLXw181bX316vTAWcATwIf44UwNl/NV3/OKk3FZj/+Eyhkje4ZgzAq0+MHj/O4r8jv1ioDR2hOH0F45COQBxW26gbJ65jMdzdRV31F76na+Jv6v5Y3UC0vBFwN9Ep38=" class="nav-logo" alt="W">
-      <div class="nav-brand">Wildrose <span>Automations</span></div>
-      <div class="nav-links">
-        <a href="#services">Services</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </div>
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">W</div>
+      Wildrose
     </div>
-    <div class="nav-right">
-      <a href="#contact" class="btn-sm btn-g">Hire Me</a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#how">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#work">Work</a>
+      <a href="#faq">FAQ</a>
     </div>
+    <a href="#cta" class="btn btn-hl">Get Started →</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="container">
+  <div class="wrap">
     <div>
-      <div class="hero-tag">Jack Wilde</div>
-      <h1>Apps.<br>Websites.<br><span class="em">Automation.</span></h1>
-      <p class="hero-desc">Built from scratch, delivered working. I ship fast and everything runs 24/7.</p>
-      <div class="hero-btns">
-        <a href="#portfolio" class="btn btn-primary">See My Work</a>
-        <a href="mailto:jack@wildroseautomations.ca" class="btn btn-ghost">Hire Me</a>
+      <div class="pill"><span class="dot"></span> Available for new projects</div>
+      <h1>
+        Professional websites<br>
+        shouldn't cost<br>
+        <span class="serif">a fortune.</span>
+      </h1>
+      <p class="lead">Custom websites, apps, and automation — built by one person in Edmonton, AB. No agency overhead. No setup fees. No contracts. Just <strong>$29/mo</strong> and a site that actually works.</p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn btn-dark">See Pricing</a>
+        <a href="#work" class="btn btn-ol">View Work</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <strong>$29/mo</strong>
+          Starting price
+        </div>
+        <div class="hero-meta-item">
+          <strong>0</strong>
+          Setup fee
+        </div>
+        <div class="hero-meta-item">
+          <strong>48h</strong>
+          First draft
+        </div>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="terminal">
-        <div class="terminal-bar">
-          <div class="terminal-dot r"></div>
-          <div class="terminal-dot y"></div>
-          <div class="terminal-dot g"></div>
-          <span class="terminal-title">wildrose — deploy</span>
-        </div>
-        <div class="terminal-body">
-          <div class="t-line"><span class="t-dim">$</span> <span class="t-green">wildrose</span> <span class="t-gray">build</span> <span class="t-white">--all</span></div>
-          <div class="t-line"><span class="t-green">&#10003;</span> <span class="t-gray">Vet INC</span> <span class="t-white">$55K revenue recovered</span></div>
-          <div class="t-line"><span class="t-green">&#10003;</span> <span class="t-gray">DryRun</span> <span class="t-white">29 AI scenarios live</span></div>
-          <div class="t-line"><span class="t-green">&#10003;</span> <span class="t-gray">Sites</span> <span class="t-white">12+ shipped</span></div>
-          <div class="t-line"><span class="t-green">&#10003;</span> <span class="t-gray">Automation</span> <span class="t-white">running 24/7</span></div>
-          <div class="t-line"><span class="t-dim">$</span> <span class="terminal-cursor"></span></div>
-        </div>
+    <div class="price-card">
+      <div class="pc-tag">★ Most Popular</div>
+      <div class="pc-amount"><sup>$</sup>29<span>/mo</span></div>
+      <div style="color:#888;font-size:14px;margin-top:4px;position:relative">Professional website, done.</div>
+      <ul class="pc-includes">
+        <li>Custom-designed website</li>
+        <li>Mobile responsive</li>
+        <li>Hosting & SSL included</li>
+        <li>Unlimited edits</li>
+        <li>No setup fee, no contract</li>
+      </ul>
+      <a href="#cta" class="pc-cta">Start Your Site →</a>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS / TRUST -->
+<div class="logos">
+  <div class="wrap">
+    <div class="logos-label">Trusted by businesses running on Wildrose builds</div>
+    <div class="logo-row">
+      <span class="logo-item">Vet INC</span>
+      <span class="logo-item">Sales Sparring</span>
+      <span class="logo-item">Empty Slot</span>
+      <span class="logo-item">Pure Wellness Joy</span>
+      <span class="logo-item">WellMade Foundation</span>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="eyebrow">What I Do</div>
+    <h2 class="sec-title">Three things, <span class="serif">done well.</span></h2>
+    <p class="sec-sub">I don't do everything. I do the things that matter for small businesses — and I do them completely.</p>
+    <div class="svc-grid">
+      <div class="svc">
+        <div class="svc-num">01</div>
+        <h3>Websites</h3>
+        <p>Custom-designed, mobile-first websites. From single landing pages to multi-page business sites with contact forms, booking, and payments.</p>
+        <ul>
+          <li>Custom design — no templates</li>
+          <li>Mobile responsive</li>
+          <li>SEO & fast loading</li>
+          <li>Hosting & SSL included</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="svc-num">02</div>
+        <h3>Automation</h3>
+        <p>Stop doing repetitive tasks by hand. I build workflows that connect your tools, sync your data, and run 24/7 without you thinking about them.</p>
+        <ul>
+          <li>n8n & API integrations</li>
+          <li>Email & SMS automation</li>
+          <li>Data sync & pipelines</li>
+          <li>Scheduled tasks & cron</li>
+        </ul>
+      </div>
+      <div class="svc">
+        <div class="svc-num">03</div>
+        <h3>AI Tools</h3>
+        <p>Voice agents, content pipelines, smart dashboards. AI that does real work — not chatbots that sound clever but accomplish nothing.</p>
+        <ul>
+          <li>AI voice & call agents</li>
+          <li>Content generation pipelines</li>
+          <li>Custom LLM integrations</li>
+          <li>Smart business dashboards</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SERVICES -->
-<section class="section" id="services">
-  <div class="container">
-    <div class="section-tag">What I Build</div>
-    <h2 class="section-title">Three lanes. One standard.</h2>
-    <p class="section-desc">I build everything myself. No outsourcing, no middlemen, no bloat.</p>
-    <div class="services-grid">
-      <div class="svc-card">
-        <div class="svc-icon">&#60;/&#62;</div>
-        <h3>Websites & Web Apps</h3>
-        <p>Custom sites, single-page apps, dashboards. Static or full-stack. Ship in days, not months.</p>
-        <ul class="svc-list">
-          <li>Responsive design, mobile-first</li>
-          <li>Custom dashboards & portals</li>
-          <li>SEO & performance optimized</li>
-          <li>Hosting & maintenance included</li>
-        </ul>
+<!-- HOW IT WORKS -->
+<section class="section section-light" id="how">
+  <div class="wrap">
+    <div class="eyebrow">Process</div>
+    <h2 class="sec-title">From idea to live <span class="serif">in days.</span></h2>
+    <p class="sec-sub">No months of back-and-forth. No project managers. You talk to me, I build it, it goes live.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <h3>Tell me what you need</h3>
+        <p>Email or message me. I'll ask the right questions and give you a straight answer on what it'll cost.</p>
       </div>
-      <div class="svc-card">
-        <div class="svc-icon">&#8635;</div>
-        <h3>Full-Stack Automation</h3>
-        <p>n8n workflows, API integrations, data pipelines, webhooks. Automate anything that wastes human time.</p>
-        <ul class="svc-list">
-          <li>n8n & Zapier workflows</li>
-          <li>API integrations & webhooks</li>
-          <li>Data pipelines (Supabase, etc.)</li>
-          <li>Cron jobs & scheduled tasks</li>
-        </ul>
+      <div class="step">
+        <div class="step-n">2</div>
+        <h3>I build it</h3>
+        <p>First draft within 48 hours. You give feedback, I refine. No waiting weeks for revisions.</p>
       </div>
-      <div class="svc-card">
-        <div class="svc-icon">&#9881;</div>
-        <h3>AI-Powered Tools</h3>
-        <p>Voice agents, pricing engines, content pipelines, predictive systems. AI that does real work.</p>
-        <ul class="svc-list">
-          <li>AI voice agents & simulators</li>
-          <li>Revenue intelligence platforms</li>
-          <li>Content automation at scale</li>
-          <li>Custom LLM integrations</li>
+      <div class="step">
+        <div class="step-n">3</div>
+        <h3>We go live</h3>
+        <p>I deploy to your domain, set up hosting, SSL, everything. It's live and working.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">4</div>
+        <h3>I maintain it</h3>
+        <p>$29/mo covers hosting, edits, updates. Something needs changing? Just message me.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Pricing</div>
+    <h2 class="sec-title">Simple, honest <span class="serif">pricing.</span></h2>
+    <p class="sec-sub">No quotes that change. No hidden fees. Pick what you need, pay monthly, cancel anytime.</p>
+    <div class="pricing-grid">
+      <div class="plan">
+        <div class="plan-name">Starter Site</div>
+        <div class="plan-price">$29<span>/mo</span></div>
+        <div class="plan-desc">A professional website for your business. Perfect for getting online fast.</div>
+        <ul>
+          <li>Up to 5 custom pages</li>
+          <li>Mobile responsive design</li>
+          <li>Contact form integration</li>
+          <li>Hosting & SSL included</li>
+          <li>Unlimited text edits</li>
+          <li>Email support</li>
         </ul>
+        <a href="#cta" class="btn btn-ol">Get Started</a>
+      </div>
+      <div class="plan featured">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">Business Site</div>
+        <div class="plan-price">$49<span>/mo</span></div>
+        <div class="plan-desc">Everything you need to run your business online. Booking, payments, automation.</div>
+        <ul>
+          <li>Unlimited pages</li>
+          <li>Booking / scheduling system</li>
+          <li>Online payments (Stripe)</li>
+          <li>Custom dashboard / portal</li>
+          <li>Hosting & SSL included</li>
+          <li>Priority support</li>
+          <li>1 automation workflow</li>
+        </ul>
+        <a href="#cta" class="btn btn-dark">Get Started</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Custom Build</div>
+        <div class="plan-price">Let's talk</div>
+        <div class="plan-desc">Apps, AI tools, complex automation. Custom projects scoped and quoted upfront.</div>
+        <ul>
+          <li>Web & mobile apps</li>
+          <li>AI voice agents & tools</li>
+          <li>Multi-system automation</li>
+          <li>Database & API architecture</li>
+          <li>Ongoing maintenance</li>
+          <li>Direct line to me</li>
+        </ul>
+        <a href="#cta" class="btn btn-ol">Get a Quote</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PORTFOLIO -->
-<section class="section portfolio-section" id="portfolio">
-  <div class="container">
-    <div class="section-tag">Portfolio</div>
-    <h2 class="section-title">Live projects.</h2>
-    <p class="section-desc">Everything here is running in production right now. Click through to see it.</p>
+<section class="section section-light" id="work">
+  <div class="wrap">
+    <div class="eyebrow">Portfolio</div>
+    <h2 class="sec-title">Real projects, <span class="serif">live now.</span></h2>
+    <p class="sec-sub">Everything below is running in production right now. Not mockups — real businesses, real users, real revenue.</p>
     <div class="port-grid">
       <div class="port-card">
-        <div class="port-tag">SaaS Platform</div>
-        <h4><a href="https://vetinc.ca" target="_blank">Vet INC</a></h4>
-        <p>Pricing intelligence platform for veterinary clinics. AI analyzes fee schedules, identifies revenue gaps, monitors impact. $55K recovered on the first clinic.</p>
-        <a href="https://vetinc.ca" target="_blank" class="port-link">vetinc.ca &#8599;</a>
+        <div class="port-visual">
+          <div class="pv-bg" style="background:linear-gradient(135deg,#0f766e,#14b8a6)"></div>
+          <span class="pv-text">Vet INC</span>
+        </div>
+        <div class="port-body">
+          <div class="port-tag">SaaS Platform</div>
+          <h3>Vet INC</h3>
+          <p>Pricing intelligence platform for veterinary clinics. AI analyzes fee schedules, identifies revenue gaps, and tracks impact over time. Live with paying clinics.</p>
+          <a href="https://vetinc.ca" target="_blank" class="port-link">vetinc.ca →</a>
+        </div>
       </div>
       <div class="port-card">
-        <div class="port-tag">AI Voice App</div>
-        <h4><a href="https://jack108510.github.io/sales-trainer/" target="_blank">DryRun</a></h4>
-        <p>AI cold call practice tool with 29 voice scenarios, real-time scoring, and transcripts. Built for individual sales reps.</p>
-        <a href="https://jack108510.github.io/sales-trainer/" target="_blank" class="port-link">Live Demo &#8599;</a>
+        <div class="port-visual">
+          <div class="pv-bg" style="background:linear-gradient(135deg,#7c2d12,#ea580c)"></div>
+          <span class="pv-text">Sales Sparring</span>
+        </div>
+        <div class="port-body">
+          <div class="port-tag">AI Voice App</div>
+          <h3>Sales Sparring</h3>
+          <p>AI sales call practice tool with real-time voice scenarios, scoring, and transcripts. Built for individual sales reps to train cold calls. On the App Store.</p>
+          <a href="https://salessparring.ca" target="_blank" class="port-link">salessparring.ca →</a>
+        </div>
       </div>
       <div class="port-card">
-        <div class="port-tag">Dashboard</div>
-        <h4><a href="https://jack108510.github.io/clinic-staff-portal/" target="_blank">Clinic Staff Portal</a></h4>
-        <p>Veterinary clinic management dashboard with role-based access, PIN authentication, and real-time data views.</p>
-        <a href="https://jack108510.github.io/clinic-staff-portal/" target="_blank" class="port-link">Live Demo &#8599;</a>
+        <div class="port-visual">
+          <div class="pv-bg" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)"></div>
+          <span class="pv-text">Empty Slot</span>
+        </div>
+        <div class="port-body">
+          <div class="port-tag">Marketplace</div>
+          <h3>Empty Slot</h3>
+          <p>Veterinary appointment slot marketplace. Clinics fill cancelled appointments, pet owners find last-minute care. Two-sided marketplace with real-time matching.</p>
+          <a href="https://emptyslot.ca" target="_blank" class="port-link">emptyslot.ca →</a>
+        </div>
       </div>
       <div class="port-card">
-        <div class="port-tag">Website</div>
-        <h4><a href="https://jack108510.github.io/kuaua-option-a/" target="_blank">Wilde Maui</a></h4>
-        <p>Luxury vacation rental site with photo galleries, guest portal, and admin dashboard. Mobile-first design.</p>
-        <a href="https://jack108510.github.io/kuaua-option-a/" target="_blank" class="port-link">Live Site &#8599;</a>
-      </div>
-      <div class="port-card">
-        <div class="port-tag">Website</div>
-        <h4><a href="https://jack108510.github.io/pure-wellness-joy/" target="_blank">Pure Wellness Joy</a></h4>
-        <p>Wellness brand website. Clean design, mobile-first, fast loading.</p>
-        <a href="https://jack108510.github.io/pure-wellness-joy/" target="_blank" class="port-link">Live Site &#8599;</a>
-      </div>
-      <div class="port-card">
-        <div class="port-tag">Website</div>
-        <h4><a href="https://jack108510.github.io/well-made-foundation/" target="_blank">WellMade Foundation</a></h4>
-        <p>Non-profit foundation site with membership flows, program pages, and donation CTAs.</p>
-        <a href="https://jack108510.github.io/well-made-foundation/" target="_blank" class="port-link">Live Site &#8599;</a>
+        <div class="port-visual">
+          <div class="pv-bg" style="background:linear-gradient(135deg,#86198f,#d946ef)"></div>
+          <span class="pv-text">Pure Wellness Joy</span>
+        </div>
+        <div class="port-body">
+          <div class="port-tag">Business Website</div>
+          <h3>Pure Wellness Joy</h3>
+          <p>Wellness brand website with clean, mobile-first design. Fast loading, optimized for conversions, and easy for the owner to update.</p>
+          <a href="https://jack108510.github.io/pure-wellness-joy/" target="_blank" class="port-link">Live Site →</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- RESULTS -->
-<section class="section" id="results">
-  <div class="container">
-    <div class="section-tag">Results</div>
-    <h2 class="section-title">Real numbers.</h2>
-    <p class="section-desc">No vanity metrics. These are outcomes from live projects.</p>
-    <div class="stats-grid">
+<!-- STATS -->
+<section class="section section-dark">
+  <div class="wrap">
+    <div class="eyebrow">By the Numbers</div>
+    <h2 class="sec-title">Outcomes, <span class="serif">not vanity.</span></h2>
+    <div class="stats-row" style="margin-top:56px">
       <div class="stat">
-        <div class="stat-num">$55K+</div>
-        <div class="stat-label">Revenue recovered<br>for vet clinic</div>
+        <div class="stat-num">$55K</div>
+        <div class="stat-label">Revenue recovered<br>for first Vet INC clinic</div>
       </div>
       <div class="stat">
-        <div class="stat-num">29</div>
-        <div class="stat-label">AI voice scenarios<br>shipped (DryRun)</div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Sites built<br>and live in production</div>
       </div>
       <div class="stat">
-        <div class="stat-num">12+</div>
-        <div class="stat-label">Sites built<br>and live</div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Built by one person<br>no outsourcing</div>
       </div>
       <div class="stat">
-        <div class="stat-num">0</div>
-        <div class="stat-label">Downtime.<br>Everything is static.</div>
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Automation running<br>while you sleep</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section class="section about-section" id="about">
-  <div class="container">
-    <div class="section-tag">About</div>
-    <h2 class="section-title">One person. No agencies.</h2>
-    <div class="about-content">
-      <p>I'm <strong>Jack</strong>. I build things in <strong>Edmonton, AB</strong>. Websites, apps, automation, AI tools -- whatever needs building.</p>
-      <p>I build for myself first, then for clients. That means everything I ship has been <strong>battle-tested before you ever see it</strong>. Vet INC, DryRun, the automation pipelines -- they're all mine, all running in production.</p>
-      <p>No agencies. No middlemen. No bloat. Just one person who <strong>ships fast and makes it work</strong>.</p>
+<!-- FAQ -->
+<section class="section section-dark" id="faq">
+  <div class="wrap">
+    <div class="eyebrow">Questions</div>
+    <h2 class="sec-title" style="color:#fff">Good <span class="serif">questions.</span></h2>
+    <div class="faq-list" style="margin-top:48px">
+      <div class="faq-item">
+        <div class="faq-q">Really no setup fee?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Really. $29/mo for a Starter Site includes everything — design, build, hosting, SSL. The only time there's an upfront cost is custom app/AI projects, and those are quoted upfront with no surprises.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I want to leave?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Cancel anytime, no penalty. You own your domain. I'll help you migrate wherever you want to go. No lock-in, no hard feelings.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How fast can you build it?<span class="icon">+</span></div>
+        <div class="faq-a"><p>First draft within 48 hours for standard sites. Most business sites are live within a week. Larger projects (apps, AI tools) are scoped with a timeline upfront.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are you really just one person?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Yes. Every line of code, every design decision, every deployment — me. That's why it's affordable. No agency markup, no project managers, no layers between you and the person doing the work.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What about ongoing changes?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Text and image changes are unlimited on all plans. Need a new page, a new feature, or design changes? Just message me. Bigger changes are included on Business and Custom plans.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Where are you based?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Edmonton, Alberta. I work with clients across Canada. Everything is remote — email, phone, video calls, whatever works for you.</p></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section class="cta-section" id="contact">
-  <div class="container">
-    <div class="cta-glow">
-      <div class="section-tag">Hire Me</div>
-      <h2>Let's build something.</h2>
-      <p>Website, app, automation, or something custom. Tell me what you need.</p>
-      <div class="btns">
-        <a href="mailto:jack@wildroseautomations.ca" class="btn btn-primary">jack@wildroseautomations.ca</a>
-        <a href="https://twitter.com/wildroseai" class="btn btn-ghost" target="_blank">@wildroseai</a>
-      </div>
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="wrap">
+    <h2>Let's build <span class="serif">something.</span></h2>
+    <p>Website, app, automation, or something custom. Tell me what you need.</p>
+    <div class="cta-btns">
+      <a href="mailto:jack@wildroseautomations.ca" class="btn btn-hl">jack@wildroseautomations.ca</a>
+      <a href="https://twitter.com/wildroseai" target="_blank" class="btn btn-ol" style="border-color:#444;color:#fff">@wildroseai</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="container">
-    <div class="ft-inner">
-      <div class="ft-left">
-        <img src="data:image/png;base64,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" class="ft-logo" alt="W">
-        <div class="ft-brand">Wildrose <span>Automations</span></div>
-      </div>
-      <div class="ft-copy">Edmonton, AB</div>
-      <div class="ft-links">
-        <a href="https://twitter.com/wildroseai" target="_blank">X</a>
-        <a href="mailto:jack@wildroseautomations.ca">Email</a>
-      </div>
+  <div class="wrap">
+    <div class="ft-brand">Wildrose Automations</div>
+    <div style="font-size:13px;color:#444">Edmonton, AB · Built by Jack Wilde</div>
+    <div class="ft-links">
+      <a href="https://twitter.com/wildroseai" target="_blank">X / Twitter</a>
+      <a href="mailto:jack@wildroseautomations.ca">Email</a>
     </div>
   </div>
 </footer>
 
 <script>
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>30)
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
 </script>
 </body>
 </html>
