@@ -75,11 +75,9 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .logos .wrap{text-align:center}
 .logos-label{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
 .logo-row{display:flex;justify-content:center;align-items:center;gap:56px;flex-wrap:wrap}
-.logo-item{display:flex;align-items:center;justify-content:center;height:40px;opacity:.55;filter:grayscale(1);transition:all .25s}
-.logo-item:hover{opacity:1;filter:grayscale(0)}
-.logo-item img{height:36px;width:auto;max-width:160px;object-fit:contain}
-.logo-item.logo-text{font-weight:800;font-size:18px;color:#999;letter-spacing:-.5px;transition:color .25s}
-.logo-item.logo-text:hover{color:var(--ink)}
+.logo-item{display:flex;align-items:center;justify-content:center;height:72px;transition:transform .25s}
+.logo-item:hover{transform:scale(1.05)}
+.logo-item img{height:72px;width:auto;max-width:200px;object-fit:contain}
 
 /* SECTION GENERIC */
 .section{padding:110px 0}
@@ -256,8 +254,6 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
   <div class="wrap">
     <div class="logos-label">Trusted by businesses running on Wildrose builds</div>
     <div class="logo-row">
-      <a href="https://vetinc.ca" target="_blank" class="logo-item"><img src="logos/vetinc.png" alt="Vet INC"></a>
-      <a href="https://salessparring.ca" target="_blank" class="logo-item"><img src="logos/salessparring.png" alt="Sales Sparring"></a>
       <img src="logos/logo1.jpg" class="logo-item" alt="Client">
       <img src="logos/logo2.jpg" class="logo-item" alt="Client">
     </div>
