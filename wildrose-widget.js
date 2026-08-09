@@ -14,7 +14,6 @@
 
   const root = document.createElement("div"); root.className = "ll-ai";
   root.innerHTML = `
-    <div class="ll-nudge"><b>${cfg.title} is online</b><p>Questions about websites, pricing, timelines, or automation? Ask here.</p></div>
     <button class="ll-fab" aria-label="Open concierge"><span class="ll-orb"></span><span><strong>Ask ${cfg.title}</strong><span>Websites, pricing, timelines</span></span></button>
     <section class="ll-panel" aria-label="${cfg.title}">
       <header class="ll-head"><div class="ll-top"><div class="ll-brand"><div class="ll-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 15c3-1 4.5-4 7-4s3.5 3 6 3 3.5-1 5-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 18c2.8-.6 4.3-2 7-2s4.2 1.4 7 1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 4l2.3 4.7L19.5 9l-3.8 3.6.9 5.1L12 15.2 7.4 17.7l.9-5.1L4.5 9l5.2-.3L12 4z" fill="currentColor" opacity=".36"/></svg></div><div class="ll-title"><div class="ll-kicker">Wildrose Automations</div><h3>${cfg.title}</h3><p>Websites, pricing, timelines, and automation questions.</p></div></div><button class="ll-close" aria-label="Close">×</button></div></header>
@@ -26,10 +25,9 @@
   document.body.appendChild(root);
 
   const $ = sel => root.querySelector(sel), $$ = sel => Array.from(root.querySelectorAll(sel));
-  const panel = $(".ll-panel"), fab = $(".ll-fab"), nudge = $(".ll-nudge"), input = $(".ll-input"), log = $(".ll-chat-log"), toast = $(".ll-toast");
+  const panel = $(".ll-panel"), fab = $(".ll-fab"), input = $(".ll-input"), log = $(".ll-chat-log"), toast = $(".ll-toast");
   let chatId = null, retellClient = null;
-  setTimeout(() => { if (!panel.classList.contains("open")) nudge.classList.add("show"); }, 1000);
-  fab.addEventListener("click", () => { nudge.classList.remove("show"); panel.classList.add("open"); fab.style.display = "none"; input.focus(); });
+  fab.addEventListener("click", () => { panel.classList.add("open"); fab.style.display = "none"; input.focus(); });
   $(".ll-close").addEventListener("click", () => { panel.classList.remove("open"); fab.style.display = "flex"; });
   $$(".ll-tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
   function setView(view){ $$(".ll-tab").forEach(t=>t.classList.toggle("active",t.dataset.view===view)); $$(".ll-view").forEach(v=>v.classList.toggle("active",v.dataset.view===view)); $(".ll-compose").style.display = view === "chat" ? "flex" : "none"; }
