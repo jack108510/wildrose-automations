@@ -40,6 +40,8 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .btn-hl:hover{background:#e64a19;transform:translateY(-1px)}
 .btn-ol{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
 .btn-ol:hover{background:var(--ink);color:#fff}
+.btn-light{background:#fff;color:var(--dark)}
+.btn-light:hover{background:#f4f0eb;transform:translateY(-1px)}
 
 /* HERO */
 .hero{padding:160px 0 100px;position:relative}
@@ -54,6 +56,9 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .hero-meta{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap}
 .hero-meta-item{font-size:13px;color:var(--muted)}
 .hero-meta-item strong{display:block;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.hero-proof{margin-top:28px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-radius:16px;display:inline-flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);box-shadow:0 10px 30px rgba(0,0,0,.04)}
+.hero-proof strong{color:var(--ink)}
+.hero-proof .pin{width:34px;height:34px;border-radius:10px;background:rgba(255,87,34,.12);color:var(--hl);display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0}
 
 /* PRICE CARD (hero right) */
 .price-card{background:var(--dark);color:#fff;border-radius:24px;padding:40px 36px;position:relative;overflow:hidden}
@@ -68,6 +73,8 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .price-card .pc-includes li::after{content:'✓';position:absolute;left:34px;color:var(--hl);font-size:11px;font-weight:700}
 .price-card .pc-cta{display:block;text-align:center;margin-top:24px;padding:14px;background:var(--hl);color:#fff;border-radius:12px;font-weight:600;font-size:15px;transition:background .2s}
 .price-card .pc-cta:hover{background:#e64a19}
+.pc-limit{position:relative;margin-top:18px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid #2b2b2b;color:#aaa;font-size:13px;line-height:1.5}
+.pc-limit strong{color:#fff}
 
 /* LOGO BAR */
 .logos{padding:60px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
@@ -120,8 +127,11 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
 .port-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:all .2s;display:flex;flex-direction:column}
 .port-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.08);transform:translateY(-3px)}
-.port-visual{height:200px;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.port-visual .pv-text{font-size:32px;font-weight:800;letter-spacing:-1px;color:rgba(255,255,255,.9);font-family:'Inter',sans-serif}
+.port-visual{height:220px;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.port-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .35s ease}
+.port-card:hover .port-visual img{transform:scale(1.04)}
+.port-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,.28));pointer-events:none}
+.port-visual .pv-text{position:absolute;left:18px;bottom:16px;z-index:1;font-size:18px;font-weight:800;letter-spacing:-.3px;color:#fff;font-family:'Inter',sans-serif;text-shadow:0 2px 12px rgba(0,0,0,.35)}
 .port-visual .pv-bg{position:absolute;inset:0;opacity:.15}
 .port-body{padding:28px;flex:1;display:flex;flex-direction:column}
 .port-tag{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hl);margin-bottom:8px}
@@ -160,6 +170,7 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .cta h2 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;color:var(--hl)}
 .cta p{font-size:18px;color:#888;margin-bottom:36px}
 .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-note{margin-top:22px;color:#777;font-size:14px}
 
 /* FOOTER */
 footer{background:var(--dark);color:#666;padding:48px 0;border-top:1px solid #222}
@@ -178,6 +189,21 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
   .nav-links{display:none}
 }
 @media(max-width:560px){
+  .wrap{padding:0 20px}
+  nav{padding:16px 0}
+  nav .btn{display:none}
+  .brand{font-size:16px}
+  .hero{padding:130px 0 70px}
+  .hero .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero .wrap > div{min-width:0;width:100%}
+  .hero h1{font-size:34px;letter-spacing:-1.2px;line-height:1.08;overflow-wrap:break-word}
+  .hero p.lead{font-size:17px;max-width:100%;overflow-wrap:break-word}
+  .hero-proof{display:flex;width:100%;max-width:100%;align-items:flex-start;overflow:visible}
+  .hero-proof span:last-child{min-width:0}
+  .hero-cta .btn{padding:12px 18px}
+  .price-card{width:100%;max-width:100%;padding:34px 28px;border-radius:22px}
+  .pc-limit{overflow-wrap:break-word}
+  .price-card .pc-cta{font-size:14px}
   .stats-row{grid-template-columns:1fr 1fr}
   .hero-meta{gap:20px}
 }
@@ -198,7 +224,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       <a href="automations.html">Automation & AI</a>
       <a href="#faq">FAQ</a>
     </div>
-    <a href="#cta" class="btn btn-hl">Get Started →</a>
+    <a href="#cta" class="btn btn-hl">Email Jack →</a>
   </div>
 </nav>
 
@@ -214,8 +240,12 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       </h1>
       <p class="lead">Clean, mobile-responsive websites for small businesses and trades. Hosting and SSL included — starting at <strong>$5.99/mo</strong>. No setup fee, no contract.</p>
       <div class="hero-cta">
-        <a href="#pricing" class="btn btn-dark">See Pricing</a>
+        <a href="#cta" class="btn btn-dark">Start My $5.99/mo Site</a>
         <a href="#work" class="btn btn-ol">View Work</a>
+      </div>
+      <div class="hero-proof">
+        <span class="pin">✓</span>
+        <span><strong>Built by Jack Wilde in Edmonton.</strong> 15+ live sites/apps, no outsourcing.</span>
       </div>
       <div class="hero-meta">
         <div class="hero-meta-item">
@@ -243,7 +273,8 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
         <li>Content updates included</li>
         <li>No setup fee, no contract</li>
       </ul>
-      <a href="#cta" class="pc-cta">Start Your Site →</a>
+      <div class="pc-limit"><strong>Best for simple info sites.</strong> No payments, booking systems, dashboards, or backend — those are quoted as Business Sites.</div>
+      <a href="#cta" class="pc-cta">Start My $5.99/mo Site →</a>
     </div>
   </div>
 </section>
@@ -310,7 +341,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
           <li>Content updates included</li>
           <li>Email support</li>
         </ul>
-        <a href="#cta" class="btn btn-dark">Get Started</a>
+        <a href="#cta" class="btn btn-dark">Start My $5.99/mo Site</a>
       </div>
       <div class="plan">
         <div class="plan-name">Business Site</div>
@@ -324,7 +355,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
           <li>Hosting & SSL included</li>
           <li>Priority support</li>
         </ul>
-        <a href="#cta" class="btn btn-ol">Get a Quote</a>
+        <a href="#cta" class="btn btn-ol">Get a Straight Quote</a>
       </div>
       <div class="plan">
         <div class="plan-name">App Development</div>
@@ -336,7 +367,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
           <li>Scoped upfront — no surprises</li>
           <li>Direct line to me</li>
         </ul>
-        <a href="#cta" class="btn btn-ol">Get a Quote</a>
+        <a href="#cta" class="btn btn-ol">Get a Straight Quote</a>
         <div class="plan-note">+ $39.99/mo optional maintenance (updates, hosting, support)</div>
       </div>
     </div>
@@ -359,7 +390,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       <div class="port-grid">
         <div class="port-card">
           <div class="port-visual">
-            <div class="pv-bg" style="background:linear-gradient(135deg,#e8620a,#f07820)"></div>
+            <img src="assets/portfolio/swift.png" alt="Swift Line Locating website screenshot">
             <span class="pv-text">Swift Line Locating</span>
           </div>
           <div class="port-body">
@@ -381,7 +412,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       <div class="port-grid">
         <div class="port-card">
           <div class="port-visual">
-            <div class="pv-bg" style="background:linear-gradient(135deg,#0f766e,#14b8a6)"></div>
+            <img src="assets/portfolio/vetinc.png" alt="Vet INC platform screenshot">
             <span class="pv-text">Vet INC</span>
           </div>
           <div class="port-body">
@@ -393,7 +424,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
         </div>
         <div class="port-card">
           <div class="port-visual">
-            <div class="pv-bg" style="background:linear-gradient(135deg,#7c2d12,#ea580c)"></div>
+            <img src="assets/portfolio/sales-sparring.png" alt="Sales Sparring website screenshot">
             <span class="pv-text">Sales Sparring</span>
           </div>
           <div class="port-body">
@@ -405,7 +436,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
         </div>
         <div class="port-card">
           <div class="port-visual">
-            <div class="pv-bg" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)"></div>
+            <img src="assets/portfolio/empty-slot.png" alt="Empty Slot website screenshot">
             <span class="pv-text">Empty Slot</span>
           </div>
           <div class="port-body">
@@ -495,12 +526,13 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 <!-- CTA -->
 <section class="cta" id="cta">
   <div class="wrap">
-    <h2>Let's build <span class="serif">something.</span></h2>
-    <p>Tell me what you need — I'll give you a straight answer.</p>
+    <h2>Ready for a clean <span class="serif">business website?</span></h2>
+    <p>Send your business name and what you need. I'll reply with a straight answer and price.</p>
     <div class="cta-btns">
-      <a href="mailto:jack@wildroseautomations.ca" class="btn btn-hl">jack@wildroseautomations.ca</a>
-      <a href="https://twitter.com/wildroseai" target="_blank" class="btn btn-ol" style="border-color:#444;color:#fff">@wildroseai</a>
+      <a href="mailto:jack@wildroseautomations.ca?subject=Website%20project%20for%20Wildrose" class="btn btn-hl">Email Jack →</a>
+      <a href="https://twitter.com/wildroseai" target="_blank" class="btn btn-light">Message @wildroseai</a>
     </div>
+    <div class="cta-note">Based in Edmonton, AB · Usually replies same day</div>
   </div>
 </section>
 
