@@ -3,78 +3,512 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rose by Wildrose — A Virtual Front Desk for Your Website</title>
-<meta name="description" content="Rose is a virtual front desk for business websites. She answers visitor questions, captures quote requests, and routes leads while you work.">
+<title>Rose Draft — Virtual Front Desk Hero</title>
+<meta name="description" content="Draft Rose hero for Wildrose Automations: a virtual front desk that answers visitors, captures leads, and routes follow-up.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;background:#000}
+html{scroll-behavior:smooth}
 :root{
-  --black:#000;
-  --ink:#1d1d1f;
-  --paper:#f5f5f7;
-  --muted:rgba(255,255,255,.68);
-  --muted-dark:rgba(0,0,0,.62);
-  --blue:#0071e3;
-  --blue-dark:#0066cc;
-  --rose:#ff5722;
-  --line:rgba(255,255,255,.14);
+  --bg:#faf8f5;
+  --ink:#1a1a1a;
+  --muted:#6b6b6b;
+  --line:#e8e4dd;
+  --surface:#fff;
+  --accent:#1a1a1a;
+  --hl:#ff5722;
+  --dark:#141414;
 }
-body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#000;color:#fff;overflow-x:hidden;line-height:1.45;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-a{color:inherit;text-decoration:none}.wrap{max-width:1180px;margin:0 auto;padding:0 28px}.center{text-align:center}.blue-link{color:#2997ff;font-weight:500}.blue-link:hover{text-decoration:underline}
-nav{position:fixed;z-index:1000;top:0;left:0;right:0;height:48px;background:rgba(0,0,0,.78);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
-nav .wrap{height:48px;display:flex;align-items:center;justify-content:space-between;max-width:1020px}
-.brand{display:flex;align-items:center;gap:9px;font-size:13px;color:rgba(255,255,255,.88);font-weight:600;letter-spacing:-.01em}.brand img{width:22px;height:22px;border-radius:6px}.nav-links{display:flex;gap:28px;align-items:center}.nav-links a{font-size:12px;color:rgba(255,255,255,.74);transition:.2s}.nav-links a:hover{color:#fff}.nav-cta{font-size:12px;color:#fff;background:var(--blue);padding:5px 12px;border-radius:980px}
-.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:112px 0 72px;background:#000}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,87,34,.25),transparent 26%),radial-gradient(circle at 50% 70%,rgba(0,113,227,.22),transparent 32%),linear-gradient(#050505,#000 42%,#000);pointer-events:none}.hero::after{content:"";position:absolute;left:50%;bottom:-38%;width:1050px;height:560px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(255,255,255,.16),transparent 58%);filter:blur(8px);opacity:.7}
-.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1fr;justify-items:center;text-align:center}.kicker{font-size:19px;line-height:1.19;color:#f5f5f7;font-weight:600;letter-spacing:.01em;margin-bottom:18px}.hero h1{font-size:clamp(56px,10vw,124px);line-height:.94;letter-spacing:-.075em;font-weight:650;max-width:1050px}.hero h1 .soft{display:block;color:rgba(255,255,255,.72);font-weight:500}.hero .sub{margin:28px auto 0;max-width:760px;color:var(--muted);font-size:clamp(21px,2.35vw,30px);line-height:1.22;letter-spacing:-.025em}.hero-actions{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;justify-content:center}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:980px;font-size:17px;line-height:1;font-weight:500;padding:14px 24px;transition:.2s}.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#0077ed}.btn-ghost{color:#2997ff;border:1px solid rgba(41,151,255,.64)}.btn-ghost:hover{background:rgba(41,151,255,.1)}
-.product-stage{position:relative;width:min(940px,92vw);height:430px;margin-top:58px;perspective:1200px}.product-shell{position:absolute;inset:0;margin:auto;width:min(760px,88vw);height:390px;border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.22);box-shadow:0 50px 140px rgba(0,0,0,.82),inset 0 1px 0 rgba(255,255,255,.28);backdrop-filter:blur(28px);overflow:hidden;transform:rotateX(8deg);}.topbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.28)}.dots{display:flex;gap:7px}.dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.32)}.topbar strong{font-size:14px;letter-spacing:-.02em}.live{font-size:12px;color:rgba(255,255,255,.58)}.screen{display:grid;grid-template-columns:1fr 300px;gap:20px;padding:24px;height:calc(100% - 54px)}.conversation{display:flex;flex-direction:column;gap:14px;justify-content:flex-end}.bubble{max-width:92%;border-radius:22px;padding:16px 18px;font-size:16px;line-height:1.38;box-shadow:0 12px 38px rgba(0,0,0,.18)}.bubble.visitor{align-self:flex-start;background:rgba(255,255,255,.12);color:#fff}.bubble.rose{align-self:flex-end;background:#fff;color:#1d1d1f}.intake{border-radius:25px;background:#f5f5f7;color:#1d1d1f;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.28)}.intake-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#86868b;font-weight:700;margin-bottom:14px}.lead-row{display:flex;justify-content:space-between;border-bottom:1px solid #ddd;padding:10px 0;font-size:14px}.lead-row span:first-child{color:#6e6e73}.send-chip{margin-top:18px;background:#1d1d1f;color:#fff;border-radius:980px;text-align:center;padding:12px 14px;font-size:14px;font-weight:600}.glow-dot{position:absolute;width:18px;height:18px;border-radius:50%;background:#ff5722;box-shadow:0 0 38px #ff5722;right:16%;top:12%;animation:pulse 2.6s ease-in-out infinite}@keyframes pulse{0%,100%{transform:scale(.9);opacity:.65}50%{transform:scale(1.25);opacity:1}}
-.scene{padding:128px 0}.scene.light{background:var(--paper);color:var(--ink)}.scene.dark{background:#000;color:#fff}.scene h2{font-size:clamp(42px,6vw,80px);line-height:.98;letter-spacing:-.055em;font-weight:650;max-width:920px;margin:0 auto}.scene p.lead{font-size:clamp(21px,2.2vw,28px);line-height:1.25;letter-spacing:-.025em;color:var(--muted-dark);max-width:760px;margin:24px auto 0}.dark p.lead{color:var(--muted)}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:62px}.tile{background:#fff;border-radius:28px;padding:34px;min-height:270px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 10px 30px rgba(0,0,0,.05)}.tile.dark-card{background:#111;color:#fff;border:1px solid rgba(255,255,255,.1)}.tile h3{font-size:29px;line-height:1.06;letter-spacing:-.035em;font-weight:650;margin-bottom:12px}.tile p{font-size:17px;color:var(--muted-dark);line-height:1.45}.dark-card p{color:rgba(255,255,255,.62)}.iconline{width:46px;height:46px;border-radius:50%;background:#0071e3;margin-bottom:28px;position:relative}.iconline::after{content:"";position:absolute;inset:13px;border:2px solid #fff;border-radius:50%}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch;margin-top:64px}.panel{border-radius:34px;padding:46px;background:#111;border:1px solid rgba(255,255,255,.1);min-height:470px;overflow:hidden;position:relative}.panel.light-panel{background:#fff;color:#1d1d1f;border:0}.panel h3{font-size:44px;line-height:1.02;letter-spacing:-.045em;margin-bottom:18px}.panel p{font-size:18px;color:rgba(255,255,255,.62);max-width:420px}.light-panel p{color:rgba(0,0,0,.62)}.mini-widget{position:absolute;left:46px;right:46px;bottom:44px;border-radius:28px;background:#fff;color:#1d1d1f;padding:22px;box-shadow:0 28px 80px rgba(0,0,0,.36)}.mini-widget .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.orb{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 30% 20%,#fff,#ff5722 38%,#7a1804);box-shadow:0 0 30px rgba(255,87,34,.45)}.wave{height:72px;border-radius:18px;background:repeating-linear-gradient(90deg,#1d1d1f 0 5px,transparent 5px 13px);opacity:.16}.route-lines{position:absolute;left:44px;right:44px;bottom:44px;display:grid;gap:12px}.route{display:flex;align-items:center;justify-content:space-between;border-radius:18px;background:#f5f5f7;padding:16px 18px;color:#1d1d1f}.route strong{font-size:15px}.route span{font-size:13px;color:#6e6e73}.price-band{margin-top:62px;border-radius:34px;background:#fff;color:#1d1d1f;padding:48px;display:flex;gap:28px;align-items:center;justify-content:space-between}.price-band h3{font-size:42px;letter-spacing:-.04em;line-height:1.02}.price-band p{font-size:19px;color:#6e6e73;margin-top:10px;max-width:580px}.price{font-size:58px;font-weight:650;letter-spacing:-.06em;white-space:nowrap}.price span{font-size:18px;color:#6e6e73;letter-spacing:0;font-weight:500}.final{min-height:78vh;display:flex;align-items:center;text-align:center;background:#000;color:#fff}.final h2{font-size:clamp(54px,9vw,118px);line-height:.94;letter-spacing:-.075em;font-weight:650}.final p{font-size:24px;color:var(--muted);max-width:700px;margin:28px auto 0;line-height:1.25}.final .btn{margin-top:34px}footer{background:#000;color:rgba(255,255,255,.38);border-top:1px solid rgba(255,255,255,.1);padding:34px 0;font-size:12px}footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-@media(max-width:900px){.nav-links{display:none}.hero{padding-top:90px}.product-stage{height:auto;margin-top:42px}.product-shell{position:relative;height:auto;transform:none}.screen{grid-template-columns:1fr}.intake{display:none}.tiles,.split{grid-template-columns:1fr}.price-band{display:block}.price{margin-top:28px}.scene{padding:90px 0}}
-@media(max-width:560px){.wrap{padding:0 20px}.hero h1{font-size:56px}.kicker{font-size:17px}.hero .sub{font-size:21px}.btn{width:100%;padding:15px 20px}.product-shell{border-radius:26px}.screen{padding:16px}.bubble{font-size:14px}.scene h2{font-size:43px}.tile,.panel,.price-band{border-radius:24px;padding:28px}.panel{min-height:390px}.panel h3{font-size:34px}.mini-widget{left:24px;right:24px;bottom:28px}.route-lines{left:24px;right:24px;bottom:28px}.price{font-size:46px}}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;font-size:16px;line-height:1.6}
+::selection{background:var(--hl);color:#fff}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .3s;padding:20px 0}
+nav.scrolled{background:rgba(250,248,245,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:14px 0}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.3px}
+.brand-mark{width:36px;height:36px;background:var(--dark);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--hl);font-weight:900;font-size:18px;font-family:'Instrument Serif',serif;font-style:italic}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;font-size:14px;font-weight:600;border-radius:100px;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-dark{background:var(--dark);color:#fff}
+.btn-dark:hover{background:#000;transform:translateY(-1px)}
+.btn-hl{background:var(--hl);color:#fff}
+.btn-hl:hover{background:#e64a19;transform:translateY(-1px)}
+.btn-ol{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-ol:hover{background:var(--ink);color:#fff}
+.btn-light{background:#fff;color:var(--dark)}
+.btn-light:hover{background:#f4f0eb;transform:translateY(-1px)}
+
+/* HERO */
+.hero{padding:160px 0 100px;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:60px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#fff;border:1px solid var(--line);border-radius:100px;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:28px}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-3px;line-height:1.02;margin-bottom:24px}
+.hero h1 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;letter-spacing:-1px}
+.hero p.lead{font-size:19px;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:520px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.hero-meta{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap}
+.hero-meta-item{font-size:13px;color:var(--muted)}
+.hero-meta-item strong{display:block;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px}
+.hero-proof{margin-top:28px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-radius:16px;display:inline-flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);box-shadow:0 10px 30px rgba(0,0,0,.04)}
+.hero-proof strong{color:var(--ink)}
+.hero-proof .pin{width:34px;height:34px;border-radius:10px;background:rgba(255,87,34,.12);color:var(--hl);display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0}
+
+/* PRICE CARD (hero right) */
+.price-card{background:var(--dark);color:#fff;border-radius:24px;padding:40px 36px;position:relative;overflow:hidden}
+.price-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,87,34,.2),transparent 70%);border-radius:50%}
+.price-card .pc-tag{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:20px;position:relative}
+.price-card .pc-amount{font-size:64px;font-weight:800;letter-spacing:-2px;line-height:1;position:relative}
+.price-card .pc-amount sup{font-size:28px;font-weight:600;vertical-align:super;color:#999}
+.price-card .pc-amount span{font-size:18px;font-weight:400;color:#888}
+.price-card .pc-includes{list-style:none;margin:28px 0;padding-top:28px;border-top:1px solid #333}
+.price-card .pc-includes li{padding:8px 0;font-size:14px;color:#ccc;display:flex;align-items:center;gap:10px}
+.price-card .pc-includes li::before{content:'';width:16px;height:16px;border-radius:50%;background:rgba(255,87,34,.15);flex-shrink:0;position:relative}
+.price-card .pc-includes li::after{content:'✓';position:absolute;left:34px;color:var(--hl);font-size:11px;font-weight:700}
+.price-card .pc-cta{display:block;text-align:center;margin-top:24px;padding:14px;background:var(--hl);color:#fff;border-radius:12px;font-weight:600;font-size:15px;transition:background .2s}
+.price-card .pc-cta:hover{background:#e64a19}
+.pc-limit{position:relative;margin-top:18px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid #2b2b2b;color:#aaa;font-size:13px;line-height:1.5}
+.pc-limit strong{color:#fff}
+
+
+/* ROSE HERO DRAFT ONLY */
+.rose-hero{padding:132px 0 76px;background:#050505;color:#fff;position:relative;overflow:hidden;min-height:760px}
+.rose-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 72% 31%,rgba(255,87,34,.24),transparent 28%),radial-gradient(circle at 52% 78%,rgba(0,113,227,.18),transparent 34%),linear-gradient(180deg,#080808,#000 62%,#080808);pointer-events:none}.rose-hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:.92fr 1.08fr;gap:54px;align-items:center}.rose-label{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;padding:8px 14px;border-radius:980px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:13px;color:rgba(255,255,255,.72);font-weight:600}.rose-label span{width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 18px rgba(255,87,34,.8)}.rose-hero h1{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:clamp(48px,6.8vw,88px);line-height:.94;letter-spacing:-.065em;font-weight:650;margin-bottom:24px}.rose-hero h1 em{display:block;font-family:inherit;font-style:normal;color:rgba(255,255,255,.62);font-weight:500}.rose-hero .lead{font-size:21px;line-height:1.35;color:rgba(255,255,255,.68);max-width:540px;margin-bottom:32px}.rose-hero .hero-cta{margin-bottom:24px}.rose-hero .btn-blue{background:#0071e3;color:#fff}.rose-hero .btn-blue:hover{background:#0077ed}.rose-hero .btn-clear{border:1px solid rgba(255,255,255,.28);color:#fff;background:rgba(255,255,255,.05)}.rose-hero .proof{display:flex;gap:24px;flex-wrap:wrap;margin-top:28px;color:rgba(255,255,255,.56);font-size:13px}.rose-hero .proof strong{display:block;color:#fff;font-size:22px;letter-spacing:-.04em}.rose-demo{position:relative;min-height:540px}.rose-device{position:relative;border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.18);box-shadow:0 42px 120px rgba(0,0,0,.7),inset 0 1px rgba(255,255,255,.28);backdrop-filter:blur(20px);overflow:hidden}.rose-device-header{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.12)}.rose-dots{display:flex;gap:7px}.rose-dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.28)}.rose-device-header strong{font-size:14px}.rose-device-header small{font-size:12px;color:rgba(255,255,255,.5)}.rose-flow{display:grid;grid-template-columns:1fr 248px;gap:18px;padding:20px}.rose-chat{min-height:360px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px}.rose-msg{padding:14px 16px;border-radius:20px;font-size:15px;line-height:1.38;box-shadow:0 12px 34px rgba(0,0,0,.18)}.rose-msg.visitor{align-self:flex-start;max-width:88%;background:rgba(255,255,255,.1);color:#fff}.rose-msg.bot{align-self:flex-end;max-width:92%;background:#fff;color:#1d1d1f}.lead-card{background:#f5f5f7;color:#1d1d1f;border-radius:24px;padding:20px;box-shadow:0 22px 60px rgba(0,0,0,.32)}.lead-card .tag{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#86868b;font-weight:800;margin-bottom:12px}.lead-line{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid #ddd;font-size:13px}.lead-line span{color:#6e6e73}.lead-line strong{text-align:right}.sent{margin-top:16px;text-align:center;border-radius:980px;background:#1d1d1f;color:#fff;padding:11px 12px;font-size:13px;font-weight:700}.rose-steps{position:absolute;left:22px;right:22px;bottom:0;transform:translateY(50%);display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.rose-step{border-radius:18px;background:#fff;color:#1d1d1f;padding:16px;box-shadow:0 18px 50px rgba(0,0,0,.25)}.rose-step .n{color:#0071e3;font-weight:800;font-size:12px;margin-bottom:6px}.rose-step strong{display:block;font-size:15px;letter-spacing:-.02em}.rose-step p{font-size:12px;color:#6e6e73;margin-top:3px;line-height:1.35}
+@media(max-width:900px){.rose-hero .wrap{grid-template-columns:1fr}.rose-demo{min-height:auto;padding-bottom:82px}.rose-flow{grid-template-columns:1fr}.lead-card{order:-1}.rose-steps{position:relative;left:auto;right:auto;bottom:auto;transform:none;margin-top:12px}}
+@media(max-width:560px){.rose-hero{padding:118px 0 58px}.rose-hero h1{font-size:46px}.rose-hero .lead{font-size:18px}.rose-steps{grid-template-columns:1fr}.rose-device{border-radius:24px}.rose-flow{padding:14px}.lead-card{display:none}}
+.wr-fab{display:none!important}
+
+/* LOGO BAR */
+.logos{padding:60px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.logos .wrap{text-align:center}
+.logos-label{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+.logo-row{display:flex;justify-content:center;align-items:center;gap:56px;flex-wrap:wrap}
+.logo-item{display:flex;align-items:center;justify-content:center;height:72px;transition:transform .25s}
+.logo-item:hover{transform:scale(1.05)}
+.logo-item img{height:72px;width:auto;max-width:200px;object-fit:contain}
+
+/* SECTION GENERIC */
+.section{padding:110px 0}
+.section-light{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.section-dark{background:var(--dark);color:#fff}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:12px}
+.sec-title{font-size:clamp(32px,4.5vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:16px}
+.sec-title .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic}
+.sec-sub{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:56px}
+.section-dark .sec-sub{color:#999}
+.section-dark .eyebrow{color:var(--hl)}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{position:relative}
+.step-n{font-family:'Instrument Serif',serif;font-size:56px;font-style:italic;color:var(--hl);line-height:1;margin-bottom:16px;opacity:.8}
+.step h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.step p{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px 32px;position:relative}
+.plan.featured{border:2px solid var(--dark);box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--hl);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 16px;border-radius:100px}
+.plan-name{font-size:16px;font-weight:700;margin-bottom:8px}
+.plan-price{font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
+.plan-price span{font-size:16px;font-weight:400;color:var(--muted)}
+.plan-desc{font-size:14px;color:var(--muted);margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.plan ul{list-style:none;margin-bottom:28px}
+.plan ul li{font-size:14px;padding:10px 0;color:var(--ink);display:flex;align-items:flex-start;gap:10px}
+.plan ul li::before{content:'✓';color:var(--hl);font-weight:700;flex-shrink:0}
+.plan .btn{width:100%;justify-content:center}
+.plan-note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+
+/* PORTFOLIO */
+.port-group{margin-bottom:64px}
+.port-group:last-child{margin-bottom:0}
+.port-group-header{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.port-group-header h3{font-size:24px;font-weight:700;letter-spacing:-.5px}
+.port-group-header .pg-count{font-size:13px;color:var(--muted);background:var(--bg);padding:4px 12px;border-radius:100px}
+.port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.port-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:all .2s;display:flex;flex-direction:column}
+.port-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.08);transform:translateY(-3px)}
+.port-visual{height:220px;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.port-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .35s ease}
+.port-card:hover .port-visual img{transform:scale(1.04)}
+.port-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,.28));pointer-events:none}
+.port-visual .pv-text{position:absolute;left:18px;bottom:16px;z-index:1;font-size:18px;font-weight:800;letter-spacing:-.3px;color:#fff;font-family:'Inter',sans-serif;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.port-visual .pv-bg{position:absolute;inset:0;opacity:.15}
+.port-body{padding:28px;flex:1;display:flex;flex-direction:column}
+.port-tag{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hl);margin-bottom:8px}
+.port-body h3{font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
+.port-body p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;flex:1}
+.port-link{font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+.port-link:hover{gap:10px;color:var(--hl)}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.stat{text-align:center}
+.stat-num{font-family:'Instrument Serif',serif;font-size:clamp(48px,6vw,72px);font-style:italic;color:var(--hl);line-height:1;margin-bottom:8px}
+.stat-label{font-size:14px;color:#999;font-weight:500}
+
+/* AUTOMATION MENTION */
+.auto-mention{padding:80px 0;text-align:center}
+.auto-mention p{font-size:20px;color:var(--muted);margin-bottom:20px}
+.auto-mention a{font-size:16px;font-weight:600;color:var(--hl);display:inline-flex;align-items:center;gap:8px;transition:gap .2s}
+.auto-mention a:hover{gap:12px}
+
+/* FAQ */
+.faq-list{max-width:760px;margin:0 auto}
+.faq-item{border-bottom:1px solid #333;padding:0}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:24px 0;cursor:pointer;font-size:17px;font-weight:600;user-select:none}
+.faq-q .icon{font-size:24px;color:var(--hl);transition:transform .2s}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding-left:0}
+.faq-a p{padding:0 0 24px;color:#999;font-size:15px;line-height:1.7}
+.faq-item.open .faq-a{max-height:300px}
+.faq-item.open .faq-q .icon{transform:rotate(45deg)}
+
+/* CTA */
+.cta{padding:120px 0;text-align:center;background:var(--dark);color:#fff;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,87,34,.08),transparent 70%);border-radius:50%}
+.cta .wrap{position:relative;z-index:1}
+.cta h2{font-size:clamp(36px,5vw,60px);font-weight:800;letter-spacing:-2px;margin-bottom:16px}
+.cta h2 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;color:var(--hl)}
+.cta p{font-size:18px;color:#888;margin-bottom:36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-note{margin-top:22px;color:#777;font-size:14px}
+
+/* AI ADOPTION PLAN */
+.ai-plan{background:#101010;color:#fff;position:relative;overflow:hidden}
+.ai-plan::before{content:'';position:absolute;inset:-30%;background:radial-gradient(circle at 20% 20%,rgba(255,87,34,.18),transparent 32%),radial-gradient(circle at 90% 20%,rgba(255,255,255,.08),transparent 28%);pointer-events:none}
+.ai-plan .wrap{position:relative;z-index:1}
+.ai-panel{display:grid;grid-template-columns:1fr .92fr;gap:36px;align-items:stretch;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:34px;box-shadow:0 24px 80px rgba(0,0,0,.22)}
+.ai-copy{padding:16px 8px 16px 4px}
+.ai-copy .eyebrow{color:var(--hl)}
+.ai-copy .sec-title{color:#fff;margin-bottom:18px}
+.ai-copy p{color:#aaa;font-size:17px;line-height:1.75;max-width:560px;margin-bottom:24px}
+.ai-points{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:26px}
+.ai-point{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);border-radius:16px;padding:16px;font-size:14px;color:#cfcfcf;line-height:1.5}
+.ai-point strong{display:block;color:#fff;margin-bottom:4px;font-size:14px}
+.ai-form{background:#fff;color:var(--ink);border-radius:22px;padding:26px;border:1px solid rgba(255,255,255,.2);box-shadow:0 18px 50px rgba(0,0,0,.2)}
+.ai-form h3{font-size:22px;letter-spacing:-.6px;margin-bottom:8px}
+.ai-form p{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.ai-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ai-field{display:flex;flex-direction:column;gap:6px}
+.ai-field.full{grid-column:1/-1}
+.ai-field label{font-size:12px;font-weight:700;color:#555;letter-spacing:.2px}
+.ai-field input,.ai-field textarea{width:100%;border:1px solid var(--line);background:#fbfaf8;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+.ai-field textarea{min-height:88px;resize:vertical}
+.ai-field input:focus,.ai-field textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px rgba(255,87,34,.1)}
+.ai-form .btn{width:100%;justify-content:center;margin-top:16px}
+.ai-status{min-height:20px;margin-top:12px;font-size:13px;color:var(--muted)}
+.ai-status.ok{color:#15803d}.ai-status.err{color:#b91c1c}
+
+/* FOOTER */
+footer{background:var(--dark);color:#666;padding:48px 0;border-top:1px solid #222}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.ft-brand{color:#fff;font-weight:800;font-size:18px}
+.ft-links{display:flex;gap:24px}
+.ft-links a{font-size:13px;color:#666;transition:color .2s}
+.ft-links a:hover{color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero .wrap{grid-template-columns:1fr;gap:40px}
+  .hero{text-align:left}
+  .pricing-grid,.port-grid,.steps{grid-template-columns:1fr}
+  .ai-panel{grid-template-columns:1fr;padding:24px}
+  .ai-points{grid-template-columns:1fr}
+  .ai-fields{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none}
+}
+@media(max-width:560px){
+  .wrap{padding:0 20px}
+  nav{padding:16px 0}
+  nav .btn{display:none}
+  .brand{font-size:16px}
+  .hero{padding:130px 0 70px}
+  .hero .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero .wrap > div{min-width:0;width:100%}
+  .hero h1{font-size:34px;letter-spacing:-1.2px;line-height:1.08;overflow-wrap:break-word}
+  .hero p.lead{font-size:17px;max-width:100%;overflow-wrap:break-word}
+  .hero-proof{display:flex;width:100%;max-width:100%;align-items:flex-start;overflow:visible}
+  .hero-proof span:last-child{min-width:0}
+  .hero-cta .btn{padding:12px 18px}
+  .price-card{width:100%;max-width:100%;padding:34px 28px;border-radius:22px}
+  .pc-limit{overflow-wrap:break-word}
+  .price-card .pc-cta{font-size:14px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .hero-meta{gap:20px}
+}
 </style>
 </head>
 <body>
-<nav>
+
+<nav id="nav">
   <div class="wrap">
-    <a href="index.html" class="brand"><img src="logos/wildrose.png" alt="Wildrose"> Wildrose</a>
-    <div class="nav-links">
-      <a href="#rose">Rose</a>
-      <a href="#how">How it works</a>
-      <a href="#roi">ROI</a>
-      <a href="#pricing">Pricing</a>
+    <div class="brand">
+      <img src="logos/wildrose.png" style="height:36px;width:36px;border-radius:8px" alt="Wildrose">
+      Wildrose
     </div>
-    <a href="#demo" class="nav-cta rose-open">Try Rose</a>
+    <div class="nav-links">
+      <a href="#ai-plan">Free AI Plan</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#work">Work</a>
+      <a href="automations.html">Automation & AI</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#cta" class="btn btn-hl">Email Us →</a>
   </div>
 </nav>
 
-<section class="hero" id="rose">
+<!-- HERO -->
+<section class="rose-hero" id="top">
   <div class="wrap">
-    <div class="kicker">Introducing Rose</div>
-    <h1>Give your website<br><span class="soft">a front desk.</span></h1>
-    <p class="sub">Rose talks to visitors, answers questions, captures quote requests, and sends the details to you. So your website does more than sit there.</p>
-    <div class="hero-actions">
-      <a href="#demo" class="btn btn-primary rose-open">Try Rose on this site</a>
-      <a href="#how" class="btn btn-ghost">See how it works</a>
+    <div>
+      <div class="rose-label"><span></span> Meet Rose — the front desk for your website</div>
+      <h1>Rose turns visitors into leads.<em>Before they leave.</em></h1>
+      <p class="lead">She answers questions, collects quote details, and sends the lead to you — so your website starts working like someone is actually there.</p>
+      <div class="hero-cta">
+        <a href="#cta" class="btn btn-blue">Get Rose on My Site</a>
+        <a href="#ai-plan" class="btn btn-clear">Get a Free AI Plan</a>
+      </div>
+      <div class="proof">
+        <div><strong>24/7</strong>answers visitors</div>
+        <div><strong>1 lead</strong>can pay for it</div>
+        <div><strong>No rebuild</strong>installs on existing sites</div>
+      </div>
     </div>
-    <div class="product-stage" aria-label="Rose product preview">
-      <span class="glow-dot"></span>
-      <div class="product-shell">
-        <div class="topbar"><div class="dots"><span></span><span></span><span></span></div><strong>Rose</strong><div class="live">Virtual front desk</div></div>
-        <div class="screen">
-          <div class="conversation">
-            <div class="bubble visitor">Do you handle emergency HVAC calls around Edmonton?</div>
-            <div class="bubble rose">Yes. Tell me the issue, location, and best number. I’ll get the details over so someone can follow up fast.</div>
-            <div class="bubble visitor">Furnace is out. South side. Need help today.</div>
-            <div class="bubble rose">Got it. I’ll send this as an urgent lead with your contact details.</div>
+    <div class="rose-demo" aria-label="How Rose works">
+      <div class="rose-device">
+        <div class="rose-device-header"><div class="rose-dots"><i></i><i></i><i></i></div><strong>Rose</strong><small>Virtual front desk</small></div>
+        <div class="rose-flow">
+          <div class="rose-chat">
+            <div class="rose-msg visitor">Do you do emergency furnace repairs near Edmonton?</div>
+            <div class="rose-msg bot">Yes. Tell me the issue, location, and best number. I’ll get the request sent over with the right details.</div>
+            <div class="rose-msg visitor">Furnace is out. South side. Need help today.</div>
+            <div class="rose-msg bot">Got it — I’m marking this urgent and sending the lead now.</div>
           </div>
-          <div class="intake">
-            <div class="intake-label">Lead captured</div>
-            <div class="lead-row"><span>Service</span><strong>HVAC</strong></div>
-            <div class="lead-row"><span>Urgency</span><strong>Today</strong></div>
-            <div class="lead-row"><span>Area</span><strong>South Edmonton</strong></div>
-            <div class="lead-row"><span>Status</span><strong>Routed</strong></div>
-            <div class="send-chip">Sent to owner</div>
+          <div class="lead-card">
+            <div class="tag">Lead captured</div>
+            <div class="lead-line"><span>Service</span><strong>Furnace repair</strong></div>
+            <div class="lead-line"><span>Urgency</span><strong>Today</strong></div>
+            <div class="lead-line"><span>Area</span><strong>South Edmonton</strong></div>
+            <div class="lead-line"><span>Status</span><strong>Ready to call</strong></div>
+            <div class="sent">Sent to owner</div>
+          </div>
+        </div>
+      </div>
+      <div class="rose-steps">
+        <div class="rose-step"><div class="n">01</div><strong>Visitor asks</strong><p>Rose answers before they bounce.</p></div>
+        <div class="rose-step"><div class="n">02</div><strong>Rose qualifies</strong><p>Job type, location, contact, timing.</p></div>
+        <div class="rose-step"><div class="n">03</div><strong>You get the lead</strong><p>Email, SMS, CRM, or workflow.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS / TRUST -->
+<div class="logos">
+  <div class="wrap">
+    <div class="logos-label">Trusted by businesses running on Wildrose builds</div>
+    <div class="logo-row">
+      <img src="logos/logo1.jpg" class="logo-item" alt="Client">
+      <img src="logos/logo2.jpg" class="logo-item" alt="Client">
+      <img src="logos/swift-locating.png" class="logo-item" alt="Swift Line Locating">
+    </div>
+  </div>
+</div>
+
+<!-- FREE AI ADOPTION PLAN -->
+<section class="section ai-plan" id="ai-plan">
+  <div class="wrap">
+    <div class="ai-panel">
+      <div class="ai-copy">
+        <div class="eyebrow">Free AI Adoption Plan</div>
+        <h2 class="sec-title">Know what AI is worth using <span class="serif">before you pay for it.</span></h2>
+        <p>We review your business, website, and manual workflows, then send a practical plan showing where AI can help, which tools are worth using, what to avoid, and what to set up first.</p>
+        <div class="ai-points">
+          <div class="ai-point"><strong>Useful tools</strong>Chat, voice, automation, CRM, and staff workflow recommendations that fit the business.</div>
+          <div class="ai-point"><strong>What to avoid</strong>No hype platforms, generic chatbots, or risky automations that promise too much.</div>
+          <div class="ai-point"><strong>30-day plan</strong>A simple first setup path for leads, quote intake, reviews, staff prompts, or website AI.</div>
+          <div class="ai-point"><strong>No jargon</strong>Plain recommendations a business owner can actually act on.</div>
+        </div>
+      </div>
+      <form class="ai-form" id="aiPlanForm">
+        <h3>Get the free plan</h3>
+        <p>Send the basics. We’ll review it and reply with a practical AI adoption plan.</p>
+        <div class="ai-fields">
+          <div class="ai-field"><label for="aipName">Your name</label><input id="aipName" name="name" autocomplete="name" required></div>
+          <div class="ai-field"><label for="aipEmail">Email</label><input id="aipEmail" name="email" type="email" autocomplete="email" required></div>
+          <div class="ai-field"><label for="aipBusiness">Business name</label><input id="aipBusiness" name="businessName" required></div>
+          <div class="ai-field"><label for="aipWebsite">Website</label><input id="aipWebsite" name="website" inputmode="url" placeholder="https://"></div>
+          <div class="ai-field full"><label for="aipIndustry">Industry</label><input id="aipIndustry" name="industry" placeholder="Plumbing, clinic, landscaping, real estate..."></div>
+          <div class="ai-field full"><label for="aipTask">Biggest manual/time-wasting task</label><textarea id="aipTask" name="biggestTask" placeholder="Example: quote requests, missed leads, appointment reminders, reviews, admin emails..."></textarea></div>
+          <div class="ai-field full"><label for="aipTools">Current tools, optional</label><input id="aipTools" name="currentTools" placeholder="Google Workspace, Jobber, Shopify, Square, spreadsheets..."></div>
+        </div>
+        <button class="btn btn-hl" type="submit">Request My Free Plan →</button>
+        <div class="ai-status" id="aiPlanStatus"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light" id="how">
+  <div class="wrap">
+    <div class="eyebrow">Process</div>
+    <h2 class="sec-title">From idea to live <span class="serif">in days.</span></h2>
+    <p class="sec-sub">No months of back-and-forth. No project managers. You talk to me, I build it, it goes live.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <h3>Tell me what you need</h3>
+        <p>Email or message me. I'll ask the right questions and give you a straight answer on what it'll cost.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <h3>I build it</h3>
+        <p>First draft within 48 hours. You give feedback, I refine. No waiting weeks for revisions.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <h3>We go live</h3>
+        <p>I deploy to your domain, set up hosting, SSL, everything. It's live and working.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">4</div>
+        <h3>I maintain it</h3>
+        <p>Monthly covers hosting, edits, updates. Something needs changing? Just message me.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Pricing</div>
+    <h2 class="sec-title">Simple, honest <span class="serif">pricing.</span></h2>
+    <p class="sec-sub">No quotes that change. No hidden fees. Pick what you need, pay monthly, cancel anytime.</p>
+    <div class="pricing-grid">
+      <div class="plan featured">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">Basic Site</div>
+        <div class="plan-price">$5.99<span>/mo</span></div>
+        <div class="plan-desc">Simple info site for trades and small businesses. No payments, no scheduling, no backend — just a clean professional site.</div>
+        <ul>
+          <li>Mobile-responsive design</li>
+          <li>Contact info, service list, photos</li>
+          <li>Hosting & SSL included</li>
+          <li>Content updates included</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#cta" class="btn btn-dark">Start My $5.99/mo Site</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Business Site</div>
+        <div class="plan-price">By Quote</div>
+        <div class="plan-desc">For businesses needing booking, payments, custom dashboards, or more complex functionality. Scoped and quoted individually.</div>
+        <ul>
+          <li>Booking / scheduling system</li>
+          <li>Online payments (Stripe)</li>
+          <li>Custom dashboards & portals</li>
+          <li>Multi-page custom build</li>
+          <li>Hosting & SSL included</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#cta" class="btn btn-ol">Get a Straight Quote</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">App Development</div>
+        <div class="plan-price">$199<span>+</span></div>
+        <div class="plan-desc">Custom web or mobile apps, scoped upfront. Optional ongoing maintenance, hosting, and support.</div>
+        <ul>
+          <li>Web & mobile apps</li>
+          <li>Database & API architecture</li>
+          <li>Scoped upfront — no surprises</li>
+          <li>Direct line to me</li>
+        </ul>
+        <a href="#cta" class="btn btn-ol">Get a Straight Quote</a>
+        <div class="plan-note">+ $39.99/mo optional maintenance (updates, hosting, support)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="section section-light" id="work">
+  <div class="wrap">
+    <div class="eyebrow">Portfolio</div>
+    <h2 class="sec-title">Real projects, <span class="serif">live now.</span></h2>
+    <p class="sec-sub">Everything below is running in production right now. Not mockups — real businesses, real users.</p>
+
+    <!-- WEBSITES -->
+    <div class="port-group">
+      <div class="port-group-header">
+        <h3>Websites</h3>
+        <span class="pg-count">Business & trades sites</span>
+      </div>
+      <div class="port-grid">
+        <div class="port-card">
+          <div class="port-visual">
+            <img src="assets/portfolio/swift.png" alt="Swift Line Locating website screenshot">
+            <span class="pv-text">Swift Line Locating</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">Trades Website</div>
+            <h3>Swift Line Locating</h3>
+            <p>Underground utility locating company in Alberta. Clean, professional site with service info, equipment gallery, and quote requests.</p>
+            <a href="https://swiftlocating.ca" target="_blank" class="port-link">swiftlocating.ca →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPS & PLATFORMS -->
+    <div class="port-group">
+      <div class="port-group-header">
+        <h3>Apps & Platforms</h3>
+        <span class="pg-count">Custom builds & SaaS</span>
+      </div>
+      <div class="port-grid">
+        <div class="port-card">
+          <div class="port-visual">
+            <img src="assets/portfolio/vetinc.png" alt="Vet INC platform screenshot">
+            <span class="pv-text">Vet INC</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">SaaS Platform</div>
+            <h3>Vet INC</h3>
+            <p>Pricing intelligence platform for veterinary clinics. AI analyzes fee schedules, identifies revenue gaps, and tracks impact. Live with paying clinics.</p>
+            <a href="https://vetinc.ca" target="_blank" class="port-link">vetinc.ca →</a>
+          </div>
+        </div>
+        <div class="port-card">
+          <div class="port-visual">
+            <img src="assets/portfolio/sales-sparring.png" alt="Sales Sparring website screenshot">
+            <span class="pv-text">Sales Sparring</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">AI Voice App</div>
+            <h3>Sales Sparring</h3>
+            <p>AI sales call practice tool with real-time voice scenarios, scoring, and transcripts. On the App Store.</p>
+            <a href="https://salessparring.ca" target="_blank" class="port-link">salessparring.ca →</a>
+          </div>
+        </div>
+        <div class="port-card">
+          <div class="port-visual">
+            <img src="assets/portfolio/empty-slot.png" alt="Empty Slot website screenshot">
+            <span class="pv-text">Empty Slot</span>
+          </div>
+          <div class="port-body">
+            <div class="port-tag">Marketplace</div>
+            <h3>Empty Slot</h3>
+            <p>Veterinary appointment slot marketplace. Clinics fill cancelled appointments, pet owners find last-minute care.</p>
+            <a href="https://emptyslot.ca" target="_blank" class="port-link">emptyslot.ca →</a>
           </div>
         </div>
       </div>
@@ -82,81 +516,150 @@ nav .wrap{height:48px;display:flex;align-items:center;justify-content:space-betw
   </div>
 </section>
 
-<section class="scene light center" id="how">
+<!-- AUTOMATION MENTION -->
+<section class="auto-mention">
   <div class="wrap">
-    <h2>Visitors arrive with questions. Rose gives them an answer.</h2>
-    <p class="lead">Most websites make people search, guess, fill a form, and wait. Rose starts the conversation while the visitor is still interested.</p>
-    <div class="tiles">
-      <div class="tile"><div><div class="iconline"></div><h3>Answers questions.</h3><p>Services, hours, service area, rough process, pricing boundaries, and next steps — explained instantly.</p></div><a class="blue-link" href="#demo">Try it ></a></div>
-      <div class="tile"><div><div class="iconline"></div><h3>Captures the lead.</h3><p>Name, phone, email, job type, location, timing, and notes — the details you actually need.</p></div><a class="blue-link" href="#pricing">See setup ></a></div>
-      <div class="tile"><div><div class="iconline"></div><h3>Routes follow-up.</h3><p>Send leads to email, SMS, CRM, calendar, or your existing workflow. Start simple. Expand later.</p></div><a class="blue-link" href="#roi">See ROI ></a></div>
-    </div>
+    <p>Need more than a website?</p>
+    <a href="automations.html">See what else we build →</a>
   </div>
 </section>
 
-<section class="scene dark" id="demo">
-  <div class="wrap center">
-    <h2>Rose is the demo. Your business gets the front desk.</h2>
-    <p class="lead">On our site, her name is Rose. On a client site, it is branded around that business: their logo, services, voice, intake questions, and lead routing.</p>
-    <div class="split">
-      <div class="panel">
-        <h3>Chat and voice, without the cheap chatbot feel.</h3>
-        <p>A clean website assistant that feels like part of the brand, not a third-party support bubble.</p>
-        <div class="mini-widget">
-          <div class="head"><strong>Rose</strong><div class="orb"></div></div>
-          <div class="wave"></div>
-        </div>
+<!-- STATS -->
+<section class="section section-dark">
+  <div class="wrap">
+    <div class="eyebrow">By the Numbers</div>
+    <h2 class="sec-title">Outcomes, <span class="serif">not vanity.</span></h2>
+    <div class="stats-row" style="margin-top:56px">
+      <div class="stat">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Sites built<br>and live in production</div>
       </div>
-      <div class="panel light-panel">
-        <h3>Lead details, already organized.</h3>
-        <p>Instead of a vague contact form, the business gets useful context before replying.</p>
-        <div class="route-lines">
-          <div class="route"><strong>Quote request</strong><span>Email</span></div>
-          <div class="route"><strong>Urgent job</strong><span>SMS</span></div>
-          <div class="route"><strong>Booking request</strong><span>CRM</span></div>
-        </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Apps & platforms<br>running in production</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Built by one person<br>no outsourcing</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Automation running<br>while you sleep</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="scene light center" id="roi">
+<!-- FAQ -->
+<section class="section section-dark" id="faq">
   <div class="wrap">
-    <h2>Low risk. Easy to install. Clear ROI.</h2>
-    <p class="lead">No full rebuild required. Put Rose on the website they already have. If it captures one extra job, appointment, or quote request, it can pay for itself.</p>
-    <div class="price-band" id="pricing">
-      <div>
-        <h3>Virtual Front Desk</h3>
-        <p>Rose setup for the Wildrose demo. Client installs become their own branded front desk for their business.</p>
+    <div class="eyebrow">Questions</div>
+    <h2 class="sec-title" style="color:#fff">Good <span class="serif">questions.</span></h2>
+    <div class="faq-list" style="margin-top:48px">
+      <div class="faq-item">
+        <div class="faq-q">Really no setup fee?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Really. $5.99/mo for a Basic Site includes everything — design, build, hosting, SSL. The only time there's an upfront cost is custom app development, and those are quoted upfront with no surprises.</p></div>
       </div>
-      <div class="price">$99<span>/mo starting</span></div>
+      <div class="faq-item">
+        <div class="faq-q">What if I want to leave?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Cancel anytime, no penalty. You own your domain. I'll help you migrate wherever you want to go. No lock-in, no hard feelings.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How fast can you build it?<span class="icon">+</span></div>
+        <div class="faq-a"><p>First draft within 48 hours for standard sites. Most business sites are live within a week. Larger projects (apps, platforms) are scoped with a timeline upfront.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are you really just one person?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Yes. Every line of code, every design decision, every deployment — me. That's why it's affordable. No agency markup, no project managers, no layers between you and the person doing the work.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What about ongoing changes?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Content updates are included on the Basic Site plan. Need a new page, a new feature, or more complex functionality? That falls under Business Site or App Development — just message me and I'll scope it.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the difference between Basic and Business Site?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Basic Site ($5.99/mo) is a simple info site — contact info, services, photos. No payments, no booking, no backend. Business Site is for anything that needs functionality: scheduling, payments, custom portals, dashboards. Those are quoted based on scope.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Where are you based?<span class="icon">+</span></div>
+        <div class="faq-a"><p>Edmonton, Alberta. I work with clients across Canada. Everything is remote — email, phone, video calls, whatever works for you.</p></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="final">
+<!-- CTA -->
+<section class="cta" id="cta">
   <div class="wrap">
-    <h2>Your website should greet people.</h2>
-    <p>Rose turns visitors into conversations, and conversations into leads.</p>
-    <a href="mailto:jack@wildroseautomations.ca?subject=Rose%20for%20my%20website" class="btn btn-primary">Get Rose on my site</a>
+    <h2>Ready for a clean <span class="serif">business website?</span></h2>
+    <p>Send your business name and what you need. I'll reply with a straight answer and price.</p>
+    <div class="cta-btns">
+      <a href="mailto:jack@wildroseautomations.ca?subject=Website%20project%20for%20Wildrose" class="btn btn-hl">Email Us →</a>
+      <a href="https://twitter.com/wildroseai" target="_blank" class="btn btn-light">Message @wildroseai</a>
+    </div>
+    <div class="cta-note">Based in Edmonton, AB · Usually replies same day</div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div>Wildrose Automations · Edmonton, AB</div>
-    <div><a href="index.html">Live site</a> · <a href="automations.html">Automation & AI</a> · <a href="mailto:jack@wildroseautomations.ca">Email</a></div>
+    <div class="ft-brand">Wildrose Automations</div>
+    <div style="font-size:13px;color:#444">Edmonton, AB · Wildrose Automations</div>
+    <div class="ft-links">
+      <a href="automations.html">Automation & AI</a>
+      <a href="https://twitter.com/wildroseai" target="_blank">X / Twitter</a>
+      <a href="mailto:jack@wildroseautomations.ca">Email</a>
+    </div>
   </div>
 </footer>
 
 <script>
-document.querySelectorAll('.rose-open').forEach(link => {
-  link.addEventListener('click', event => {
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>30)
+});
+
+// Free AI Adoption Plan form
+const aiPlanForm = document.getElementById('aiPlanForm');
+if(aiPlanForm){
+  aiPlanForm.addEventListener('submit', async (event)=>{
     event.preventDefault();
-    const openButton = document.querySelector('.wr-fab');
-    const panel = document.querySelector('.wr-panel');
-    const panelOpen = panel && getComputedStyle(panel).display !== 'none';
-    if (openButton && !panelOpen) openButton.click();
+    const status = document.getElementById('aiPlanStatus');
+    const button = aiPlanForm.querySelector('button[type="submit"]');
+    const data = Object.fromEntries(new FormData(aiPlanForm).entries());
+    data.sourcePage = location.href;
+    status.className = 'ai-status';
+    status.textContent = 'Sending request...';
+    button.disabled = true;
+    button.textContent = 'Sending...';
+    try{
+      const response = await fetch('https://wildrose-widget.wildeautomations.com/api/ai-adoption-plan',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(data)
+      });
+      const result = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(result.error || 'Request failed');
+      status.className = 'ai-status ok';
+      status.textContent = 'Received. We’ll review it and reply with your plan.';
+      aiPlanForm.reset();
+    }catch(error){
+      status.className = 'ai-status err';
+      status.textContent = 'Could not send. Email jack@wildroseautomations.ca and I’ll make the plan manually.';
+      console.error(error);
+    }finally{
+      button.disabled = false;
+      button.textContent = 'Request My Free Plan →';
+    }
+  });
+}
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
   });
 });
 </script>
