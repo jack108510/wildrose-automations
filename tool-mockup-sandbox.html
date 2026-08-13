@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wildrose Tool Mockup Sandbox</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f0f0f;color:#f7f2ed;-webkit-font-smoothing:antialiased} button,input{font:inherit} .wrap{min-height:100vh;padding:34px clamp(18px,4vw,56px);background:radial-gradient(circle at 14% 4%,rgba(255,87,34,.22),transparent 32%),radial-gradient(circle at 84% 18%,rgba(255,186,124,.13),transparent 28%),#101010}.shell{max-width:1220px;margin:0 auto}.top{display:flex;justify-content:space-between;gap:22px;align-items:flex-start;margin-bottom:30px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:#ff9b63;font-weight:900;margin-bottom:14px}.top h1{font-size:clamp(34px,6vw,76px);letter-spacing:-.075em;line-height:.92;margin:0;max-width:850px}.top p{color:#b8b1aa;max-width:400px;line-height:1.55;margin:10px 0 0}.panel{background:rgba(255,248,240,.08);border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 90px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.08);border-radius:34px;backdrop-filter:blur(28px) saturate(1.15);-webkit-backdrop-filter:blur(28px) saturate(1.15);overflow:hidden}.intake{padding:18px;display:grid;grid-template-columns:1fr auto;gap:10px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.10)}.url{height:58px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;padding:0 20px;outline:0}.url:focus{border-color:rgba(255,87,34,.7);box-shadow:0 0 0 5px rgba(255,87,34,.12)}.go{height:58px;border:0;border-radius:999px;background:#ff5722;color:#141414;font-weight:950;padding:0 24px;cursor:pointer;box-shadow:0 18px 44px rgba(255,87,34,.25)}.go:disabled{opacity:.55;cursor:not-allowed}.workbench{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr);gap:0;min-height:650px}.preview{padding:24px;background:#f5f1eb;color:#151515}.mock-browser{height:100%;border-radius:28px;background:#fff;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.18);border:1px solid rgba(20,20,20,.08)}.browser-bar{height:46px;background:#f0eee9;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid rgba(20,20,20,.08)}.dot{width:11px;height:11px;border-radius:999px;background:#d8d4ce}.address{margin-left:8px;flex:1;height:24px;border-radius:999px;background:#fff;color:#7a746e;font-size:12px;display:flex;align-items:center;padding:0 12px;overflow:hidden}.site{min-height:560px;background:linear-gradient(180deg,var(--site-soft,#fff5ef),#fff);position:relative}.site-hero{padding:38px 34px 28px;background:linear-gradient(135deg,var(--site-accent,#ff5722),#141414);color:white}.site-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:46px;font-weight:900}.site-brand{display:flex;align-items:center;gap:10px}.brand-mark{width:34px;height:34px;border-radius:11px;background:#fff;color:var(--site-accent,#ff5722);display:grid;place-items:center;font-weight:950}.nav-links{font-size:12px;color:rgba(255,255,255,.72);display:flex;gap:14px}.site-hero h2{font-size:42px;letter-spacing:-.055em;line-height:.98;max-width:560px;margin:0}.site-hero p{max-width:520px;color:rgba(255,255,255,.78);line-height:1.55;margin:14px 0 24px}.site-cta{display:inline-flex;align-items:center;height:42px;border-radius:999px;background:#fff;color:#141414;padding:0 16px;font-weight:900}.sections{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px}.card{border:1px solid #eee8e1;border-radius:20px;padding:18px;background:#fff;min-height:132px}.card b{display:block;margin-bottom:8px;font-size:14px}.card span{font-size:13px;color:#6d6761;line-height:1.45}.tool-card{position:absolute;right:26px;bottom:26px;width:300px;border-radius:28px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.65);box-shadow:0 28px 80px rgba(0,0,0,.22);backdrop-filter:blur(22px) saturate(1.25);overflow:hidden}.tool-head{padding:15px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(20,20,20,.08)}.tool-logo{width:34px;height:34px;border-radius:999px;background:#141414;color:#ff5722;display:grid;place-items:center;font-weight:950}.tool-head strong{display:block}.tool-head small{color:#746e68}.tool-body{padding:15px}.bubble{border-radius:18px;padding:12px 13px;background:#fff;border:1px solid #eee8e1;font-size:13px;line-height:1.42;margin-bottom:10px}.tool-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini{height:36px;border:0;border-radius:999px;background:#141414;color:#fff;font-size:12px;font-weight:850}.mini.alt{background:var(--site-accent,#ff5722);color:#141414}.side{padding:24px;background:rgba(255,255,255,.04);border-left:1px solid rgba(255,255,255,.10)}.status{font-size:13px;color:#b8b1aa;margin-bottom:18px;min-height:22px}.result-title{font-size:28px;line-height:1;letter-spacing:-.05em;margin:0 0 8px}.result-meta{color:#b8b1aa;font-size:14px;line-height:1.5;margin:0 0 18px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.tab{height:48px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:#eee;font-weight:900;cursor:pointer}.tab.active{background:#ff5722;color:#141414;border-color:#ff5722}.summary{border:1px solid rgba(255,255,255,.10);border-radius:24px;padding:18px;background:rgba(255,255,255,.055);margin-bottom:14px}.summary h3{margin:0 0 10px;letter-spacing:-.03em}.summary ul{margin:0;padding-left:18px;color:#d4cec8;line-height:1.55;font-size:14px}.automations{display:grid;gap:10px}.auto{padding:12px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);font-size:13px;color:#d7d0c9}.placeholder{display:grid;place-items:center;text-align:center;height:100%;min-height:590px;color:#766f68;padding:34px}.placeholder h2{font-size:34px;letter-spacing:-.05em;margin:0 0 10px;color:#1d1d1d}.loading .mock-browser{animation:pulse 1s infinite alternate ease-in-out}@keyframes pulse{from{opacity:.75;transform:scale(.997)}to{opacity:1;transform:scale(1)}}@media(max-width:980px){.top{display:block}.workbench{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid rgba(255,255,255,.10)}.intake{grid-template-columns:1fr}.go{width:100%}.tool-card{position:relative;right:auto;bottom:auto;margin:14px 18px 22px;width:auto}.sections{grid-template-columns:1fr}.nav-links{display:none}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="shell">
+      <section class="top">
+        <div>
+          <div class="eyebrow">Wildrose sandbox / AI tool preview</div>
+          <h1>Paste a website. Show their AI tool on a lookalike of their site.</h1>
+        </div>
+        <p>Separate concept file. Uses the local Wildrose mockup API to read the site, infer brand/industry, then renders a believable preview with a working tool card.</p>
+      </section>
+      <section class="panel">
+        <form class="intake" id="form">
+          <input class="url" id="website" placeholder="swiftlocating.ca" value="swiftlocating.ca" autocomplete="url">
+          <button class="go" id="go" type="submit">Build mockup</button>
+        </form>
+        <div class="workbench" id="app">
+          <div class="preview">
+            <div class="mock-browser">
+              <div class="placeholder">
+                <div>
+                  <h2>Tool mockup preview</h2>
+                  <p>Enter a real website URL to generate a lookalike page and AI tool concept.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <aside class="side">
+            <div class="status">Ready. Try <b>swiftlocating.ca</b>, <b>vetinc.ca</b>, or another public site.</div>
+            <h2 class="result-title">Website → working AI tool</h2>
+            <p class="result-meta">The real product would scrape brand signals, map the business workflow, then generate an interactive demo specific to that company.</p>
+            <div class="summary"><h3>Concept</h3><ul><li>Lookalike website context</li><li>Embedded AI tool preview</li><li>Automation summary and sales angle</li></ul></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+<script>
+const API_BASE = 'http://localhost:8788';
+const form = document.querySelector('#form');
+const input = document.querySelector('#website');
+const go = document.querySelector('#go');
+const app = document.querySelector('#app');
+let lastData = null;
+let active = 'facelift';
+
+function esc(s=''){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function hostLabel(url){ try{return new URL(url).host.replace(/^www\./,'')}catch{return url}}
+function initials(name='Site'){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase() || 'AI'; }
+function normalizeCards(raw, mode){
+  const arr = Array.isArray(raw) ? raw.slice(0,3) : [];
+  const defaults = mode === 'rebuild'
+    ? [{title:'Cleaner service story',body:'Turn the existing business details into crisp sections visitors can scan.'},{title:'Quote-ready calls to action',body:'Make the next step obvious: call, quote, booking, or intake.'},{title:'Trust and proof',body:'Bring reviews, service area, credentials, and guarantees forward.'}]
+    : [{title:'AI visitor intake',body:'Ask what the visitor needs and collect the details staff normally chase.'},{title:'Instant lead summary',body:'Send job type, urgency, location, and context to email or CRM.'},{title:'Follow-up automation',body:'Create reminders, quote handoffs, and missed-call recovery behind the scenes.'}];
+  return defaults.map((d,i)=>{
+    const x = arr[i];
+    if(typeof x === 'string') return {title:d.title, body:x};
+    if(x && typeof x === 'object') return {title:x.title || x.label || d.title, body:x.body || x.text || x.description || x.summary || d.body};
+    return d;
+  });
+}
+function sectionText(v, mode){ return normalizeCards(v?.sections, mode); }
+function automationText(v){ return Array.isArray(v?.automations) && v.automations.length ? v.automations.slice(0,5) : ['AI visitor intake summary', 'Quote/callback handoff', 'Lead alert routed to inbox/CRM']; }
+function toolPrompt(industry, mode){
+  if(mode === 'rebuild') return `I can qualify visitors, answer service questions, and hand off a quote-ready summary.`;
+  return `I can answer questions, collect job details, and send a clean summary before anyone calls back.`;
+}
+function render(data){
+  lastData = data;
+  const v = data.versions?.[active] || data.versions?.facelift || data.versions?.rebuild || {};
+  const accent = data.accent || '#ff5722';
+  const brand = data.brandName || data.title || hostLabel(data.url || input.value);
+  const industry = data.industry || 'local business';
+  const sections = sectionText(v, active);
+  const automations = automationText(v);
+  app.innerHTML = `
+    <div class="preview" style="--site-accent:${esc(accent)};--site-soft:${esc(accent)}1c">
+      <div class="mock-browser">
+        <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><div class="address">${esc(hostLabel(data.url || input.value))}</div></div>
+        <div class="site">
+          <section class="site-hero">
+            <div class="site-nav"><div class="site-brand"><div class="brand-mark">${esc(initials(brand))}</div>${esc(brand)}</div><div class="nav-links"><span>Services</span><span>About</span><span>Contact</span></div></div>
+            <h2>${esc(v.headline || (active==='rebuild' ? `A clearer, faster ${industry} website.` : `Add an AI helper to ${brand}.`))}</h2>
+            <p>${esc(v.subhead || data.description || 'A practical preview of how Wildrose could turn this website into a smarter customer intake and lead handoff system.')}</p>
+            <span class="site-cta">${active==='rebuild' ? 'Request a quote' : 'Talk to the AI helper'}</span>
+          </section>
+          <section class="sections">
+            ${sections.map(s=>`<article class="card"><b>${esc(s.title || s.label || 'Smart section')}</b><span>${esc(s.body || s.text || s.description || 'A cleaner explanation and a better next step for visitors.')}</span></article>`).join('')}
+          </section>
+          <aside class="tool-card">
+            <div class="tool-head"><div class="tool-logo">R</div><div><strong>${active==='rebuild' ? 'Rose Quote Guide' : 'Rose AI Assistant'}</strong><small>${esc(brand)} preview</small></div></div>
+            <div class="tool-body">
+              <div class="bubble">${esc(toolPrompt(industry, active))}</div>
+              <div class="tool-actions"><button class="mini">Start voice</button><button class="mini alt">Get summary</button></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <aside class="side">
+      <div class="status">Generated from <b>${esc(hostLabel(data.url || input.value))}</b>. Recommendation: <b>${esc(data.recommendation || 'ai-facelift')}</b>.</div>
+      <h2 class="result-title">${esc(v.label || (active==='rebuild'?'Complete site rebuild':'AI facelift'))}</h2>
+      <p class="result-meta">${esc(v.summary || (active==='rebuild' ? 'A full website direction using the existing business details, but redesigned around conversion and trust.' : 'Keep the site recognizable, then add a working AI intake/assistant layer over it.'))}</p>
+      <div class="tabs"><button class="tab ${active==='rebuild'?'active':''}" data-tab="rebuild">Complete rebuild</button><button class="tab ${active==='facelift'?'active':''}" data-tab="facelift">AI facelift</button></div>
+      <div class="summary"><h3>What the tool would do</h3><ul>${automations.map(a=>`<li>${esc(typeof a==='string'?a:(a.title||a.body||'Automation idea'))}</li>`).join('')}</ul></div>
+      <div class="automations"><div class="auto"><b>Sales angle:</b> “Here is your own site with an AI intake tool already imagined on it.”</div><div class="auto"><b>Next step:</b> make the preview editable and sendable as a one-page proposal.</div></div>
+    </aside>`;
+  document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.tab;render(lastData);}));
+}
+async function build(e){
+  e?.preventDefault();
+  const website = input.value.trim();
+  if(!website) return;
+  go.disabled = true; go.textContent = 'Building…'; app.classList.add('loading');
+  app.querySelector('.status')?.replaceChildren(document.createTextNode('Reading site and generating preview…'));
+  try{
+    const res = await fetch(API_BASE + '/api/site-mockup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({website,sourcePage:location.href})});
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Mockup failed');
+    active = data.recommendation === 'complete-rebuild' ? 'rebuild' : 'facelift';
+    render(data);
+  }catch(err){
+    app.innerHTML = `<div class="preview"><div class="mock-browser"><div class="placeholder"><div><h2>Could not build preview</h2><p>${esc(err.message)}</p></div></div></div></div><aside class="side"><div class="status">Error</div><h2 class="result-title">Try another public website.</h2><p class="result-meta">Localhost/private URLs and sites blocking fetches will fail in this sandbox.</p></aside>`;
+  }finally{go.disabled=false;go.textContent='Build mockup';app.classList.remove('loading');}
+}
+form.addEventListener('submit', build);
+document.addEventListener('click', e=>{
+  if(e.target.matches('.mini')){
+    e.target.closest('.tool-body').querySelector('.bubble').textContent = e.target.textContent.includes('voice') ? 'Voice demo started. Rose would ask what the visitor needs, then summarize it for staff.' : 'Summary ready: service needed, urgency, contact path, and recommended next step.';
+  }
+});
+</script>
+</body>
+</html>
