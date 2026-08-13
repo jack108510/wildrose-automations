@@ -4,6 +4,8 @@
     apiBase: script?.dataset.apiBase || "",
     title: script?.dataset.title || "Rose",
     accent: script?.dataset.accent || "#ff5722",
+    mount: script?.dataset.mount || "",
+    inline: script?.dataset.inline === "true",
   };
 
   const css = `
@@ -19,6 +21,7 @@
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
       color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
     }
+    .wr-ai.inline{position:relative;right:auto;bottom:auto;width:min(430px,100%);margin:0 auto;z-index:3}.wr-ai.inline:before{right:50%;bottom:50%;transform:translate(50%,50%);width:280px;height:280px}.wr-ai.inline .wr-fab{display:none!important}.wr-ai.inline .wr-close{display:none}.wr-ai.inline .wr-panel{position:relative;right:auto;bottom:auto;display:grid;width:100%;height:560px}.wr-ai.inline .wr-panel.open{display:grid;animation:none}
     .wr-ai:before{content:"";position:absolute;right:-26px;bottom:-26px;width:176px;height:176px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.28),rgba(255,87,34,0) 68%);filter:blur(10px);pointer-events:none;opacity:.9}
     .wr-fab{width:76px;height:76px;border:0;padding:0;border-radius:28px;display:grid;place-items:center;cursor:pointer;background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.22));box-shadow:0 26px 70px rgba(34,20,14,.24),0 0 0 1px rgba(255,255,255,.55),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.24);backdrop-filter:blur(34px) saturate(1.55);-webkit-backdrop-filter:blur(34px) saturate(1.55);transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease,filter .22s ease;position:relative;overflow:hidden}
     .wr-fab:before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,0) 38%,rgba(255,87,34,.18) 100%);mix-blend-mode:screen;pointer-events:none}
@@ -39,7 +42,7 @@
   document.head.appendChild(style);
 
   const root = document.createElement("div");
-  root.className = "wr-ai";
+  root.className = cfg.inline ? "wr-ai inline" : "wr-ai";
   root.innerHTML = `
     <button class="wr-fab" aria-label="Open Rose assistant"><span class="wr-dot"><img src="/logos/wildrose.png" alt="Wildrose"></span></button>
     <section class="wr-panel" aria-label="${cfg.title}">
@@ -49,7 +52,8 @@
       <main class="wr-view active" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Tap start and speak naturally.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></main>
       <div class="wr-compose"><input class="wr-input" placeholder="Ask Rose…"><button class="wr-send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 7l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="wr-toast"></div>
     </section>`;
-  document.body.appendChild(root);
+  const mount = cfg.mount ? document.querySelector(cfg.mount) : null;
+  (mount || document.body).appendChild(root);
 
   const $ = sel => root.querySelector(sel);
   const $$ = sel => Array.from(root.querySelectorAll(sel));
