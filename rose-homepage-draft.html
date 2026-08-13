@@ -127,25 +127,20 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .plan-note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
 
 /* PORTFOLIO */
-.port-group{margin-bottom:64px}
-.port-group:last-child{margin-bottom:0}
-.port-group-header{display:flex;align-items:center;gap:16px;margin-bottom:28px}
-.port-group-header h3{font-size:24px;font-weight:700;letter-spacing:-.5px}
-.port-group-header .pg-count{font-size:13px;color:var(--muted);background:var(--bg);padding:4px 12px;border-radius:100px}
-.port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.port-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:all .2s;display:flex;flex-direction:column}
-.port-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.08);transform:translateY(-3px)}
-.port-visual{height:220px;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.port-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .35s ease}
-.port-card:hover .port-visual img{transform:scale(1.04)}
-.port-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,.28));pointer-events:none}
-.port-visual .pv-text{position:absolute;left:18px;bottom:16px;z-index:1;font-size:18px;font-weight:800;letter-spacing:-.3px;color:#fff;font-family:'Inter',sans-serif;text-shadow:0 2px 12px rgba(0,0,0,.35)}
-.port-visual .pv-bg{position:absolute;inset:0;opacity:.15}
-.port-body{padding:28px;flex:1;display:flex;flex-direction:column}
-.port-tag{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--hl);margin-bottom:8px}
-.port-body h3{font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
-.port-body p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;flex:1}
-.port-link{font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+#work{background:#fff}.work-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:34px}.work-head .sec-sub{margin-bottom:0}.work-note{font-size:13px;font-weight:700;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:8px 14px;white-space:nowrap}
+.port-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.port-card{background:linear-gradient(180deg,#fff,#fbfaf8);border:1px solid var(--line);border-radius:24px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;display:flex;flex-direction:column;box-shadow:0 18px 55px rgba(26,26,26,.045)}
+.port-card:hover{box-shadow:0 20px 70px rgba(26,26,26,.10);border-color:#ddd6cc;transform:translateY(-3px)}
+.port-visual{height:205px;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.port-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .35s ease,filter .35s ease}
+.port-card:hover .port-visual img{transform:scale(1.035);filter:saturate(1.04)}
+.port-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 35%,rgba(0,0,0,.44));pointer-events:none}
+.port-visual .pv-text{position:absolute;left:18px;bottom:16px;z-index:1;font-size:18px;font-weight:850;letter-spacing:-.4px;color:#fff;font-family:'Inter',sans-serif;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.port-body{padding:24px;flex:1;display:flex;flex-direction:column}
+.port-tag{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--hl);margin-bottom:8px}
+.port-body h3{font-size:21px;font-weight:800;margin-bottom:8px;letter-spacing:-.5px}
+.port-body p{font-size:14px;color:var(--muted);line-height:1.62;margin-bottom:18px;flex:1}
+.port-link{font-size:13px;font-weight:800;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:gap .2s,color .2s}
 .port-link:hover{gap:10px;color:var(--hl)}
 
 /* STATS */
@@ -219,6 +214,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
   .hero .wrap{grid-template-columns:1fr;gap:40px}
   .hero{text-align:left}
   .pricing-grid,.port-grid,.steps{grid-template-columns:1fr}
+  .work-head{align-items:flex-start;flex-direction:column}.work-note{white-space:normal}
   .ai-panel{grid-template-columns:1fr;padding:24px}
   .ai-points{grid-template-columns:1fr}
   .ai-fields{grid-template-columns:1fr}
@@ -434,39 +430,28 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 <!-- PORTFOLIO -->
 <section class="section section-light" id="work">
   <div class="wrap">
-    <div class="eyebrow">Portfolio</div>
-    <h2 class="sec-title">Real projects, <span class="serif">live now.</span></h2>
-    <p class="sec-sub">A few live builds and products from the Wildrose stack.</p>
-
-    <!-- WEBSITES -->
-    <div class="port-group">
-      <div class="port-group-header">
-        <h3>Websites</h3>
-        <span class="pg-count">Business & trades sites</span>
+    <div class="work-head">
+      <div>
+        <div class="eyebrow">Portfolio</div>
+        <h2 class="sec-title">Real projects, <span class="serif">live now.</span></h2>
+        <p class="sec-sub">A few live builds and products from the Wildrose stack.</p>
       </div>
-      <div class="port-grid">
-        <div class="port-card">
-          <div class="port-visual">
-            <img src="assets/portfolio/swift.png" alt="Swift Line Locating website screenshot">
-            <span class="pv-text">Swift Line Locating</span>
-          </div>
-          <div class="port-body">
-            <div class="port-tag">Trades Website</div>
-            <h3>Swift Line Locating</h3>
-            <p>Underground utility locating company in Alberta. Clean, professional site with service info, equipment gallery, and quote requests.</p>
-            <a href="https://swiftlocating.ca" target="_blank" class="port-link">swiftlocating.ca →</a>
-          </div>
-        </div>
-      </div>
+      <div class="work-note">Websites · apps · AI tools</div>
     </div>
 
-    <!-- APPS & PLATFORMS -->
-    <div class="port-group">
-      <div class="port-group-header">
-        <h3>Apps & Platforms</h3>
-        <span class="pg-count">Custom builds & SaaS</span>
+    <div class="port-grid">
+      <div class="port-card">
+        <div class="port-visual">
+          <img src="assets/portfolio/swift.png" alt="Swift Line Locating website screenshot">
+          <span class="pv-text">Swift Line Locating</span>
+        </div>
+        <div class="port-body">
+          <div class="port-tag">Trades Website</div>
+          <h3>Swift Line Locating</h3>
+          <p>Underground utility locating company in Alberta. Clean service pages, equipment gallery, and quote requests.</p>
+          <a href="https://swiftlocating.ca" target="_blank" class="port-link">swiftlocating.ca →</a>
+        </div>
       </div>
-      <div class="port-grid">
         <div class="port-card">
           <div class="port-visual">
             <img src="assets/portfolio/vetinc.png" alt="Vet INC platform screenshot">
@@ -504,7 +489,6 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
           </div>
         </div>
       </div>
-    </div>
   </div>
 </section>
 
