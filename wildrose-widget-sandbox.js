@@ -7,8 +7,33 @@
   };
 
   const css = `
-    .wr-ai,.wr-ai *{box-sizing:border-box}.wr-ai{--accent:${cfg.accent};position:fixed;right:20px;bottom:20px;z-index:2147483000;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#151515}.wr-fab{width:64px;height:64px;border:0;border-radius:0;padding:0;display:grid;place-items:center;background:transparent;color:white;box-shadow:none;cursor:pointer;transition:.18s ease;font:inherit}.wr-fab:hover{transform:translateY(-2px) scale(1.035);filter:drop-shadow(0 12px 24px rgba(20,20,20,.22)) drop-shadow(0 0 12px rgba(255,87,34,.18))}.wr-dot{width:64px;height:64px;border-radius:0;background:transparent;display:grid;place-items:center;overflow:visible;border:0;box-shadow:none}.wr-dot img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 10px 22px rgba(20,20,20,.18))}.wr-fab-logo{width:42px;height:42px;display:block;fill:#ff5722;filter:drop-shadow(0 0 8px rgba(255,87,34,.5))}.wr-fab-logo path:first-child{fill:#ff9a3d}.wr-fab strong{display:block;font-size:14px;font-weight:850;letter-spacing:-.01em;text-align:left}.wr-fab small{display:none}.wr-fab>.wr-copy{display:none}.wr-panel{position:absolute;right:0;bottom:0;width:min(342px,calc(100vw - 22px));height:min(492px,calc(100vh - 22px));display:none;grid-template-rows:auto auto 1fr auto;overflow:hidden;background:radial-gradient(circle at 88% 8%,rgba(255,87,34,.20),transparent 34%),linear-gradient(145deg,rgba(255,250,244,.46),rgba(255,250,244,.16));backdrop-filter:blur(38px) saturate(1.55);-webkit-backdrop-filter:blur(38px) saturate(1.55);border:1px solid rgba(255,255,255,.66);border-radius:34px;box-shadow:0 26px 82px rgba(20,20,20,.22),0 0 0 1px rgba(255,87,34,.10),inset 0 1px 0 rgba(255,255,255,.72),inset 0 -1px 0 rgba(255,255,255,.28)}.wr-panel.open{display:grid;animation:wrIn .16s ease-out}@keyframes wrIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}.wr-head{padding:14px 14px 10px;background:linear-gradient(135deg,rgba(255,255,255,.50),rgba(255,255,255,.18));backdrop-filter:blur(22px) saturate(1.35);-webkit-backdrop-filter:blur(22px) saturate(1.35);color:#171717;position:relative}.wr-head:after{content:"";position:absolute;left:18px;right:18px;bottom:0;height:1px;background:rgba(255,255,255,.45)}.wr-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.wr-brand{display:flex;gap:12px;align-items:center;min-width:0}.wr-mark{width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.72);display:grid;place-items:center;overflow:hidden;border:1px solid rgba(255,255,255,.58);box-shadow:0 12px 30px rgba(20,20,20,.10)}.wr-mark img{width:100%;height:100%;object-fit:cover;display:block}.wr-kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#ffb39a;font-weight:900;margin-bottom:3px}.wr-title h3{margin:0;font-size:20px;line-height:1;font-weight:850;letter-spacing:-.04em}.wr-title p{display:none}.wr-close{width:32px;height:32px;border-radius:999px;border:1px solid rgba(255,255,255,.48);background:rgba(255,255,255,.34);color:#171717;font-size:21px;line-height:1;cursor:pointer;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}.wr-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 10px;background:rgba(255,255,255,.20);border-bottom:1px solid rgba(255,255,255,.34)}.wr-tab{height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.42);background:rgba(255,255,255,.38);color:#585858;font-weight:800;font-size:13px;cursor:pointer;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}.wr-tab.active{background:linear-gradient(135deg,#141414,#2a160d);color:#fff;border-color:rgba(255,87,34,.18);box-shadow:0 8px 22px rgba(20,20,20,.14),0 0 22px rgba(255,87,34,.10)}.wr-view{min-height:0;display:none;overflow:auto;padding:14px;background:transparent}.wr-view[data-view="voice"]{overflow:hidden;padding:12px 14px 14px}.wr-view.active{display:block}.wr-chat-log{display:flex;flex-direction:column;gap:12px}.wr-row{display:flex;gap:9px;align-items:flex-start}.wr-avatar{width:28px;height:28px;border-radius:999px;background:rgba(255,255,255,.66);display:grid;place-items:center;overflow:hidden;border:1px solid rgba(255,255,255,.52);box-shadow:0 8px 18px rgba(20,20,20,.08);flex:0 0 auto}.wr-avatar img{width:100%;height:100%;object-fit:cover;display:block}.wr-msg{max-width:86%;border-radius:18px;padding:11px 12px;font-size:14px;line-height:1.45;white-space:pre-wrap}.wr-msg.bot{background:rgba(255,255,255,.56);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.48);box-shadow:0 8px 22px rgba(20,20,20,.05);border-top-left-radius:7px;color:#1b1b1b}.wr-msg.user{align-self:flex-end;background:var(--accent);color:#fff;font-weight:650;border-bottom-right-radius:7px}.wr-compose{display:flex;gap:8px;align-items:center;padding:11px;background:rgba(255,255,255,.24);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.40)}.wr-input{flex:1;min-width:0;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.48);background:rgba(255,255,255,.54);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#171717;padding:0 14px;font:inherit;font-size:14px;outline:none}.wr-input:focus{border-color:rgba(255,87,34,.55);box-shadow:0 0 0 4px rgba(255,87,34,.10)}.wr-send{width:44px;height:44px;border:0;border-radius:999px;background:var(--accent);color:#fff;display:grid;place-items:center;cursor:pointer;flex:0 0 auto}.wr-send svg{width:18px;height:18px}.wr-card{border:1px solid rgba(255,255,255,.44);background:rgba(255,255,255,.34);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:24px;padding:12px 14px;box-shadow:0 12px 34px rgba(20,20,20,.05);margin-bottom:10px;text-align:center}.wr-card h4{font-size:19px;letter-spacing:-.04em;margin:0;font-weight:850}.wr-card p{font-size:14px;line-height:1.5;color:#666;margin:0}.wr-voice{height:342px;display:grid;place-items:center;text-align:center;overflow:hidden}.wr-orb{width:112px;height:112px;border-radius:999px;background:radial-gradient(circle at 34% 24%,#fff2e8 0 9%,#ffb15e 23%,#ff5722 57%,#141414 100%);margin:0 auto 22px;box-shadow:0 0 0 12px rgba(255,87,34,.10),0 28px 70px rgba(255,87,34,.25),inset 0 1px 0 rgba(255,255,255,.42);transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}.wr-orb.live{animation:wrPulse 1.05s infinite alternate ease-in-out}.wr-orb.listening{animation:wrListen 1.15s infinite ease-in-out;box-shadow:0 0 0 13px rgba(255,87,34,.11),0 0 0 26px rgba(255,87,34,.045),0 28px 78px rgba(255,87,34,.28)}.wr-orb.speaking{animation:wrSpeak .48s infinite alternate ease-in-out;filter:saturate(1.15) contrast(1.06);box-shadow:0 0 0 10px rgba(255,87,34,.18),0 0 0 28px rgba(255,87,34,.075),0 34px 92px rgba(255,87,34,.42),inset 0 1px 0 rgba(255,255,255,.48)}@keyframes wrPulse{from{transform:scale(.97);box-shadow:0 0 0 10px rgba(255,87,34,.08),0 22px 60px rgba(255,87,34,.22)}to{transform:scale(1.04);box-shadow:0 0 0 20px rgba(255,87,34,.06),0 35px 90px rgba(255,87,34,.38)}}@keyframes wrListen{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}@keyframes wrSpeak{from{transform:scale(.98) translateY(1px)}to{transform:scale(1.08) translateY(-1px)}}.wr-status{font-weight:900;font-size:16px}.wr-note{display:none}.wr-primary,.wr-secondary{width:100%;height:44px;border-radius:999px;font-weight:900;cursor:pointer;margin-top:12px;font:inherit}.wr-primary{border:0;background:#141414;color:#fff}.wr-secondary{border:1px solid rgba(20,20,20,.12);background:#fff;color:#141414}.wr-toast{position:absolute;left:14px;right:14px;bottom:72px;background:#141414;color:#fff;border-radius:15px;padding:12px;font-size:13px;display:none}.wr-toast.show{display:block}@media(max-width:520px){.wr-ai{right:12px;bottom:12px}.wr-panel{width:calc(100vw - 24px);height:calc(100vh - 24px);border-radius:24px}.wr-fab small{display:none}}
+    .wr-ai,.wr-ai *{box-sizing:border-box}
+    .wr-ai{
+      --accent:${cfg.accent};
+      --accent-soft:color-mix(in srgb,var(--accent) 32%,white);
+      --glass:rgba(255,255,255,.34);
+      --glass-strong:rgba(255,255,255,.56);
+      --ink:#18120f;
+      --muted:rgba(24,18,15,.58);
+      position:fixed;right:22px;bottom:22px;z-index:2147483000;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+      color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    }
+    .wr-ai:before{content:"";position:absolute;right:-26px;bottom:-26px;width:176px;height:176px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.28),rgba(255,87,34,0) 68%);filter:blur(10px);pointer-events:none;opacity:.9}
+    .wr-fab{width:76px;height:76px;border:0;padding:0;border-radius:28px;display:grid;place-items:center;cursor:pointer;background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.22));box-shadow:0 26px 70px rgba(34,20,14,.24),0 0 0 1px rgba(255,255,255,.55),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.24);backdrop-filter:blur(34px) saturate(1.55);-webkit-backdrop-filter:blur(34px) saturate(1.55);transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease,filter .22s ease;position:relative;overflow:hidden}
+    .wr-fab:before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,0) 38%,rgba(255,87,34,.18) 100%);mix-blend-mode:screen;pointer-events:none}
+    .wr-fab:after{content:"";position:absolute;inset:9px;border-radius:22px;border:1px solid rgba(255,255,255,.42);pointer-events:none}
+    .wr-fab:hover{transform:translateY(-4px) scale(1.035);box-shadow:0 34px 86px rgba(34,20,14,.30),0 0 0 1px rgba(255,255,255,.70),0 0 36px rgba(255,87,34,.18),inset 0 1px 0 rgba(255,255,255,.98)}
+    .wr-dot{width:54px;height:54px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,117,63,.92),rgba(255,82,31,.74));box-shadow:inset 0 1px 0 rgba(255,255,255,.48),0 12px 30px rgba(255,87,34,.26);overflow:hidden;position:relative}.wr-dot img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 5px 13px rgba(0,0,0,.16))}
+    .wr-panel{position:absolute;right:0;bottom:0;width:min(382px,calc(100vw - 24px));height:min(578px,calc(100vh - 24px));display:none;grid-template-rows:auto auto 1fr auto;overflow:hidden;border-radius:38px;background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.26) 46%,rgba(255,244,236,.34));border:1px solid rgba(255,255,255,.62);box-shadow:0 34px 110px rgba(29,18,12,.28),0 0 0 1px rgba(255,255,255,.28),inset 0 1px 0 rgba(255,255,255,.92),inset 0 -1px 0 rgba(255,255,255,.20);backdrop-filter:blur(44px) saturate(1.8);-webkit-backdrop-filter:blur(44px) saturate(1.8)}
+    .wr-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 0%,rgba(255,255,255,.88),transparent 30%),radial-gradient(circle at 92% 10%,rgba(255,87,34,.26),transparent 34%),linear-gradient(160deg,rgba(255,255,255,.38),transparent 45%);pointer-events:none}.wr-panel:after{content:"";position:absolute;inset:1px;border-radius:37px;border:1px solid rgba(255,255,255,.40);pointer-events:none}.wr-panel.open{display:grid;animation:wrGlassIn .28s cubic-bezier(.18,.9,.2,1)}@keyframes wrGlassIn{from{opacity:0;transform:translateY(18px) scale(.972);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+    .wr-head,.wr-tabs,.wr-compose{position:relative;z-index:1}.wr-head{padding:17px 17px 12px}.wr-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.wr-brand{display:flex;align-items:center;gap:11px}.wr-mark{width:44px;height:44px;border-radius:16px;background:linear-gradient(145deg,rgba(255,104,45,.95),rgba(255,87,34,.62));display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.46),0 14px 34px rgba(255,87,34,.22);overflow:hidden}.wr-mark img{width:78%;height:78%;object-fit:contain}.wr-title h3{margin:0;font-size:17px;font-weight:850;letter-spacing:-.035em}.wr-title small{display:block;margin-top:1px;color:var(--muted);font-size:12px;font-weight:650}.wr-close{width:36px;height:36px;border:1px solid rgba(255,255,255,.46);border-radius:14px;background:rgba(255,255,255,.28);color:rgba(24,18,15,.72);font-size:21px;line-height:1;cursor:pointer;backdrop-filter:blur(16px);transition:.16s ease}.wr-close:hover{background:rgba(255,255,255,.48);color:#160f0c;transform:scale(1.04)}
+    .wr-tabs{margin:0 17px 12px;padding:4px;border-radius:18px;background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.42);display:grid;grid-template-columns:1fr 1fr;gap:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.50)}.wr-tab{height:38px;border:0;border-radius:14px;background:transparent;color:rgba(24,18,15,.54);font-weight:780;cursor:pointer;transition:.18s ease}.wr-tab.active{background:rgba(255,255,255,.62);color:#18120f;box-shadow:0 10px 24px rgba(28,18,12,.10),inset 0 1px 0 rgba(255,255,255,.82)}
+    .wr-view{position:relative;z-index:1;display:none;min-height:0;overflow:auto;padding:0 17px 14px}.wr-view.active{display:block}.wr-chat-log{display:flex;flex-direction:column;gap:10px;padding:2px 0 10px}.wr-row{display:flex;align-items:flex-end;gap:8px}.wr-avatar{width:28px;height:28px;border-radius:11px;background:linear-gradient(145deg,rgba(255,104,45,.9),rgba(255,87,34,.58));display:grid;place-items:center;overflow:hidden;flex:0 0 auto}.wr-avatar img{width:78%;height:78%;object-fit:contain}.wr-msg{max-width:78%;padding:11px 13px;border-radius:18px;font-size:14px;line-height:1.38;box-shadow:0 10px 26px rgba(28,18,12,.08)}.wr-msg.bot{background:rgba(255,255,255,.54);border:1px solid rgba(255,255,255,.56);border-bottom-left-radius:7px}.wr-msg.user{align-self:flex-end;background:linear-gradient(145deg,var(--accent),#ff845d);color:white;border-bottom-right-radius:7px}
+    .wr-voice{height:100%;min-height:330px;display:grid;place-items:center;text-align:center;padding:18px 12px 26px}.wr-orb{width:164px;height:164px;margin:0 auto 22px;border-radius:50%;background:radial-gradient(circle at 35% 27%,rgba(255,255,255,.95),rgba(255,245,236,.52) 22%,rgba(255,120,66,.36) 48%,rgba(255,87,34,.62) 78%);box-shadow:inset 0 2px 8px rgba(255,255,255,.9),inset 0 -18px 32px rgba(129,44,17,.15),0 24px 74px rgba(255,87,34,.26),0 0 0 1px rgba(255,255,255,.72);position:relative;overflow:hidden}.wr-orb:before{content:"";position:absolute;inset:18px;border-radius:50%;background:radial-gradient(circle at 35% 20%,rgba(255,255,255,.86),transparent 34%);filter:blur(2px)}.wr-orb:after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent,rgba(255,255,255,.45),transparent,rgba(255,87,34,.25),transparent);animation:wrSpin 6s linear infinite;opacity:.72}@keyframes wrSpin{to{transform:rotate(1turn)}}.wr-orb.live{animation:wrPulse 1.8s ease-in-out infinite}.wr-orb.speaking{box-shadow:inset 0 2px 8px rgba(255,255,255,.9),0 26px 86px rgba(255,87,34,.38),0 0 0 12px rgba(255,87,34,.08)}@keyframes wrPulse{50%{transform:scale(1.035);filter:saturate(1.12)}}.wr-status{font-size:23px;font-weight:860;letter-spacing:-.05em;margin-bottom:7px}.wr-note{font-size:13px;color:var(--muted);line-height:1.45;margin-bottom:18px}.wr-primary,.wr-secondary{height:48px;border:0;border-radius:999px;padding:0 22px;font-weight:860;cursor:pointer}.wr-primary{color:white;background:linear-gradient(145deg,var(--accent),#ff7b4e);box-shadow:0 16px 34px rgba(255,87,34,.25),inset 0 1px 0 rgba(255,255,255,.28)}.wr-secondary{background:rgba(255,255,255,.44);border:1px solid rgba(255,255,255,.56);color:#211612}.wr-compose{display:none;align-items:center;gap:8px;margin:0 17px 17px;padding:8px;border-radius:22px;background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.52);box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}.wr-input{flex:1;height:38px;border:0;background:transparent;outline:0;color:var(--ink);font-size:14px;padding:0 8px}.wr-input::placeholder{color:rgba(24,18,15,.44)}.wr-send{width:38px;height:38px;border:0;border-radius:15px;background:linear-gradient(145deg,var(--accent),#ff7b4e);color:white;display:grid;place-items:center;cursor:pointer}.wr-send svg{width:18px;height:18px}.wr-toast{position:absolute;left:17px;right:17px;bottom:78px;padding:10px 12px;border-radius:16px;background:rgba(24,18,15,.78);color:white;font-size:12px;text-align:center;opacity:0;transform:translateY(6px);pointer-events:none;transition:.16s ease}.wr-toast.show{opacity:1;transform:none}
+    @media (max-width:520px){.wr-ai{right:12px;bottom:12px}.wr-panel{width:calc(100vw - 24px);height:min(620px,calc(100vh - 24px));border-radius:34px}.wr-fab{width:70px;height:70px;border-radius:25px}.wr-orb{width:146px;height:146px}}
   `;
+
   const style = document.createElement("style");
   style.textContent = css;
   document.head.appendChild(style);
@@ -18,26 +43,104 @@
   root.innerHTML = `
     <button class="wr-fab" aria-label="Open Rose assistant"><span class="wr-dot"><img src="/logos/wildrose.png" alt="Wildrose"></span></button>
     <section class="wr-panel" aria-label="${cfg.title}">
-      <header class="wr-head"><div class="wr-top"><div class="wr-brand"><div class="wr-mark"><img src="/logos/wildrose.png" alt="Wildrose"></div><div class="wr-title"><h3>${cfg.title}</h3></div></div><button class="wr-close" aria-label="Close">×</button></div></header>
+      <header class="wr-head"><div class="wr-top"><div class="wr-brand"><div class="wr-mark"><img src="/logos/wildrose.png" alt="Wildrose"></div><div class="wr-title"><h3>${cfg.title}</h3><small>AI intake assistant</small></div></div><button class="wr-close" aria-label="Close">×</button></div></header>
       <div class="wr-tabs" role="tablist"><button class="wr-tab" data-view="chat">Chat</button><button class="wr-tab active" data-view="voice">Voice</button></div>
-      <main class="wr-view" data-view="chat"><div class="wr-chat-log"><div class="wr-row"><div class="wr-avatar"><img src="/logos/wildrose.png" alt="Wildrose"></div><div class="wr-msg bot">What are you building?</div></div></div></main>
-      <main class="wr-view active" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Your browser may ask for microphone access.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></main>
+      <main class="wr-view" data-view="chat"><div class="wr-chat-log"><div class="wr-row"><div class="wr-avatar"><img src="/logos/wildrose.png" alt="Wildrose"></div><div class="wr-msg bot">Tell me what you want automated and I’ll turn it into a clear next step.</div></div></div></main>
+      <main class="wr-view active" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Tap start and speak naturally. Rose can qualify the request, summarize it, and hand it off.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></main>
       <div class="wr-compose"><input class="wr-input" placeholder="Ask Rose…"><button class="wr-send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 7l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="wr-toast"></div>
     </section>`;
   document.body.appendChild(root);
 
-  const $ = sel => root.querySelector(sel), $$ = sel => Array.from(root.querySelectorAll(sel));
-  const panel = $(".wr-panel"), fab = $(".wr-fab"), input = $(".wr-input"), log = $(".wr-chat-log"), toast = $(".wr-toast");
-  let chatId = null, retellClient = null;
+  const $ = sel => root.querySelector(sel);
+  const $$ = sel => Array.from(root.querySelectorAll(sel));
+  const panel = $(".wr-panel");
+  const fab = $(".wr-fab");
+  const input = $(".wr-input");
+  const log = $(".wr-chat-log");
+  let chatId = null;
+  let retellClient = null;
+
   fab.addEventListener("click", () => { setView("voice"); panel.classList.add("open"); fab.style.display = "none"; });
-  $(".wr-close").addEventListener("click", () => { panel.classList.remove("open"); fab.style.display = "flex"; });
+  $(".wr-close").addEventListener("click", () => { panel.classList.remove("open"); fab.style.display = "grid"; });
   $$(".wr-tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
-  function setView(view){ $$(".wr-tab").forEach(t=>t.classList.toggle("active",t.dataset.view===view)); $$(".wr-view").forEach(v=>v.classList.toggle("active",v.dataset.view===view)); $(".wr-compose").style.display = view === "chat" ? "flex" : "none"; }
-  function addMsg(role, text){ if(role === "bot"){ const row=document.createElement("div"); row.className="wr-row"; row.innerHTML='<div class="wr-avatar"><img src="/logos/wildrose.png" alt="Wildrose"></div>'; const bubble=document.createElement("div"); bubble.className="wr-msg bot"; bubble.textContent=text; row.appendChild(bubble); log.appendChild(row); log.parentElement.scrollTop=log.parentElement.scrollHeight; return bubble; } const el=document.createElement("div"); el.className="wr-msg user"; el.textContent=text; log.appendChild(el); log.parentElement.scrollTop=log.parentElement.scrollHeight; return el; }
-  async function api(path, body){ const r=await fetch(cfg.apiBase + path,{method:"POST",headers:{"Content-Type":"application/json","bypass-tunnel-reminder":"1"},body:JSON.stringify(body||{})}); const data=await r.json().catch(()=>({})); if(!r.ok) throw new Error(data.error||"Request failed"); return data; }
-  async function ensureChat(){ if(chatId) return chatId; const data=await api("/api/chat/start",{page:location.href}); chatId=data.chatId; return chatId; }
-  async function submitChat(){ const content=input.value.trim(); if(!content) return; input.value=""; addMsg("user",content); const pending=addMsg("bot","Thinking…"); try{ const id=await ensureChat(); const data=await api("/api/chat/message",{chatId:id,content}); pending.textContent=data.reply || "I can help with that."; }catch(e){ pending.textContent="I hit a connection issue. Please try again or email jack@wildroseautomations.ca."; console.error(e); } }
-  $(".wr-send").addEventListener("click",submitChat); input.addEventListener("keydown",e=>{ if(e.key==="Enter") submitChat(); });
-  $(".wr-start-voice").addEventListener("click", async () => { const status=$(".wr-status"), note=$(".wr-note"), orb=$(".wr-orb"); try { status.textContent="Connecting…"; const [{ RetellWebClient }, call] = await Promise.all([import("https://esm.sh/retell-client-js-sdk@2.0.7"), api("/api/voice/start",{page:location.href})]); retellClient = new RetellWebClient(); retellClient.on("call_started",()=>{ status.textContent="Listening"; note.textContent="Speak naturally. Interrupt anytime."; orb.classList.add("live","listening"); orb.classList.remove("speaking"); $(".wr-start-voice").style.display="none"; $(".wr-end-voice").style.display="block"; }); retellClient.on("agent_start_talking",()=>{ status.textContent="Rose is speaking"; orb.classList.add("speaking"); orb.classList.remove("listening"); }); retellClient.on("agent_stop_talking",()=>{ status.textContent="Listening"; orb.classList.add("listening"); orb.classList.remove("speaking"); }); retellClient.on("user_start_talking",()=>{ status.textContent="Listening"; orb.classList.add("listening"); orb.classList.remove("speaking"); }); retellClient.on("user_stop_talking",()=>{ status.textContent="Thinking"; orb.classList.remove("listening","speaking"); }); retellClient.on("call_ended",()=>{ status.textContent="Call ended"; note.textContent="Start another conversation anytime."; orb.classList.remove("live","listening","speaking"); $(".wr-start-voice").style.display="block"; $(".wr-end-voice").style.display="none"; }); retellClient.on("error",(err)=>{ console.error(err); status.textContent="Voice connection failed"; note.textContent="Please check microphone permission or use chat."; orb.classList.remove("live","listening","speaking"); }); await retellClient.startCall({ accessToken: call.accessToken }); } catch(err){ console.error(err); status.textContent="Voice unavailable"; note.textContent="Please use chat for now."; } });
-  $(".wr-end-voice").addEventListener("click",()=>{ try{ retellClient?.stopCall(); }catch{} });
+
+  function setView(view) {
+    $$(".wr-tab").forEach(t => t.classList.toggle("active", t.dataset.view === view));
+    $$(".wr-view").forEach(v => v.classList.toggle("active", v.dataset.view === view));
+    $(".wr-compose").style.display = view === "chat" ? "flex" : "none";
+  }
+  function addMsg(role, text) {
+    if (role === "bot") {
+      const row = document.createElement("div");
+      row.className = "wr-row";
+      row.innerHTML = '<div class="wr-avatar"><img src="/logos/wildrose.png" alt="Wildrose"></div>';
+      const bubble = document.createElement("div");
+      bubble.className = "wr-msg bot";
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      log.appendChild(row);
+      log.parentElement.scrollTop = log.parentElement.scrollHeight;
+      return bubble;
+    }
+    const el = document.createElement("div");
+    el.className = "wr-msg user";
+    el.textContent = text;
+    log.appendChild(el);
+    log.parentElement.scrollTop = log.parentElement.scrollHeight;
+    return el;
+  }
+  async function api(path, body) {
+    const r = await fetch(cfg.apiBase + path, { method: "POST", headers: { "Content-Type": "application/json", "bypass-tunnel-reminder": "1" }, body: JSON.stringify(body || {}) });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || "Request failed");
+    return data;
+  }
+  async function ensureChat() {
+    if (chatId) return chatId;
+    const data = await api("/api/chat/start", { page: location.href });
+    chatId = data.chatId;
+    return chatId;
+  }
+  async function submitChat() {
+    const content = input.value.trim();
+    if (!content) return;
+    input.value = "";
+    addMsg("user", content);
+    const pending = addMsg("bot", "Thinking…");
+    try {
+      const id = await ensureChat();
+      const data = await api("/api/chat/message", { chatId: id, content });
+      pending.textContent = data.reply || "I can help with that.";
+    } catch (e) {
+      pending.textContent = "I hit a connection issue. Please try again or email jack@wildroseautomations.ca.";
+      console.error(e);
+    }
+  }
+
+  $(".wr-send").addEventListener("click", submitChat);
+  input.addEventListener("keydown", e => { if (e.key === "Enter") submitChat(); });
+  $(".wr-start-voice").addEventListener("click", async () => {
+    const status = $(".wr-status"), note = $(".wr-note"), orb = $(".wr-orb");
+    try {
+      status.textContent = "Connecting…";
+      const [{ RetellWebClient }, call] = await Promise.all([
+        import("https://esm.sh/retell-client-js-sdk@2.0.7"),
+        api("/api/voice/start", { page: location.href })
+      ]);
+      retellClient = new RetellWebClient();
+      retellClient.on("call_started", () => { status.textContent = "Listening"; note.textContent = "Speak naturally. Interrupt anytime."; orb.classList.add("live", "listening"); orb.classList.remove("speaking"); $(".wr-start-voice").style.display = "none"; $(".wr-end-voice").style.display = "inline-block"; });
+      retellClient.on("agent_start_talking", () => { status.textContent = "Rose is speaking"; orb.classList.add("speaking"); orb.classList.remove("listening"); });
+      retellClient.on("agent_stop_talking", () => { status.textContent = "Listening"; orb.classList.add("listening"); orb.classList.remove("speaking"); });
+      retellClient.on("user_start_talking", () => { status.textContent = "Listening"; orb.classList.add("listening"); orb.classList.remove("speaking"); });
+      retellClient.on("user_stop_talking", () => { status.textContent = "Thinking"; orb.classList.remove("listening", "speaking"); });
+      retellClient.on("call_ended", () => { status.textContent = "Call ended"; note.textContent = "Start another conversation anytime."; orb.classList.remove("live", "listening", "speaking"); $(".wr-start-voice").style.display = "inline-block"; $(".wr-end-voice").style.display = "none"; });
+      retellClient.on("error", err => { console.error(err); status.textContent = "Voice connection failed"; note.textContent = "Please check microphone permission or use chat."; orb.classList.remove("live", "listening", "speaking"); });
+      await retellClient.startCall({ accessToken: call.accessToken });
+    } catch (err) {
+      console.error(err);
+      status.textContent = "Voice unavailable";
+      note.textContent = "Please use chat for now.";
+    }
+  });
+  $(".wr-end-voice").addEventListener("click", () => { try { retellClient?.stopCall(); } catch {} });
 })();
