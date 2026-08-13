@@ -118,7 +118,7 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .plan-name{font-size:16px;font-weight:700;margin-bottom:8px}
 .plan-price{font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
 .plan-price span{font-size:16px;font-weight:400;color:var(--muted)}
-.rose-pricing-widget{margin:64px auto 0;display:flex;justify-content:center;min-height:590px;align-items:center;position:relative}.rose-pricing-widget::before{content:'';position:absolute;inset:10% 8%;border-radius:44px;background:radial-gradient(circle at 50% 50%,rgba(255,87,34,.10),transparent 56%);pointer-events:none}.rose-pricing-widget > div{position:relative;z-index:1}
+.rose-hero-widget{margin:54px auto 0;display:flex;justify-content:center;align-items:center;position:relative;width:min(460px,94vw)}.rose-hero-widget::before{content:'';position:absolute;inset:-22px -46px;border-radius:52px;background:radial-gradient(circle at 50% 50%,rgba(255,87,34,.22),transparent 58%);filter:blur(4px);pointer-events:none}.rose-hero-widget > div{position:relative;z-index:1}
 .plan-desc{font-size:14px;color:var(--muted);margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--line)}
 .plan ul{list-style:none;margin-bottom:28px}
 .plan ul li{font-size:14px;padding:10px 0;color:var(--ink);display:flex;align-items:flex-start;gap:10px}
@@ -275,7 +275,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       <a href="#cta" class="btn btn-orange">Get Rose on My Site</a>
       <a href="#ai-plan" class="btn btn-clear">Get a Free AI Plan</a>
     </div>
-    <div class="rose-empty-space" aria-hidden="true"></div>
+    <div class="rose-hero-widget" id="rose-hero-widget"></div>
   </div>
 </section>
 
@@ -440,7 +440,6 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
         <div class="plan-note">+ $39.99/mo optional maintenance (updates, hosting, support)</div>
       </div>
     </div>
-    <div class="rose-pricing-widget" id="rose-pricing-widget"></div>
   </div>
 </section>
 
@@ -669,11 +668,11 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 });
 </script>
 <script
-  src="/wildrose-widget-sandbox.js?v=inline-pricing-1"
+  src="/wildrose-widget-sandbox.js?v=hero-inline-1"
   data-api-base="https://wildrose-widget.wildeautomations.com"
   data-title="Rose"
   data-accent="#ff5722"
-  data-mount="#rose-pricing-widget"
+  data-mount="#rose-hero-widget"
   data-inline="true"
 ></script>
 </body>
