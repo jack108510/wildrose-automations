@@ -89,18 +89,41 @@
     log.parentElement.scrollTop = log.parentElement.scrollHeight;
     return el;
   }
+  function voiceSpeaker(role) {
+    return /agent|assistant|bot|rose/i.test(role || "") ? "bot" : "user";
+  }
+  function clearVoiceTranscriptBubbles() {
+    log?.querySelectorAll('[data-voice-transcript="true"]').forEach(el => {
+      const row = el.closest('.wr-row');
+      if (row) row.remove();
+      else el.remove();
+    });
+  }
+  function addVoiceParagraph(speaker, text) {
+    const clean = String(text || "").trim();
+    if (!clean) return;
+    const bubble = addMsg(speaker, clean);
+    bubble.dataset.voiceTranscript = "true";
+    bubble.closest('.wr-row')?.setAttribute('data-voice-transcript', 'true');
+  }
+  function renderVoiceTranscriptItems(items) {
+    const groups = [];
+    for (const item of items || []) {
+      const text = item?.content || item?.text || item?.transcript || item?.message;
+      const clean = String(text || "").trim();
+      if (!clean) continue;
+      const speaker = voiceSpeaker(item?.role || item?.speaker || item?.source);
+      const last = groups[groups.length - 1];
+      if (last?.speaker === speaker) last.parts.push(clean);
+      else groups.push({ speaker, parts: [clean] });
+    }
+    clearVoiceTranscriptBubbles();
+    groups.forEach(g => addVoiceParagraph(g.speaker, g.parts.join("\n\n")));
+  }
   function appendVoiceTranscript(role, text, partial = false) {
     const clean = String(text || "").trim();
     if (!clean || partial) return;
-    const speaker = /agent|assistant|bot|rose/i.test(role || "") ? "bot" : "user";
-    const last = log?.lastElementChild;
-    const lastBubble = speaker === "bot" ? last?.querySelector?.(".wr-msg.bot") : (last?.classList?.contains("wr-msg") && last?.classList?.contains("user") ? last : null);
-    if (lastBubble && lastBubble.dataset.voiceTranscript === "true") {
-      lastBubble.textContent = `${lastBubble.textContent}\n\n${clean}`;
-    } else {
-      const bubble = addMsg(speaker, clean);
-      bubble.dataset.voiceTranscript = "true";
-    }
+    addVoiceParagraph(voiceSpeaker(role), clean);
   }
   function handleTranscriptUpdate(payload) {
     const items = Array.isArray(payload?.transcript) ? payload.transcript
@@ -108,14 +131,7 @@
       : Array.isArray(payload?.conversation) ? payload.conversation
       : Array.isArray(payload) ? payload : null;
     if (items) {
-      const last = items[items.length - 1];
-      const text = last?.content || last?.text || last?.transcript || last?.message;
-      const role = last?.role || last?.speaker || last?.source;
-      const key = `${role || ""}:${text || ""}`;
-      if (text && handleTranscriptUpdate.lastKey !== key) {
-        handleTranscriptUpdate.lastKey = key;
-        appendVoiceTranscript(role, text, Boolean(last?.is_final === false || last?.final === false));
-      }
+      renderVoiceTranscriptItems(items);
       return;
     }
     const text = payload?.content || payload?.text || payload?.transcript || payload?.message;
