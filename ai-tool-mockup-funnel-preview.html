@@ -106,7 +106,7 @@ function render(){const data=state.data;if(!data)return;const brand=data.brandNa
 </div></div></div>
 <section class="easy-buy" id="easyBuy">
   <div><strong>Rose is ready for ${esc(host(url))}.</strong><span>One agent. We help get it live or refund you.</span></div>
-  <div class="easy-actions"><button class="buy-agent voice" data-plan="Rose Voice">Buy Your Agent</button></div>
+  <div class="easy-actions"><button class="buy-agent voice" data-plan="Rose">Buy Your Agent</button></div>
 </section>
 <section class="buy-screen" id="buyScreen" aria-label="Buy your agent">
   <div class="buy-intro"><button type="button" id="backToDemo">← Back to demo</button><div><span class="conversion-eyebrow">Buy Your Agent</span><h2>Install Rose on ${esc(host(url))}.</h2><p>One focused screen: buy Rose, confirm where setup notes should go, then continue to Square. We help get it live on your site or a Wildrose-hosted page.</p></div><p class="tiny-note">No setup fee. Cancel anytime.</p></div>
@@ -144,7 +144,7 @@ function render(){const data=state.data;if(!data)return;const brand=data.brandNa
       <input name="business" placeholder="Business name" value="${esc(brand)}">
       <input name="website" placeholder="Website" value="${esc(host(url))}">
       <input name="email" placeholder="Email for install details" type="email">
-      <select name="plan"><option>Rose Chat — $24/mo</option><option selected>Rose Voice — $79/mo</option><option>Not sure — ask Jack</option></select>
+      <select name="plan"><option selected>Rose — $79/mo</option><option>Not sure — ask Jack</option></select>
       <button class="lead-submit" type="submit">Continue →</button>
     </form>
     <p class="tiny-note">Next: save lead → Square checkout → Rose install email.</p>
