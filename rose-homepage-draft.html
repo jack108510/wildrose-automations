@@ -240,6 +240,17 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
   .stats-row{grid-template-columns:1fr 1fr}
   .hero-meta{gap:20px}
 }
+
+/* ROSE SCROLL-TO-CORNER BEHAVIOR */
+.wr-ai.inline.corner{position:fixed!important;right:22px!important;bottom:22px!important;width:auto!important;margin:0!important;z-index:2147483000!important}
+.wr-ai.inline.corner:before{right:-26px!important;bottom:-26px!important;transform:none!important;width:176px!important;height:176px!important}
+.wr-ai.inline.corner .wr-fab{display:grid!important}
+.wr-ai.inline.corner.corner-open .wr-fab{display:none!important}
+.wr-ai.inline.corner .wr-close{display:grid!important}
+.wr-ai.inline.corner .wr-panel{position:absolute!important;right:0!important;bottom:0!important;display:none!important;width:min(382px,calc(100vw - 24px))!important;height:min(578px,calc(100vh - 24px))!important}
+.wr-ai.inline.corner .wr-panel.open{display:grid!important;animation:wrGlassIn .28s cubic-bezier(.18,.9,.2,1)!important}
+@media(max-width:520px){.wr-ai.inline.corner{right:12px!important;bottom:12px!important}.wr-ai.inline.corner .wr-panel{width:calc(100vw - 24px)!important;height:min(620px,calc(100vh - 24px))!important}}
+/* END ROSE SCROLL-TO-CORNER BEHAVIOR */
 </style>
 </head>
 <body>
@@ -646,5 +657,39 @@ document.querySelectorAll('.faq-item').forEach(item=>{
   data-mount="#rose-hero-widget"
   data-inline="true"
 ></script>
+
+<script>
+// Move Rose into the corner after the hero section, then let visitors click to expand.
+(function(){
+  function syncRoseCorner(){
+    const hero=document.querySelector('.rose-hero');
+    const root=document.querySelector('#rose-hero-widget .wr-ai');
+    if(!hero||!root)return;
+    const past=window.scrollY > (hero.offsetTop + hero.offsetHeight - 120);
+    root.classList.toggle('corner', past);
+    root.classList.toggle('corner-open', false);
+    const panel=root.querySelector('.wr-panel');
+    const fab=root.querySelector('.wr-fab');
+    if(past){
+      panel?.classList.remove('open');
+      if(fab) fab.style.display='grid';
+    }else{
+      panel?.classList.add('open');
+      if(fab) fab.style.display='none';
+    }
+  }
+  function bindRoseCornerClicks(){
+    const root=document.querySelector('#rose-hero-widget .wr-ai');
+    if(!root||root.dataset.cornerBound)return;
+    root.dataset.cornerBound='true';
+    root.querySelector('.wr-fab')?.addEventListener('click',()=>root.classList.add('corner-open'));
+    root.querySelector('.wr-close')?.addEventListener('click',()=>root.classList.remove('corner-open'));
+  }
+  window.addEventListener('scroll',syncRoseCorner,{passive:true});
+  window.addEventListener('resize',syncRoseCorner);
+  window.addEventListener('load',()=>{bindRoseCornerClicks();syncRoseCorner();});
+  setTimeout(()=>{bindRoseCornerClicks();syncRoseCorner();},250);
+})();
+</script>
 </body>
 </html>
