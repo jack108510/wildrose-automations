@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rose Draft — Virtual Front Desk Hero</title>
-<meta name="description" content="Draft Rose hero for Wildrose Automations: a virtual front desk that answers visitors, captures leads, and routes follow-up.">
+<title>Wildrose Automations — Rose AI Website Assistant</title>
+<meta name="description" content="Wildrose Automations builds clean business websites with Rose, an AI front desk that answers visitors, captures leads, and routes follow-up.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -176,32 +176,6 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .cta-note{margin-top:22px;color:#777;font-size:14px}
 
-/* AI ADOPTION PLAN */
-.ai-plan{background:#101010;color:#fff;position:relative;overflow:hidden}
-.ai-plan::before{content:'';position:absolute;inset:-30%;background:radial-gradient(circle at 20% 20%,rgba(255,87,34,.18),transparent 32%),radial-gradient(circle at 90% 20%,rgba(255,255,255,.08),transparent 28%);pointer-events:none}
-.ai-plan .wrap{position:relative;z-index:1}
-.ai-panel{display:grid;grid-template-columns:1fr .92fr;gap:36px;align-items:stretch;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:34px;box-shadow:0 24px 80px rgba(0,0,0,.22)}
-.ai-copy{padding:16px 8px 16px 4px}
-.ai-copy .eyebrow{color:var(--hl)}
-.ai-copy .sec-title{color:#fff;margin-bottom:18px}
-.ai-copy p{color:#aaa;font-size:17px;line-height:1.75;max-width:560px;margin-bottom:24px}
-.ai-points{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:26px}
-.ai-point{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);border-radius:16px;padding:16px;font-size:14px;color:#cfcfcf;line-height:1.5}
-.ai-point strong{display:block;color:#fff;margin-bottom:4px;font-size:14px}
-.ai-form{background:#fff;color:var(--ink);border-radius:22px;padding:26px;border:1px solid rgba(255,255,255,.2);box-shadow:0 18px 50px rgba(0,0,0,.2)}
-.ai-form h3{font-size:22px;letter-spacing:-.6px;margin-bottom:8px}
-.ai-form p{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6}
-.ai-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ai-field{display:flex;flex-direction:column;gap:6px}
-.ai-field.full{grid-column:1/-1}
-.ai-field label{font-size:12px;font-weight:700;color:#555;letter-spacing:.2px}
-.ai-field input,.ai-field textarea{width:100%;border:1px solid var(--line);background:#fbfaf8;border-radius:12px;padding:12px 13px;font:inherit;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
-.ai-field textarea{min-height:88px;resize:vertical}
-.ai-field input:focus,.ai-field textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px rgba(255,87,34,.1)}
-.ai-form .btn{width:100%;justify-content:center;margin-top:16px}
-.ai-status{min-height:20px;margin-top:12px;font-size:13px;color:var(--muted)}
-.ai-status.ok{color:#15803d}.ai-status.err{color:#b91c1c}
-
 /* FOOTER */
 footer{background:var(--dark);color:#666;padding:48px 0;border-top:1px solid #222}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
@@ -265,7 +239,6 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       Wildrose
     </div>
     <div class="nav-links">
-      <a href="#ai-plan">Free AI Plan</a>
       <a href="#pricing">Pricing</a>
       <a href="#work">Work</a>
       <a href="automations.html">Automation & AI</a>
@@ -320,40 +293,6 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       <a class="mobile-shot" href="demo-starter-site.html" target="_blank" rel="noopener" aria-label="Open the mobile demo starter website">
         <img src="assets/generated/copperline-swift-cropped-mobile.png" alt="Mobile screenshot of the Copperline Motor Works mechanic demo site" loading="lazy">
       </a>
-    </div>
-  </div>
-</section>
-
-<!-- FREE AI ADOPTION PLAN -->
-<section class="section ai-plan" id="ai-plan">
-  <div class="wrap">
-    <div class="ai-panel">
-      <div class="ai-copy">
-        <div class="eyebrow">Free AI Adoption Plan</div>
-        <h2 class="sec-title">Know what AI is worth using <span class="serif">before you pay for it.</span></h2>
-        <p>Send the basics. We’ll review your website, tools, and manual work, then send back a practical first plan.</p>
-        <div class="ai-points">
-          <div class="ai-point"><strong>Useful tools</strong>Chat, voice, automation, CRM, and staff workflow ideas that fit the business.</div>
-          <div class="ai-point"><strong>What to skip</strong>No hype platforms, generic bots, or risky automations that create more work.</div>
-          <div class="ai-point"><strong>First steps</strong>A simple setup path for leads, quote intake, reviews, staff prompts, or website AI.</div>
-          <div class="ai-point"><strong>Plain language</strong>Recommendations a business owner can act on without learning AI jargon.</div>
-        </div>
-      </div>
-      <form class="ai-form" id="aiPlanForm">
-        <h3>Get the free plan</h3>
-        <p>Short form. Clear reply. No sales call required.</p>
-        <div class="ai-fields">
-          <div class="ai-field"><label for="aipName">Your name</label><input id="aipName" name="name" autocomplete="name" required></div>
-          <div class="ai-field"><label for="aipEmail">Email</label><input id="aipEmail" name="email" type="email" autocomplete="email" required></div>
-          <div class="ai-field"><label for="aipBusiness">Business name</label><input id="aipBusiness" name="businessName" required></div>
-          <div class="ai-field"><label for="aipWebsite">Website</label><input id="aipWebsite" name="website" inputmode="url" placeholder="https://"></div>
-          <div class="ai-field full"><label for="aipIndustry">Industry</label><input id="aipIndustry" name="industry" placeholder="Plumbing, clinic, landscaping, real estate..."></div>
-          <div class="ai-field full"><label for="aipTask">Biggest manual/time-wasting task</label><textarea id="aipTask" name="biggestTask" placeholder="Example: quote requests, missed leads, appointment reminders, reviews, admin emails..."></textarea></div>
-          <div class="ai-field full"><label for="aipTools">Current tools, optional</label><input id="aipTools" name="currentTools" placeholder="Google Workspace, Jobber, Shopify, Square, spreadsheets..."></div>
-        </div>
-        <button class="btn btn-hl" type="submit">Request My Free Plan →</button>
-        <div class="ai-status" id="aiPlanStatus"></div>
-      </form>
     </div>
   </div>
 </section>
@@ -613,41 +552,6 @@ window.addEventListener('scroll',()=>{
   else if(y<lastScrollY-6 || y<40) nav.classList.remove('nav-hidden');
   lastScrollY=y;
 },{passive:true});
-
-// Free AI Adoption Plan form
-const aiPlanForm = document.getElementById('aiPlanForm');
-if(aiPlanForm){
-  aiPlanForm.addEventListener('submit', async (event)=>{
-    event.preventDefault();
-    const status = document.getElementById('aiPlanStatus');
-    const button = aiPlanForm.querySelector('button[type="submit"]');
-    const data = Object.fromEntries(new FormData(aiPlanForm).entries());
-    data.sourcePage = location.href;
-    status.className = 'ai-status';
-    status.textContent = 'Sending request...';
-    button.disabled = true;
-    button.textContent = 'Sending...';
-    try{
-      const response = await fetch('https://wildrose-widget.wildeautomations.com/api/ai-adoption-plan',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(data)
-      });
-      const result = await response.json().catch(()=>({}));
-      if(!response.ok) throw new Error(result.error || 'Request failed');
-      status.className = 'ai-status ok';
-      status.textContent = 'Received. We’ll review it and reply with your plan.';
-      aiPlanForm.reset();
-    }catch(error){
-      status.className = 'ai-status err';
-      status.textContent = 'Could not send. Email jack@wildroseautomations.ca and I’ll make the plan manually.';
-      console.error(error);
-    }finally{
-      button.disabled = false;
-      button.textContent = 'Request My Free Plan →';
-    }
-  });
-}
 
 // FAQ accordion
 document.querySelectorAll('.faq-item').forEach(item=>{
