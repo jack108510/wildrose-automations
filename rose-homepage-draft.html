@@ -27,6 +27,7 @@ a{text-decoration:none;color:inherit}
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .3s;padding:20px 0}
 nav.scrolled{background:rgba(250,248,245,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:14px 0}
+nav.nav-hidden{transform:translateY(-115%)}
 nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.3px}
 .brand-mark{width:36px;height:36px;background:var(--dark);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--hl);font-weight:900;font-size:18px;font-family:'Instrument Serif',serif;font-style:italic}
@@ -118,7 +119,7 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .plan-name{font-size:16px;font-weight:700;margin-bottom:8px}
 .plan-price{font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
 .plan-price span{font-size:16px;font-weight:400;color:var(--muted)}
-.rose-hero-widget{margin:54px auto 0;display:flex;justify-content:center;align-items:center;position:relative;width:min(460px,94vw)}.rose-hero-widget::before{content:'';position:absolute;inset:-22px -46px;border-radius:52px;background:radial-gradient(circle at 50% 50%,rgba(255,87,34,.22),transparent 58%);filter:blur(4px);pointer-events:none}.rose-hero-widget > div{position:relative;z-index:1}
+.rose-hero-widget{margin:54px auto 0;display:flex;justify-content:center;align-items:center;position:relative;width:min(460px,94vw);min-height:560px}.rose-hero-widget::before{content:'';position:absolute;inset:-22px -46px;border-radius:52px;background:radial-gradient(circle at 50% 50%,rgba(255,87,34,.22),transparent 58%);filter:blur(4px);pointer-events:none;transition:opacity .22s ease}.rose-hero-widget.corner-active::before{opacity:0}.rose-hero-widget > div{position:relative;z-index:1}
 .plan-desc{font-size:14px;color:var(--muted);margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--line)}
 .plan ul{list-style:none;margin-bottom:28px}
 .plan ul li{font-size:14px;padding:10px 0;color:var(--ink);display:flex;align-items:flex-start;gap:10px}
@@ -242,6 +243,8 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 }
 
 /* ROSE SCROLL-TO-CORNER BEHAVIOR */
+.wr-ai.inline{transition:opacity .16s ease,transform .22s cubic-bezier(.2,.8,.2,1)}
+.wr-ai.inline.corner{animation:roseCornerIn .18s ease both}@keyframes roseCornerIn{from{opacity:.35;transform:translateY(10px) scale(.94)}to{opacity:1;transform:none}}
 .wr-ai.inline.corner{position:fixed!important;right:22px!important;bottom:22px!important;width:auto!important;margin:0!important;z-index:2147483000!important}
 .wr-ai.inline.corner:before{right:-26px!important;bottom:-26px!important;transform:none!important;width:176px!important;height:176px!important}
 .wr-ai.inline.corner .wr-fab{display:grid!important}
@@ -600,10 +603,16 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 </footer>
 
 <script>
-// Nav scroll
+// Nav scroll: hide while scrolling down, show when scrolling back up.
+let lastScrollY = window.scrollY;
 window.addEventListener('scroll',()=>{
-  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>30)
-});
+  const nav=document.getElementById('nav');
+  const y=window.scrollY;
+  nav.classList.toggle('scrolled',y>30);
+  if(y>90 && y>lastScrollY+6) nav.classList.add('nav-hidden');
+  else if(y<lastScrollY-6 || y<40) nav.classList.remove('nav-hidden');
+  lastScrollY=y;
+},{passive:true});
 
 // Free AI Adoption Plan form
 const aiPlanForm = document.getElementById('aiPlanForm');
@@ -659,24 +668,36 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 ></script>
 
 <script>
-// Move Rose into the corner after the hero section, then let visitors click to expand.
+// Move Rose into the corner after the hero section, with hysteresis so it does not flicker.
 (function(){
-  function syncRoseCorner(){
-    const hero=document.querySelector('.rose-hero');
+  let corner=false;
+  function setRoseCorner(next){
+    const slot=document.querySelector('#rose-hero-widget');
     const root=document.querySelector('#rose-hero-widget .wr-ai');
-    if(!hero||!root)return;
-    const past=window.scrollY > (hero.offsetTop + hero.offsetHeight - 120);
-    root.classList.toggle('corner', past);
-    root.classList.toggle('corner-open', false);
+    if(!slot||!root)return;
+    if(corner===next)return;
+    corner=next;
+    slot.classList.toggle('corner-active',corner);
+    root.classList.toggle('corner',corner);
+    root.classList.remove('corner-open');
     const panel=root.querySelector('.wr-panel');
     const fab=root.querySelector('.wr-fab');
-    if(past){
+    if(corner){
       panel?.classList.remove('open');
       if(fab) fab.style.display='grid';
     }else{
       panel?.classList.add('open');
       if(fab) fab.style.display='none';
     }
+  }
+  function syncRoseCorner(){
+    const hero=document.querySelector('.rose-hero');
+    const root=document.querySelector('#rose-hero-widget .wr-ai');
+    if(!hero||!root)return;
+    const heroBottom=hero.offsetTop+hero.offsetHeight;
+    const y=window.scrollY;
+    if(!corner && y>heroBottom-170) setRoseCorner(true);
+    else if(corner && y<heroBottom-320) setRoseCorner(false);
   }
   function bindRoseCornerClicks(){
     const root=document.querySelector('#rose-hero-widget .wr-ai');
