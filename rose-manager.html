@@ -23,6 +23,12 @@ body{background:radial-gradient(circle at 12% -8%,rgba(255,255,255,.92),transpar
 /* neutralize embedded Rose preview so the whole page stays Apple glass */
 #roseLiveMount .wr-panel{filter:saturate(.08) hue-rotate(180deg) brightness(1.06)!important}#roseLiveMount .wr-mark img,#roseLiveMount .wr-dot img{filter:grayscale(1) brightness(1.25) contrast(.82)!important}#roseLiveMount .wr-orb,#roseLiveMount [class*="orb"],#roseLiveMount [class*="sphere"]{filter:saturate(.05) hue-rotate(180deg) brightness(1.08)!important}
 
+
+/* live configurable Rose color */
+:root{--rose-accent:#ff5722;--rose-accent-soft:rgba(255,87,34,.24);--rose-accent-bg:rgba(255,87,34,.13)}
+body{background:radial-gradient(circle at 14% -8%,var(--rose-accent-soft),transparent 34%),radial-gradient(circle at 88% 4%,rgba(255,255,255,.9),transparent 28%),radial-gradient(circle at 50% 110%,var(--rose-accent-bg),transparent 36%),linear-gradient(180deg,#f8fafc,#edf1f5 54%,#f8fafc)!important}body:before{background:radial-gradient(circle,var(--rose-accent-soft),transparent 68%)!important}.rose-stage{background:radial-gradient(circle at 50% 28%,var(--rose-accent-soft),transparent 34%),radial-gradient(circle at 50% 82%,rgba(255,255,255,.12),transparent 34%),linear-gradient(145deg,rgba(20,24,30,.76),rgba(4,7,10,.58) 58%,rgba(255,255,255,.07))!important}
+#roseLiveMount .wr-panel,#roseLiveMount .wr-mark img,#roseLiveMount .wr-dot img,#roseLiveMount .wr-orb,#roseLiveMount [class*="orb"],#roseLiveMount [class*="sphere"]{filter:none!important}#roseLiveMount .wr-panel{--accent:var(--rose-accent)!important;--wr-accent:var(--rose-accent)!important}#roseLiveMount .wr-tab.active,#roseLiveMount .wr-start-voice,#roseLiveMount button[class*="voice"],#roseLiveMount button[class*="primary"]{background:linear-gradient(145deg,var(--rose-accent),color-mix(in srgb,var(--rose-accent) 68%,#fff))!important}#roseLiveMount .wr-dot,#roseLiveMount .wr-mark{background:radial-gradient(circle at 35% 24%,#fff,color-mix(in srgb,var(--rose-accent) 48%,transparent))!important}.swatch[data-color="#ff5722"]{background:#ff5722!important}.swatch[data-color="#2563eb"]{background:#2563eb!important}.swatch[data-color="#14a66f"]{background:#14a66f!important}.swatch[data-color="#8b5cf6"]{background:#8b5cf6!important}
+
 </style>
 </head>
 <body>
@@ -43,7 +49,7 @@ body{background:radial-gradient(circle at 12% -8%,rgba(255,255,255,.92),transpar
     </nav>
 
     <section class="view active" id="appearance">
-      <div class="glass"><div class="appearance-layout"><div class="appearance-left"><div class="field"><label>Agent name</label><input id="agentName" value="Rose"></div><div class="field"><label>Business name</label><input id="businessName" value="Swift Line Locating"></div><div class="field"><label>Accent color</label><div class="swatches"><button class="swatch" data-color="#7c8fa6" style="background:#d7dde5"></button><button class="swatch" data-color="#2563eb" style="background:#b9c8d9"></button><button class="swatch" data-color="#14a66f" style="background:#cad9d3"></button><button class="swatch" data-color="#111827" style="background:#9aa6b2"></button></div></div></div><div class="field"><label>Greeting</label><textarea id="greeting">Hi — I’m Rose. Tell me what you need and I’ll get the right details to the team.</textarea></div><div class="status-grid"><div class="metric"><small>Plan</small><strong>Pro</strong></div><div class="metric"><small>Voice used</small><strong>62/100</strong></div><div class="metric"><small>Status</small><strong style="color:var(--green)">Live</strong></div></div></div></div>
+      <div class="glass"><div class="appearance-layout"><div class="appearance-left"><div class="field"><label>Agent name</label><input id="agentName" value="Rose"></div><div class="field"><label>Business name</label><input id="businessName" value="Swift Line Locating"></div><div class="field"><label>Accent color</label><div class="swatches"><button class="swatch" data-color="#ff5722" style="background:#ff5722"></button><button class="swatch" data-color="#2563eb" style="background:#2563eb"></button><button class="swatch" data-color="#14a66f" style="background:#14a66f"></button><button class="swatch" data-color="#8b5cf6" style="background:#8b5cf6"></button></div></div></div><div class="field"><label>Greeting</label><textarea id="greeting">Hi — I’m Rose. Tell me what you need and I’ll get the right details to the team.</textarea></div><div class="status-grid"><div class="metric"><small>Plan</small><strong>Pro</strong></div><div class="metric"><small>Voice used</small><strong>62/100</strong></div><div class="metric"><small>Status</small><strong style="color:var(--green)">Live</strong></div></div></div></div>
     </section>
 
     <section class="view" id="context">
@@ -64,7 +70,7 @@ body{background:radial-gradient(circle at 12% -8%,rgba(255,255,255,.92),transpar
   </aside>
 </div>
 <div class="toast" id="toast">Saved</div>
-<script src="/wildrose-widget-sandbox.js?v=manager-tools-left-rose-right-1" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" data-accent="#7c8fa6" data-mount="#roseLiveMount" defer></script>
+<script src="/wildrose-widget-sandbox.js?v=manager-tools-left-rose-right-1" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" data-accent="#ff5722" data-mount="#roseLiveMount" defer></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const sites={swift:{name:'Swift Line Locating',slug:'swift-locating',plan:'Pro'},vet:{name:'Vet INC',slug:'vet-inc',plan:'Basic'},demo:{name:'Demo Landscaping Co.',slug:'demo-landscaping',plan:'Basic'}};
@@ -73,7 +79,7 @@ function syncSite(site){$('#businessName').value=site.name;$('#previewTitle').te
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(!b)return;$$('.tab').forEach(x=>x.classList.toggle('active',x===b));$$('.view').forEach(v=>v.classList.toggle('active',v.id===b.dataset.view))});
 $('#siteSelect').addEventListener('change',e=>{syncSite(sites[e.target.value]);toast(`Switched to ${sites[e.target.value].name}`)});
 $('#businessName').addEventListener('input',e=>{$('#previewTitle').textContent=`Rose for ${e.target.value||'this site'}`});
-$$('.swatch').forEach(s=>s.onclick=()=>{document.documentElement.style.setProperty('--orange',s.dataset.color);toast('Accent updated')});
+function hexToRgb(hex){const v=hex.replace('#','');const n=parseInt(v.length===3?v.split('').map(x=>x+x).join(''):v,16);return [(n>>16)&255,(n>>8)&255,n&255]}$$('.swatch').forEach(s=>s.onclick=()=>{const c=s.dataset.color;const [r,g,b]=hexToRgb(c);document.documentElement.style.setProperty('--rose-accent',c);document.documentElement.style.setProperty('--rose-accent-soft',`rgba(${r},${g},${b},.24)`);document.documentElement.style.setProperty('--rose-accent-bg',`rgba(${r},${g},${b},.13)`);document.documentElement.style.setProperty('--orange',c);toast('Rose color updated')});
 $$('.toggle').forEach(b=>b.onclick=()=>{b.classList.toggle('off');b.textContent=b.classList.contains('off')?'Off':'On';toast(b.textContent==='On'?'Automation enabled':'Automation disabled')});
 $('#copySnippet').onclick=async()=>{await navigator.clipboard?.writeText($('#snippetText').textContent);toast('Install code copied')};
 $('.btn.primary').onclick=()=>toast('Changes saved');
