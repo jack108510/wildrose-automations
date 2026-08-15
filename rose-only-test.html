@@ -5,30 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rose — AI Front Desk for Websites</title>
 <meta name="description" content="Rose is an AI front desk for small business websites. It answers visitor questions, captures leads, and routes follow-up while the visitor is still on the page.">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}:root{--bg:#faf8f5;--ink:#151515;--muted:#6b6b6b;--line:#e8e4dd;--surface:#fff;--orange:#ff5722;--dark:#070707;--soft:#fff3ed}body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;overflow-x:hidden}a{text-decoration:none;color:inherit}.wrap{max-width:1120px;margin:0 auto;padding:0 24px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 23px;border-radius:999px;font-weight:800;font-size:14px;border:0;cursor:pointer;transition:transform .18s ease,background .18s ease,border-color .18s ease}.btn:hover{transform:translateY(-1px)}.btn-orange{background:var(--orange);color:#fff}.btn-orange:hover{background:#e64a19}.btn-dark{background:#111;color:#fff}.btn-light{background:#fff;color:#111;border:1px solid rgba(255,255,255,.18)}.btn-outline{background:transparent;color:#111;border:1.5px solid #111}.eyebrow{font-size:12px;font-weight:850;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}.section{padding:96px 0}.section-white{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.section-dark{background:var(--dark);color:#fff}.sec-title{font-size:clamp(34px,5vw,58px);font-weight:850;letter-spacing:-2.4px;line-height:1.02;margin-bottom:16px}.sec-title em{font-family:"Instrument Serif",serif;font-weight:400;font-style:italic;color:var(--orange)}.sec-sub{font-size:18px;color:var(--muted);max-width:670px;line-height:1.7}.section-dark .sec-sub{color:#a3a3a3}
-nav{background:#000;border-bottom:1px solid rgba(255,255,255,.1);padding:16px 0}nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:900;letter-spacing:-.4px}.brand img{height:36px;width:36px;border-radius:8px}.nav-links{display:flex;align-items:center;gap:30px}.nav-links a{font-size:14px;font-weight:700;color:rgba(255,255,255,.68)}.nav-links a:hover{color:#fff}
-.hero{min-height:auto;background:#000;color:#fff;position:relative;overflow:hidden;padding:76px 0 34px}.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 32%,rgba(255,87,34,.27),transparent 28%),linear-gradient(#050505,#000 52%,#050505);pointer-events:none}.hero:after{content:"";position:absolute;left:50%;bottom:-34%;width:1080px;height:520px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(255,255,255,.14),transparent 60%);filter:blur(10px)}.hero .wrap{position:relative;z-index:1;display:grid;justify-items:center;text-align:center}.label{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:13px;color:rgba(255,255,255,.75);font-weight:700}.label span{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 18px rgba(255,87,34,.85)}.hero h1{font-size:clamp(56px,10vw,118px);line-height:.94;letter-spacing:-.075em;font-weight:700;max-width:1050px;margin:0 auto 26px}.hero h1 em{display:block;font-style:normal;color:rgba(255,255,255,.62);font-weight:520}.lead{font-size:clamp(21px,2.4vw,30px);line-height:1.24;color:rgba(255,255,255,.70);max-width:810px;margin:0 auto 34px;letter-spacing:-.026em}.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.mini-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:min(860px,100%);margin:34px auto 0}.mini-proof div{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);border-radius:18px;padding:14px;color:rgba(255,255,255,.72);font-size:13px}.mini-proof strong{display:block;color:#fff;font-size:18px;margin-bottom:2px}.rose-hero-widget{margin:54px auto 0;display:flex;justify-content:center;align-items:center;position:relative;width:min(460px,94vw);min-height:560px}.rose-hero-widget:before{content:"";position:absolute;inset:-22px -46px;border-radius:52px;background:radial-gradient(circle at 50% 50%,rgba(255,87,34,.22),transparent 58%);filter:blur(4px);pointer-events:none;transition:opacity .22s ease}.rose-hero-widget.corner-active:before{opacity:0}.rose-hero-widget>div{position:relative;z-index:1}
-.problem-grid,.use-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 18px 55px rgba(26,26,26,.045)}.card h3{font-size:20px;letter-spacing:-.45px;margin-bottom:9px}.card p{font-size:15px;color:var(--muted);line-height:1.65}.icon{width:44px;height:44px;border-radius:14px;background:var(--soft);color:var(--orange);display:grid;place-items:center;font-weight:900;margin-bottom:18px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:42px}.step{padding:26px;border-radius:24px;background:#101010;border:1px solid #242424}.step-num{font-family:"Instrument Serif",serif;font-size:54px;font-style:italic;color:var(--orange);line-height:1;margin-bottom:12px}.step h3{font-size:18px;margin-bottom:8px}.step p{color:#a3a3a3;font-size:14px;line-height:1.6}.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:42px}.plan{background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;position:relative}.plan.featured{border:2px solid #111;box-shadow:0 22px 70px rgba(0,0,0,.09)}.badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;border-radius:999px;padding:6px 14px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px}.plan-name{font-size:17px;font-weight:900;margin-bottom:6px}.price{font-size:46px;font-weight:900;letter-spacing:-2px;margin-bottom:6px}.price span{font-size:16px;font-weight:500;color:var(--muted)}.desc{font-size:14px;color:var(--muted);padding-bottom:24px;margin-bottom:22px;border-bottom:1px solid var(--line)}.plan ul{list-style:none;margin-bottom:26px}.plan li{padding:8px 0;font-size:14px;display:flex;align-items:flex-start;gap:9px}.plan li:before{content:"✓";color:var(--orange);font-weight:900}.plan .btn{width:100%}.note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}.niche-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}.niche{border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;font-weight:850}.niche span{display:block;color:var(--muted);font-weight:500;font-size:13px;line-height:1.55;margin-top:6px}.faq-list{max-width:780px;margin:44px auto 0}.faq-item{border-bottom:1px solid #333}.faq-q{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:24px 0;cursor:pointer;font-weight:800;font-size:17px}.faq-q .plus{font-size:24px;color:var(--orange);transition:transform .2s}.faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease}.faq-a p{color:#a3a3a3;padding:0 0 24px;font-size:15px;line-height:1.75}.faq-item.open .faq-a{max-height:240px}.faq-item.open .plus{transform:rotate(45deg)}.cta{padding:110px 0;text-align:center;background:#000;color:#fff;position:relative;overflow:hidden}.cta:before{content:"";position:absolute;top:50%;left:50%;width:620px;height:620px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,87,34,.1),transparent 68%)}.cta .wrap{position:relative;z-index:1}.cta h2{font-size:clamp(38px,5.4vw,68px);line-height:1;letter-spacing:-2.7px;margin-bottom:16px}.cta h2 em{font-family:"Instrument Serif",serif;color:var(--orange);font-weight:400}.cta p{color:#a3a3a3;font-size:18px;margin-bottom:30px}.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.cta-note{margin-top:20px;color:#777;font-size:14px}footer{background:#000;color:#666;border-top:1px solid #222;padding:42px 0}footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}.ft-brand{font-weight:900;color:#fff}.ft-links{display:flex;gap:22px}.ft-links a{font-size:13px;color:#777}.ft-links a:hover{color:#fff}
-
-.system-lab{padding:108px 0;background:#050505;color:#fff;position:relative;overflow:hidden}.system-lab:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 10%,rgba(255,87,34,.16),transparent 26%),radial-gradient(circle at 88% 32%,rgba(255,255,255,.08),transparent 22%);pointer-events:none}.system-lab .wrap{position:relative;z-index:1}.system-top{display:grid;grid-template-columns:.82fr 1.18fr;gap:44px;align-items:start}.system-map{position:relative;min-height:520px;border:1px solid #242424;border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));box-shadow:0 40px 130px rgba(0,0,0,.45);padding:30px;overflow:hidden}.system-map:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(#000,transparent 85%)}.node{position:absolute;z-index:2;width:190px;border:1px solid rgba(255,255,255,.14);border-radius:22px;background:rgba(10,10,10,.78);backdrop-filter:blur(16px);padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.32)}.node strong{display:block;font-size:15px;margin-bottom:4px}.node span{display:block;font-size:12px;color:#aaa;line-height:1.45}.node i{display:grid;place-items:center;width:34px;height:34px;border-radius:12px;background:rgba(255,87,34,.14);color:var(--orange);font-style:normal;font-weight:900;margin-bottom:12px}.n1{left:28px;top:46px}.n2{right:30px;top:54px}.n3{left:50%;top:205px;transform:translateX(-50%);border-color:rgba(255,87,34,.42);box-shadow:0 0 0 1px rgba(255,87,34,.18),0 34px 90px rgba(255,87,34,.12)}.n4{left:40px;bottom:46px}.n5{right:42px;bottom:48px}.rail{position:absolute;z-index:1;height:2px;background:linear-gradient(90deg,transparent,rgba(255,87,34,.9),transparent);transform-origin:left center;opacity:.72}.r1{width:246px;left:204px;top:128px;transform:rotate(12deg)}.r2{width:236px;right:196px;top:129px;transform:rotate(168deg)}.r3{width:210px;left:190px;bottom:150px;transform:rotate(-26deg)}.r4{width:205px;right:190px;bottom:151px;transform:rotate(206deg)}.pulse-dot{position:absolute;z-index:3;width:10px;height:10px;border-radius:50%;background:var(--orange);box-shadow:0 0 26px rgba(255,87,34,.95);animation:travel 4.2s linear infinite}.p1{left:206px;top:124px}.p2{right:210px;top:124px;animation-delay:1.05s}.p3{left:202px;bottom:146px;animation-delay:2.1s}.p4{right:202px;bottom:146px;animation-delay:3.15s}@keyframes travel{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}70%{opacity:1}100%{opacity:0;transform:translate(135px,28px) scale(1)}}.packet-stack{display:grid;gap:14px;margin-top:32px}.packet{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px 18px;border-radius:20px;background:#111;border:1px solid #262626}.packet .tag{font-size:11px;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;color:var(--orange)}.packet b{font-size:15px}.packet small{color:#8d8d8d}.packet .status{font-size:12px;color:#fff;background:rgba(255,87,34,.16);border:1px solid rgba(255,87,34,.3);border-radius:999px;padding:6px 10px}.ops-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}.ops-card{background:#fff;border:1px solid var(--line);border-radius:28px;padding:28px;position:relative;overflow:hidden}.ops-card:after{content:"";position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:999px;background:rgba(255,87,34,.08)}.ops-kicker{font-size:12px;font-weight:900;color:var(--orange);letter-spacing:1.4px;text-transform:uppercase;margin-bottom:12px}.ops-card h3{font-size:24px;letter-spacing:-.7px;line-height:1.1;margin-bottom:10px}.ops-card p{font-size:15px;color:var(--muted);line-height:1.65}.lead-packet{margin-top:34px;border-radius:30px;background:#fff;border:1px solid var(--line);box-shadow:0 28px 90px rgba(0,0,0,.08);overflow:hidden}.lead-head{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 26px;background:#111;color:#fff}.lead-head strong{font-size:18px}.lead-head span{font-size:12px;color:#aaa}.lead-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line)}.lead-col{background:#fff;padding:24px}.lead-col h4{font-size:14px;color:var(--orange);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px}.lead-col ul{list-style:none;display:grid;gap:10px}.lead-col li{font-size:14px;color:#333}.lead-col li:before{content:"•";color:var(--orange);font-weight:900;margin-right:8px}.handoff{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}.handoff span{border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:800;background:#fbfaf8}
-@media(max-width:900px){.system-top{grid-template-columns:1fr}.ops-grid,.lead-body{grid-template-columns:1fr}.system-map{min-height:560px}}@media(max-width:560px){.system-lab{padding:80px 0}.system-map{min-height:680px;padding:20px}.node{position:relative;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;width:100%;margin-bottom:14px}.rail,.pulse-dot{display:none}}
-
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}:root{--ink:#111;--muted:#74706c;--line:#e8e1d8;--paper:#faf7f2;--orange:#ff5722;--dark:#050505;--cream:#fffaf2}body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;overflow-x:hidden}a{text-decoration:none;color:inherit}.wrap{max-width:1180px;margin:0 auto;padding:0 24px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:14px 23px;font-weight:850;font-size:14px;transition:.18s ease;border:1px solid transparent}.btn:hover{transform:translateY(-1px)}.btn-orange{background:var(--orange);color:#fff}.btn-dark{background:#111;color:#fff}.btn-soft{background:#fff;color:#111;border-color:rgba(255,255,255,.18)}.eyebrow{font-size:12px;font-weight:900;letter-spacing:2.2px;text-transform:uppercase;color:var(--orange);margin-bottom:14px}.section{padding:94px 0}.dark{background:var(--dark);color:#fff}.title{font-size:clamp(38px,5.8vw,74px);line-height:.96;letter-spacing:-.065em;font-weight:850}.title em{font-family:"Instrument Serif",serif;font-weight:400;font-style:italic;color:var(--orange);letter-spacing:-.025em}.sub{font-size:19px;color:var(--muted);max-width:680px}.dark .sub{color:#aaa}
+nav{background:#000;border-bottom:1px solid rgba(255,255,255,.1);position:sticky;top:0;z-index:50}nav .wrap{height:68px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:900}.brand img{width:36px;height:36px;border-radius:9px}.brand span{color:#777;font-weight:700}.nav-links{display:flex;align-items:center;gap:26px}.nav-links a{font-size:14px;font-weight:750;color:rgba(255,255,255,.66)}.nav-links a:hover{color:#fff}
+.hero{background:#000;color:#fff;position:relative;overflow:hidden;padding:74px 0 18px}.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 24%,rgba(255,87,34,.30),transparent 29%),linear-gradient(#050505,#000 54%,#050505);pointer-events:none}.hero:after{content:"";position:absolute;left:50%;bottom:-38%;width:1080px;height:520px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(255,255,255,.15),transparent 60%);filter:blur(10px)}.hero .wrap{position:relative;z-index:1;display:grid;justify-items:center;text-align:center}.label{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:13px;color:rgba(255,255,255,.76);font-weight:750}.label span{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 18px rgba(255,87,34,.85)}.hero h1{font-size:clamp(56px,10vw,118px);line-height:.94;letter-spacing:-.075em;font-weight:700;max-width:1050px;margin:0 auto 26px}.hero h1 em{display:block;font-style:normal;color:rgba(255,255,255,.62);font-weight:520}.lead{font-size:clamp(21px,2.4vw,30px);line-height:1.24;color:rgba(255,255,255,.70);max-width:810px;margin:0 auto 34px;letter-spacing:-.026em}.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.rose-hero-widget{margin:50px auto 0;display:flex;justify-content:center;align-items:center;position:relative;width:min(460px,94vw);min-height:560px}.rose-hero-widget:before{content:"";position:absolute;inset:-22px -46px;border-radius:52px;background:radial-gradient(circle at 50% 50%,rgba(255,87,34,.22),transparent 58%);filter:blur(4px);pointer-events:none;transition:opacity .22s ease}.rose-hero-widget.corner-active:before{opacity:0}.below-fold{margin-top:-1px;background:#050505;color:#fff;border-top:1px solid rgba(255,255,255,.08)}.proof-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);border-radius:28px;overflow:hidden;transform:translateY(36px);box-shadow:0 30px 80px rgba(0,0,0,.35)}.proof-strip div{background:#0d0d0d;padding:26px}.proof-strip strong{display:block;font-size:28px;letter-spacing:-1px}.proof-strip span{display:block;margin-top:4px;color:#aaa;font-size:14px}
+.problem{padding:120px 0 84px;background:#fff}.problem-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:48px;align-items:center}.browser-card{border-radius:34px;background:#111;color:#fff;box-shadow:0 30px 100px rgba(0,0,0,.18);overflow:hidden;border:1px solid #252525}.bar{height:46px;background:#1a1a1a;display:flex;align-items:center;gap:8px;padding:0 18px}.dot{width:10px;height:10px;border-radius:50%;background:#444}.dot:nth-child(1){background:#ff5f56}.dot:nth-child(2){background:#ffbd2e}.dot:nth-child(3){background:#27c93f}.site-window{padding:28px;display:grid;grid-template-columns:1fr 280px;gap:22px;min-height:330px}.fake-page{border:1px solid #2c2c2c;border-radius:22px;padding:22px;background:linear-gradient(180deg,#171717,#0f0f0f)}.fake-page h3{font-size:26px;line-height:1.05;margin-bottom:14px}.lines{display:grid;gap:10px;margin-top:18px}.lines i{display:block;height:11px;background:#2b2b2b;border-radius:999px}.lines i:nth-child(2){width:72%}.lines i:nth-child(3){width:45%}.mini-rose{border:1px solid rgba(255,87,34,.35);background:rgba(255,87,34,.08);border-radius:24px;padding:18px;align-self:end}.mini-rose b{display:block;margin-bottom:12px}.bubble{background:#fff;color:#111;border-radius:16px 16px 16px 4px;padding:12px;font-size:13px;margin-bottom:10px}.reply{background:#ff5722;color:#fff;border-radius:16px 16px 4px 16px;padding:12px;font-size:13px}.checklist{display:grid;gap:14px;margin-top:28px}.check{display:flex;gap:12px;align-items:flex-start}.check i{width:24px;height:24px;border-radius:999px;background:rgba(255,87,34,.12);color:var(--orange);display:grid;place-items:center;font-style:normal;font-weight:900;flex:none}.check b{display:block}.check span{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.system{background:#080808;color:#fff;position:relative;overflow:hidden}.system:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(255,87,34,.18),transparent 28%);pointer-events:none}.system .wrap{position:relative}.system-head{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}.flow-board{border:1px solid #242424;border-radius:36px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));padding:28px;box-shadow:0 40px 110px rgba(0,0,0,.45)}.flow-row{display:grid;grid-template-columns:140px 1fr;gap:22px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.1)}.flow-row:last-child{border-bottom:0}.num{font-family:"Instrument Serif",serif;font-size:54px;color:var(--orange);line-height:.9}.flow-row h3{font-size:24px;letter-spacing:-.8px;margin-bottom:5px}.flow-row p{color:#aaa}.lead-card{margin-top:32px;border-radius:30px;background:#fff;color:#111;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,.25)}.lead-card header{background:#ff5722;color:#fff;padding:18px 22px;display:flex;justify-content:space-between;gap:18px}.lead-card header span{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;opacity:.78}.lead-content{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#eee}.lead-content div{background:#fff;padding:20px}.lead-content h4{font-size:12px;color:var(--orange);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px}.lead-content p{font-size:14px;color:#383838}.quote{margin-top:26px;border-left:3px solid var(--orange);padding-left:18px;color:#d7d7d7;font-size:18px;line-height:1.55}
+.pricing-section{background:var(--paper)}.pricing-box{margin-top:38px;border:1px solid var(--line);background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 80px rgba(41,31,20,.08)}.pricing-row{display:grid;grid-template-columns:1fr auto auto;gap:22px;align-items:center;padding:26px 30px;border-bottom:1px solid var(--line)}.pricing-row:last-child{border-bottom:0}.pricing-row h3{font-size:23px;letter-spacing:-.7px}.pricing-row p{color:var(--muted);font-size:15px;margin-top:3px}.price{font-size:34px;font-weight:900;letter-spacing:-1.8px;white-space:nowrap}.price span{font-size:15px;color:var(--muted);font-weight:600;letter-spacing:0}.badge{display:inline-flex;margin-bottom:9px;background:#111;color:#fff;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px}.fit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}.fit{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;font-weight:850}.fit span{display:block;margin-top:7px;color:var(--muted);font-weight:500;font-size:13px;line-height:1.45}.cta{background:#000;color:#fff;text-align:center;padding:110px 0;position:relative;overflow:hidden}.cta:before{content:"";position:absolute;top:50%;left:50%;width:650px;height:650px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,87,34,.13),transparent 68%)}.cta .wrap{position:relative}.cta h2{font-size:clamp(42px,6vw,82px);line-height:.95;letter-spacing:-.065em}.cta h2 em{font-family:"Instrument Serif",serif;color:var(--orange);font-weight:400}.cta p{color:#aaa;font-size:18px;margin:18px auto 30px;max-width:610px}.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}footer{background:#000;color:#666;border-top:1px solid #222;padding:36px 0}footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.ft-brand{color:#fff;font-weight:900}.ft-links{display:flex;gap:20px}.ft-links a{font-size:13px;color:#777}
 .wr-ai.inline{transition:opacity .16s ease,transform .22s cubic-bezier(.2,.8,.2,1)}.wr-ai.inline.corner{animation:roseCornerIn .18s ease both}@keyframes roseCornerIn{from{opacity:.35;transform:translateY(10px) scale(.94)}to{opacity:1;transform:none}}.wr-ai.inline.corner{position:fixed!important;right:22px!important;bottom:22px!important;width:auto!important;margin:0!important;z-index:2147483000!important}.wr-ai.inline.corner:before{right:-26px!important;bottom:-26px!important;transform:none!important;width:176px!important;height:176px!important}.wr-ai.inline.corner .wr-fab{display:grid!important}.wr-ai.inline.corner.corner-open .wr-fab{display:none!important}.wr-ai.inline.corner .wr-close{display:grid!important}.wr-ai.inline.corner .wr-panel{position:absolute!important;right:0!important;bottom:0!important;display:none!important;width:min(382px,calc(100vw - 24px))!important;height:min(578px,calc(100vh - 24px))!important}.wr-ai.inline.corner .wr-panel.open{display:grid!important;animation:wrGlassIn .28s cubic-bezier(.18,.9,.2,1)!important}
-@media(max-width:900px){.nav-links{display:none}.mini-proof,.problem-grid,.use-grid,.flow,.pricing,.niche-row{grid-template-columns:1fr 1fr}.hero h1{font-size:64px}.section{padding:78px 0}}@media(max-width:560px){.wrap{padding:0 20px}nav .btn{display:none}.hero{padding:66px 0 48px}.hero h1{font-size:54px}.lead{font-size:20px}.mini-proof,.problem-grid,.use-grid,.flow,.pricing,.niche-row{grid-template-columns:1fr}.hero-cta .btn,.cta-btns .btn{width:100%}.rose-hero-widget{margin-top:38px;min-height:540px}.wr-ai.inline.corner{right:12px!important;bottom:12px!important}.wr-ai.inline.corner .wr-panel{width:calc(100vw - 24px)!important;height:min(620px,calc(100vh - 24px))!important}}
+@media(max-width:900px){.nav-links{display:none}.problem-grid,.system-head{grid-template-columns:1fr}.site-window{grid-template-columns:1fr}.proof-strip,.lead-content,.fit-grid{grid-template-columns:1fr 1fr}.pricing-row{grid-template-columns:1fr}.price{font-size:30px}.section{padding:76px 0}}@media(max-width:560px){.wrap{padding:0 20px}nav .btn{display:none}.hero{padding:58px 0 20px}.hero h1{font-size:54px}.lead{font-size:20px}.rose-hero-widget{min-height:530px;margin-top:38px}.proof-strip,.lead-content,.fit-grid{grid-template-columns:1fr}.proof-strip{transform:none;margin-top:26px}.problem{padding-top:76px}.cta-btns .btn,.hero-cta .btn{width:100%}.wr-ai.inline.corner{right:12px!important;bottom:12px!important}.wr-ai.inline.corner .wr-panel{width:calc(100vw - 24px)!important;height:min(620px,calc(100vh - 24px))!important}}
 </style>
 </head>
 <body>
 <nav>
   <div class="wrap">
-    <a class="brand" href="#top"><img src="logos/wildrose.png" alt="Rose by Wildrose">Rose <span style="color:#777;font-weight:700">by Wildrose</span></a>
-    <div class="nav-links">
-      <a href="#does">What it does</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#fit">Who it fits</a>
-      <a href="#faq">FAQ</a>
-    </div>
+    <a class="brand" href="#top"><img src="logos/wildrose.png" alt="Rose by Wildrose">Rose <span>by Wildrose</span></a>
+    <div class="nav-links"><a href="#demo">Demo</a><a href="#system">System</a><a href="#pricing">Pricing</a><a href="#fit">Who it fits</a></div>
     <a href="#cta" class="btn btn-orange">Add Rose</a>
   </div>
 </nav>
@@ -38,131 +31,98 @@ nav{background:#000;border-bottom:1px solid rgba(255,255,255,.1);padding:16px 0}
     <div class="label"><span></span> Introducing Rose</div>
     <h1>Give your website<br><em>a front desk.</em></h1>
     <p class="lead">Rose answers questions, captures quote requests, and sends the lead to you — while the visitor is still on the page.</p>
-    <div class="hero-cta">
-      <a href="#cta" class="btn btn-orange">Get Rose on My Site</a>
-    </div>
+    <div class="hero-cta"><a href="#cta" class="btn btn-orange">Get Rose on My Site</a></div>
     <div class="rose-hero-widget" id="rose-hero-widget" aria-label="Rose AI assistant demo"></div>
   </div>
 </section>
 
-<section class="section section-white" id="does">
+<section class="below-fold">
   <div class="wrap">
-    <div class="eyebrow">What Rose does</div>
-    <h2 class="sec-title">Your website should answer <em>before you do.</em></h2>
-    <p class="sec-sub">Most visitors leave without calling. Rose gives them a fast answer, collects the details, and turns the visit into a follow-up.</p>
-    <div class="problem-grid">
-      <div class="card"><div class="icon">1</div><h3>Answers questions</h3><p>Hours, services, location, pricing ranges, booking steps, service areas, and any FAQ you want it trained on.</p></div>
-      <div class="card"><div class="icon">2</div><h3>Captures leads</h3><p>Rose asks for name, contact info, job details, urgency, and the best next step instead of letting the visitor disappear.</p></div>
-      <div class="card"><div class="icon">3</div><h3>Routes follow-up</h3><p>Lead details are sent to you so you can call, email, quote, book, or hand the lead to your existing process.</p></div>
+    <div class="proof-strip">
+      <div><strong>24/7</strong><span>Website visitors get an answer even when you are busy.</span></div>
+      <div><strong>Voice + chat</strong><span>People can talk or type depending on what feels easiest.</span></div>
+      <div><strong>Lead packet</strong><span>You get a clean summary instead of a vague form fill.</span></div>
     </div>
   </div>
 </section>
 
-<section class="system-lab" id="system">
-  <div class="wrap">
-    <div class="system-top">
-      <div>
-        <div class="eyebrow">The Rose system</div>
-        <h2 class="sec-title">Not just a chatbot. <em>A lead intake loop.</em></h2>
-        <p class="sec-sub">Rose sits on the website, reads the visitor's intent, asks the next useful question, and packages the conversation into a follow-up you can act on.</p>
-        <div class="packet-stack">
-          <div class="packet"><div class="tag">Input</div><div><b>Visitor asks a question</b><br><small>“Do you service my area?” “Can I get a quote?”</small></div><div class="status">live</div></div>
-          <div class="packet"><div class="tag">Brain</div><div><b>Rose checks your business rules</b><br><small>FAQs, services, hours, pricing ranges, lead questions.</small></div><div class="status">trained</div></div>
-          <div class="packet"><div class="tag">Output</div><div><b>You receive a clean lead packet</b><br><small>Name, contact, need, urgency, summary, next step.</small></div><div class="status">ready</div></div>
+<section class="problem" id="demo">
+  <div class="wrap problem-grid">
+    <div>
+      <div class="eyebrow">The actual job</div>
+      <h2 class="title">Turn quiet website visits into <em>follow-up.</em></h2>
+      <p class="sub">Most small business sites are passive. Rose gives visitors a way to ask, talk, and request help without hunting for the right form.</p>
+      <div class="checklist">
+        <div class="check"><i>✓</i><div><b>Answers the first question</b><span>Hours, services, service area, pricing ranges, booking steps, FAQs.</span></div></div>
+        <div class="check"><i>✓</i><div><b>Asks the useful next question</b><span>Name, contact, urgency, location, request type, and what they need.</span></div></div>
+        <div class="check"><i>✓</i><div><b>Hands you the lead cleanly</b><span>No messy transcript digging. You get the contact and next action.</span></div></div>
+      </div>
+    </div>
+    <div class="browser-card" aria-label="Rose website demo mockup">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="site-window">
+        <div class="fake-page">
+          <h3>Local business website</h3>
+          <p style="color:#aaa">Visitor lands here after searching for help.</p>
+          <div class="lines"><i></i><i></i><i></i></div>
+        </div>
+        <div class="mini-rose">
+          <b>Rose</b>
+          <div class="bubble">Do you offer emergency appointments?</div>
+          <div class="reply">Yes — what city are you in, and what is the best number to reach you?</div>
         </div>
       </div>
-      <div class="system-map" aria-label="Rose system flow diagram">
-        <div class="rail r1"></div><div class="rail r2"></div><div class="rail r3"></div><div class="rail r4"></div>
-        <div class="pulse-dot p1"></div><div class="pulse-dot p2"></div><div class="pulse-dot p3"></div><div class="pulse-dot p4"></div>
-        <div class="node n1"><i>01</i><strong>Visitor intent</strong><span>Question, quote request, booking need, or service-area check.</span></div>
-        <div class="node n2"><i>02</i><strong>Business memory</strong><span>Your services, FAQs, locations, hours, and lead rules.</span></div>
-        <div class="node n3"><i>R</i><strong>Rose conversation</strong><span>Voice or chat intake that keeps the visitor engaged.</span></div>
-        <div class="node n4"><i>03</i><strong>Lead qualification</strong><span>Urgency, contact info, job details, and fit.</span></div>
-        <div class="node n5"><i>04</i><strong>Follow-up handoff</strong><span>Clear summary sent to the business for action.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section system" id="system">
+  <div class="wrap system-head">
+    <div>
+      <div class="eyebrow">How Rose works</div>
+      <h2 class="title">A simple loop, not a giant automation project.</h2>
+      <p class="sub">Rose only needs three things to become useful: what your business does, what questions visitors ask, and where leads should go.</p>
+      <p class="quote">The point is not to impress people with AI. The point is to make sure a real lead does not leave because nobody answered fast enough.</p>
+    </div>
+    <div class="flow-board">
+      <div class="flow-row"><div class="num">01</div><div><h3>Train the business memory</h3><p>Services, hours, areas served, FAQs, booking links, limits, and the tone Rose should use.</p></div></div>
+      <div class="flow-row"><div class="num">02</div><div><h3>Install the website widget</h3><p>Rose appears on the site as chat and optional voice. Mobile visitors can use it without downloading anything.</p></div></div>
+      <div class="flow-row"><div class="num">03</div><div><h3>Capture the visitor’s intent</h3><p>Rose answers, then collects what matters: contact info, request type, urgency, location, and notes.</p></div></div>
+      <div class="flow-row"><div class="num">04</div><div><h3>Send the lead packet</h3><p>You get a clean summary so you can call, quote, book, or route it into your process.</p></div></div>
+      <div class="lead-card">
+        <header><strong>Example lead packet</strong><span>ready for follow-up</span></header>
+        <div class="lead-content">
+          <div><h4>Visitor</h4><p>Sarah · Edmonton · 780-555-0134</p></div>
+          <div><h4>Request</h4><p>Needs quote this week. Asked about pricing and service area.</p></div>
+          <div><h4>Next step</h4><p>Call back today. Send estimate link if no answer.</p></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section section-white" id="how">
-  <div class="wrap">
-    <div class="eyebrow">Behind the scenes</div>
-    <h2 class="sec-title">What gets installed <em>under the hood.</em></h2>
-    <p class="sec-sub">The product is simple for the customer, but the system has a few clean layers working together.</p>
-    <div class="ops-grid">
-      <div class="ops-card"><div class="ops-kicker">Layer 1</div><h3>Website widget</h3><p>The visible Rose interface: small, branded, mobile-ready, and available as chat or voice.</p></div>
-      <div class="ops-card"><div class="ops-kicker">Layer 2</div><h3>Business knowledge</h3><p>The answers Rose is allowed to give: services, hours, areas, FAQs, pricing guidance, and disclaimers.</p></div>
-      <div class="ops-card"><div class="ops-kicker">Layer 3</div><h3>Lead routing</h3><p>The handoff path: summary, contact info, request type, urgency, and where the lead should go next.</p></div>
-    </div>
-    <div class="lead-packet">
-      <div class="lead-head"><div><strong>Example Rose lead packet</strong><br><span>What the business receives after a visitor talks to Rose</span></div><span class="status">ready for follow-up</span></div>
-      <div class="lead-body">
-        <div class="lead-col"><h4>Visitor</h4><ul><li>Name + phone/email</li><li>Preferred callback time</li><li>City or service area</li></ul></div>
-        <div class="lead-col"><h4>Request</h4><ul><li>What they need</li><li>Urgency level</li><li>Budget/pricing question</li></ul></div>
-        <div class="lead-col"><h4>Next action</h4><ul><li>Call back</li><li>Send quote</li><li>Book consult</li></ul></div>
-      </div>
-      <div class="lead-col"><div class="handoff"><span>Email alert</span><span>CRM-ready summary</span><span>Conversation notes</span><span>Lost-lead prevention</span></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="pricing">
+<section class="section pricing-section" id="pricing">
   <div class="wrap">
     <div class="eyebrow">Pricing</div>
-    <h2 class="sec-title">Rose pricing, <em>kept simple.</em></h2>
-    <p class="sec-sub">Start with chat. Add voice when you want the website to feel more like a real front desk.</p>
-    <div class="pricing">
-      <div class="plan">
-        <div class="plan-name">Rose Chat</div>
-        <div class="price">$29<span>/mo</span></div>
-        <div class="desc">Text chat assistant for FAQ answers and lead capture.</div>
-        <ul><li>Website chat widget</li><li>FAQ/business training</li><li>Lead capture flow</li><li>Email lead delivery</li></ul>
-        <a href="#cta" class="btn btn-outline">Start with Chat</a>
-      </div>
-      <div class="plan featured">
-        <div class="badge">Best Test</div>
-        <div class="plan-name">Rose Voice</div>
-        <div class="price">$99<span>/mo</span></div>
-        <div class="desc">Voice + chat assistant for visitors who would rather talk than type.</div>
-        <ul><li>Everything in Chat</li><li>Voice conversations</li><li>Quote/request intake</li><li>Conversation summaries</li><li>Priority setup</li></ul>
-        <a href="#cta" class="btn btn-dark">Add Rose Voice</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Install Setup</div>
-        <div class="price">$199<span> once</span></div>
-        <div class="desc">We install and configure Rose on your existing website.</div>
-        <ul><li>Widget installation</li><li>Business FAQ setup</li><li>Lead routing setup</li><li>Launch check</li></ul>
-        <a href="#cta" class="btn btn-outline">Get Installed</a>
-        <div class="note">Intro offer can waive setup for early testers.</div>
-      </div>
+    <h2 class="title">Keep the offer <em>obvious.</em></h2>
+    <p class="sub">Start cheap enough to test, then sell voice as the better front-desk experience.</p>
+    <div class="pricing-box">
+      <div class="pricing-row"><div><h3>Rose Chat</h3><p>Website chat assistant, FAQ training, lead capture, email lead delivery.</p></div><div class="price">$29<span>/mo</span></div><a class="btn btn-dark" href="#cta">Start chat</a></div>
+      <div class="pricing-row"><div><span class="badge">Best test</span><h3>Rose Voice</h3><p>Everything in Chat, plus voice conversations and cleaner visitor intake.</p></div><div class="price">$99<span>/mo</span></div><a class="btn btn-orange" href="#cta">Add voice</a></div>
+      <div class="pricing-row"><div><h3>Install setup</h3><p>Widget install, business memory setup, routing, and launch check.</p></div><div class="price">$199<span> once</span></div><a class="btn btn-dark" href="#cta">Get installed</a></div>
     </div>
   </div>
 </section>
 
-<section class="section section-white" id="fit">
+<section class="section" id="fit">
   <div class="wrap">
-    <div class="eyebrow">Who it fits</div>
-    <h2 class="sec-title">Built for businesses where <em>every lead matters.</em></h2>
-    <p class="sec-sub">Rose works best when customers ask similar questions before they call, quote, or book.</p>
-    <div class="niche-row">
-      <div class="niche">Contractors<span>Service area, job details, quote requests, urgency.</span></div>
-      <div class="niche">Vet clinics<span>Hours, services, appointment questions, intake details.</span></div>
-      <div class="niche">Med spas & clinics<span>Treatment questions, consult requests, location details.</span></div>
-      <div class="niche">Local services<span>Pricing ranges, availability, lead qualification.</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="section section-dark" id="faq">
-  <div class="wrap">
-    <div class="eyebrow">FAQ</div>
-    <h2 class="sec-title">Good <em>questions.</em></h2>
-    <div class="faq-list">
-      <div class="faq-item"><div class="faq-q">Is Rose replacing my phone?<span class="plus">+</span></div><div class="faq-a"><p>No. Rose handles website visitors first, captures details, and helps you follow up faster. You still control the call, booking, or quote.</p></div></div>
-      <div class="faq-item"><div class="faq-q">Does this work on my existing website?<span class="plus">+</span></div><div class="faq-a"><p>Usually yes. Rose installs with a small widget snippet. If your site supports custom code, it should work.</p></div></div>
-      <div class="faq-item"><div class="faq-q">What does Rose need to know?<span class="plus">+</span></div><div class="faq-a"><p>Your services, hours, location, service area, common questions, and the details you want collected from each lead.</p></div></div>
-      <div class="faq-item"><div class="faq-q">Can Rose book appointments?<span class="plus">+</span></div><div class="faq-a"><p>The first version focuses on answering questions and capturing leads. Booking can be added if you already use a booking link or scheduling flow.</p></div></div>
-      <div class="faq-item"><div class="faq-q">Who is behind Rose?<span class="plus">+</span></div><div class="faq-a"><p>Rose is built and operated by Wildrose Automations in Edmonton, Alberta.</p></div></div>
+    <div class="eyebrow">Best first niches</div>
+    <h2 class="title">Use Rose where missed questions cost money.</h2>
+    <div class="fit-grid">
+      <div class="fit">Contractors<span>Quote requests, service areas, job details, urgency.</span></div>
+      <div class="fit">Vet clinics<span>Hours, services, appointment questions, intake details.</span></div>
+      <div class="fit">Med spas<span>Treatment questions, consult requests, location details.</span></div>
+      <div class="fit">Local services<span>Pricing ranges, availability, lead qualification.</span></div>
     </div>
   </div>
 </section>
@@ -171,25 +131,12 @@ nav{background:#000;border-bottom:1px solid rgba(255,255,255,.1);padding:16px 0}
   <div class="wrap">
     <h2>Want Rose answering <em>this week?</em></h2>
     <p>Send your website and business type. We’ll reply with the best Rose setup for your site.</p>
-    <div class="cta-btns">
-      <a href="mailto:jack@wildroseautomations.ca?subject=Add%20Rose%20to%20my%20website" class="btn btn-orange">Email Us →</a>
-      <a href="https://twitter.com/wildroseai" target="_blank" rel="noopener" class="btn btn-light">Message @wildroseai</a>
-    </div>
-    <div class="cta-note">Rose by Wildrose Automations · Edmonton, AB</div>
+    <div class="cta-btns"><a href="mailto:jack@wildroseautomations.ca?subject=Add%20Rose%20to%20my%20website" class="btn btn-orange">Email Us →</a><a href="https://twitter.com/wildroseai" target="_blank" rel="noopener" class="btn btn-soft">Message @wildroseai</a></div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="ft-brand">Rose by Wildrose Automations</div>
-    <div class="ft-links"><a href="#pricing">Pricing</a><a href="mailto:jack@wildroseautomations.ca">Email</a><a href="https://twitter.com/wildroseai" target="_blank" rel="noopener">X / Twitter</a></div>
-  </div>
-</footer>
-
-<script>
-document.querySelectorAll('.faq-item').forEach(item=>{item.querySelector('.faq-q').addEventListener('click',()=>{const wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!wasOpen)item.classList.add('open')})});
-</script>
-<script src="/wildrose-widget-sandbox.js?v=rose-only-test-1" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" data-accent="#ff5722" data-mount="#rose-hero-widget" data-inline="true"></script>
+<footer><div class="wrap"><div class="ft-brand">Rose by Wildrose Automations</div><div class="ft-links"><a href="#pricing">Pricing</a><a href="mailto:jack@wildroseautomations.ca">Email</a><a href="https://twitter.com/wildroseai" target="_blank" rel="noopener">X / Twitter</a></div></div></footer>
+<script src="/wildrose-widget-sandbox.js?v=rose-only-test-2" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" data-accent="#ff5722" data-mount="#rose-hero-widget" data-inline="true"></script>
 <script>
 (function(){let corner=false;function setRoseCorner(next){const slot=document.querySelector('#rose-hero-widget');const root=document.querySelector('#rose-hero-widget .wr-ai');if(!slot||!root)return;if(corner===next)return;corner=next;slot.classList.toggle('corner-active',corner);root.classList.toggle('corner',corner);root.classList.remove('corner-open');const panel=root.querySelector('.wr-panel');const fab=root.querySelector('.wr-fab');if(corner){panel?.classList.remove('open');if(fab)fab.style.display='grid'}else{panel?.classList.add('open');if(fab)fab.style.display='none'}}function sync(){const hero=document.querySelector('.hero');const root=document.querySelector('#rose-hero-widget .wr-ai');if(!hero||!root)return;const heroBottom=hero.offsetTop+hero.offsetHeight;const y=window.scrollY;if(!corner&&y>heroBottom-170)setRoseCorner(true);else if(corner&&y<heroBottom-320)setRoseCorner(false)}function bind(){const root=document.querySelector('#rose-hero-widget .wr-ai');if(!root||root.dataset.cornerBound)return;root.dataset.cornerBound='true';root.querySelector('.wr-fab')?.addEventListener('click',()=>root.classList.add('corner-open'));root.querySelector('.wr-close')?.addEventListener('click',()=>root.classList.remove('corner-open'))}window.addEventListener('scroll',sync,{passive:true});window.addEventListener('resize',sync);window.addEventListener('load',()=>{bind();sync()});setTimeout(()=>{bind();sync()},400)})();
 </script>
