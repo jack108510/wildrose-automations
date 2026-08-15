@@ -232,6 +232,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 /* BLACK THEME MOCKUP SECTION */
 .mockup-cta{position:relative;overflow:hidden;background:#050505;color:#fff;padding:88px 0 110px;border-top:1px solid rgba(255,255,255,.08)}
 .mockup-cta:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0,rgba(255,87,34,.22),transparent 34%),linear-gradient(180deg,#050505,#0a0a0a);pointer-events:none}.mockup-cta .wrap{position:relative;z-index:1;text-align:center}.mockup-tag{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);border-radius:999px;padding:8px 13px;color:rgba(255,255,255,.72);font-size:13px;font-weight:800}.mockup-tag span{width:8px;height:8px;border-radius:50%;background:#24b46b;box-shadow:0 0 18px rgba(36,180,107,.55)}.mockup-cta h2{font-size:clamp(43px,7vw,82px);letter-spacing:-.075em;line-height:.94;margin:18px auto 14px;max-width:900px;font-weight:900}.mockup-cta h2 em{font-style:normal;color:#ff5722}.mockup-cta p{font-size:18px;line-height:1.55;color:rgba(255,255,255,.62);max-width:680px;margin:0 auto 28px}.mockup-search{max-width:860px;margin:0 auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:9px;box-shadow:0 30px 90px rgba(0,0,0,.34),0 0 70px rgba(255,87,34,.09);display:grid;grid-template-columns:1fr auto;gap:8px;backdrop-filter:blur(18px)}.mockup-search input{border:0;outline:0;background:transparent;padding:18px 20px;font-size:23px;font-weight:800;color:#fff;min-width:0}.mockup-search input::placeholder{color:rgba(255,255,255,.38)}.mockup-search .btn{border-radius:20px;padding:16px 22px}.mockup-micro{margin-top:15px;color:rgba(255,255,255,.42);font-size:13px;font-weight:750}@media(max-width:620px){.mockup-cta{padding:70px 0 88px}.mockup-search{grid-template-columns:1fr;border-radius:24px}.mockup-search input{font-size:18px;padding:16px}.mockup-search .btn{justify-content:center;width:100%}}
+.mockup-frame-wrap{display:none;position:relative;z-index:1;width:min(1120px,calc(100% - 48px));margin:34px auto 0;border:1px solid rgba(255,255,255,.14);border-radius:32px;overflow:hidden;background:#0b0b0b;box-shadow:0 36px 120px rgba(0,0,0,.52),0 0 70px rgba(255,87,34,.08)}.mockup-frame-wrap.show{display:block}.mockup-frame-top{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.10);color:rgba(255,255,255,.55);font-size:13px;font-weight:800}.mockup-frame-top i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18)}.mockup-frame-top span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mockup-frame{display:block;width:100%;height:min(980px,88vh);border:0;background:#fbf7f1}.mockup-status{display:none;margin:18px auto 0;color:rgba(255,255,255,.55);font-size:13px;font-weight:750}.mockup-status.show{display:block}@media(max-width:620px){.mockup-frame-wrap{width:calc(100% - 28px);border-radius:22px}.mockup-frame{height:780px}.mockup-frame-top{font-size:12px}}
 /* END BLACK THEME MOCKUP SECTION */
 </style>
 </head>
@@ -258,7 +259,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
     <h1>Give your website<br><em>a front desk.</em></h1>
     <p class="lead">Rose answers questions, captures quote requests, and sends the lead to you — while the visitor is still on the page.</p>
     <div class="hero-cta">
-      <a href="ai-tool-mockup-final.html" class="btn btn-orange">Get Rose on My Site</a>
+      <a href="#mockup" class="btn btn-orange">Get Rose on My Site</a>
     </div>
     <div class="rose-hero-widget" id="rose-hero-widget"></div>
   </div>
@@ -274,6 +275,11 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
       <button class="btn btn-hl" type="submit">Build mockup →</button>
     </form>
     <div class="mockup-micro">Website first · branded preview · Rose overlay</div>
+    <div class="mockup-status" id="mockupStatus">Building the preview below…</div>
+  </div>
+  <div class="mockup-frame-wrap" id="mockupFrameWrap" aria-label="Rose site mockup preview">
+    <div class="mockup-frame-top"><i></i><i></i><i></i><span id="mockupFrameLabel">Rose mockup preview</span></div>
+    <iframe class="mockup-frame" id="mockupFrame" title="Rose mockup preview" loading="lazy"></iframe>
   </div>
 </section>
 
@@ -290,13 +296,35 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 (function(){
   const form=document.querySelector('#roseMockupForm');
   const input=document.querySelector('#roseMockupWebsite');
-  if(!form||!input)return;
+  const frame=document.querySelector('#mockupFrame');
+  const frameWrap=document.querySelector('#mockupFrameWrap');
+  const frameLabel=document.querySelector('#mockupFrameLabel');
+  const status=document.querySelector('#mockupStatus');
+  if(!form||!input||!frame||!frameWrap)return;
+  function buildInline(raw){
+    const site=raw.trim();
+    if(!site){input.focus();return;}
+    const clean=site.replace(/^https?:\/\//i,'').replace(/\/$/,'');
+    frameLabel.textContent='Building Rose mockup for '+clean;
+    status?.classList.add('show');
+    frameWrap.classList.add('show');
+    frame.src='ai-tool-mockup-final.html?website='+encodeURIComponent(site)+'&embed=1';
+    frameWrap.scrollIntoView({behavior:'smooth',block:'start'});
+  }
   form.addEventListener('submit',e=>{
     e.preventDefault();
-    const raw=input.value.trim();
-    if(!raw){input.focus();return;}
-    location.href='ai-tool-mockup-final.html?website='+encodeURIComponent(raw);
+    buildInline(input.value);
   });
+  frame.addEventListener('load',()=>{
+    status?.classList.remove('show');
+    const clean=(input.value||'').replace(/^https?:\/\//i,'').replace(/\/$/,'');
+    frameLabel.textContent=clean ? 'Rose mockup for '+clean : 'Rose mockup preview';
+  });
+  const initialWebsite=new URLSearchParams(location.search).get('website');
+  if(initialWebsite){
+    input.value=initialWebsite;
+    window.addEventListener('load',()=>setTimeout(()=>buildInline(initialWebsite),250));
+  }
 })();
 </script>
 <script>

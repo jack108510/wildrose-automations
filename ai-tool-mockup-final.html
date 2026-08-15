@@ -87,7 +87,7 @@ body.setup-mode.ready .screen{border-color:color-mix(in srgb,var(--orange) 16%,#
 /* END CENTERED POST-MOCKUP BUY BUTTON */
 
 /* END ROSE FUNNEL PREVIEW */
-
+body.embed-mode .top,body.embed-mode .hero{display:none!important}body.embed-mode{background:#fbf7f1!important}body.embed-mode .mock-section{margin-top:0!important;padding-top:22px!important}body.embed-mode .mock-section.show{display:block!important}
 </style>
 </head>
 <body>
@@ -169,6 +169,8 @@ function render(){const data=state.data;if(!data)return;const brand=data.brandNa
 async function generate(e){e?.preventDefault();const website=input.value.trim();if(!website)return;document.body.classList.add('setup-mode','scanning');document.body.classList.remove('ready');mock.classList.add('show');$('loadingDomain').textContent=cleanUrl(website);stage.innerHTML='';build.disabled=true;const old=build.textContent;build.textContent='Building…';mock.scrollIntoView({behavior:'smooth',block:'start'});const minLoad=new Promise(r=>setTimeout(r,3000));try{const dataPromise=postJson(API+'/api/site-mockup',{website,sourcePage:location.href});const data=await dataPromise;await minLoad;state={data,mode:data.recommendation==='complete-rebuild'?'rebuild':'facelift',tool:'voice',compact:false};render()}catch(err){await minLoad;document.body.classList.remove('scanning');document.body.classList.add('ready');stage.innerHTML=`<div class="screen"><div class="browser"><div class="chrome"><span class="light"></span><span class="light"></span><span class="light"></span><div class="addr">error</div></div><div class="fallback on"><div class="fake-hero"><h2>Could not build that preview.</h2><p>${esc(err.name==='AbortError'?'The site scan took too long. Try a simpler public URL.':(err.message||'Unknown error'))}</p></div></div></div></div>`}finally{build.disabled=false;build.textContent=old}}
 form.addEventListener('submit',generate);input.addEventListener('keydown',e=>{if(e.key==='Enter')generate(e)});
 const initialWebsite=new URLSearchParams(location.search).get('website');
+const embedMode=new URLSearchParams(location.search).get('embed')==='1';
+if(embedMode) document.body.classList.add('embed-mode');
 if(initialWebsite){
   input.value=initialWebsite;
   window.addEventListener('load',()=>setTimeout(()=>generate(),250));
