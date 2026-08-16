@@ -66,7 +66,7 @@ body{background:radial-gradient(circle at 14% -8%,var(--rose-accent-soft),transp
   <aside class="rose-side" aria-label="Live Rose preview">
     <div class="preview-head"><div><small>Rose Preview</small><b id="previewTitle">Rose for Swift Line Locating</b></div><span class="pill" id="planPill">Pro</span></div>
     <div class="rose-stage"><div id="roseLiveMount"></div></div>
-    <div class="glass snippet" id="snippetText">&lt;script src="https://wildrose-widget.wildeautomations.com/rose.js?client=swift-locating" async&gt;&lt;/script&gt;</div>
+    <div class="glass snippet" id="snippetText">&lt;script src="https://wildrose-widget.wildeautomations.com/wildrose-widget.js?client=swift-locating" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" async&gt;&lt;/script&gt;</div>
   </aside>
 </div>
 <div class="toast" id="toast">Saved</div>
@@ -75,7 +75,7 @@ body{background:radial-gradient(circle at 14% -8%,var(--rose-accent-soft),transp
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const sites={swift:{name:'Swift Line Locating',slug:'swift-locating',plan:'Pro'},vet:{name:'Vet INC',slug:'vet-inc',plan:'Basic'},demo:{name:'Demo Landscaping Co.',slug:'demo-landscaping',plan:'Basic'}};
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
-function syncSite(site){$('#businessName').value=site.name;$('#previewTitle').textContent=`Rose for ${site.name}`;$('#planPill').textContent=site.plan;$('#snippetText').textContent=`<script src="https://wildrose-widget.wildeautomations.com/rose.js?client=${site.slug}" async><\/script>`}
+function syncSite(site){$('#businessName').value=site.name;$('#previewTitle').textContent=`Rose for ${site.name}`;$('#planPill').textContent=site.plan;$('#snippetText').textContent=`<script src="https://wildrose-widget.wildeautomations.com/wildrose-widget.js?client=${site.slug}" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" async><\/script>`}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(!b)return;$$('.tab').forEach(x=>x.classList.toggle('active',x===b));$$('.view').forEach(v=>v.classList.toggle('active',v.id===b.dataset.view))});
 $('#siteSelect').addEventListener('change',e=>{syncSite(sites[e.target.value]);toast(`Switched to ${sites[e.target.value].name}`)});
 $('#businessName').addEventListener('input',e=>{$('#previewTitle').textContent=`Rose for ${e.target.value||'this site'}`});
