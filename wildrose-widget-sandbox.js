@@ -185,16 +185,40 @@
         api("/api/voice/start", { page: location.href })
       ]);
       retellClient = new RetellWebClient();
-      retellClient.on("call_started", () => { panel.classList.remove("speaking"); status.textContent = "Listening"; note.textContent = "Speak naturally. Interrupt anytime."; orb.classList.add("live", "listening"); orb.classList.remove("speaking"); $(".wr-start-voice").style.display = "none"; $(".wr-end-voice").style.display = "inline-block"; });
+      let speechReleaseTimer = null;
+      const SPEECH_RELEASE_DELAY = 1150;
+      const clearSpeechRelease = () => {
+        if (speechReleaseTimer) clearTimeout(speechReleaseTimer);
+        speechReleaseTimer = null;
+      };
+      const setRoseSpeaking = () => {
+        clearSpeechRelease();
+        panel.classList.add("speaking");
+        status.textContent = "Rose is speaking";
+        orb.classList.add("live", "speaking");
+        orb.classList.remove("listening");
+      };
+      const setListening = () => {
+        clearSpeechRelease();
+        panel.classList.remove("speaking");
+        status.textContent = "Listening";
+        orb.classList.add("live", "listening");
+        orb.classList.remove("speaking");
+      };
+      const easeBackToListening = () => {
+        clearSpeechRelease();
+        speechReleaseTimer = setTimeout(setListening, SPEECH_RELEASE_DELAY);
+      };
+      retellClient.on("call_started", () => { setListening(); note.textContent = "Speak naturally. Interrupt anytime."; $(".wr-start-voice").style.display = "none"; $(".wr-end-voice").style.display = "inline-block"; });
       retellClient.on("update", handleTranscriptUpdate);
       retellClient.on("transcript", handleTranscriptUpdate);
       retellClient.on("conversation_updated", handleTranscriptUpdate);
-      retellClient.on("agent_start_talking", () => { panel.classList.add("speaking"); status.textContent = "Rose is speaking"; orb.classList.add("speaking"); orb.classList.remove("listening"); });
-      retellClient.on("agent_stop_talking", () => { panel.classList.remove("speaking"); status.textContent = "Listening"; orb.classList.add("listening"); orb.classList.remove("speaking"); });
-      retellClient.on("user_start_talking", () => { panel.classList.remove("speaking"); status.textContent = "Listening"; orb.classList.add("listening"); orb.classList.remove("speaking"); });
-      retellClient.on("user_stop_talking", () => { panel.classList.remove("speaking"); status.textContent = "Thinking"; orb.classList.remove("listening", "speaking"); });
-      retellClient.on("call_ended", () => { panel.classList.remove("speaking"); status.textContent = "Call ended"; note.textContent = "Start another conversation anytime."; orb.classList.remove("live", "listening", "speaking"); $(".wr-start-voice").style.display = "inline-block"; $(".wr-end-voice").style.display = "none"; });
-      retellClient.on("error", err => { panel.classList.remove("speaking"); console.error(err); status.textContent = "Voice connection failed"; note.textContent = "Please check microphone permission or use chat."; orb.classList.remove("live", "listening", "speaking"); });
+      retellClient.on("agent_start_talking", setRoseSpeaking);
+      retellClient.on("agent_stop_talking", easeBackToListening);
+      retellClient.on("user_start_talking", setListening);
+      retellClient.on("user_stop_talking", () => { clearSpeechRelease(); panel.classList.remove("speaking"); status.textContent = "Thinking"; orb.classList.remove("listening", "speaking"); });
+      retellClient.on("call_ended", () => { clearSpeechRelease(); panel.classList.remove("speaking"); status.textContent = "Call ended"; note.textContent = "Start another conversation anytime."; orb.classList.remove("live", "listening", "speaking"); $(".wr-start-voice").style.display = "inline-block"; $(".wr-end-voice").style.display = "none"; });
+      retellClient.on("error", err => { clearSpeechRelease(); panel.classList.remove("speaking"); console.error(err); status.textContent = "Voice connection failed"; note.textContent = "Please check microphone permission or use chat."; orb.classList.remove("live", "listening", "speaking"); });
       await retellClient.startCall({ accessToken: call.accessToken });
     } catch (err) {
       console.error(err);
