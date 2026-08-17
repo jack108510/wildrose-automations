@@ -74,6 +74,31 @@
     @media(max-width:600px){.card-grid,.pricing-grid{grid-template-columns:1fr}.cover h1{font-size:2.2rem}.catnav .inner{gap:1rem}}
     @media print{.catnav{position:static}body{font-size:12pt}}
   </style>
+<!-- Wildrose analytics: Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","y3isf2gtkw");
+window.wrTrack=function(name){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};
+document.addEventListener("click",function(e){
+  var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
+  var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
+  var eventName="";
+  if(txt.includes("buy your agent")||txt.includes("continue to checkout")) eventName="rose_buy_clicked";
+  else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
+  else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
+  else if(txt.includes("book")||txt.includes("call")) eventName="rose_setup_call_clicked";
+  if(eventName) window.wrTrack(eventName);
+},true);
+document.addEventListener("submit",function(e){
+  var id=e.target&&e.target.id;
+  if(id==="checkoutForm"||id==="roseLeadForm") window.wrTrack("rose_checkout_lead_submit");
+  if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
+  if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
+},true);
+</script>
 </head>
 <body>
 

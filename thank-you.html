@@ -13,5 +13,30 @@
 body{display:block;padding:0;background:radial-gradient(circle at 50% 16%,rgba(255,87,34,.20),transparent 30%),linear-gradient(#050505,#000 46%,#141414 100%);color:#fff}.wrap{width:min(1120px,calc(100% - 48px));margin:0 auto}.site-nav{height:66px;background:#000;border-bottom:1px solid rgba(255,255,255,.10)}.site-nav .wrap{height:66px;display:flex;align-items:center;justify-content:flex-start}.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:900;letter-spacing:-.035em}.brand img{width:28px;height:28px;border-radius:8px}.card{margin:86px auto 60px;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.48));color:#171411;border-color:rgba(255,255,255,.52);backdrop-filter:blur(28px);box-shadow:0 40px 140px rgba(0,0,0,.35)}.eyebrow{background:rgba(255,255,255,.8)}h1{color:#111}p{color:#756b62}.step{background:rgba(255,255,255,.82)}
 /* END WILDROSE HOMEPAGE ALIGNMENT */
 </style>
+<!-- Wildrose analytics: Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","y3isf2gtkw");
+window.wrTrack=function(name){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};
+document.addEventListener("click",function(e){
+  var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
+  var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
+  var eventName="";
+  if(txt.includes("buy your agent")||txt.includes("continue to checkout")) eventName="rose_buy_clicked";
+  else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
+  else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
+  else if(txt.includes("book")||txt.includes("call")) eventName="rose_setup_call_clicked";
+  if(eventName) window.wrTrack(eventName);
+},true);
+document.addEventListener("submit",function(e){
+  var id=e.target&&e.target.id;
+  if(id==="checkoutForm"||id==="roseLeadForm") window.wrTrack("rose_checkout_lead_submit");
+  if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
+  if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
+},true);
+</script>
 </head>
 <body><nav class="site-nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a></div></nav><main class="card"><span class="eyebrow">Rose setup received</span><h1>You’re <em>all set.</em></h1><p>We’ll review the website details and help get Rose live. If the current site can’t support Rose, we’ll use a simple Wildrose-hosted page or refund the first payment.</p><div class="steps"><div class="step"><b>Review</b><span>We check the website/platform and install path.</span></div><div class="step"><b>Configure</b><span>Rose gets business context, lead routing, and plan limits.</span></div><div class="step"><b>Launch</b><span>We test chat/voice and confirm Rose is live.</span></div></div><div class="btns"><a class="btn primary" href="index.html">Back to Wildrose</a><a class="btn ghost" href="mailto:jack@wildroseautomations.ca">Email us</a></div></main></body></html>

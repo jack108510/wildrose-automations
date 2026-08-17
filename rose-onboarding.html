@@ -22,6 +22,31 @@ body{background:#fbf7f1!important}.site-nav{height:66px;background:#000;border-b
 body{background:linear-gradient(180deg,#fffaf5,#fbf7f1)!important}.site-nav{background:#fff!important;border-bottom:1px solid #eadfd2!important}.site-nav .brand{color:#171411!important}.site-nav .pill{background:#fff7f2!important;border-color:#eadfd2!important;color:#8a4b31!important}.hero{padding:42px 0 24px!important;background:radial-gradient(circle at 50% 0%,rgba(255,87,34,.10),transparent 35%),#fbf7f1!important;color:#171411!important;text-align:center!important}.hero .eyebrow{background:#fff!important;border-color:#eadfd2!important;color:#8a4b31!important}.hero h1{font-size:clamp(42px,6vw,68px)!important;line-height:.96!important;letter-spacing:-.065em!important;color:#171411!important;max-width:none!important;margin:14px auto 10px!important}.hero h1 em{display:inline!important;color:#171411!important}.hero p{font-size:18px!important;line-height:1.45!important;color:#756b62!important;max-width:560px!important;margin:0 auto!important}.simple-flow{grid-template-columns:minmax(0,720px)!important;justify-content:center!important;gap:14px!important;margin-top:0!important;padding-top:18px!important}.simple-flow aside{display:none!important}.simple-flow .card{border-radius:28px!important;padding:26px!important;box-shadow:0 24px 70px rgba(65,38,18,.08)!important}.simple-flow .card h2{font-size:30px!important}.simple-flow .form-grid{grid-template-columns:1fr 1fr!important;gap:13px!important}.simple-flow .field.full{grid-column:1/-1!important}.install-chooser.calm{display:block!important}.primary-choice span{min-height:92px!important}.primary-choice span:after{content:'Recommended'!important}.other-install-options{margin-top:10px;border:1px solid #eadfd2;border-radius:18px;background:#fff;overflow:hidden}.other-install-options summary{cursor:pointer;padding:13px 15px;font-weight:900;color:#6f4633;list-style:none}.other-install-options summary::-webkit-details-marker{display:none}.other-install-options summary:after{content:'+';float:right;color:var(--orange);font-size:20px;line-height:1}.other-install-options[open] summary:after{content:'–'}.other-options-grid{display:grid;grid-template-columns:1fr;gap:10px;padding:0 12px 12px}.other-options-grid .install-option span{min-height:82px!important;box-shadow:none!important}.helper-box{font-size:14px!important;padding:12px 14px!important}.btn{margin-top:12px!important}.note{font-size:13px!important;color:#8a7a6e!important}@media(max-width:760px){.simple-flow .form-grid{grid-template-columns:1fr!important}.hero{text-align:left!important}.hero p{margin:0!important}.simple-flow .card{padding:20px!important}}
 /* END LOW-OVERWHELM ONBOARDING OVERRIDE */
 </style>
+<!-- Wildrose analytics: Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","y3isf2gtkw");
+window.wrTrack=function(name){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};
+document.addEventListener("click",function(e){
+  var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
+  var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
+  var eventName="";
+  if(txt.includes("buy your agent")||txt.includes("continue to checkout")) eventName="rose_buy_clicked";
+  else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
+  else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
+  else if(txt.includes("book")||txt.includes("call")) eventName="rose_setup_call_clicked";
+  if(eventName) window.wrTrack(eventName);
+},true);
+document.addEventListener("submit",function(e){
+  var id=e.target&&e.target.id;
+  if(id==="checkoutForm"||id==="roseLeadForm") window.wrTrack("rose_checkout_lead_submit");
+  if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
+  if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
+},true);
+</script>
 </head>
 <body>
 <nav class="site-nav"><div class="wrap nav-wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a><span class="pill" id="planPill">Rose onboarding</span></div></nav>

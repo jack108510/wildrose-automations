@@ -89,6 +89,31 @@ body.setup-mode.ready .screen{border-color:color-mix(in srgb,var(--orange) 16%,#
 /* END ROSE FUNNEL PREVIEW */
 body.embed-mode .top,body.embed-mode .hero{display:none!important}body.embed-mode{background:#fbf7f1!important}body.embed-mode .mock-section{margin-top:0!important;padding-top:22px!important}body.embed-mode .mock-section.show{display:block!important}
 </style>
+<!-- Wildrose analytics: Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","y3isf2gtkw");
+window.wrTrack=function(name){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};
+document.addEventListener("click",function(e){
+  var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
+  var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
+  var eventName="";
+  if(txt.includes("buy your agent")||txt.includes("continue to checkout")) eventName="rose_buy_clicked";
+  else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
+  else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
+  else if(txt.includes("book")||txt.includes("call")) eventName="rose_setup_call_clicked";
+  if(eventName) window.wrTrack(eventName);
+},true);
+document.addEventListener("submit",function(e){
+  var id=e.target&&e.target.id;
+  if(id==="checkoutForm"||id==="roseLeadForm") window.wrTrack("rose_checkout_lead_submit");
+  if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
+  if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
+},true);
+</script>
 </head>
 <body>
 <nav class="top"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="Wildrose">Wildrose</a><div class="draft">Rose preview</div></div></nav>
