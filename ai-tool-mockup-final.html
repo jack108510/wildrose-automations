@@ -96,7 +96,24 @@ body.embed-mode .top,body.embed-mode .hero{display:none!important}body.embed-mod
   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window,document,"clarity","script","y3isf2gtkw");
-window.wrTrack=function(name){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};
+window.wrTrack=function(name,params){
+  try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}
+  try{
+    if(window.fbq&&name){
+      var map={
+        rose_mockup_started:"Lead",
+        rose_mockup_submit:"Lead",
+        rose_buy_clicked:"InitiateCheckout",
+        rose_checkout_lead_submit:"InitiateCheckout",
+        rose_onboarding_submit:"CompleteRegistration",
+        rose_setup_submit_clicked:"CompleteRegistration",
+        rose_setup_call_clicked:"Contact"
+      };
+      if(map[name]) window.fbq("track",map[name],params||{});
+      window.fbq("trackCustom",name,params||{});
+    }
+  }catch(e){}
+};
 document.addEventListener("click",function(e){
   var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
   var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
@@ -114,6 +131,24 @@ document.addEventListener("submit",function(e){
   if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
 },true);
 </script>
+
+<!-- Meta Pixel: Rose ads -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2453637905131468');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
+/></noscript>
+
 </head>
 <body>
 <nav class="top"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="Wildrose">Wildrose</a><div class="draft">Rose preview</div></div></nav>

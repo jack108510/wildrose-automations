@@ -20,7 +20,24 @@ body{display:block;padding:0;background:radial-gradient(circle at 50% 16%,rgba(2
   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window,document,"clarity","script","y3isf2gtkw");
-window.wrTrack=function(name){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};
+window.wrTrack=function(name,params){
+  try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}
+  try{
+    if(window.fbq&&name){
+      var map={
+        rose_mockup_started:"Lead",
+        rose_mockup_submit:"Lead",
+        rose_buy_clicked:"InitiateCheckout",
+        rose_checkout_lead_submit:"InitiateCheckout",
+        rose_onboarding_submit:"CompleteRegistration",
+        rose_setup_submit_clicked:"CompleteRegistration",
+        rose_setup_call_clicked:"Contact"
+      };
+      if(map[name]) window.fbq("track",map[name],params||{});
+      window.fbq("trackCustom",name,params||{});
+    }
+  }catch(e){}
+};
 document.addEventListener("click",function(e){
   var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
   var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
@@ -38,5 +55,23 @@ document.addEventListener("submit",function(e){
   if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
 },true);
 </script>
+
+<!-- Meta Pixel: Rose ads -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2453637905131468');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
+/></noscript>
+
 </head>
 <body><nav class="site-nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a></div></nav><main class="card"><span class="eyebrow">Rose setup received</span><h1>Your install packet is <em>started.</em></h1><p>Rose has saved your setup details and generated the internal client profile. We’ll review the site path, verify lead routing, and send the install snippet or hosted-page link.</p><div class="steps"><div class="step"><b>Client profile</b><span>Your business context and lead destination are saved for Rose.</span></div><div class="step"><b>Install snippet</b><span>We prepare the website snippet or Wildrose-hosted page.</span></div><div class="step"><b>Launch test</b><span>We test chat, voice, and lead email before calling it live.</span></div></div><div class="btns"><a class="btn primary" href="index.html">Back to Wildrose</a><a class="btn ghost" href="mailto:jack@wildroseautomations.ca">Email us</a></div></main></body></html>
