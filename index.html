@@ -229,6 +229,12 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 @media(max-width:520px){.wr-ai.inline.corner{right:12px!important;bottom:12px!important}.wr-ai.inline.corner .wr-panel{width:calc(100vw - 24px)!important;height:min(620px,calc(100vh - 24px))!important}}
 /* END ROSE SCROLL-TO-CORNER BEHAVIOR */
 
+/* ROSE LAUNCH CREDIT POPUP */
+.rose-credit-card{position:fixed;right:22px;bottom:22px;z-index:2147482600;width:min(372px,calc(100vw - 28px));padding:18px;border:1px solid rgba(255,87,34,.34);border-radius:26px;background:linear-gradient(180deg,rgba(20,20,20,.96),rgba(7,7,7,.96));color:#fff;box-shadow:0 28px 90px rgba(0,0,0,.42),0 0 70px rgba(255,87,34,.14),inset 0 1px rgba(255,255,255,.10);transform:translateY(18px) scale(.985);opacity:0;pointer-events:none;transition:opacity .28s ease,transform .28s cubic-bezier(.2,.8,.2,1);backdrop-filter:blur(18px)}
+.rose-credit-card.show{opacity:1;transform:none;pointer-events:auto}.rose-credit-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}.rose-credit-kicker{display:inline-flex;align-items:center;gap:9px;color:rgba(255,255,255,.72);font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.rose-credit-kicker span{width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 18px rgba(255,87,34,.78)}.rose-credit-close{display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.12);border-radius:50%;background:rgba(255,255,255,.06);color:rgba(255,255,255,.64);font-size:18px;line-height:1;cursor:pointer}.rose-credit-close:hover{color:#fff;background:rgba(255,255,255,.12)}.rose-credit-card h3{font-size:25px;line-height:1.04;letter-spacing:-.055em;margin:0 0 10px;font-weight:900}.rose-credit-card p{font-size:14px;line-height:1.55;color:rgba(255,255,255,.66);margin:0 0 16px}.rose-credit-form{display:grid;gap:10px}.rose-credit-form input{width:100%;height:46px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(255,255,255,.075);color:#fff;padding:0 14px;font:inherit;font-size:14px;outline:none}.rose-credit-form input::placeholder{color:rgba(255,255,255,.38)}.rose-credit-form input:focus{border-color:rgba(255,87,34,.72);box-shadow:0 0 0 3px rgba(255,87,34,.13)}.rose-credit-form button{height:48px;border:0;border-radius:14px;background:#ff5722;color:#fff;font:inherit;font-size:14px;font-weight:850;cursor:pointer;box-shadow:0 14px 38px rgba(255,87,34,.24)}.rose-credit-form button:hover{background:#f04e1c;transform:translateY(-1px)}.rose-credit-form button:disabled{opacity:.72;cursor:wait;transform:none}.rose-credit-foot{display:block;margin-top:10px;font-size:12px;color:rgba(255,255,255,.42)}.rose-credit-success{display:none;margin-top:12px;padding:12px 13px;border-radius:14px;background:rgba(35,197,94,.12);border:1px solid rgba(35,197,94,.25);color:#c7f8d9;font-size:13px;line-height:1.45}.rose-credit-card.done .rose-credit-form,.rose-credit-card.done .rose-credit-foot{display:none}.rose-credit-card.done .rose-credit-success{display:block}@media(max-width:640px){.rose-credit-card{left:14px;right:14px;bottom:14px;width:auto;border-radius:24px;padding:16px}.rose-credit-card h3{font-size:23px}}
+/* END ROSE LAUNCH CREDIT POPUP */
+
+
 /* BLACK THEME MOCKUP SECTION */
 .mockup-cta{position:relative;overflow:hidden;background:#000;color:#fff;padding:150px 0 260px;margin-top:-1px;border-top:0;isolation:isolate}
 .mockup-cta:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 22%,rgba(255,87,34,.18),transparent 28%),radial-gradient(circle at 82% 70%,rgba(255,87,34,.20),transparent 22%),radial-gradient(circle at 18% 84%,rgba(255,255,255,.075),transparent 20%),#000;pointer-events:none}.mockup-cta:after{content:'';position:absolute;right:max(28px,9vw);bottom:105px;width:138px;height:138px;border-radius:34px;background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,87,34,.16));border:1px solid rgba(255,255,255,.18);box-shadow:0 28px 90px rgba(255,87,34,.28),inset 0 1px rgba(255,255,255,.25);transform:rotate(-9deg);opacity:.64;pointer-events:none}.mockup-cta .wrap{position:relative;z-index:1;text-align:center}.mockup-tag{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,87,34,.28);background:linear-gradient(180deg,rgba(255,87,34,.16),rgba(255,255,255,.055));border-radius:999px;padding:9px 14px;color:rgba(255,255,255,.78);font-size:13px;font-weight:850;box-shadow:0 18px 52px rgba(255,87,34,.10)}.mockup-tag span{width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 18px rgba(255,87,34,.70)}.mockup-cta h2{font-size:clamp(44px,7vw,86px);letter-spacing:-.082em;line-height:.90;margin:28px auto 30px;max-width:940px;font-weight:950}.mockup-cta h2 em{font-style:normal;color:#ff5722;text-shadow:0 0 36px rgba(255,87,34,.28)}.mockup-cta p{font-size:18px;line-height:1.7;color:rgba(255,255,255,.64);max-width:690px;margin:0 auto 48px}.mockup-search{position:relative;max-width:860px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));border:1px solid rgba(255,255,255,.18);border-radius:34px;padding:14px;box-shadow:0 34px 110px rgba(0,0,0,.46),0 0 90px rgba(255,87,34,.16),inset 0 1px rgba(255,255,255,.12);display:grid;grid-template-columns:1fr auto;gap:10px;backdrop-filter:blur(22px)}.mockup-search:before{content:'Your website';position:absolute;left:26px;top:15px;color:rgba(255,255,255,.36);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.12em}.mockup-search input{border:0;outline:0;background:transparent;padding:30px 22px 13px;font-size:23px;font-weight:850;color:#fff;min-width:0}.mockup-search input::placeholder{color:rgba(255,255,255,.35)}.mockup-search .btn{border-radius:22px;padding:17px 25px;box-shadow:0 18px 48px rgba(255,87,34,.26)}.mockup-micro{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px;color:rgba(255,255,255,.46);font-size:13px;font-weight:800}.mockup-micro span{display:inline-flex;align-items:center;gap:7px}.mockup-micro span:before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,87,34,.72)}@media(max-width:620px){.mockup-cta{padding:88px 0 156px}.mockup-cta:after{right:-6px;bottom:80px;width:112px;height:112px;border-radius:30px;opacity:.55}.mockup-cta h2{font-size:clamp(46px,13vw,68px);line-height:.88;margin-top:30px}.mockup-cta p{font-size:18px;line-height:1.65;margin-bottom:44px}.mockup-search{grid-template-columns:1fr;border-radius:31px;padding:13px}.mockup-search input{font-size:22px;padding:31px 17px 15px}.mockup-search .btn{justify-content:center;width:100%;padding:18px 20px}.mockup-micro{max-width:330px;margin-left:auto;margin-right:auto;gap:8px 12px}}
@@ -433,5 +439,69 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   setTimeout(()=>{bindRoseCornerClicks();syncRoseCorner();},250);
 })();
 </script>
+
+<div class="rose-credit-card" id="roseCreditCard" role="dialog" aria-modal="false" aria-labelledby="roseCreditTitle" aria-describedby="roseCreditCopy">
+  <div class="rose-credit-top">
+    <div class="rose-credit-kicker"><span></span> Rose launch offer</div>
+    <button class="rose-credit-close" type="button" aria-label="Close Rose launch offer">×</button>
+  </div>
+  <h3 id="roseCreditTitle">Get a $50 Rose launch credit</h3>
+  <p id="roseCreditCopy">Leave your email and we’ll send the install checklist, pricing, and a first-month credit for adding Rose to your website.</p>
+  <form class="rose-credit-form" id="roseCreditForm">
+    <input name="email" type="email" placeholder="Email address" autocomplete="email" required>
+    <input name="website" type="url" placeholder="Website URL optional" autocomplete="url">
+    <button type="submit">Send my Rose credit →</button>
+  </form>
+  <small class="rose-credit-foot">No spam. Just the setup steps and offer.</small>
+  <div class="rose-credit-success">Done — we saved it. We’ll send the Rose setup checklist and launch credit.</div>
+</div>
+
+<script>
+// Delayed Rose launch-credit capture. Uses the live Wildrose lead API and hides itself after dismissal/submission.
+(function(){
+  const API=location.hostname==='localhost'||location.hostname==='127.0.0.1'?'https://wildrose-widget.wildeautomations.com':'https://wildrose-widget.wildeautomations.com';
+  const card=document.getElementById('roseCreditCard');
+  const form=document.getElementById('roseCreditForm');
+  if(!card||!form)return;
+  const dismissedKey='roseCreditDismissedUntil';
+  const submittedKey='roseCreditSubmitted';
+  const now=Date.now();
+  const dismissedUntil=Number(localStorage.getItem(dismissedKey)||0);
+  if(localStorage.getItem(submittedKey)==='1'||dismissedUntil>now)return;
+  function show(){if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now())card.classList.add('show')}
+  function hide(days){card.classList.remove('show');if(days)localStorage.setItem(dismissedKey,String(Date.now()+days*86400000))}
+  card.querySelector('.rose-credit-close')?.addEventListener('click',()=>hide(7));
+  setTimeout(show,12000);
+  let scrollShown=false;
+  window.addEventListener('scroll',()=>{if(scrollShown)return;const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);if(window.scrollY/max>.45){scrollShown=true;show()}},{passive:true});
+  form.addEventListener('submit',async event=>{
+    event.preventDefault();
+    if(!form.reportValidity())return;
+    const button=form.querySelector('button');
+    const old=button.textContent;
+    button.disabled=true;button.textContent='Saving…';
+    const payload=Object.fromEntries(new FormData(form).entries());
+    payload.business=payload.website||'Rose launch credit popup';
+    payload.businessName=payload.business;
+    payload.plan='Rose launch credit — $50 first-month credit';
+    payload.source='launch-credit-popup';
+    payload.sourcePage=location.href;
+    payload.notes='Visitor requested the $50 Rose launch credit popup offer.';
+    try{
+      const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const json=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(json.error||'Could not save lead');
+      localStorage.setItem(submittedKey,'1');
+      window.wrTrack&&window.wrTrack('rose_checkout_lead_submit',{source:'launch-credit-popup'});
+      card.classList.add('done');
+      setTimeout(()=>card.classList.remove('show'),4200);
+    }catch(error){
+      button.disabled=false;button.textContent=old;
+      alert(error.message||'Could not save that. Please try again.');
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
