@@ -470,10 +470,17 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   if(localStorage.getItem(submittedKey)==='1'||dismissedUntil>now)return;
   function show(){if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now())card.classList.add('show')}
   function hide(days){card.classList.remove('show');if(days)localStorage.setItem(dismissedKey,String(Date.now()+days*86400000))}
+  window.showRoseCreditOffer=show;
   card.querySelector('.rose-credit-close')?.addEventListener('click',()=>hide(7));
   setTimeout(show,12000);
   let scrollShown=false;
   window.addEventListener('scroll',()=>{if(scrollShown)return;const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);if(window.scrollY/max>.45){scrollShown=true;show()}},{passive:true});
+  let roseTalkTimer=null;
+  document.addEventListener('click',event=>{
+    const started=event.target.closest&&event.target.closest('#rose-hero-widget .wr-start-voice,#rose-hero-widget .wr-send,#rose-hero-widget .wr-tab[data-view="voice"]');
+    if(!started||roseTalkTimer)return;
+    roseTalkTimer=setTimeout(show,5000);
+  },true);
   form.addEventListener('submit',async event=>{
     event.preventDefault();
     if(!form.reportValidity())return;
