@@ -13,6 +13,23 @@
 body{display:block;padding:0;background:radial-gradient(circle at 50% 16%,rgba(255,87,34,.20),transparent 30%),linear-gradient(#050505,#000 46%,#141414 100%);color:#fff}.wrap{width:min(1120px,calc(100% - 48px));margin:0 auto}.site-nav{height:66px;background:#000;border-bottom:1px solid rgba(255,255,255,.10)}.site-nav .wrap{height:66px;display:flex;align-items:center;justify-content:flex-start}.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:900;letter-spacing:-.035em}.brand img{width:28px;height:28px;border-radius:8px}.card{margin:86px auto 60px;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.48));color:#171411;border-color:rgba(255,255,255,.52);backdrop-filter:blur(28px);box-shadow:0 40px 140px rgba(0,0,0,.35)}.eyebrow{background:rgba(255,255,255,.8)}h1{color:#111}p{color:#756b62}.step{background:rgba(255,255,255,.82)}
 /* END WILDROSE HOMEPAGE ALIGNMENT */
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2453637905131468');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <!-- Wildrose analytics: Microsoft Clarity -->
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){
@@ -54,24 +71,7 @@ document.addEventListener("submit",function(e){
   if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
   if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
 },true);
+window.addEventListener("load",function(){window.wrTrack&&window.wrTrack("rose_thank_you_view");});
 </script>
-
-<!-- Meta Pixel: Rose ads -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2453637905131468');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
-/></noscript>
-
 </head>
-<body><nav class="site-nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a></div></nav><main class="card"><span class="eyebrow">Rose setup received</span><h1>Your install packet is <em>started.</em></h1><p>Rose has saved your setup details and generated the internal client profile. We’ll review the site path, verify lead routing, and send the install snippet or hosted-page link.</p><div class="steps"><div class="step"><b>Client profile</b><span>Your business context and lead destination are saved for Rose.</span></div><div class="step"><b>Install snippet</b><span>We prepare the website snippet or Wildrose-hosted page.</span></div><div class="step"><b>Launch test</b><span>We test chat, voice, and lead email before calling it live.</span></div></div><div class="btns"><a class="btn primary" href="index.html">Back to Wildrose</a><a class="btn ghost" href="mailto:jack@wildroseautomations.ca">Email us</a></div></main></body></html>
+<body><nav class="site-nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a></div></nav><main class="card"><span class="eyebrow">Rose setup received</span><h1>Your AI front desk is <em>in motion.</em></h1><p id="thanksCopy">We received your Rose setup. If you used a start promo, no payment is due today. Jack/Wildrose will review your details and follow up with the next setup step.</p><p class="setup-id" id="setupId" style="display:none;margin-top:-8px;font-size:15px"></p><div class="steps"><div class="step"><b>Review</b><span>We check the website/platform, business details, and safest install path.</span></div><div class="step"><b>Configure</b><span>Rose gets answers, lead routing, guardrails, and approved actions.</span></div><div class="step"><b>Launch</b><span>We test chat, voice, lead capture, and follow-up before calling it live.</span></div></div><div class="btns"><a class="btn primary" href="index.html">Back to Wildrose</a><a class="btn ghost" href="mailto:jack@wildroseautomations.ca">Email Jack</a></div></main><script>const p=new URLSearchParams(location.search);const id=p.get("clientId")||p.get("id")||"";const pay=p.get("paymentStatus")||"";const promo=p.get("promo")==="1";if(id){const el=document.getElementById("setupId");el.style.display="block";el.textContent="Setup ID: "+id;}if(promo||pay==="comped_start"){document.getElementById("thanksCopy").textContent="We received your Rose setup. Your start promo is applied, so no payment is due today. Jack/Wildrose will review your details and follow up with the next setup step."}</script></body></html>

@@ -89,6 +89,23 @@ body.setup-mode.ready .screen{border-color:color-mix(in srgb,var(--orange) 16%,#
 /* END ROSE FUNNEL PREVIEW */
 body.embed-mode .top,body.embed-mode .hero{display:none!important}body.embed-mode{background:#fbf7f1!important}body.embed-mode .mock-section{margin-top:0!important;padding-top:22px!important}body.embed-mode .mock-section.show{display:block!important}
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2453637905131468');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <!-- Wildrose analytics: Microsoft Clarity -->
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){
@@ -131,28 +148,10 @@ document.addEventListener("submit",function(e){
   if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
 },true);
 </script>
-
-<!-- Meta Pixel: Rose ads -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2453637905131468');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
-/></noscript>
-
 </head>
 <body>
 <nav class="top"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="Wildrose">Wildrose</a><div class="draft">Rose preview</div></div></nav>
-<header class="hero"><div class="wrap"><div class="tag"><span class="dot"></span> AI tool mockup</div><h1>Try Rose <span>on your site.</span></h1><p class="sub">Paste your website. See Rose branded on your own site, then buy your agent if it looks right.</p><form class="search-shell" id="form"><input id="website" placeholder="wildroseautomations.ca" autocomplete="url"><button class="btn primary" id="build" type="submit">Build mockup →</button></form><div class="micro">Website first · white-screen build state · AI tool overlay</div></div></header>
+<header class="hero"><div class="wrap"><div class="tag"><span class="dot"></span> AI front desk mockup</div><h1>See Rose answer, capture, <span>and follow up.</span></h1><p class="sub">Paste your website. See an AI front desk branded on your site — voice/chat that answers, captures, and follows up by starting approved actions behind the scenes.</p><form class="search-shell" id="form"><input id="website" placeholder="wildroseautomations.ca" autocomplete="url"><button class="btn primary" id="build" type="submit">Build mockup →</button></form><div class="micro">AI front desk · voice/chat lead capture · approved behind-the-scenes actions</div></div></header>
 <main class="mock-section" id="mockSection"><div class="wrap"><section class="loading-panel" id="loadingPanel"><div class="loading-inner"><div class="orb"></div><span class="step-kicker">Building live preview</span><h2>Opening <span id="loadingDomain">the website</span> inside the mockup…</h2><p>Wildrose is reading the public site, finding brand clues, then placing an AI intake tool directly on top so the prospect can picture it on their own website.</p><div class="load-lanes"><span></span><span></span><span></span></div></div></section><section class="stage" id="stage"></section></div></main>
 <div class="toast" id="toast"></div>
 <script>

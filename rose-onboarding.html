@@ -1,86 +1,129 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Rose Setup — Wildrose Automations</title>
-  <meta name="description" content="A simple, guided setup to get Rose live on your website.">
-  <meta name="robots" content="noindex,nofollow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
-  <style>
-    :root{--ink:#211b18;--muted:#776c65;--line:#e6ddd5;--orange:#ff6c4d;--orange-dark:#e85a3c;--cream:#faf6f2;--soft:#fffdfa;--green:#37825b;--shadow:0 24px 70px rgba(64,37,23,.09)}
-    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;min-height:100vh;font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 50% -10%,rgba(255,108,77,.20),transparent 33%),linear-gradient(180deg,#fffdfa 0,#faf5ef 48%,#f5eee7 100%);-webkit-font-smoothing:antialiased}.wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}.site-nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(54,36,26,.07)}.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-size:14px;font-weight:800;letter-spacing:-.03em}.brand img{width:30px;height:30px;border-radius:9px;object-fit:cover}.nav-status{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 11px;background:rgba(255,255,255,.72);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#82675c}.nav-status i{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(255,108,77,.12)}
-    .hero{padding:60px 0 28px;text-align:center}.eyebrow{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8b6456;box-shadow:0 7px 20px rgba(71,38,24,.04)}.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(255,108,77,.12)}h1{max-width:780px;margin:20px auto 13px;font-size:clamp(48px,7vw,86px);line-height:.91;letter-spacing:-.075em;font-weight:800}h1 em{font-family:Fraunces,Georgia,serif;font-weight:500;font-style:italic;color:var(--orange)}.hero p{max-width:650px;margin:0 auto;color:var(--muted);font-size:clamp(16px,2.2vw,20px);line-height:1.45;font-weight:600}.hero p strong{color:#55433b}
-    .progress{display:flex;justify-content:center;gap:8px;margin-top:27px}.progress span{display:inline-flex;align-items:center;gap:8px;color:#9b8b81;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.progress span:before{content:"";display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#eee5df;color:#927d72}.progress span.active{color:#774b3c}.progress span.active:before{content:"1";background:var(--orange);color:#fff}.progress span:not(:last-child):after{content:"";width:30px;height:1px;background:#e4d8d0;margin-left:5px}
-    .main-grid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:22px;align-items:start;padding:24px 0 78px}.setup-card,.side-card{border:1px solid var(--line);background:rgba(255,255,255,.86);box-shadow:var(--shadow);border-radius:28px}.setup-card{padding:30px}.side-card{padding:23px;background:rgba(255,252,249,.78)}.card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}.card-heading h2{margin:0;font-size:30px;line-height:1;letter-spacing:-.055em}.card-heading p{margin:8px 0 0;color:#8a7b72;font-size:14px;line-height:1.45}.time-chip{flex:0 0 auto;border-radius:999px;background:#fff1eb;color:#a6432e;padding:7px 9px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:grid;gap:8px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:800;color:#62564f}.field input{height:52px;width:100%;border:1px solid var(--line);border-radius:16px;background:#fff;padding:0 15px;color:var(--ink);font:600 15px "DM Sans",sans-serif;outline:0;transition:.18s}.field input::placeholder{color:#b0a49d}.field input:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,108,77,.12)}
-    .choice-label{margin-top:8px;font-size:12px;font-weight:800;color:#62564f}.choices{display:grid;gap:10px;margin-top:9px}.choice{position:relative;display:block;cursor:pointer}.choice input{position:absolute;opacity:0;pointer-events:none}.choice-body{position:relative;display:grid;grid-template-columns:42px 1fr 22px;gap:13px;align-items:center;min-height:82px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px 15px;transition:.18s}.choice-body:after{content:"";width:18px;height:18px;border-radius:50%;border:2px solid #d7c8bf;background:#fff}.choice input:checked+.choice-body{border-color:var(--orange);background:linear-gradient(120deg,#fff4ef,#fff);box-shadow:0 0 0 4px rgba(255,108,77,.11),0 14px 28px rgba(71,35,22,.05)}.choice input:checked+.choice-body:after{border-color:var(--orange);background:radial-gradient(circle,var(--orange) 0 43%,#fff 46%)}.choice-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:#fff0ea;color:#ce5136;font-size:17px;font-weight:800}.choice b{display:block;font-size:15px;letter-spacing:-.025em}.choice small{display:block;margin-top:4px;color:#83736a;font-size:12px;line-height:1.38;font-weight:600}.choice .tag{display:inline-flex;margin-top:6px;border-radius:999px;padding:4px 6px;background:#ffebe4;color:#a7422d;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.web-person{display:none;margin-top:10px;padding:14px;border:1px dashed #ddcdc2;border-radius:16px;background:#fffaf6}.web-person.show{display:block}.web-person label{display:block;margin-bottom:7px;font-size:11px;font-weight:800;color:#62564f}.web-person input{height:46px;width:100%;border:1px solid var(--line);border-radius:13px;padding:0 13px;font:600 14px "DM Sans",sans-serif;outline:0}.web-person input:focus{border-color:var(--orange)}
-    .submit{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:55px;margin-top:20px;border:0;border-radius:999px;background:linear-gradient(135deg,var(--orange),#ff8a6f);color:#fff;font:800 15px "DM Sans",sans-serif;cursor:pointer;box-shadow:0 16px 32px rgba(255,108,77,.23);transition:transform .18s,box-shadow .18s}.submit:hover{transform:translateY(-1px);box-shadow:0 20px 38px rgba(255,108,77,.30)}.submit:disabled{opacity:.65;cursor:not-allowed;transform:none}.form-foot{display:flex;align-items:flex-start;gap:8px;margin:13px 4px 0;color:#8a7a71;font-size:12px;line-height:1.45}.form-foot:before{content:"✓";display:grid;place-items:center;flex:0 0 auto;width:16px;height:16px;border-radius:50%;background:#e7f4ec;color:var(--green);font-size:10px;font-weight:900}
-    .side-card h3{margin:0;font-size:18px;letter-spacing:-.035em}.side-card>p{margin:8px 0 18px;color:#887970;font-size:13px;line-height:1.45}.steps{display:grid;gap:14px}.step{display:grid;grid-template-columns:29px 1fr;gap:11px}.step-num{display:grid;place-items:center;width:29px;height:29px;border-radius:10px;background:#fff0ea;color:#c94f34;font-size:11px;font-weight:900}.step b{font-size:13px}.step p{margin:4px 0 0;color:#86766d;font-size:12px;line-height:1.43}.side-divider{height:1px;margin:19px 0;background:#eadfd6}.promise{display:flex;gap:10px;align-items:flex-start}.promise-mark{display:grid;place-items:center;flex:0 0 auto;width:28px;height:28px;border-radius:10px;background:#eaf6ee;color:var(--green);font-size:15px;font-weight:900}.promise b{font-size:12px}.promise p{margin:3px 0 0;color:#887970;font-size:11px;line-height:1.4}.toast{position:fixed;right:20px;bottom:20px;z-index:10;max-width:360px;border-radius:16px;background:#251c18;color:#fff;padding:13px 16px;font-size:13px;font-weight:700;box-shadow:0 20px 50px rgba(32,20,13,.23);opacity:0;transform:translateY(12px);transition:.2s}.toast.show{opacity:1;transform:none}.footer{padding:0 0 34px;text-align:center;color:#9a8d85;font-size:11px}.footer a{color:#7d5142;font-weight:700;text-decoration:none}
-    @media(max-width:860px){.main-grid{grid-template-columns:1fr}.side-card{display:grid;grid-template-columns:1fr 1fr;gap:20px}.side-card h3{grid-column:1/-1}.side-card>p{display:none}.side-divider{display:none}.promise{align-self:end}.hero{padding-top:43px}.progress{margin-top:22px}}@media(max-width:600px){.wrap{width:min(100% - 28px,1120px)}.site-nav{height:65px}.nav-status{font-size:9px;padding:7px 9px}.hero{padding:38px 0 18px;text-align:left}.hero p{margin:0;font-size:16px}.progress{justify-content:flex-start;gap:5px}.progress span{font-size:9px}.progress span:not(:last-child):after{width:13px;margin-left:1px}.main-grid{padding-top:14px;gap:14px}.setup-card{padding:20px;border-radius:23px}.card-heading h2{font-size:27px}.card-heading{margin-bottom:19px}.time-chip{display:none}.form-grid{grid-template-columns:1fr;gap:13px}.field.full{grid-column:auto}.choice-body{grid-template-columns:38px 1fr 20px;gap:10px;padding:12px}.choice-icon{width:36px;height:36px;border-radius:11px}.choice b{font-size:14px}.choice small{font-size:11px}.side-card{display:block;padding:20px;border-radius:23px}.side-card>p{display:block}.steps{gap:11px}.promise{margin-top:17px;padding-top:17px;border-top:1px solid #eadfd6}.footer{padding-bottom:25px}}
-  </style>
-  <script type="text/javascript">
-  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","y3isf2gtkw");
-  window.wrTrack=function(name,params){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}try{if(window.fbq&&name){window.fbq("trackCustom",name,params||{})}}catch(e){}};
-  </script>
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];y=s.parentNode;s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','2453637905131468');fbq('track','PageView');
-  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rose Onboarding — Wildrose Automations</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#171411;--muted:#756b62;--line:#eadfd2;--orange:#ff5722;--soft:#fbf7f1;--dark:#111827}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 50% -14%,rgba(255,87,34,.22),transparent 34%),linear-gradient(180deg,#fffaf5,#f7efe7 62%,#fbf7f1);-webkit-font-smoothing:antialiased}.wrap{width:min(1120px,calc(100% - 36px));margin:0 auto}.top{height:72px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:950;letter-spacing:-.05em;text-decoration:none;color:inherit}.pill{border:1px solid var(--line);border-radius:999px;padding:9px 12px;background:rgba(255,255,255,.7);font-size:13px;font-weight:850;color:#63584f}.hero{padding:54px 0 28px}.eyebrow{display:inline-flex;border:1px solid color-mix(in srgb,var(--orange) 18%,var(--line));border-radius:999px;padding:8px 11px;background:#fff;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;color:#775f53}.hero h1{margin:14px 0 12px;font-size:clamp(42px,7vw,82px);line-height:.9;letter-spacing:-.08em}.hero h1 em{font-family:'Instrument Serif',serif;font-weight:400;color:var(--orange)}.hero p{margin:0;max-width:720px;color:var(--muted);font-size:18px;line-height:1.6;font-weight:650}.grid{display:grid;grid-template-columns:1fr .72fr;gap:22px;align-items:start;padding:20px 0 80px}.card{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:32px;padding:24px;box-shadow:0 24px 80px rgba(35,22,14,.10);backdrop-filter:blur(18px)}.card h2{margin:0 0 14px;font-size:28px;letter-spacing:-.055em}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:12px;text-transform:none;letter-spacing:0;color:#746960;font-weight:900}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px;outline:0;font-weight:750;color:#1f1712}.field textarea{min-height:118px;resize:vertical;line-height:1.5}.btn{width:100%;height:54px;border:0;border-radius:999px;background:linear-gradient(145deg,var(--orange),#ff875f);color:#fff;font-weight:950;font-size:16px;box-shadow:0 18px 46px rgba(255,87,34,.22);margin-top:16px}.btn:disabled{opacity:.65;cursor:not-allowed}.note{font-size:13px;color:var(--muted);line-height:1.5;margin:12px 0 0}.side-list{display:grid;gap:12px}.mini{border:1px solid var(--line);border-radius:22px;background:#fff;padding:16px}.mini b{display:block;margin-bottom:5px}.mini p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}.toast{position:fixed;right:22px;bottom:22px;background:#111827;color:white;border-radius:999px;padding:13px 16px;font-weight:900;box-shadow:0 18px 45px rgba(0,0,0,.22);opacity:0;transform:translateY(14px);transition:.2s}.toast.show{opacity:1;transform:none}@media(max-width:860px){.grid,.form-grid{grid-template-columns:1fr}.hero{padding-top:34px}}
+
+/* WILDROSE HOMEPAGE ALIGNMENT */
+body{background:#fbf7f1!important}.site-nav{height:66px;background:#000;border-bottom:1px solid rgba(255,255,255,.10)}.nav-wrap{height:66px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.035em;color:#fff!important}.brand img{width:28px;height:28px;border-radius:8px}.site-nav .pill{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:rgba(255,255,255,.72)}.hero{padding:80px 0 48px;background:radial-gradient(circle at 50% 20%,rgba(255,87,34,.20),transparent 30%),linear-gradient(#050505,#000 54%,#050505);color:#fff}.hero .eyebrow{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:rgba(255,255,255,.72)}.hero .eyebrow:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 18px rgba(255,87,34,.75);margin-right:8px}.hero h1{color:#fff;font-size:clamp(54px,9vw,104px);font-weight:850;letter-spacing:-.09em;max-width:980px}.hero h1 em{display:block;color:rgba(255,255,255,.58);font-family:Inter,system-ui,sans-serif;font-style:normal;font-weight:750}.hero p{color:rgba(255,255,255,.68);font-size:clamp(20px,2.2vw,27px);line-height:1.28;max-width:840px}.grid{margin-top:34px}.card{background:#fff;border-color:#e8e4dd;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.06);backdrop-filter:none}.btn{background:var(--orange);box-shadow:0 18px 46px rgba(255,87,34,.22)}
+/* END WILDROSE HOMEPAGE ALIGNMENT */
+
+/* BLISSFUL OWNER SETUP CHOOSER */
+.install-chooser{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;margin-top:4px!important}.install-option{position:relative!important;display:block!important}.install-option input{position:absolute!important;opacity:0!important;pointer-events:none!important}.install-option span{position:relative!important;display:block!important;min-height:118px!important;border:1px solid var(--line)!important;border-radius:22px!important;background:#fff!important;padding:18px 18px 16px!important;cursor:pointer!important;transition:.18s!important;box-shadow:0 10px 28px rgba(35,22,14,.035)!important}.install-option span:before{content:''!important;position:absolute!important;right:16px!important;top:16px!important;width:18px!important;height:18px!important;border-radius:50%!important;border:2px solid #d9cabe!important;background:#fff!important}.install-option input:checked+span{border-color:var(--orange)!important;box-shadow:0 0 0 4px rgba(255,87,34,.12),0 18px 46px rgba(255,87,34,.12)!important;background:linear-gradient(180deg,#fffaf7,#fff)!important}.install-option input:checked+span:before{border-color:var(--orange)!important;background:radial-gradient(circle at 50% 50%,var(--orange) 0 42%,#fff 45%)!important}.install-option b{display:block!important;padding-right:32px!important;font-size:17px!important;line-height:1.1!important;letter-spacing:-.035em!important;color:var(--ink)!important;text-transform:none!important}.install-option small{display:block!important;margin-top:8px!important;color:var(--muted)!important;font-size:13px!important;line-height:1.35!important;font-weight:700!important;text-transform:none!important;letter-spacing:0!important}.install-option.recommended span:after{content:'Most popular'!important;display:inline-flex!important;margin-top:12px!important;border-radius:999px!important;background:#fff1e9!important;color:#a33a15!important;padding:6px 8px!important;font-size:11px!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.04em!important}.helper-box{grid-column:1/-1!important;border:1px solid #eadfd2!important;border-radius:20px!important;background:#fff7f2!important;padding:14px!important;color:#6f4633!important;font-weight:750!important;line-height:1.45!important}.field.full:has(.install-chooser){gap:10px!important}@media(max-width:760px){.install-chooser{grid-template-columns:1fr!important}}
+.optional-details{grid-column:1/-1;border:1px solid var(--line);border-radius:22px;background:#fff;overflow:hidden}.optional-details summary{cursor:pointer;list-style:none;padding:16px 18px;font-weight:950;letter-spacing:-.025em}.optional-details summary::-webkit-details-marker{display:none}.optional-details summary:after{content:'+';float:right;color:var(--orange);font-size:20px;line-height:1}.optional-details[open] summary:after{content:'–'}.optional-inner{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 18px 18px}.optional-inner .field.full{grid-column:1/-1}.action-details{grid-column:1/-1;border:1px solid #eadfd2;border-radius:22px;background:#fff;padding:16px;display:grid;gap:13px}.action-details .field textarea{min-height:82px}.action-details h3{margin:0;font-size:18px;letter-spacing:-.04em}.action-details p{margin:-5px 0 0;color:#756b62;font-size:13px;font-weight:700;line-height:1.45}@media(max-width:760px){.optional-inner{grid-template-columns:1fr!important}}
+/* END BLISSFUL OWNER SETUP CHOOSER */
+
+/* LOW-OVERWHELM ONBOARDING OVERRIDE */
+body{background:linear-gradient(180deg,#fffaf5,#fbf7f1)!important}.site-nav{background:#fff!important;border-bottom:1px solid #eadfd2!important}.site-nav .brand{color:#171411!important}.site-nav .pill{background:#fff7f2!important;border-color:#eadfd2!important;color:#8a4b31!important}.hero{padding:42px 0 24px!important;background:radial-gradient(circle at 50% 0%,rgba(255,87,34,.10),transparent 35%),#fbf7f1!important;color:#171411!important;text-align:center!important}.hero .eyebrow{background:#fff!important;border-color:#eadfd2!important;color:#8a4b31!important}.hero h1{font-size:clamp(42px,6vw,68px)!important;line-height:.96!important;letter-spacing:-.065em!important;color:#171411!important;max-width:none!important;margin:14px auto 10px!important}.hero h1 em{display:inline!important;color:#171411!important}.hero p{font-size:18px!important;line-height:1.45!important;color:#756b62!important;max-width:560px!important;margin:0 auto!important}.simple-flow{grid-template-columns:minmax(0,720px)!important;justify-content:center!important;gap:14px!important;margin-top:0!important;padding-top:18px!important}.simple-flow aside{display:none!important}.simple-flow .card{border-radius:28px!important;padding:26px!important;box-shadow:0 24px 70px rgba(65,38,18,.08)!important}.simple-flow .card h2{font-size:30px!important}.simple-flow .form-grid{grid-template-columns:1fr 1fr!important;gap:13px!important}.simple-flow .field.full{grid-column:1/-1!important}.install-chooser.calm{display:block!important}.primary-choice span{min-height:92px!important}.primary-choice span:after{content:'Recommended'!important}.other-install-options{margin-top:10px;border:1px solid #eadfd2;border-radius:18px;background:#fff;overflow:hidden}.other-install-options summary{cursor:pointer;padding:13px 15px;font-weight:900;color:#6f4633;list-style:none}.other-install-options summary::-webkit-details-marker{display:none}.other-install-options summary:after{content:'+';float:right;color:var(--orange);font-size:20px;line-height:1}.other-install-options[open] summary:after{content:'–'}.other-options-grid{display:grid;grid-template-columns:1fr;gap:10px;padding:0 12px 12px}.other-options-grid .install-option span{min-height:82px!important;box-shadow:none!important}.helper-box{font-size:14px!important;padding:12px 14px!important}.btn{margin-top:12px!important}.note{font-size:13px!important;color:#8a7a6e!important}@media(max-width:760px){.simple-flow .form-grid{grid-template-columns:1fr!important}.hero{text-align:left!important}.hero p{margin:0!important}.simple-flow .card{padding:20px!important}}
+/* END LOW-OVERWHELM ONBOARDING OVERRIDE */
+</style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2453637905131468');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<!-- Wildrose analytics: Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","y3isf2gtkw");
+window.wrTrack=function(name,params){
+  try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}
+  try{
+    if(window.fbq&&name){
+      var map={
+        rose_mockup_started:"Lead",
+        rose_mockup_submit:"Lead",
+        rose_buy_clicked:"InitiateCheckout",
+        rose_checkout_lead_submit:"Lead",
+        rose_onboarding_submit:"CompleteRegistration",
+        rose_setup_submit_clicked:"CompleteRegistration",
+        rose_setup_call_clicked:"Contact"
+      };
+      if(map[name]) window.fbq("track",map[name],params||{});
+      window.fbq("trackCustom",name,params||{});
+    }
+  }catch(e){}
+};
+document.addEventListener("click",function(e){
+  var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
+  var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
+  var eventName="";
+  if(txt.includes("buy your agent")||txt.includes("continue to checkout")) eventName="rose_buy_clicked";
+  else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
+  else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
+  else if(txt.includes("book")||txt.includes("call")) eventName="rose_setup_call_clicked";
+  if(eventName) window.wrTrack(eventName);
+},true);
+document.addEventListener("submit",function(e){
+  var id=e.target&&e.target.id;
+  if(id==="checkoutForm"||id==="roseLeadForm") window.wrTrack("rose_checkout_lead_submit");
+  if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
+  if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
+},true);
+</script>
 </head>
 <body>
-  <nav class="site-nav wrap">
-    <a class="brand" href="index.html"><img src="logos/wildrose.png" alt="Wildrose">Wildrose</a>
-    <span class="nav-status"><i></i>Rose setup</span>
-  </nav>
-  <header class="hero wrap">
-    <span class="eyebrow">Rose setup</span>
-    <h1>We’ll get <em>Rose</em> live.</h1>
-    <p>Three basics. Rose saves the client profile, <strong>lead routing</strong>, and the right install path automatically.</p>
-    <div class="progress" aria-label="Rose setup progress"><span class="active">Quick setup</span><span>We install</span><span>Rose is live</span></div>
-  </header>
-  <main class="main-grid wrap">
-    <section class="setup-card" aria-labelledby="setup-title">
-      <div class="card-heading"><div><h2 id="setup-title">Quick setup</h2><p>Takes about 30 seconds. We handle the rest.</p></div><span class="time-chip">30 seconds</span></div>
-      <form id="onboardingForm" novalidate>
-        <div class="form-grid">
-          <div class="field"><label for="businessName">Business name</label><input id="businessName" name="businessName" autocomplete="organization" placeholder="Your business" required></div>
-          <div class="field"><label for="website">Website</label><input id="website" name="website" autocomplete="url" placeholder="yourwebsite.ca" required></div>
-          <div class="field full"><label for="email">Best email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@business.ca" required></div>
-          <div class="field full">
-            <span class="choice-label">How would you like to get Rose installed?</span>
-            <div class="choices">
-              <label class="choice"><input type="radio" name="installPreference" value="Invite Wildrose to install Rose" checked><span class="choice-body"><span class="choice-icon">✦</span><span><b>Do it for me</b><small>Wildrose handles setup, testing, and the final handoff.</small><span class="tag">Recommended</span></span></span></label>
-              <label class="choice"><input type="radio" name="installPreference" value="Send code to my web person"><span class="choice-body"><span class="choice-icon">↗</span><span><b>Send it to my web person</b><small>We prepare the exact code and clear instructions for them.</small></span></span></label>
-              <label class="choice"><input type="radio" name="installPreference" value="Book a guided setup call"><span class="choice-body"><span class="choice-icon">?</span><span><b>Walk me through it</b><small>You share your screen. We guide each click together.</small></span></span></label>
-            </div>
-            <div class="web-person" id="webPerson"><label for="developerEmail">Their email (optional)</label><input id="developerEmail" name="developerEmail" type="email" placeholder="developer@agency.ca"></div>
-          </div>
-        </div>
-        <input name="phone" type="hidden"><input name="services" type="hidden" value="Rose quick setup"><input name="name" type="hidden"><input name="sitePlatform" type="hidden" value="Not sure"><input name="leadDestination" type="hidden"><input name="hasAccess" type="hidden" value="Quick setup requested"><input name="hours" type="hidden"><input name="serviceArea" type="hidden"><input name="faqs" type="hidden"><input name="guardrails" type="hidden"><input name="notes" type="hidden" value="Rose quick setup: Wildrose to follow up for the remaining business details if needed."><input name="plan" type="hidden"><input name="checkoutLeadId" type="hidden">
-        <button class="submit" type="submit">Send setup details <span aria-hidden="true">→</span></button>
-        <p class="form-foot">You are not committing to a technical project. We only use this to prepare the right next step.</p>
-      </form>
-    </section>
-    <aside class="side-card">
-      <div><h3>What happens next</h3><p>A simple, human handoff from first detail to a working Rose assistant.</p></div>
-      <div class="steps"><div class="step"><span class="step-num">1</span><div><b>We check your site</b><p>We identify the simplest way to add Rose to your website.</p></div></div><div class="step"><span class="step-num">2</span><div><b>We get Rose live</b><p>We install it, guide you, or send the details to your web person.</p></div></div><div class="step"><span class="step-num">3</span><div><b>We test the handoff</b><p>We confirm chats and leads reach the right inbox before launch.</p></div></div></div>
-      <div class="side-divider"></div><div class="promise"><span class="promise-mark">✓</span><div><b>No technical prep needed</b><p>Tell us what you know. We will only ask for more when it is genuinely useful.</p></div></div>
-    </aside>
-  </main>
-  <footer class="footer wrap">Questions before you start? <a href="mailto:jack@wildroseautomations.ca?subject=Question%20about%20Rose%20setup">Email Wildrose</a></footer>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script>
-    const API=location.hostname==='localhost'||location.hostname==='127.0.0.1'?'http://localhost:8788':'https://wildrose-widget.wildeautomations.com';
-    const params=new URLSearchParams(location.search);const plan=params.get('plan')||'';const lead=params.get('lead')||'';const checkout=params.get('checkout')||'';
-    const form=document.querySelector('#onboardingForm');const toastBox=document.querySelector('#toast');const webPerson=document.querySelector('#webPerson');
-    function showToast(message){toastBox.textContent=message;toastBox.classList.add('show');setTimeout(()=>toastBox.classList.remove('show'),3200)}
-    function updateChoice(){const selected=form.querySelector('input[name="installPreference"]:checked');webPerson.classList.toggle('show',selected&&selected.value==='Send code to my web person')}
-    function hydrate(){const planLabel=plan==='basic'?'Rose Basic':plan==='pro'?'Rose Pro':(plan||'Rose');form.plan.value=planLabel;form.checkoutLeadId.value=lead;['businessName','website','email'].forEach(key=>{const value=params.get(key);if(value&&form[key])form[key].value=value});if(checkout==='pending')form.querySelector('.submit').innerHTML='Save setup and continue to checkout <span aria-hidden="true">→</span>';updateChoice()}
-    form.querySelectorAll('input[name="installPreference"]').forEach(input=>input.addEventListener('change',updateChoice));
-    form.addEventListener('submit',async event=>{event.preventDefault();if(!form.reportValidity())return;const button=form.querySelector('.submit');button.disabled=true;button.textContent='Saving setup…';const data=Object.fromEntries(new FormData(form).entries());data.name=data.businessName;data.leadDestination=data.email||'';data.sourcePage=location.href;try{window.wrTrack&&window.wrTrack('rose_onboarding_submit',{installPreference:data.installPreference});const response=await fetch(API+'/api/rose-onboarding',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const json=await response.json().catch(()=>({}));if(!response.ok)throw new Error(json.error||'Could not save your setup details.');if(checkout==='pending'&&json.checkoutUrl){location.href=json.checkoutUrl;return}location.href='thank-you.html?type=rose-onboarding&id='+encodeURIComponent(json.id||'')}catch(error){showToast(error.message||'Could not save your setup details. Please try again.');button.disabled=false;button.innerHTML=checkout==='pending'?'Save setup and continue to checkout <span aria-hidden="true">→</span>':'Send setup details <span aria-hidden="true">→</span>'}});
-    hydrate();
-  </script>
+<nav class="site-nav"><div class="wrap nav-wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a><span class="pill" id="planPill">Rose onboarding</span></div></nav>
+<header class="hero"><div class="wrap"><span class="eyebrow">Rose setup</span><h1>Build your AI front desk.</h1><p>Give us the basics, then tell us what Rose should answer, collect, and start behind the scenes. No code needed.</p></div></header>
+<main class="grid wrap simple-flow">
+  <section class="card"><h2>Quick setup</h2><p class="note" style="margin-top:-6px;margin-bottom:18px">Takes about 60 seconds. We’ll turn this into a working Rose setup with approved actions.</p><form id="onboardingForm"><div class="form-grid">
+    <div class="field"><label>Business name</label><input name="businessName" required></div>
+    <div class="field"><label>Website</label><input name="website" required></div>
+    <div class="field"><label>Best email</label><input name="email" type="email" required></div>
+    <input name="phone" type="hidden">
+    <div class="field full"><label>Setup help</label><div class="install-chooser calm">
+      <label class="install-option recommended primary-choice"><input type="radio" name="installPreference" value="Invite Wildrose to install Rose" checked><span><b>Do it for me</b><small>Wildrose handles setup and testing. You do not need to know code.</small></span></label>
+      <details class="other-install-options"><summary>Need a different option?</summary><div class="other-options-grid">
+        <label class="install-option"><input type="radio" name="installPreference" value="Book a guided setup call"><span><b>Walk me through it</b><small>You share your screen. We guide each click.</small></span></label>
+        <label class="install-option"><input type="radio" name="installPreference" value="Send code to my web person"><span><b>Send it to my web person</b><small>We email whoever manages your site.</small></span></label>
+        <label class="install-option"><input type="radio" name="installPreference" value="Help me choose"><span><b>I’m not sure</b><small>Good for GoDaddy, Wix, or “I have no idea.”</small></span></label>
+      </div></details>
+    </div></div>
+    <div class="action-details">
+      <h3>What should Rose do?</h3>
+      <p>Optional, but this makes the first version sharper. Short plain-English answers are fine.</p>
+      <div class="field full"><label>What should Rose answer for customers?</label><textarea name="services" placeholder="Services, prices/ranges, hours, service area, common questions..."></textarea></div>
+      <div class="field full"><label>What should Rose collect from serious leads?</label><textarea name="faqs" placeholder="Name, phone/email, job details, urgency, location, photos, preferred callback time..."></textarea></div>
+      <div class="field full"><label>What should Rose do behind the scenes?</label><textarea name="notes" placeholder="Email me a summary, create a follow-up task, add to a sheet/CRM, start booking intake, alert my team..."></textarea></div>
+      <div class="field full"><label>What should Rose never promise?</label><textarea name="guardrails" placeholder="No confirmed bookings, no exact quotes, no emergency advice, no promises before a human checks..."></textarea></div>
+    </div>
+    <input name="name" type="hidden">
+    <input name="sitePlatform" type="hidden" value="Not sure">
+    <input name="leadDestination" type="hidden">
+    <input name="hasAccess" type="hidden" value="owner setup requested">
+    <input name="hours" type="hidden">
+    <input name="serviceArea" type="hidden">
+    <div class="helper-box">Done after this. Wildrose will configure Rose as your AI front desk, test chat/voice, and only ask for more if needed.</div>
+  </div><input name="plan" type="hidden"><input name="checkoutLeadId" type="hidden"><button class="btn" type="submit">Send setup details →</button><p class="note"></p></form></section>
+  <aside class="card"><h2>What happens next</h2><div class="side-list"><div class="mini"><b>1. We check your site</b><p>You do not need to know technical details.</p></div><div class="mini"><b>2. We get Rose live</b><p>Install, guided call, web person, or hosted page.</p></div><div class="mini"><b>3. We test it</b><p>Chat, voice, and leads are checked before launch.</p></div></div></aside>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const API=location.hostname==='localhost'||location.hostname==='127.0.0.1'?'http://localhost:8788':'https://wildrose-widget.wildeautomations.com';
+const params=new URLSearchParams(location.search);const plan=params.get('plan')||'';const lead=params.get('lead')||'';const checkout=params.get('checkout')||'';const $=s=>document.querySelector(s);function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+function hydrate(){const planLabel=plan==='basic'?'Rose Basic':plan==='pro'?'Rose Pro':(plan||'Rose');$('#planPill').textContent=checkout==='pending'?`${planLabel} · setup before checkout`:planLabel;const f=$('#onboardingForm');f.plan.value=planLabel;f.checkoutLeadId.value=lead;['businessName','website','email'].forEach(k=>{const v=params.get(k);if(v&&f[k])f[k].value=v});const btn=f.querySelector('button');if(btn&&checkout==='pending')btn.textContent='Save setup and continue to checkout →';}
+$('#onboardingForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget;const btn=f.querySelector('button');btn.disabled=true;btn.textContent='Saving…';const data=Object.fromEntries(new FormData(f).entries());if(!data.leadDestination)data.leadDestination=data.email||'';data.sourcePage=location.href;try{const res=await fetch(API+'/api/rose-onboarding',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const json=await res.json().catch(()=>({}));if(!res.ok)throw new Error(json.error||'Could not save onboarding');if(checkout==='pending'&&json.paymentRequired&&json.checkoutUrl){location.href=json.checkoutUrl;return}const id=json.clientId||json.onboardingId||json.id||'';const qs=new URLSearchParams({type:'rose-onboarding',id,clientId:json.clientId||'',paymentStatus:json.paymentStatus||'',promo:json.promoApplied?'1':''});location.href='thank-you.html?'+qs.toString();}catch(err){toast(err.message||'Could not save');btn.disabled=false;btn.textContent=checkout==='pending'?'Save setup and continue to checkout →':'Send setup details →'}});
+hydrate();
+</script>
 </body>
 </html>
