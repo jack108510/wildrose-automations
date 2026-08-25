@@ -120,13 +120,16 @@ window.wrTrack=function(name,params){
       var map={
         rose_mockup_started:"Lead",
         rose_mockup_submit:"Lead",
-        rose_buy_clicked:"InitiateCheckout",
+        rose_buy_clicked:["InitiateCheckout","Lead"],
         rose_checkout_lead_submit:"Lead",
         rose_onboarding_submit:"CompleteRegistration",
         rose_setup_submit_clicked:"CompleteRegistration",
         rose_setup_call_clicked:"Contact"
       };
-      if(map[name]) window.fbq("track",map[name],params||{});
+      if(map[name]) {
+        var events=Array.isArray(map[name])?map[name]:[map[name]];
+        events.forEach(function(eventName){window.fbq("track",eventName,params||{});});
+      }
       window.fbq("trackCustom",name,params||{});
     }
   }catch(e){}
