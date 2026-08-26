@@ -96,7 +96,12 @@ document.addEventListener("submit",function(e){
     <div class="setup-after-scan" id="setupAfterScan">
     <div class="field"><label>Business name</label><input name="businessName" autocomplete="organization" required></div>
     <div class="field"><label>Best email</label><input name="email" type="email" autocomplete="email" required></div>
-    <input name="phone" type="hidden">
+    <details class="optional-details contact-details"><summary>Add your contact details</summary><div class="optional-inner">
+      <div class="field"><label>Your name</label><input name="name" autocomplete="name"></div>
+      <div class="field"><label>Position</label><input name="contactPosition" placeholder="Owner, manager, front desk..."></div>
+      <div class="field"><label>Phone</label><input name="phone" inputmode="tel" autocomplete="tel"></div>
+      <div class="field"><label>Personal email</label><input name="personalEmail" type="email" autocomplete="email" placeholder="If different"></div>
+    </div></details>
     <div class="field full"><label>Setup help</label><div class="install-chooser calm">
       <label class="install-option recommended primary-choice"><input type="radio" name="installPreference" value="Invite Wildrose to install Rose" checked><span><b>Do it for me</b><small>We’ll handle setup and make sure Rose works.</small></span></label>
       <details class="other-install-options"><summary>Need another option?</summary><div class="other-options-grid">
@@ -113,7 +118,6 @@ document.addEventListener("submit",function(e){
       <div class="field full"><label>What should happen next?</label><textarea name="notes" placeholder="Email me, add to a sheet, start booking intake..."></textarea></div>
       <div class="field full"><label>Anything off limits?</label><textarea name="guardrails" placeholder="No exact quotes, no confirmed bookings..."></textarea></div>
     </div></details>
-    <input name="name" type="hidden">
     <input name="sitePlatform" type="hidden" value="Not sure">
     <input name="leadDestination" type="hidden">
     <input name="hasAccess" type="hidden" value="owner setup requested">
