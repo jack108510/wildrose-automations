@@ -188,7 +188,7 @@ function render(){const data=state.data;if(!data)return;const brand=data.brandNa
     <h2>Get Rose on ${esc(host(url))}.</h2>
     <p class="buy-sub">Choose a plan, add the setup basics, then checkout securely. That way your Rose install details are already connected to the payment.</p>
     <div class="buy-choice"><button type="button" class="plan-pick" data-plan="Rose Basic — $24/mo"><b>Basic</b><span class="money">$24/mo</span><small>75 voice minutes/month</small></button><button type="button" class="plan-pick active" data-plan="Rose Pro — $79/mo"><b>Pro</b><span class="money">$79/mo</span><small>250 voice minutes/month</small></button></div>
-    <div class="selected-plan">Selected: <b id="selectedPlanLabel">Rose Pro — $79/mo</b></div>
+    <div class="selected-plan">Selected plan: <b id="selectedPlanLabel">Rose Pro — $79/mo</b></div>
     <form class="checkout-form" id="checkoutForm"><input name="business" placeholder="Business name" value="${esc(brand)}"><input name="website" placeholder="Website" value="${esc(host(url))}"><input name="email" type="email" placeholder="Email for install details" value="${esc(data.email||'')}"><input name="sitePlatform" type="hidden" value="${esc(data.sitePlatform||data.siteProvider?.provider||'')}"><input name="plan" type="hidden" value="Rose Pro — $79/mo"><button class="checkout-main" type="submit">Continue to checkout →</button></form>
     <p class="screen-note">Includes setup help, hosted fallback, and first-payment refund if we can’t get Rose live. Extra voice minutes are 29¢/min.</p>
   </div>

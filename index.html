@@ -373,9 +373,10 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
     if(!site){input.focus();return;}
     const clean=site.replace(/^https?:\/\//i,'').replace(/\/$/,'');
     frameLabel.textContent='Building Rose mockup for '+clean;
+    try{localStorage.setItem('rosePreviewStarted','1');document.getElementById('roseCreditCard')?.classList.remove('show')}catch(e){}
     status?.classList.add('show');
     frameWrap.classList.add('show');
-    frame.src='ai-tool-mockup-final.html?v=couponless-2&website='+encodeURIComponent(site)+'&embed=1';
+    frame.src='ai-tool-mockup-final.html?v=friction-1&website='+encodeURIComponent(site)+'&embed=1';
     frameWrap.scrollIntoView({behavior:'smooth',block:'start'});
   }
   form.addEventListener('submit',e=>{
@@ -468,7 +469,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   const now=Date.now();
   const dismissedUntil=Number(localStorage.getItem(dismissedKey)||0);
   if(localStorage.getItem(submittedKey)==='1'||dismissedUntil>now)return;
-  function show(){if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now())card.classList.add('show')}
+  function show(){if(localStorage.getItem('rosePreviewStarted')==='1')return;if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now())card.classList.add('show')}
   function hide(days){card.classList.remove('show');if(days)localStorage.setItem(dismissedKey,String(Date.now()+days*86400000))}
   window.showRoseCreditOffer=show;
   card.querySelector('.rose-credit-close')?.addEventListener('click',()=>hide(7));
