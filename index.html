@@ -567,5 +567,19 @@ ${data.message||''}`};
 })();
 </script>
 
+
+<script>
+// Let the embedded Rose mockup redirect the top-level page after checkout lead save.
+window.addEventListener('message',function(e){
+  try{
+    var data=e.data||{};
+    if(!data||data.type!=='roseCheckoutRedirect'||!data.target)return;
+    var target=new URL(String(data.target), location.href);
+    if(!/(^|\.)square\.link$/.test(target.hostname) && target.hostname!==location.hostname && target.hostname!=='wildroseautomations.ca')return;
+    window.location.href=target.href;
+  }catch(err){console.error('Rose checkout redirect failed',err)}
+});
+</script>
+
 </body>
 </html>
