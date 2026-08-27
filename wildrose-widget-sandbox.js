@@ -13,6 +13,9 @@
     subtitle: script?.dataset.subtitle || "AI intake assistant",
     greeting: script?.dataset.greeting || "Tell me what you want automated and I’ll turn it into a clear next step.",
     placeholder: script?.dataset.placeholder || "Ask Rose…",
+    website: script?.dataset.website || "",
+    businessContext: script?.dataset.businessContext || "",
+    services: script?.dataset.services || "",
   };
 
   const css = `
@@ -162,7 +165,7 @@
   }
   async function ensureChat() {
     if (chatId) return chatId;
-    const data = await api("/api/chat/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName });
+    const data = await api("/api/chat/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services });
     chatId = data.chatId;
     return chatId;
   }
@@ -174,7 +177,7 @@
     const pending = addMsg("bot", "Thinking…");
     try {
       const id = await ensureChat();
-      const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName });
+      const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services });
       pending.textContent = data.reply || "I can help with that.";
     } catch (e) {
       pending.textContent = "I hit a connection issue. Please try again or email jack@wildroseautomations.ca.";
@@ -194,7 +197,7 @@
       status.textContent = "Connecting…";
       const [{ RetellWebClient }, call] = await Promise.all([
         import("https://esm.sh/retell-client-js-sdk@2.0.7"),
-        api("/api/voice/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName })
+        api("/api/voice/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services })
       ]);
       retellClient = new RetellWebClient();
       retellClient.on("call_started", () => { panel.classList.remove("speaking"); status.textContent = "Listening"; note.textContent = "Speak naturally. Interrupt anytime."; orb.classList.add("live", "listening"); orb.classList.remove("speaking"); $(".wr-start-voice").style.display = "none"; $(".wr-end-voice").style.display = "inline-block"; });
