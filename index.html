@@ -525,9 +525,9 @@ ${data.message||''}`};
   const now=Date.now();
   const dismissedUntil=Number(localStorage.getItem(dismissedKey)||0);
   if(localStorage.getItem(submittedKey)==='1'||dismissedUntil>now)return;
-  function show(){if(localStorage.getItem('rosePreviewStarted')==='1')return;if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now())card.classList.add('show')}
+  function show(){if(location.hash==='#mockup'||localStorage.getItem('rosePreviewStarted')==='1')return;if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now())card.classList.add('show')}
   function hide(days){card.classList.remove('show');if(days)localStorage.setItem(dismissedKey,String(Date.now()+days*86400000))}
-  window.showRoseCreditOffer=show;
+  window.showRoseCreditOffer=show;window.addEventListener('hashchange',()=>{if(location.hash==='#mockup')hide(0)});
   card.querySelector('.rose-credit-close')?.addEventListener('click',()=>hide(7));
   setTimeout(show,12000);
   let scrollShown=false;
