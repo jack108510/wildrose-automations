@@ -3,9 +3,16 @@
   const cfg = {
     apiBase: script?.dataset.apiBase || "",
     title: script?.dataset.title || "Rose",
+    businessName: script?.dataset.businessName || script?.dataset.company || "Wildrose Automations",
     accent: script?.dataset.accent || "#ff5722",
+    logo: script?.dataset.logo || "/logos/wildrose.png",
+    ownerEmail: script?.dataset.ownerEmail || script?.dataset.leadEmail || script?.dataset.notificationEmail || "",
+    businessId: script?.dataset.businessId || script?.dataset.clientId || "",
     mount: script?.dataset.mount || "",
     inline: script?.dataset.inline === "true",
+    subtitle: script?.dataset.subtitle || "AI intake assistant",
+    greeting: script?.dataset.greeting || "Tell me what you want automated and I’ll turn it into a clear next step.",
+    placeholder: script?.dataset.placeholder || "Ask Rose…",
   };
 
   const css = `
@@ -44,13 +51,13 @@
   const root = document.createElement("div");
   root.className = cfg.inline ? "wr-ai inline" : "wr-ai";
   root.innerHTML = `
-    <button class="wr-fab" aria-label="Open Rose assistant"><span class="wr-dot"><img src="/logos/wildrose.png" alt="Wildrose"></span></button>
+    <button class="wr-fab" aria-label="Open Rose assistant"><span class="wr-dot"><img src="${cfg.logo}" alt=""></span></button>
     <section class="wr-panel" aria-label="${cfg.title}">
-      <header class="wr-head"><div class="wr-top"><div class="wr-brand"><div class="wr-mark"><img src="/logos/wildrose.png" alt="Wildrose"></div><div class="wr-title"><h3>${cfg.title}</h3><small>AI intake assistant</small></div></div><button class="wr-close" aria-label="Close">×</button></div></header>
+      <header class="wr-head"><div class="wr-top"><div class="wr-brand"><div class="wr-mark"><img src="${cfg.logo}" alt=""></div><div class="wr-title"><h3>${cfg.title}</h3><small>${cfg.subtitle}</small></div></div><button class="wr-close" aria-label="Close">×</button></div></header>
       <div class="wr-tabs" role="tablist"><button class="wr-tab" data-view="chat">Chat</button><button class="wr-tab active" data-view="voice">Voice</button></div>
-      <main class="wr-view" data-view="chat"><div class="wr-chat-log"><div class="wr-row"><div class="wr-avatar"><img src="/logos/wildrose.png" alt="Wildrose"></div><div class="wr-msg bot">Tell me what you want automated and I’ll turn it into a clear next step.</div></div></div></main>
+      <main class="wr-view" data-view="chat"><div class="wr-chat-log"><div class="wr-row"><div class="wr-avatar"><img src="${cfg.logo}" alt=""></div><div class="wr-msg bot">${cfg.greeting}</div></div></div></main>
       <main class="wr-view active" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Tap start and speak naturally.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></main>
-      <div class="wr-compose"><input class="wr-input" placeholder="Ask Rose…"><button class="wr-send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 7l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="wr-toast"></div>
+      <div class="wr-compose"><input class="wr-input" placeholder="${cfg.placeholder}"><button class="wr-send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 7l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="wr-toast"></div>
     </section>`;
   const mount = cfg.mount ? document.querySelector(cfg.mount) : null;
   (mount || document.body).appendChild(root);
@@ -77,7 +84,7 @@
     if (role === "bot") {
       const row = document.createElement("div");
       row.className = "wr-row";
-      row.innerHTML = '<div class="wr-avatar"><img src="/logos/wildrose.png" alt="Wildrose"></div>';
+      row.innerHTML = `<div class="wr-avatar"><img src="${cfg.logo}" alt=""></div>`;
       const bubble = document.createElement("div");
       bubble.className = "wr-msg bot";
       bubble.textContent = text;
@@ -154,7 +161,7 @@
   }
   async function ensureChat() {
     if (chatId) return chatId;
-    const data = await api("/api/chat/start", { page: location.href });
+    const data = await api("/api/chat/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName });
     chatId = data.chatId;
     return chatId;
   }
@@ -166,7 +173,7 @@
     const pending = addMsg("bot", "Thinking…");
     try {
       const id = await ensureChat();
-      const data = await api("/api/chat/message", { chatId: id, content });
+      const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName });
       pending.textContent = data.reply || "I can help with that.";
     } catch (e) {
       pending.textContent = "I hit a connection issue. Please try again or email jack@wildroseautomations.ca.";
@@ -182,7 +189,7 @@
       status.textContent = "Connecting…";
       const [{ RetellWebClient }, call] = await Promise.all([
         import("https://esm.sh/retell-client-js-sdk@2.0.7"),
-        api("/api/voice/start", { page: location.href })
+        api("/api/voice/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName })
       ]);
       retellClient = new RetellWebClient();
       retellClient.on("call_started", () => { panel.classList.remove("speaking"); status.textContent = "Listening"; note.textContent = "Speak naturally. Interrupt anytime."; orb.classList.add("live", "listening"); orb.classList.remove("speaking"); $(".wr-start-voice").style.display = "none"; $(".wr-end-voice").style.display = "inline-block"; });
