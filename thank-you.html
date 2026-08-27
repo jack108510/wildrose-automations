@@ -17,7 +17,7 @@
   <div class="hero-card">
     <span class="eyebrow">Payment received</span>
     <h1 id="title">Get Rose on <em>your website.</em></h1>
-    <p class="lead" id="intro">We used your website scan to choose the right install path. Follow the access steps below and Wildrose handles the code, publishing, and testing.</p>
+    <p class="lead" id="intro">Setup should take about one minute. Pick the easiest option below — Wildrose handles the code, publishing, testing, and cleanup.</p>
     <p class="setup-id" id="setupId"></p>
     <div class="meta">
       <div class="pill"><small>Business</small><b id="businessOut">Your business</b></div>
@@ -34,10 +34,11 @@
     <div class="steps" id="steps"></div>
   </section>
   <aside class="card action-box">
-    <h2>Invite Wildrose</h2>
-    <p id="actionCopy">Send temporary access to this email. We install Rose, test it, then you can remove access.</p>
+    <h2>Fastest setup</h2>
+    <p id="actionCopy">Invite Wildrose with temporary access. We install Rose, test it, then you can remove access.</p>
     <div class="email" id="installEmail">invites@wildroseautomations.ca</div>
-    <div class="btns"><button class="btn dark-ghost" id="copyBtn" type="button">Copy email</button><button class="btn primary" id="accessBtn" type="button">I sent access</button><button class="btn dark-ghost" id="checkBtn" type="button">Check connection</button></div>
+    <div class="btns"><button class="btn primary" id="copyBtn" type="button">Copy invite email</button><button class="btn dark-ghost" id="accessBtn" type="button">I sent access</button><button class="btn dark-ghost" id="checkBtn" type="button">Check connection</button></div>
+    <div class="friction-options" id="frictionOptions"><button class="option-card" id="helpBtn" type="button"><b>I’m not sure where to invite you</b><span>Wildrose will guide you or do a quick screen-share.</span></button><button class="option-card" id="webPersonBtn" type="button"><b>I have a web person</b><span>Send them a simple handoff with the exact setup link.</span></button><button class="option-card" id="noAccessBtn" type="button"><b>I can’t give website access</b><span>We’ll use a hosted Rose page/button fallback.</span></button></div>
     <div class="status-panel" id="statusPanel"><div class="status-row"><span class="dot" id="statusDot"></span><span id="statusTitle">Checking connection…</span></div><p id="statusText">We will automatically look for Rose on your live site. Once it is installed, this page changes to connected.</p><div class="install-done" id="installDone">Rose is connected. Wildrose will test chat, voice, and lead delivery next.</div><div class="timeline" id="timeline"></div></div>
     <p class="fine">Use admin/editor access only if your provider asks for a role. Never send your password.</p>
     <div class="mini-grid" id="backupCards"></div>
@@ -73,11 +74,11 @@ document.getElementById('websiteOut').textContent=cleanHost||'Your website';
 document.getElementById('providerOut').textContent=guide.unknown?'Not detected':guide.label+' · '+guide.kind;
 document.getElementById('pathLabel').textContent=guide.unknown?'Unknown builder solution':'Detected provider path';
 document.getElementById('pathLabel').className='path-label '+(guide.unknown?'unknown':'detected');
-document.getElementById('title').innerHTML=guide.unknown?'We could not detect your builder — <em>still easy.</em>':'Get Rose on <em>'+guide.label+'.</em>';
-document.getElementById('intro').textContent=guide.unknown?'The scan could not confidently identify your website builder, so this page gives the universal access path plus backup options. You do not need to figure out code.':'We detected '+guide.label+' from your website scan, so these are the correct access steps for that platform.';
-document.getElementById('guideTitle').textContent=guide.unknown?'Universal setup path':'Correct '+guide.label+' setup instructions';
-document.getElementById('guideCopy').textContent=guide.unknown?'Use this if the site builder is unclear, custom, or blocked by the scan.':'Recommended access role: '+guide.role+'.';
-document.getElementById('actionCopy').textContent=guide.unknown?'Try inviting Wildrose first. If your builder does not allow it, use one of the fallback paths below.':'Send temporary '+guide.role+' access to this email. We handle install and testing.';
+document.getElementById('title').innerHTML=guide.unknown?'We could not detect your builder — <em>still easy.</em>':'Setup Rose on <em>'+guide.label+'.</em>';
+document.getElementById('intro').textContent=guide.unknown?'No problem. You do not need to know code or your website builder. Pick one easy option and Wildrose handles the rest.':'We detected '+guide.label+'. The easiest path is just inviting Wildrose with temporary access — we handle everything else.';
+document.getElementById('guideTitle').textContent=guide.unknown?'Easiest setup path':'One-minute '+guide.label+' setup';
+document.getElementById('guideCopy').textContent=guide.unknown?'If you are unsure, click “I’m not sure where to invite you” and Wildrose will take over.':'Best option: invite '+INSTALL_EMAIL+' with '+guide.role+' access. No password needed.';
+document.getElementById('actionCopy').textContent=guide.unknown?'If you can find team/access settings, invite Wildrose. If not, choose one of the simple backup buttons.':'Invite Wildrose with temporary '+guide.role+' access. We install, test, and tell you when Rose is live.';
 if(data.id){const el=document.getElementById('setupId');el.style.display='block';el.textContent='Setup ID: '+data.id;}
 document.getElementById('steps').innerHTML=guide.steps.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('');
 document.getElementById('backupCards').innerHTML=(guide.unknown?[
@@ -95,9 +96,23 @@ function renderProgress(p){const el=document.getElementById('timeline'); if(!el|
 async function loadProgress(mark=false){try{const p=await postJson('/api/rose-install-progress',{checkoutLeadId:data.id,website:cleanHost,email:data.email,sitePlatform:data.sitePlatform,guideOpened:mark});renderProgress(p);return p}catch(e){return null}}
 async function checkConnection(manual=false){try{setStatus('', manual?'Checking live site…':'Checking connection…','Looking for the Rose install on '+(cleanHost||'your website')+'.');await loadProgress(!manual);const j=await postJson('/api/rose-install-status',{checkoutLeadId:data.id,website:cleanHost,clientId:params.get('clientId')||''});if(j.connected){setStatus('connected','Rose is connected',j.message||'Rose is live on the website.');await loadProgress(false);window.wrTrack&&window.wrTrack('rose_install_connected')}else if(j.status==='check_failed'){setStatus('error','Automatic check unavailable',j.message||'Wildrose can still verify it manually.')}else{setStatus('', 'Waiting for access / install', j.message||'Rose is not detected yet. Send access and Wildrose will connect it.')}}catch(e){setStatus('error','Connection check failed',e.message||'Try again later.')}}
 async function saveAccessSent(){const payload={action:'invite_sent',businessName:business,website:cleanHost,email:data.email||'',purchaseEmail:data.email||'',checkoutLeadId:data.id,provider:guide.unknown?'Unknown builder':guide.label,sitePlatform:guide.unknown?'Unknown builder':guide.label,selectedInstallMethod:guide.unknown?'unknown-builder-universal-access':'detected-provider-access',sourcePage:location.href,accessInstructions:{provider:guide.label,role:guide.role,steps:guide.steps}};if(!payload.email){toast('Email missing — use the copied email and message Jack.');return}try{document.getElementById('accessBtn').disabled=true;const j=await postJson('/api/rose-install-action',payload);toast('Access noted — Wildrose task created');setStatus('', 'Access sent — Wildrose is connecting Rose', j.message||'We created the setup task. Use Check connection after the invite is accepted.');await loadProgress(false);window.wrTrack&&window.wrTrack('rose_access_sent')}catch(e){toast(e.message||'Could not save access')}}
+async function saveSupportAction(action,label){const payload={action,businessName:business,website:cleanHost,email:data.email||'',purchaseEmail:data.email||'',checkoutLeadId:data.id,provider:guide.unknown?'Unknown builder':guide.label,sitePlatform:guide.unknown?'Unknown builder':guide.label,selectedInstallMethod:action,sourcePage:location.href,accessInstructions:{provider:guide.label,role:guide.role,steps:guide.steps}};try{await postJson('/api/rose-install-action',payload);toast(label);setStatus('', label, 'Wildrose has this setup path saved. We will follow up and make it easy.');await loadProgress(false)}catch(e){toast(e.message||'Could not save')}}
+function webPersonMailto(){const subject=encodeURIComponent('Please help install Rose on '+(cleanHost||'our website'));const body=encodeURIComponent(`Hi,
+
+We are setting up Rose by Wildrose Automations on ${cleanHost||'our website'}.
+
+Install/setup guide: ${location.href}
+
+If you need to coordinate with Wildrose, please invite or email ${INSTALL_EMAIL}.
+
+No password sharing is needed.
+`);location.href='mailto:?subject='+subject+'&body='+body;saveSupportAction('web_person_handoff','Web-person handoff saved')}
 document.getElementById('accessBtn').addEventListener('click',saveAccessSent);
 document.getElementById('checkBtn').addEventListener('click',()=>checkConnection(true));
-document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(INSTALL_EMAIL)}catch(e){}toast('Copied email')});
+document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(INSTALL_EMAIL)}catch(e){}toast('Copied invite email')});
+document.getElementById('helpBtn').addEventListener('click',()=>saveSupportAction('needs_guided_setup','Guided setup requested'));
+document.getElementById('webPersonBtn').addEventListener('click',webPersonMailto);
+document.getElementById('noAccessBtn').addEventListener('click',()=>saveSupportAction('hosted_fallback_needed','Hosted fallback requested'));
 checkConnection(false);
 </script>
 </body>
