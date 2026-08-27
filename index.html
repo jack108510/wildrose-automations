@@ -272,15 +272,16 @@ document.addEventListener("click",function(e){
   var eventName="";
   if(txt.includes("buy your agent")||txt.includes("continue to checkout")) eventName="rose_buy_clicked";
   else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
+  else if(txt.includes("set up rose")||txt.includes("rose setup")||txt.includes("get rose")) eventName="rose_setup_call_clicked";
   else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
   else if(txt.includes("book")||txt.includes("call")) eventName="rose_setup_call_clicked";
   if(eventName) window.wrTrack(eventName);
 },true);
 document.addEventListener("submit",function(e){
   var id=e.target&&e.target.id;
-  if(id==="checkoutForm"||id==="roseLeadForm") window.wrTrack("rose_checkout_lead_submit");
+  if(id==="checkoutForm"||id==="roseLeadForm"||id==="siteEmailForm"||id==="roseCreditForm") window.wrTrack("rose_checkout_lead_submit");
   if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
-  if(id==="mockForm"||id==="heroForm") window.wrTrack("rose_mockup_submit");
+  if(id==="mockForm"||id==="heroForm"||id==="roseMockupForm") window.wrTrack("rose_mockup_submit");
 },true);
 </script>
 
