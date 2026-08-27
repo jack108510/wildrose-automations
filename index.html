@@ -241,7 +241,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
 .mockup-frame-wrap{display:none;position:relative;z-index:1;width:min(1120px,calc(100% - 48px));margin:76px auto 140px;border:1px solid rgba(255,255,255,.14);border-radius:32px;overflow:hidden;background:#0b0b0b;box-shadow:0 36px 120px rgba(0,0,0,.52),0 0 70px rgba(255,87,34,.08)}.mockup-frame-wrap.show{display:block}.mockup-frame-top{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.10);color:rgba(255,255,255,.55);font-size:13px;font-weight:800}.mockup-frame-top i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18)}.mockup-frame-top span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mockup-frame{display:block;width:100%;height:min(980px,88vh);border:0;background:#fbf7f1}.mockup-status{display:none;margin:18px auto 0;color:rgba(255,255,255,.55);font-size:13px;font-weight:750}.mockup-status.show{display:block}@media(max-width:620px){.mockup-frame-wrap{width:calc(100% - 28px);border-radius:22px}.mockup-frame{height:780px}.mockup-frame-top{font-size:12px}}
 /* END BLACK THEME MOCKUP SECTION */
 
-body.rose-preview-started .wr-ai{display:none!important}
+body.rose-preview-in-view #rose-hero-widget .wr-ai{display:none!important}
 </style>
 <!-- Wildrose analytics: Microsoft Clarity -->
 <script type="text/javascript">
@@ -374,17 +374,31 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   const frameWrap=document.querySelector('#mockupFrameWrap');
   const frameLabel=document.querySelector('#mockupFrameLabel');
   const status=document.querySelector('#mockupStatus');
+  const mockupSection=document.querySelector('#mockup');
+  function syncPreviewRoseVisibility(forceInView){
+    if(!document.body.classList.contains('rose-preview-started'))return;
+    const target=frameWrap?.classList.contains('show')?frameWrap:mockupSection;
+    if(!target)return;
+    const rect=target.getBoundingClientRect();
+    const visible=forceInView===true || (rect.bottom>90 && rect.top<window.innerHeight-90);
+    document.body.classList.toggle('rose-preview-in-view',visible);
+  }
   if(!form||!input||!frame||!frameWrap)return;
+  window.addEventListener('scroll',()=>syncPreviewRoseVisibility(),{passive:true});
+  window.addEventListener('resize',()=>syncPreviewRoseVisibility());
+  window.addEventListener('hashchange',()=>setTimeout(()=>syncPreviewRoseVisibility(),50));
   function buildInline(raw){
     const site=raw.trim();
     if(!site){input.focus();return;}
     const clean=site.replace(/^https?:\/\//i,'').replace(/\/$/,'');
     frameLabel.textContent='Building Rose mockup for '+clean;
-    try{localStorage.setItem('rosePreviewStarted','1');document.body.classList.add('rose-preview-started');document.getElementById('roseCreditCard')?.classList.remove('show')}catch(e){}
+    try{localStorage.setItem('rosePreviewStarted','1');document.body.classList.add('rose-preview-started','rose-preview-in-view');document.getElementById('roseCreditCard')?.classList.remove('show')}catch(e){}
     status?.classList.add('show');
     frameWrap.classList.add('show');
     frame.src='ai-tool-mockup-final.html?v=site-assistant-1&website='+encodeURIComponent(site)+'&embed=1';
     frameWrap.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>syncPreviewRoseVisibility(true),80);
+    setTimeout(()=>syncPreviewRoseVisibility(),900);
   }
   form.addEventListener('submit',e=>{
     e.preventDefault();
@@ -392,6 +406,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   });
   frame.addEventListener('load',()=>{
     status?.classList.remove('show');
+    syncPreviewRoseVisibility();
     const clean=(input.value||'').replace(/^https?:\/\//i,'').replace(/\/$/,'');
     frameLabel.textContent=clean ? 'Rose mockup for '+clean : 'Rose mockup preview';
   });
