@@ -37,6 +37,10 @@ body:not(.account-locked) .hero,body:not(.account-locked) .account-card.done{dis
 /* CLEAN INSTRUCTIONS + NO BLACK BOX */
 body:not(.account-locked) .clean-install .steps{display:grid!important;margin:18px 0 18px!important}.clean-install .steps .step{display:grid!important;grid-template-columns:34px 1fr;gap:12px;align-items:start}.clean-install .steps .step .num{width:34px;height:34px;border-radius:999px;display:grid;place-items:center;background:#ff5722!important;color:#fff!important;font-weight:950}.clean-install .steps .step b{display:block;color:#171411;font-size:15px;margin-bottom:3px}.clean-install .steps .step span{color:#6b625a;font-size:13px;line-height:1.35}.primary-install-box{background:#fff7ed!important;color:#171411!important;border:1px solid #fed7aa!important;box-shadow:none!important}.primary-install-box h3{color:#171411!important}.primary-install-box p{color:#6b625a!important}.primary-install-box .email{background:#fff!important;border:1px solid #f2c6ae!important;color:#171411!important}.primary-install-box .btn.dark-ghost{background:#fff!important;color:#d9480f!important;border-color:#f2c6ae!important}.primary-install-box .btn.primary{background:#ff5722!important;color:#fff!important;border-color:#ff5722!important}.clean-install .fine{color:#8a4b27!important}
 
+
+/* NONTECH INSTALL COPY + HELP BUTTON */
+.problem-btn{width:100%;margin-top:12px;background:#fff!important;color:#b42318!important;border-color:#fecaca!important}.problem-note{margin-top:10px!important;color:#7c4a2f!important}.clean-install .steps .step span{font-size:14px!important;line-height:1.5!important}.clean-install .steps .step b{font-size:16px!important}.clean-install .step{background:#fff!important}.primary-install-box .btns{align-items:center}.primary-install-box .btn{min-height:48px}
+
 </style>
 <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y3isf2gtkw");window.wrTrack=function(name,params){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};window.addEventListener("load",function(){window.wrTrack&&window.wrTrack("rose_install_guide_view");});</script>
 </head>
@@ -96,7 +100,8 @@ body:not(.account-locked) .clean-install .steps{display:grid!important;margin:18
         <button class="btn dark-ghost" id="accessBtn" type="button">I invited Wildrose</button>
         <button class="btn dark-ghost" id="checkBtn" type="button">Check connection</button>
       </div>
-      <p class="fine">Use admin/editor access only if your provider asks for a role. Never send your password.</p>
+      <button class="btn dark-ghost problem-btn" id="problemBtn" type="button">I’m having problems</button>
+      <p class="fine problem-note">If anything feels confusing, tap the problem button. It emails Wildrose with your setup details and we’ll reach back out.</p>
     </div>
     <div class="clean-status">
       <div class="status-panel" id="statusPanel"><div class="status-row"><span class="dot" id="statusDot"></span><span id="statusTitle">Checking connection…</span></div><p id="statusText">We will automatically look for Rose on your live site after access is sent.</p><div class="install-done" id="installDone">Rose is connected. Wildrose will test chat, voice, and lead delivery next.</div><div class="timeline" id="timeline"></div></div>
@@ -153,10 +158,10 @@ document.getElementById('pathLabel').className='path-label '+(guide.unknown?'unk
 document.getElementById('title').innerHTML=accountCreated()?'Setup Rose on <em>'+guide.label+'.</em>':'Sign up for <em>Wildrose.</em>';if(!accountCreated())document.getElementById('pathLabel').textContent='Create account';
 if(accountCreated())document.getElementById('intro').textContent=guide.unknown?'No problem. You do not need to know code or your website builder. Pick one easy option and Wildrose handles the rest.':'We detected '+guide.label+'. The easiest path is just inviting Wildrose with temporary access — we handle everything else.';
 document.getElementById('guideTitle').innerHTML=guide.unknown?'Install <em>Rose.</em>':'Install Rose on <em>'+guide.label+'.</em>';
-document.getElementById('guideCopy').textContent='Follow these steps to give Wildrose temporary access. We install Rose and test it for you.';
-document.getElementById('actionCopy').textContent='Copy this email, invite Wildrose in your website provider, then tap I invited Wildrose.';
+document.getElementById('guideCopy').textContent='No code needed. Just invite Wildrose to your website account so we can install Rose for you.';
+document.getElementById('actionCopy').textContent='Use this email when your website asks who to invite.';
 if(data.id){const el=document.getElementById('setupId');el.style.display='block';el.textContent='Setup ID: '+data.id;}
-const visibleSteps=guide.unknown?[['Open your website editor','Go to the website builder, host, or agency portal for this site.'],['Find access or team settings','Look for Users, Team, Members, Collaborators, Permissions, or Delegate Access.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' with admin/editor access, then tap I invited Wildrose.']]:[['Open '+guide.label,'Log in and open the project/site for this website.'],['Find team or access settings','Look for Members, Users, Collaborators, Permissions, or Settings.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' with '+String(guide.role||'editor').replace(/\s+access$/i,'')+' access, then tap I invited Wildrose.']];document.getElementById('steps').innerHTML=visibleSteps.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('');
+function simpleInstallSteps(){const role=String(guide.role||'editor').replace(/\s+access$/i,''); if(guide.unknown)return [['Open the place you edit your website','This might be Wix, Shopify, GoDaddy, WordPress, Squarespace, your hosting account, or the account your web person uses.'],['Find the people or permissions area','Look for words like Users, Team, Members, Staff, Collaborators, Permissions, or Delegate Access.'],['Invite Wildrose','Add '+INSTALL_EMAIL+' with temporary admin/editor access. Do not send your password.'],['Come back here','After the invite is sent, tap I invited Wildrose. We will finish the install and reach out if anything else is needed.']]; return [['Open '+guide.label,'Log in to '+guide.label+' and choose the website/project for '+(cleanHost||'your business')+'.'],['Find where you add another person','Look for Settings, Team, Members, Users, Collaborators, Permissions, Staff, or Access. If you do not see it, use the I’m having problems button below.'],['Invite Wildrose','Add '+INSTALL_EMAIL+' with '+role+' access. This lets us install Rose without ever needing your password.'],['Come back here','After the invite is sent, tap I invited Wildrose. We will install Rose, test it, and contact you if we need anything.']]}const visibleSteps=simpleInstallSteps();document.getElementById('steps').innerHTML=visibleSteps.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('');
 function escAttr(v){return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
 function clientKey(){return ('rose-'+(business||cleanHost||'client')).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'rose-client'}
 const roseSnippet=`<scr`+`ipt src="https://wildroseautomations.ca/wildrose-widget-sandbox.js?v=site-assistant-1&client=${escAttr(data.id||clientKey())}" data-api-base="https://wildrose-widget.wildeautomations.com" data-business-id="${escAttr(data.id||clientKey())}" data-owner-email="${escAttr(data.email||'')}" data-title="Rose" data-business-name="${escAttr(business)}" data-accent="#ff5722" async></scr`+`ipt>`;
@@ -188,10 +193,25 @@ If you need to coordinate with Wildrose, please invite or email ${INSTALL_EMAIL}
 
 No password sharing is needed.
 `);location.href='mailto:?subject='+subject+'&body='+body;saveSupportAction('web_person_handoff','Web-person handoff saved')}
+function problemMailto(){saveSupportAction('needs_guided_setup','Help request sent — Wildrose will reach out');const subject=encodeURIComponent('I need help installing Rose');const body=encodeURIComponent(`Hi Wildrose,
+
+I am having problems installing Rose and would like help.
+
+Business: ${business}
+Website: ${cleanHost||data.website||''}
+Provider: ${guide.label}
+Setup ID: ${data.id||''}
+Account email: ${data.email||''}
+
+Please reach back out to me.
+
+Page: ${location.href}
+`);setTimeout(()=>{location.href='mailto:${INSTALL_EMAIL}?subject='+subject+'&body='+body},250)}
 document.getElementById('accessBtn').addEventListener('click',saveAccessSent);
 document.getElementById('checkBtn').addEventListener('click',()=>checkConnection(true));
 document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(INSTALL_EMAIL)}catch(e){}toast('Copied invite email')});
 document.getElementById('helpBtn').addEventListener('click',()=>saveSupportAction('needs_guided_setup','Guided setup requested'));
+document.getElementById('problemBtn')?.addEventListener('click',problemMailto);
 document.getElementById('webPersonBtn').addEventListener('click',webPersonMailto);
 document.getElementById('copySnippetBtn')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(roseSnippet)}catch(e){}toast('Copied Rose snippet')});
 document.getElementById('snippetSentBtn')?.addEventListener('click',()=>saveSupportAction('snippet_handoff','Snippet handoff saved'));
