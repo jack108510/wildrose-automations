@@ -301,6 +301,10 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
 /></noscript>
 
+
+<style>
+.email-modal{position:fixed;inset:0;z-index:2147482700;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.58);backdrop-filter:blur(8px)}.email-modal.show{display:flex}.email-card{width:min(520px,100%);border-radius:28px;background:#fff;color:#171411;padding:24px;box-shadow:0 34px 110px rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.55)}.email-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.email-top h3{font-size:28px;line-height:1.05;margin:0}.email-top p{margin:8px 0 0;color:#756b62}.email-close{width:38px;height:38px;border-radius:999px;border:1px solid #eadfd2;background:#fbf7f1;font-size:20px;cursor:pointer}.email-form{display:grid;gap:10px}.email-form input,.email-form textarea{width:100%;border:1px solid #e3d6c8;border-radius:14px;padding:13px 14px;font:inherit;background:#fffaf5;color:#171411}.email-form textarea{min-height:116px;resize:vertical}.email-form button{border:0;border-radius:999px;padding:14px 18px;background:#ff5722;color:#fff;font-weight:900;cursor:pointer}.email-status{min-height:20px;font-size:13px;color:#756b62}.email-status.ok{color:#0b8f58}.email-status.err{color:#b42318}
+</style>
 </head>
 <body>
 
@@ -315,7 +319,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
       <a href="automations.html">Automation & AI</a>
       <a href="#mockup">Rose Setup</a>
     </div>
-    <a href="mailto:jack@wildroseautomations.ca?subject=Add%20Rose%20to%20my%20website" class="btn btn-hl">Email Us →</a>
+    <a href="#email" class="btn btn-hl" id="openEmailForm">Email Us →</a>
   </div>
 </nav>
 
@@ -441,6 +445,21 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
 })();
 </script>
 
+
+<div class="email-modal" id="emailModal" aria-hidden="true">
+  <div class="email-card" role="dialog" aria-modal="true" aria-labelledby="emailTitle">
+    <div class="email-top"><div><h3 id="emailTitle">Email Wildrose</h3><p>Send the website, question, or setup note. It creates a real Wildrose lead/task.</p></div><button class="email-close" id="closeEmailForm" type="button" aria-label="Close email form">×</button></div>
+    <form class="email-form" id="siteEmailForm">
+      <input name="name" placeholder="Your name" autocomplete="name">
+      <input name="email" type="email" placeholder="Your email" autocomplete="email" required>
+      <input name="website" type="url" placeholder="Website URL optional" autocomplete="url">
+      <textarea name="message" placeholder="What do you want help with?" required></textarea>
+      <button type="submit">Send message →</button>
+      <div class="email-status" id="emailStatus"></div>
+    </form>
+  </div>
+</div>
+
 <div class="rose-credit-card" id="roseCreditCard" role="dialog" aria-modal="false" aria-labelledby="roseCreditTitle" aria-describedby="roseCreditCopy">
   <div class="rose-credit-top">
     <div class="rose-credit-kicker"><span></span> Rose launch offer</div>
@@ -456,6 +475,40 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   <small class="rose-credit-foot">No spam. Just the setup steps and offer.</small>
   <div class="rose-credit-success">Done — we saved it. We’ll send the Rose setup checklist and launch credit.</div>
 </div>
+
+
+<script>
+(function(){
+  const API='https://wildrose-widget.wildeautomations.com';
+  const modal=document.getElementById('emailModal');
+  const open=document.getElementById('openEmailForm');
+  const close=document.getElementById('closeEmailForm');
+  const form=document.getElementById('siteEmailForm');
+  const status=document.getElementById('emailStatus');
+  if(!modal||!open||!form)return;
+  function show(){modal.classList.add('show');modal.setAttribute('aria-hidden','false');setTimeout(()=>form.querySelector('input[name=email]')?.focus(),60)}
+  function hide(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true')}
+  open.addEventListener('click',e=>{e.preventDefault();show()});
+  close?.addEventListener('click',hide);
+  modal.addEventListener('click',e=>{if(e.target===modal)hide()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide()});
+  form.addEventListener('submit',async e=>{
+    e.preventDefault(); if(!form.reportValidity())return;
+    const button=form.querySelector('button'); const old=button.textContent; button.disabled=true; button.textContent='Sending…'; status.className='email-status'; status.textContent='Sending…';
+    const data=Object.fromEntries(new FormData(form).entries());
+    const payload={businessName:data.name||data.website||'Wildrose website contact',business:data.name||data.website||'Wildrose website contact',email:data.email,website:data.website||'',plan:'Wildrose website contact',source:'homepage-email-form',sourcePage:location.href,notes:`Website contact form
+Name: ${data.name||'Not provided'}
+Email: ${data.email}
+Website: ${data.website||'Not provided'}
+
+Message:
+${data.message||''}`};
+    try{const res=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const json=await res.json().catch(()=>({}));if(!res.ok)throw new Error(json.error||'Could not send message');status.className='email-status ok';status.textContent='Sent — Wildrose has it.';form.reset();window.wrTrack&&window.wrTrack('rose_setup_call_clicked',{source:'homepage-email-form'});setTimeout(hide,1400)}
+    catch(err){status.className='email-status err';status.textContent=err.message||'Could not send. Try again.'}
+    finally{button.disabled=false;button.textContent=old}
+  });
+})();
+</script>
 
 <script>
 // Delayed Rose launch-credit capture. Uses the live Wildrose lead API and hides itself after dismissal/submission.

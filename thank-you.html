@@ -41,7 +41,7 @@
     <details class="help-details" id="helpDetails"><summary>Need help setting this up?</summary><div class="friction-options" id="frictionOptions"><button class="option-card" id="helpBtn" type="button"><b>I’m not sure where to invite you</b><span>Wildrose will guide you or do a quick screen-share.</span></button><button class="option-card" id="webPersonBtn" type="button"><b>I have a web person</b><span>Send them a simple handoff with the exact setup link.</span></button><button class="option-card" id="noAccessBtn" type="button"><b>I can’t give website access</b><span>We’ll use a hosted Rose page/button fallback.</span></button></div></details>
     <div class="status-panel" id="statusPanel"><div class="status-row"><span class="dot" id="statusDot"></span><span id="statusTitle">Checking connection…</span></div><p id="statusText">We will automatically look for Rose on your live site. Once it is installed, this page changes to connected.</p><div class="install-done" id="installDone">Rose is connected. Wildrose will test chat, voice, and lead delivery next.</div><div class="timeline" id="timeline"></div></div>
     <p class="fine">Use admin/editor access only if your provider asks for a role. Never send your password.</p>
-    <div class="mini-grid" id="backupCards"></div>
+    <div class="mini-grid" id="backupCards"></div><div class="mini-grid tune-grid"><div class="mini-card"><b>Want Rose changed before it goes live?</b><span>Tell Wildrose what to tune. These create setup tasks — no editor needed.</span></div><button class="option-card" id="tuneNameBtn" type="button"><b>Change greeting/name</b><span>Assistant name, welcome message, or tone.</span></button><button class="option-card" id="tuneLeadBtn" type="button"><b>Change lead email</b><span>Where Rose sends chats, calls, and summaries.</span></button><button class="option-card" id="tuneQuestionsBtn" type="button"><b>Change questions Rose asks</b><span>What Rose should collect before handing off.</span></button><button class="option-card" id="tuneGeneralBtn" type="button"><b>Ask Wildrose to tune it</b><span>General cleanup before it goes live.</span></button></div>
   </aside>
 </main>
 <div class="toast" id="toast">Copied</div>
@@ -113,6 +113,11 @@ document.getElementById('copyBtn').addEventListener('click',async()=>{try{await 
 document.getElementById('helpBtn').addEventListener('click',()=>saveSupportAction('needs_guided_setup','Guided setup requested'));
 document.getElementById('webPersonBtn').addEventListener('click',webPersonMailto);
 document.getElementById('noAccessBtn').addEventListener('click',()=>saveSupportAction('hosted_fallback_needed','Hosted fallback requested'));
+document.getElementById('tuneNameBtn')?.addEventListener('click',()=>saveSupportAction('tune_name_greeting','Greeting/name change requested'));
+document.getElementById('tuneLeadBtn')?.addEventListener('click',()=>saveSupportAction('tune_lead_email','Lead email change requested'));
+document.getElementById('tuneQuestionsBtn')?.addEventListener('click',()=>saveSupportAction('tune_questions','Question tuning requested'));
+document.getElementById('tuneGeneralBtn')?.addEventListener('click',()=>saveSupportAction('tune_general','Rose tuning requested'));
+
 checkConnection(false);
 </script>
 </body>
