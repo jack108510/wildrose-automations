@@ -3,77 +3,66 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rose Setup — Wildrose Automations</title>
+<title>How to Get Rose on Your Site — Wildrose Automations</title>
 <meta name="robots" content="noindex,nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <style>
-:root{--orange:#ff5722;--ink:#171411;--muted:#756b62;--line:#eadfd2;--paper:#fff;--dark:#0b0b0b}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 50% 8%,rgba(255,87,34,.22),transparent 32%),linear-gradient(#050505,#000 44%,#17110d 100%);-webkit-font-smoothing:antialiased}.wrap{width:min(1050px,calc(100% - 40px));margin:0 auto}.site-nav{height:66px;background:#000;border-bottom:1px solid rgba(255,255,255,.10)}.site-nav .wrap{height:66px;display:flex;align-items:center;justify-content:flex-start}.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:900;letter-spacing:-.035em}.brand img{width:28px;height:28px;border-radius:8px}.card{margin:70px auto 60px;background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.64));border:1px solid rgba(255,255,255,.58);border-radius:38px;padding:clamp(26px,5vw,52px);box-shadow:0 40px 140px rgba(0,0,0,.35);backdrop-filter:blur(28px)}.eyebrow{display:inline-flex;border:1px solid color-mix(in srgb,var(--orange) 20%,var(--line));border-radius:999px;padding:8px 11px;background:rgba(255,255,255,.78);font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;color:#775f53}h1{margin:16px 0 14px;font-size:clamp(44px,7vw,82px);line-height:.9;letter-spacing:-.085em}h1 em{font-family:'Instrument Serif',serif;font-weight:400;color:var(--orange)}p{margin:0 0 18px;color:var(--muted);font-size:18px;line-height:1.58;font-weight:650}.hero-copy{max-width:720px}.setup-id{display:none;margin-top:-4px;font-size:14px}.site-box{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}.site-pill{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;text-align:left}.site-pill small{display:block;color:#8a7d72;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:900;margin-bottom:4px}.site-pill b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.guide{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-top:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;text-align:left}.panel h2{margin:0 0 10px;font-size:28px;letter-spacing:-.06em;line-height:1}.steps{display:grid;gap:10px;margin-top:14px}.step{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:12px;border:1px solid #f0e5db;border-radius:18px;background:#fffaf6}.num{width:34px;height:34px;border-radius:12px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:950}.step b{display:block;margin-bottom:4px}.step span{display:block;color:var(--muted);font-size:14px;line-height:1.45;font-weight:650}.note{background:#111827;color:#fff;border:0}.note p,.note span{color:rgba(255,255,255,.76)}.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.45;background:#0b1020;color:#dbeafe;border-radius:16px;padding:14px;overflow:auto}.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{height:48px;border-radius:999px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;font-weight:950;text-decoration:none}.primary{background:linear-gradient(145deg,var(--orange),#ff875f);color:#fff;box-shadow:0 18px 46px rgba(255,87,34,.22)}.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}@media(max-width:830px){.site-box,.guide{grid-template-columns:1fr}.card{margin-top:34px}}
+:root{--orange:#ff5722;--ink:#171411;--muted:#71665d;--line:#eadfd2;--paper:#fff;--cream:#fbf7f1;--green:#11a36a}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 50% -10%,rgba(255,87,34,.18),transparent 34%),linear-gradient(180deg,#fffaf5,#f7efe7 58%,#fbf7f1);-webkit-font-smoothing:antialiased}.nav{height:66px;background:#fff;border-bottom:1px solid var(--line)}.wrap{width:min(850px,calc(100% - 36px));margin:0 auto}.nav .wrap{height:66px;display:flex;align-items:center}.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:950;letter-spacing:-.04em}.brand img{width:28px;height:28px;border-radius:8px}.card{margin:42px auto 60px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:34px;padding:clamp(24px,5vw,46px);box-shadow:0 28px 90px rgba(65,38,18,.10)}.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;color:var(--orange);font-weight:950;font-size:12px;text-transform:uppercase;letter-spacing:.07em}.eyebrow:before{content:"";width:8px;height:8px;background:var(--green);border-radius:999px}h1{margin:18px 0 12px;font-size:clamp(40px,7vw,72px);line-height:.94;letter-spacing:-.085em}h1 em{font-family:'Instrument Serif',serif;font-weight:400;color:var(--orange)}p{margin:0;color:var(--muted);font-size:18px;line-height:1.55;font-weight:650}.meta{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}.pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:13px;color:#776a5f;font-weight:850}.steps{display:grid;gap:12px;margin:24px 0}.step{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px}.num{width:44px;height:44px;border-radius:16px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:950}.step b{display:block;font-size:18px;letter-spacing:-.03em;margin:1px 0 4px}.step span{display:block;color:var(--muted);font-size:15px;line-height:1.45;font-weight:650}.email-card{margin-top:20px;background:#111827;color:#fff;border-radius:24px;padding:20px}.email-card p{color:rgba(255,255,255,.76);font-size:15px}.email{margin-top:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:14px;font-size:18px;font-weight:950;word-break:break-all}.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{height:48px;border-radius:999px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;font-weight:950;text-decoration:none}.primary{background:linear-gradient(145deg,var(--orange),#ff875f);color:#fff;box-shadow:0 18px 46px rgba(255,87,34,.20)}.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}.mini{margin-top:14px;font-size:14px;color:#897d72}.setup-id{display:none}@media(max-width:650px){.step{grid-template-columns:1fr}.num{width:38px;height:38px}.card{margin-top:24px}}
 </style>
-<!-- Meta Pixel Code -->
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2453637905131468');fbq('track','PageView');</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"></noscript>
-<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y3isf2gtkw");window.wrTrack=function(name,params){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}try{if(window.fbq&&name){var map={rose_mockup_started:"Lead",rose_mockup_submit:"Lead",rose_buy_clicked:"InitiateCheckout",rose_checkout_lead_submit:"Lead",rose_onboarding_submit:"CompleteRegistration",rose_setup_submit_clicked:"CompleteRegistration",rose_setup_call_clicked:"Contact"};if(map[name])window.fbq("track",map[name],params||{});window.fbq("trackCustom",name,params||{});}}catch(e){}};window.addEventListener("load",function(){window.wrTrack&&window.wrTrack("rose_thank_you_view");});</script>
+<script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y3isf2gtkw");window.wrTrack=function(name,params){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};window.addEventListener("load",function(){window.wrTrack&&window.wrTrack("rose_install_guide_view");});</script>
 </head>
 <body>
-<nav class="site-nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a></div></nav>
+<nav class="nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a></div></nav>
 <main class="wrap card">
-  <span class="eyebrow" id="eyebrow">Rose setup</span>
-  <h1 id="title">Your AI front desk is <em>in motion.</em></h1>
-  <p class="hero-copy" id="thanksCopy">Payment received. Here is the easiest way to get Rose on your website based on the website provider we found.</p>
+  <span class="eyebrow">Payment received</span>
+  <h1 id="title">How to get Rose on <em>your site.</em></h1>
+  <p id="intro">We found your website provider. Follow these steps to give Wildrose temporary access so we can install and test Rose for you.</p>
   <p class="setup-id" id="setupId"></p>
-  <div class="site-box">
-    <div class="site-pill"><small>Business</small><b id="businessOut">Your business</b></div>
-    <div class="site-pill"><small>Website</small><b id="websiteOut">Your website</b></div>
-    <div class="site-pill"><small>Provider found</small><b id="providerOut">Checking</b></div>
+  <div class="meta">
+    <span class="pill" id="businessPill">Business: Your business</span>
+    <span class="pill" id="websitePill">Website: Your website</span>
+    <span class="pill" id="providerPill">Provider: Unknown</span>
   </div>
-  <section class="guide">
-    <div class="panel">
-      <h2 id="guideTitle">Install Rose on your site</h2>
-      <p id="guideIntro">Follow the steps below, or send this page to whoever manages your website.</p>
-      <div class="steps" id="providerSteps"></div>
-    </div>
-    <aside class="panel note">
-      <h2>Prefer not to touch the site?</h2>
-      <p>Forward this page to Wildrose or your web person. The clean install path is already picked from the provider scan.</p>
-      <div class="code" id="snippetBox">&lt;script src="https://wildrose-widget.wildeautomations.com/wildrose-widget.js?client=your-business" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" async&gt;&lt;/script&gt;</div>
-      <div class="btns"><a class="btn primary" id="emailBtn" href="mailto:jack@wildroseautomations.ca">Ask Wildrose to install it</a><a class="btn ghost" href="index.html">Back to Wildrose</a></div>
-    </aside>
+  <section class="steps" id="steps"></section>
+  <section class="email-card">
+    <b>Invite this Wildrose email</b>
+    <div class="email">jack@wildroseautomations.ca</div>
+    <p class="mini" id="accessNote">Use a temporary admin/editor role if your provider asks for a role. You can remove access after Rose is installed.</p>
+    <div class="btns"><a class="btn primary" id="emailBtn" href="mailto:jack@wildroseautomations.ca">Tell us access was sent</a><a class="btn ghost" href="index.html">Back to Wildrose</a></div>
   </section>
 </main>
 <script>
+const INSTALL_EMAIL='jack@wildroseautomations.ca';
 const params=new URLSearchParams(location.search);
-function readPending(){try{return JSON.parse(localStorage.getItem('rosePendingInstall')||'{}')||{}}catch{return {}}}
-const pending=readPending();
-const data={id:params.get('clientId')||params.get('id')||pending.id||'',businessName:params.get('businessName')||pending.businessName||'',website:params.get('website')||pending.website||'',email:params.get('email')||pending.email||'',sitePlatform:params.get('sitePlatform')||params.get('platform')||pending.sitePlatform||'',paymentStatus:params.get('paymentStatus')||''};
-const provider=(data.sitePlatform||'Unknown builder').trim()||'Unknown builder';
-const lower=provider.toLowerCase();
+function pending(){try{return JSON.parse(localStorage.getItem('rosePendingInstall')||'{}')||{}}catch{return {}}}
+const saved=pending();
+const data={id:params.get('clientId')||params.get('id')||saved.id||'',businessName:params.get('businessName')||saved.businessName||'',website:params.get('website')||saved.website||'',sitePlatform:params.get('sitePlatform')||params.get('platform')||saved.sitePlatform||''};
 const cleanHost=(data.website||'').replace(/^https?:\/\//i,'').replace(/\/$/,'');
-const safeBiz=data.businessName||cleanHost||'Your business';
-const steps={
-  wix:[['Open Wix dashboard','Go to your Wix site, then Settings → Custom Code.'],['Add Rose code','Paste the Rose snippet into Body - end, load on all pages.'],['Publish and test','Publish, then open your site and test chat/voice plus lead delivery.']],
-  squarespace:[['Open Code Injection','Go to Settings → Developer Tools → Code Injection.'],['Paste Rose in Footer','Add the snippet in Footer so Rose loads across the site.'],['Save and test','Save, open the live site, and test the Rose button.']],
-  godaddy:[['Open Website Builder','Go to GoDaddy Websites + Marketing and edit the site.'],['Try an HTML/custom code section','Add the Rose snippet where custom code is allowed. Some GoDaddy plans block full scripts.'],['Use fallback if blocked','If scripts are blocked, add a normal button linking to your hosted Rose page.']],
-  wordpress:[['Open WordPress admin','Go to Plugins → Add New and install a header/footer code plugin if needed.'],['Add the Rose snippet','Paste the snippet into the footer/site-wide body area.'],['Clear cache and test','Publish, clear cache, then test Rose on the live site.']],
-  shopify:[['Open theme code','Online Store → Themes → Edit code.'],['Add Rose before body close','Paste the snippet before </body> in theme.liquid.'],['Save and test','Preview the live storefront and test Rose.']],
-  webflow:[['Open Project Settings','Go to Custom Code in your Webflow project.'],['Paste before body tag','Add Rose in Footer Code before </body>.'],['Publish domain','Publish to the live domain and test.']],
-  github:[['Open the site repo','Find the HTML file or shared layout that appears on every page.'],['Paste the Rose snippet','Add it before </body>, commit, and push to GitHub Pages.'],['Wait for Pages and test','After deploy finishes, open the live domain and test Rose.']],
-  static:[['Open your hosting/project files','Find the site template or HTML file used by all pages.'],['Paste the Rose snippet','Add it before </body> and deploy.'],['Test the live domain','Open the live site and confirm Rose appears.']],
-  unknown:[['Send this to Wildrose','We will confirm what your builder allows.'],['Use the safest path','Either install the snippet, guide you on a call, or make a hosted Rose page.'],['Test before launch','Rose is not marked live until chat, voice, and lead delivery work.']]
+const business=data.businessName||cleanHost||'Your business';
+const rawProvider=(data.sitePlatform||'Unknown').trim()||'Unknown';
+const lower=rawProvider.toLowerCase();
+const guides={
+  wix:{label:'Wix',steps:[['Open your Wix dashboard','Go to wix.com and open the website you want Rose installed on.'],['Go to Roles & Permissions','Open Settings, then Roles & Permissions / Collaborators.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' as a Website Manager, Admin, or Co-owner role so we can add the Rose code.'],['Tell us it is sent','Click the email button below so we know to install Rose and test it.']]},
+  squarespace:{label:'Squarespace',steps:[['Open Squarespace','Log in and choose the site you want Rose installed on.'],['Open Permissions','Go to Settings → Permissions / Contributors.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' as an Administrator or Website Editor.'],['Tell us it is sent','We will add Rose, publish safely, and test it before calling it live.']]},
+  godaddy:{label:'GoDaddy',steps:[['Open GoDaddy','Log in to GoDaddy and open My Products.'],['Find Delegate Access','Go to Account Settings → Delegate Access.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' with Products & Domains access so we can check if your builder allows Rose.'],['Tell us it is sent','If GoDaddy blocks the full widget, we will set up the clean fallback link/button path.']]},
+  wordpress:{label:'WordPress',steps:[['Open WordPress admin','Log in to your WordPress dashboard.'],['Go to Users','Open Users → Add New.'],['Invite Wildrose','Add '+INSTALL_EMAIL+' as an Administrator temporarily so we can install Rose site-wide.'],['Tell us it is sent','We will add Rose, clear cache if needed, and verify lead delivery.']]},
+  shopify:{label:'Shopify',steps:[['Open Shopify admin','Log in to Shopify and choose your store.'],['Go to Users / Staff','Open Settings → Users and permissions.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' with theme editing permission so we can add Rose to your storefront.'],['Tell us it is sent','We will install Rose in the theme and test it on the live store.']]},
+  webflow:{label:'Webflow',steps:[['Open Webflow dashboard','Log in and choose your website project.'],['Open Workspace members','Go to Workspace/Site settings and find members or collaborators.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' with site admin/designer access so we can add Rose custom code.'],['Tell us it is sent','We will publish and test Rose on your connected domain.']]},
+  github:{label:'GitHub Pages',steps:[['Open your GitHub repo','Go to the repository that publishes your website.'],['Open collaborators','Go to Settings → Collaborators and teams.'],['Invite Wildrose','Invite GitHub user jack108510 or email '+INSTALL_EMAIL+' with write access.'],['Tell us it is sent','We will add Rose, push the change, and verify the Pages deploy.']]},
+  static:{label:rawProvider,steps:[['Open your website host','Log in to the account or repo where the site files are managed.'],['Find access / collaborators','Look for Team, Users, Members, or Collaborators.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' with editor/admin access so we can add the Rose snippet.'],['Tell us it is sent','We will install Rose and test it on the live domain.']]},
+  unknown:{label:'your website provider',steps:[['Open your website account','Log in wherever your website is edited.'],['Find team access','Look for Users, Team, Collaborators, Permissions, or Delegate Access.'],['Invite Wildrose','Invite '+INSTALL_EMAIL+' with temporary admin/editor access.'],['Tell us it is sent','We will figure out the safest install path from there.']]}
 };
-function pick(){if(/wix/.test(lower))return ['Wix',steps.wix];if(/squarespace/.test(lower))return ['Squarespace',steps.squarespace];if(/godaddy/.test(lower))return ['GoDaddy',steps.godaddy];if(/wordpress|wp/.test(lower))return ['WordPress',steps.wordpress];if(/shopify/.test(lower))return ['Shopify',steps.shopify];if(/webflow/.test(lower))return ['Webflow',steps.webflow];if(/github/.test(lower))return ['GitHub Pages',steps.github];if(/netlify|vercel|cloudflare|custom html|static/.test(lower))return [provider,steps.static];return [provider||'Unknown builder',steps.unknown];}
-const [label,chosen]=pick();
-document.getElementById('businessOut').textContent=safeBiz;
-document.getElementById('websiteOut').textContent=cleanHost||'Your website';
-document.getElementById('providerOut').textContent=label;
-document.getElementById('guideTitle').textContent='How to get Rose on '+label;
-document.getElementById('guideIntro').textContent=label==='Unknown builder'?'We could not identify the builder with confidence, so Wildrose will choose the safest install path.':'We found '+label+' from the website scan, so these are the likely install steps.';
+function pick(){if(/wix/.test(lower))return guides.wix;if(/squarespace/.test(lower))return guides.squarespace;if(/godaddy/.test(lower))return guides.godaddy;if(/wordpress|wp/.test(lower))return guides.wordpress;if(/shopify/.test(lower))return guides.shopify;if(/webflow/.test(lower))return guides.webflow;if(/github/.test(lower))return guides.github;if(/netlify|vercel|cloudflare|custom html|static|pages/.test(lower))return guides.static;return guides.unknown;}
+const guide=pick();
+document.getElementById('title').innerHTML='How to get Rose on <em>'+guide.label+'.</em>';
+document.getElementById('businessPill').textContent='Business: '+business;
+document.getElementById('websitePill').textContent='Website: '+(cleanHost||'Your website');
+document.getElementById('providerPill').textContent='Provider: '+guide.label;
 if(data.id){const el=document.getElementById('setupId');el.style.display='block';el.textContent='Setup ID: '+data.id;}
-document.getElementById('providerSteps').innerHTML=chosen.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('');
-const slug=safeBiz.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'your-business';
-document.getElementById('snippetBox').textContent=`<script src="https://wildrose-widget.wildeautomations.com/wildrose-widget.js?client=${slug}" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" async><\/script>`;
-const subject=encodeURIComponent('Install Rose on '+safeBiz);
-const body=encodeURIComponent(`I finished Rose checkout.\n\nBusiness: ${safeBiz}\nWebsite: ${cleanHost}\nProvider found: ${label}\nSetup ID: ${data.id||''}\n\nPlease help get Rose on my site.`);
-document.getElementById('emailBtn').href=`mailto:jack@wildroseautomations.ca?subject=${subject}&body=${body}`;
+document.getElementById('steps').innerHTML=guide.steps.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('');
+const subject=encodeURIComponent('Rose access sent for '+business);
+const body=encodeURIComponent(`I sent Wildrose access for Rose installation.\n\nBusiness: ${business}\nWebsite: ${cleanHost}\nProvider: ${guide.label}\nSetup ID: ${data.id||''}`);
+document.getElementById('emailBtn').href=`mailto:${INSTALL_EMAIL}?subject=${subject}&body=${body}`;
 </script>
 </body>
 </html>
