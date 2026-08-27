@@ -70,9 +70,10 @@
   const log = $(".wr-chat-log");
   let chatId = null;
   let retellClient = null;
+  let voiceBusy = false;
 
   fab.addEventListener("click", () => { setView("voice"); panel.classList.add("open"); fab.style.display = "none"; });
-  $(".wr-close").addEventListener("click", () => { panel.classList.remove("open"); fab.style.display = "grid"; });
+  $(".wr-close").addEventListener("click", () => { try { retellClient?.stopCall(); } catch {} voiceBusy = false; $(".wr-start-voice").disabled = false; panel.classList.remove("open"); fab.style.display = "grid"; });
   $$(".wr-tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
 
   function setView(view) {
@@ -184,7 +185,11 @@
   $(".wr-send").addEventListener("click", submitChat);
   input.addEventListener("keydown", e => { if (e.key === "Enter") submitChat(); });
   $(".wr-start-voice").addEventListener("click", async () => {
-    const status = $(".wr-status"), note = $(".wr-note"), orb = $(".wr-orb");
+    const status = $(".wr-status"), note = $(".wr-note"), orb = $(".wr-orb"), startBtn = $(".wr-start-voice"), endBtn = $(".wr-end-voice");
+    if (voiceBusy) return;
+    voiceBusy = true;
+    startBtn.disabled = true;
+    try { retellClient?.stopCall(); } catch {}
     try {
       status.textContent = "Connecting…";
       const [{ RetellWebClient }, call] = await Promise.all([
@@ -204,10 +209,14 @@
       retellClient.on("error", err => { panel.classList.remove("speaking"); console.error(err); status.textContent = "Voice connection failed"; note.textContent = "Please check microphone permission or use chat."; orb.classList.remove("live", "listening", "speaking"); });
       await retellClient.startCall({ accessToken: call.accessToken });
     } catch (err) {
+      voiceBusy = false;
+      startBtn.disabled = false;
       console.error(err);
       status.textContent = "Voice unavailable";
       note.textContent = "Please use chat for now.";
+      startBtn.style.display = "inline-block";
+      endBtn.style.display = "none";
     }
   });
-  $(".wr-end-voice").addEventListener("click", () => { try { retellClient?.stopCall(); } catch {} });
+  $(".wr-end-voice").addEventListener("click", () => { try { retellClient?.stopCall(); } catch {} voiceBusy = false; $(".wr-start-voice").disabled = false; });
 })();
