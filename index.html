@@ -428,6 +428,22 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
     e.preventDefault();
     buildInline(input.value);
   });
+  function shouldFocusWebsiteInput(){
+    return window.matchMedia('(max-width: 700px), (pointer: coarse)').matches;
+  }
+  function focusWebsiteInputFromCTA(e){
+    if(!shouldFocusWebsiteInput())return;
+    const link=e.target.closest('a[href="#mockup"]');
+    if(!link)return;
+    e.preventDefault();
+    mockupSection.scrollIntoView({behavior:'smooth',block:'start'});
+    // iOS only opens the keyboard when focus happens directly inside the tap handler.
+    input.focus({preventScroll:false});
+    try{input.setSelectionRange(input.value.length,input.value.length)}catch(_){ }
+    setTimeout(()=>input.focus({preventScroll:true}),120);
+    history.replaceState(null,'','#mockup');
+  }
+  document.addEventListener('click',focusWebsiteInputFromCTA,true);
   frame.addEventListener('load',()=>{
     status?.classList.remove('show');
     syncPreviewRoseVisibility();
