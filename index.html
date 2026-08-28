@@ -245,19 +245,25 @@ body.rose-preview-in-view #rose-hero-widget .wr-ai{display:none!important}
 @media(max-width:620px){
   html,body{max-width:100%;overflow-x:hidden!important}
   .wrap{width:100%;padding-left:24px;padding-right:24px}
-  .rose-hero{padding:72px 0 88px;overflow:hidden}
-  .rose-hero h1{font-size:clamp(42px,13.5vw,52px)!important;line-height:.98!important;letter-spacing:-.055em!important;max-width:342px!important;overflow-wrap:normal!important;text-wrap:balance}
-  .rose-hero .lead{font-size:18px!important;line-height:1.34!important;max-width:342px!important;text-wrap:balance}
-  .rose-hero-widget{width:min(342px,88vw)!important;min-height:480px!important;margin-top:44px!important;overflow:visible}
-  .rose-hero-widget::before{inset:-12px -18px!important;border-radius:38px!important}
-  #rose-hero-widget .wr-ai.inline{width:100%!important;max-width:342px!important}
-  #rose-hero-widget .wr-ai.inline .wr-panel{height:500px!important;border-radius:30px!important}
-  #rose-hero-widget .wr-ai.inline .wr-msg{font-size:13px!important;max-width:82%!important}
-  .mockup-cta{padding:96px 0 150px!important}
-  .mockup-cta h2{font-size:42px!important;line-height:.95!important;letter-spacing:-.055em!important}
-  .mockup-search{grid-template-columns:1fr!important;border-radius:26px!important;padding:12px!important}
-  .mockup-search input{font-size:18px!important;padding:24px 14px 12px!important;min-width:0!important}
-  .mockup-search button{width:100%!important;justify-content:center!important}
+  .rose-hero{padding:42px 0 70px;overflow:hidden}
+  .rose-hero h1{font-size:clamp(37px,11.8vw,46px)!important;line-height:.99!important;letter-spacing:-.052em!important;max-width:342px!important;overflow-wrap:normal!important;text-wrap:balance;margin-bottom:18px!important}
+  .rose-hero .lead{font-size:16px!important;line-height:1.38!important;max-width:342px!important;text-wrap:balance;margin-bottom:24px!important}
+  .rose-label{display:none!important}
+  .rose-hero .hero-cta{display:flex!important;width:100%;justify-content:center!important}
+  .rose-hero .hero-cta .btn{width:min(330px,100%)!important;justify-content:center!important;height:52px!important}
+  .rose-hero-widget{display:none!important}
+  .mockup-cta{padding:68px 0 96px!important}
+  .mockup-cta:after{display:none!important}
+  .mockup-tag{display:none!important}
+  .mockup-cta h2{font-size:34px!important;line-height:.98!important;letter-spacing:-.045em!important;margin:0 auto 14px!important;max-width:330px!important;text-wrap:balance}
+  .mockup-cta p{font-size:16px!important;line-height:1.45!important;margin-bottom:24px!important;max-width:330px!important}
+  .mockup-search{grid-template-columns:1fr!important;border-radius:22px!important;padding:10px!important;gap:8px!important;box-shadow:0 22px 70px rgba(0,0,0,.34),0 0 50px rgba(255,87,34,.12)!important}
+  .mockup-search:before{left:22px!important;top:12px!important;font-size:11px!important}
+  .mockup-search input{font-size:17px!important;padding:24px 12px 10px!important;min-width:0!important}
+  .mockup-search button{width:100%!important;justify-content:center!important;height:50px!important;padding:0 16px!important}
+  .mockup-hints{display:none!important}
+  .mockup-frame-wrap{width:calc(100% - 20px)!important;margin:40px auto 80px!important;border-radius:18px!important}
+  .mockup-frame{height:700px!important}
 }
 </style>
 <!-- Wildrose analytics: Microsoft Clarity -->
@@ -350,7 +356,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
     <h1>Give your website<br><em>a front desk.</em></h1>
     <p class="lead">Rose answers questions, captures quote requests, and sends the lead to you — while the visitor is still on the page.</p>
     <div class="hero-cta">
-      <a href="#mockup" class="btn btn-orange">Set Up Rose Now</a>
+      <a href="#mockup" class="btn btn-orange">See Rose on My Site</a>
     </div>
     <div class="rose-hero-widget" id="rose-hero-widget"></div>
   </div>
