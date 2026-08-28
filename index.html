@@ -358,12 +358,13 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
 </section>
 
 <script
-  src="/wildrose-widget-sandbox.js?v=voice-hold-2"
+  src="/wildrose-widget-sandbox.js?v=chat-default-logo-fallback-1"
   data-api-base="https://wildrose-widget.wildeautomations.com"
   data-title="Rose"
   data-accent="#ff5722"
   data-mount="#rose-hero-widget"
   data-inline="true"
+  data-default-view="chat"
 ></script>
 
 <script>
@@ -395,7 +396,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
     try{localStorage.setItem('rosePreviewStarted','1');document.body.classList.add('rose-preview-started','rose-preview-in-view');document.getElementById('roseCreditCard')?.classList.remove('show')}catch(e){}
     status?.classList.add('show');
     frameWrap.classList.add('show');
-    frame.src='ai-tool-mockup-final.html?v=site-assistant-1&website='+encodeURIComponent(site)+'&embed=1';
+    frame.src='ai-tool-mockup-final.html?v=site-assistant-2&website='+encodeURIComponent(site)+'&embed=1';
     frameWrap.scrollIntoView({behavior:'smooth',block:'start'});
     setTimeout(()=>syncPreviewRoseVisibility(true),80);
     setTimeout(()=>syncPreviewRoseVisibility(),900);
@@ -544,14 +545,14 @@ ${data.message||''}`};
   function hide(days){card.classList.remove('show');if(days)localStorage.setItem(dismissedKey,String(Date.now()+days*86400000))}
   window.showRoseCreditOffer=show;window.addEventListener('hashchange',()=>{if(location.hash==='#mockup')hide(0)});
   card.querySelector('.rose-credit-close')?.addEventListener('click',()=>hide(7));
-  setTimeout(show,12000);
+  setTimeout(show,30000);
   let scrollShown=false;
-  window.addEventListener('scroll',()=>{if(scrollShown)return;const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);if(window.scrollY/max>.45){scrollShown=true;show()}},{passive:true});
+  window.addEventListener('scroll',()=>{if(scrollShown)return;const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);if(window.scrollY/max>.75){scrollShown=true;show()}},{passive:true});
   let roseTalkTimer=null;
   document.addEventListener('click',event=>{
-    const started=event.target.closest&&event.target.closest('#rose-hero-widget .wr-start-voice,#rose-hero-widget .wr-send,#rose-hero-widget .wr-tab[data-view="voice"]');
+    const started=event.target.closest&&event.target.closest('#rose-hero-widget .wr-start-voice,#rose-hero-widget .wr-send');
     if(!started||roseTalkTimer)return;
-    roseTalkTimer=setTimeout(show,5000);
+    roseTalkTimer=setTimeout(show,14000);
   },true);
   form.addEventListener('submit',async event=>{
     event.preventDefault();
@@ -588,7 +589,8 @@ ${data.message||''}`};
 window.addEventListener('message',function(e){
   try{
     var data=e.data||{};
-    if(!data||data.type!=='roseCheckoutRedirect'||!data.target)return;
+    if(!data||!data.target)return;
+    if(data.type!=='roseCheckoutRedirect'&&data.type!=='roseOpenBuy')return;
     var target=new URL(String(data.target), location.href);
     if(!/(^|\.)square\.link$/.test(target.hostname) && target.hostname!==location.hostname && target.hostname!=='wildroseautomations.ca')return;
     window.location.href=target.href;
