@@ -278,12 +278,7 @@ window.wrTrack=function(name,params){
   try{
     if(window.fbq&&name){
       var map={
-        rose_mockup_started:"Lead",
-        rose_mockup_submit:"Lead",
-        rose_buy_clicked:"InitiateCheckout",
-        rose_checkout_lead_submit:"Lead",
-        rose_onboarding_submit:"CompleteRegistration",
-        rose_setup_submit_clicked:"CompleteRegistration",
+
         rose_setup_call_clicked:"Contact"
       };
       if(map[name]) window.fbq("track",map[name],params||{});
@@ -362,6 +357,32 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   </div>
 </section>
 
+<style>
+.recovery-section,#work.recovery-section{padding:72px 0;background:#080808;color:#fff;scroll-margin-top:90px;border-top:1px solid #242424}
+.recovery-section h2{font-size:clamp(30px,5vw,46px);margin-bottom:22px}.recovery-section h3{color:#ff5722;margin-bottom:12px;font-size:23px}
+.recovery-section p{color:#bbb;line-height:1.7;margin:12px 0}.recovery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:20px}
+.recovery-card{padding:26px;border:1px solid #303030;border-radius:20px;background:#111}.recovery-card .plan-price{font-size:32px;color:white}
+</style>
+<section class="recovery-section" id="how">
+  <div class="wrap"><h2>How Rose works</h2><div class="recovery-grid">
+    <article class="recovery-card"><h3>1. Preview your site</h3><p>Enter your website below to see a branded Rose preview. A preview does not install Rose or start a subscription.</p></article>
+    <article class="recovery-card"><h3>2. Confirm the details</h3><p>Choose a plan and provide your business information, FAQs and where the owner should receive quote requests. Review the setup before going live.</p></article>
+    <article class="recovery-card"><h3>3. Help your visitors</h3><p>Rose answers from your business information, captures contact and request details, and hands them to you for follow-up.</p></article>
+  </div></div>
+</section>
+<section class="recovery-section" id="pricing">
+  <div class="wrap"><h2>Rose pricing</h2><div class="recovery-grid">
+    <article class="recovery-card"><h3>Rose Basic</h3><p class="plan-price">$24/month</p><p>75 voice minutes/month. Visitor FAQ answers, quote capture and owner handoff.</p><a href="#mockup" class="btn btn-orange">Preview Rose</a></article>
+    <article class="recovery-card"><h3>Rose Pro</h3><p class="plan-price">$79/month</p><p>250 voice minutes/month. Visitor FAQ answers, quote capture and owner handoff.</p><a href="#mockup" class="btn btn-orange">Preview Rose</a></article>
+  </div><p>Extra voice minutes: $0.29/minute on either plan. Custom integrations are separately scoped.</p></div>
+</section>
+<section class="recovery-section" id="work">
+  <div class="wrap"><h2>What Rose can help with</h2><div class="recovery-grid">
+    <article class="recovery-card"><h3>Visitor FAQs</h3><p>Help visitors understand your services using the business information you provide.</p></article>
+    <article class="recovery-card"><h3>Quote requests</h3><p>Capture the visitor’s contact information and job details so you can review the request. Rose does not replace your quote approval.</p></article>
+    <article class="recovery-card"><h3>Owner handoff</h3><p>Send captured details to the owner for follow-up. CRM, booking, payment and other custom integrations require separate scoping; they are not included by default.</p></article>
+  </div><p>These are supported uses, not customer testimonials. <a href="#mockup">Try the website preview below.</a></p></div>
+</section>
 <section class="mockup-cta" id="mockup">
   <div class="wrap">
     <div class="mockup-tag"><span></span> Website preview</div>
@@ -385,6 +406,9 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   data-api-base="https://wildrose-widget.wildeautomations.com"
   data-title="Rose"
   data-accent="#ff5722"
+  data-greeting="Hi, I’m Rose. Ask questions about our services or tell me what you need a quote for, and I’ll help you reach the owner."
+  data-placeholder="Ask a question or describe your request…"
+  data-business-context="You are the visitor-facing assistant for Wildrose Automations. Help visitors with FAQs, capture quote requests and contact details, and offer owner handoff. Do not act as an owner configuration tool. Rose Basic is $24/month with 75 voice minutes; Pro is $79/month with 250 voice minutes. Extra voice minutes are $0.29/minute. Custom integrations are separately scoped. Do not promise completed bookings, payments or integrations."
   data-mount="#rose-hero-widget"
   data-inline="true"
   data-default-view="chat"

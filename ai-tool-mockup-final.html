@@ -133,12 +133,7 @@ window.wrTrack=function(name,params){
   try{
     if(window.fbq&&name){
       var map={
-        rose_mockup_started:"Lead",
-        rose_mockup_submit:"Lead",
-        rose_buy_clicked:["InitiateCheckout","Lead"],
-        rose_checkout_lead_submit:"Lead",
-        rose_onboarding_submit:"CompleteRegistration",
-        rose_setup_submit_clicked:"CompleteRegistration",
+
         rose_setup_call_clicked:"Contact"
       };
       if(map[name]) {
@@ -237,7 +232,7 @@ function render(){const data=state.data;if(!data)return;const buyParams=new URLS
     <span class="conversion-eyebrow">Buy Your Agent</span>
     <h2>Get Rose on ${esc(host(url))}.</h2>
     <p class="buy-sub">Choose a plan, add the setup basics, then checkout securely. That way your Rose install details are already connected to the payment.</p>
-    <div class="buy-choice"><button type="button" class="plan-pick" data-plan="Rose Basic — $24/mo"><b>Basic</b><span class="money">$24/mo</span><small>75 voice minutes/month</small></button><button type="button" class="plan-pick active" data-plan="Rose Pro — $79/mo"><b>Pro</b><span class="money">$79/mo</span><small>300 voice minutes/month</small></button></div>
+    <div class="buy-choice"><button type="button" class="plan-pick" data-plan="Rose Basic — $24/mo"><b>Basic</b><span class="money">$24/mo</span><small>75 voice minutes/month</small></button><button type="button" class="plan-pick active" data-plan="Rose Pro — $79/mo"><b>Pro</b><span class="money">$79/mo</span><small>250 voice minutes/month</small></button></div>
     <div class="selected-plan">Selected plan: <b id="selectedPlanLabel">Rose Pro — $79/mo</b></div>
     <form class="checkout-form" id="checkoutForm"><input name="business" placeholder="Business name" value="${esc(brand)}"><input name="website" placeholder="Website" value="${esc(host(url))}"><input name="email" type="email" placeholder="Business email from website" value="${esc(data.email||'')}" required><input name="personalEmail" type="email" placeholder="Personal email optional" value=""><input name="personalPhone" type="tel" placeholder="Personal phone optional" value=""><input name="sitePlatform" type="hidden" value="${esc(data.sitePlatform||data.siteProvider?.provider||'')}"><input name="plan" type="hidden" value="Rose Pro — $79/mo"><div class="promo-result" id="promoResult" role="alert"></div><button class="checkout-main" type="submit">Continue to checkout →</button><a class="checkout-fallback-link" id="checkoutFallbackLink" target="_top" rel="noopener">Open secure checkout</a></form><p class="screen-note">Next: pay securely, then customize/approve Rose before it goes live.</p>
     <p class="screen-note">Includes setup help, hosted fallback, and first-payment refund if we can’t get Rose live. Extra voice minutes are 29¢/min.</p>
@@ -252,7 +247,7 @@ function render(){const data=state.data;if(!data)return;const buyParams=new URLS
       <article class="rose-plan">
         <h3>Rose</h3>
         <div class="price">$79<small>/mo</small></div>
-        <ul><li>AI chat + Rose voice</li><li>Captures leads and contact info</li><li>300 voice minutes included</li><li>No setup fee</li></ul>
+        <ul><li>AI chat + Rose voice</li><li>Captures leads and contact info</li><li>250 voice minutes included</li><li>No setup fee</li></ul>
         <button class="buy chat" data-plan="Rose">Buy Your Agent</button>
       </article>
       <article class="rose-plan featured">
