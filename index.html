@@ -329,7 +329,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
 <style>
 .purchase-area{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.78);backdrop-filter:blur(12px)}
 .purchase-area.show{display:flex}.purchase-card{position:relative;width:min(760px,100%);max-height:calc(100vh - 44px);overflow:auto;border:1px solid rgba(255,255,255,.13);border-radius:28px;padding:34px;background:#0d0d0d;color:#fff;box-shadow:0 40px 140px rgba(0,0,0,.7)}
-.purchase-close{position:absolute;right:18px;top:18px;width:40px;height:40px;border:1px solid #333;border-radius:999px;background:#171717;color:#fff;font-size:23px;cursor:pointer}.purchase-kicker{color:#ff7043;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.13em}.purchase-card h2{margin:10px 48px 8px 0;font-size:clamp(32px,5vw,52px);line-height:.95;letter-spacing:-.055em}.purchase-intro{max-width:570px;margin:0 0 26px;color:#aaa;line-height:1.55}.purchase-plans{display:grid;grid-template-columns:1fr 1fr;gap:14px}.purchase-plan{display:flex;flex-direction:column;padding:24px;border:1px solid #2a2a2a;border-radius:20px;background:#141414}.purchase-plan.featured{border-color:rgba(255,87,34,.65);box-shadow:0 0 42px rgba(255,87,34,.10)}.purchase-plan h3{margin:0;font-size:21px}.purchase-price{margin:9px 0 15px;font-size:35px;font-weight:950}.purchase-price span{color:#888;font-size:14px;font-weight:700}.purchase-plan p{flex:1;margin:0 0 20px;color:#aaa;line-height:1.5;font-size:14px}.purchase-plan .btn{width:100%;justify-content:center}.purchase-note{margin:18px 0 0;text-align:center;color:#777;font-size:12px}@media(max-width:620px){.purchase-card{padding:28px 18px 20px;border-radius:22px}.purchase-plans{grid-template-columns:1fr}.purchase-card h2{font-size:38px}}
+.purchase-close{position:absolute;right:18px;top:18px;width:40px;height:40px;border:1px solid #333;border-radius:999px;background:#171717;color:#fff;font-size:23px;cursor:pointer}.purchase-kicker{color:#ff7043;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.13em}.purchase-card h2{margin:10px 48px 8px 0;font-size:clamp(32px,5vw,52px);line-height:.95;letter-spacing:-.055em}.purchase-intro{max-width:570px;margin:0 0 26px;color:#aaa;line-height:1.55}.purchase-plans{display:grid;grid-template-columns:1fr 1fr;gap:14px}.purchase-plan{display:flex;flex-direction:column;padding:24px;border:1px solid #2a2a2a;border-radius:20px;background:#141414}.purchase-plan.featured{border-color:rgba(255,87,34,.65);box-shadow:0 0 42px rgba(255,87,34,.10)}.purchase-plan h3{margin:0;font-size:21px}.purchase-price{margin:9px 0 15px;font-size:35px;font-weight:950}.purchase-price span{color:#888;font-size:14px;font-weight:700}.purchase-plan p{flex:1;margin:0 0 20px;color:#aaa;line-height:1.5;font-size:14px}.purchase-plan .btn{width:100%;justify-content:center}.purchase-plan.selected{border-color:#ff5722;background:#19110e;box-shadow:0 0 0 1px #ff5722,0 0 42px rgba(255,87,34,.12)}.purchase-checkout-form{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px}.purchase-checkout-form input{width:100%;border:1px solid #333;border-radius:13px;padding:13px 14px;background:#171717;color:#fff;font:inherit;outline:none}.purchase-checkout-form input:focus{border-color:#ff5722;box-shadow:0 0 0 3px rgba(255,87,34,.12)}.purchase-checkout-form input[name="email"],.purchase-checkout-form button,.purchase-status{grid-column:1/-1}.purchase-checkout-form button{border:0;cursor:pointer}.purchase-checkout-form button:disabled{opacity:.65;cursor:wait}.purchase-status{min-height:19px;color:#aaa;font-size:13px;text-align:center}.purchase-status.err{color:#ff9f82}.purchase-note{margin:4px 0 0;text-align:center;color:#777;font-size:12px}@media(max-width:620px){.purchase-card{padding:28px 18px 20px;border-radius:22px}.purchase-plans,.purchase-checkout-form{grid-template-columns:1fr}.purchase-card h2{font-size:38px}.purchase-checkout-form input[name="email"],.purchase-checkout-form button,.purchase-status{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -353,35 +353,67 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
     <button class="purchase-close" id="closePurchaseArea" type="button" aria-label="Close purchase area">×</button>
     <div class="purchase-kicker">Get Rose</div>
     <h2 id="purchaseTitle">Choose your agent.</h2>
-    <p class="purchase-intro">Start the setup now. We’ll collect your business details before secure checkout, then help you get Rose live.</p>
+    <p class="purchase-intro">Choose a plan, enter your details, and continue directly to secure Square checkout. We’ll email the setup steps afterward.</p>
     <div class="purchase-plans">
-      <article class="purchase-plan">
+      <article class="purchase-plan" data-plan-card="basic">
         <h3>Rose Basic</h3>
         <div class="purchase-price">$24<span>/month</span></div>
         <p>AI chat, Rose voice, lead capture, owner handoff, and 75 voice minutes each month.</p>
-        <a class="btn btn-orange" href="rose-onboarding.html?checkout=pending&amp;plan=basic" data-analytics="continue to checkout">Buy Basic</a>
+        <button class="btn btn-orange" type="button" data-plan-choice="basic">Choose Basic</button>
       </article>
-      <article class="purchase-plan featured">
+      <article class="purchase-plan selected" data-plan-card="pro">
         <h3>Rose Pro</h3>
         <div class="purchase-price">$79<span>/month</span></div>
         <p>Everything in Basic with 250 voice minutes each month for busier websites.</p>
-        <a class="btn btn-orange" href="rose-onboarding.html?checkout=pending&amp;plan=pro" data-analytics="continue to checkout">Buy Pro</a>
+        <button class="btn btn-orange" type="button" data-plan-choice="pro">Choose Pro</button>
       </article>
     </div>
-    <p class="purchase-note">No setup fee. Extra voice minutes are $0.29/minute.</p>
+    <form class="purchase-checkout-form" id="directCheckoutForm">
+      <input name="businessName" placeholder="Business name" autocomplete="organization" required>
+      <input name="website" type="url" placeholder="https://yourbusiness.com" autocomplete="url" required>
+      <input name="email" type="email" placeholder="Email for receipt and setup" autocomplete="email" required>
+      <input name="plan" type="hidden" value="pro">
+      <button class="btn btn-orange" type="submit">Continue to Secure Payment</button>
+      <div class="purchase-status" id="purchaseStatus" aria-live="polite"></div>
+      <p class="purchase-note">Secure recurring payment through Square. No setup fee. Cancel anytime.</p>
+    </form>
   </div>
 </section>
 <script>
 (function(){
+  const API='https://wildrose-widget.wildeautomations.com';
   const area=document.getElementById('purchaseArea');
   const open=document.getElementById('openPurchaseArea');
   const close=document.getElementById('closePurchaseArea');
-  if(!area||!open||!close)return;
+  const form=document.getElementById('directCheckoutForm');
+  const status=document.getElementById('purchaseStatus');
+  if(!area||!open||!close||!form)return;
   function show(e){e?.preventDefault();area.classList.add('show');area.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';close.focus();history.replaceState(null,'','#purchase')}
   function hide(){area.classList.remove('show');area.setAttribute('aria-hidden','true');document.body.style.overflow='';open.focus();if(location.hash==='#purchase')history.replaceState(null,'',location.pathname+location.search)}
   open.addEventListener('click',show);close.addEventListener('click',hide);
   area.addEventListener('click',e=>{if(e.target===area)hide()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&area.classList.contains('show'))hide()});
+  area.addEventListener('click',e=>{
+    const pick=e.target.closest('[data-plan-choice]');if(!pick)return;
+    const plan=pick.dataset.planChoice;form.plan.value=plan;
+    area.querySelectorAll('[data-plan-card]').forEach(card=>card.classList.toggle('selected',card.dataset.planCard===plan));
+    form.businessName.focus();
+  });
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();if(!form.reportValidity())return;
+    const button=form.querySelector('button[type="submit"]');const old=button.textContent;
+    button.disabled=true;button.textContent='Opening secure payment…';status.className='purchase-status';status.textContent='Saving your order…';
+    const values=Object.fromEntries(new FormData(form).entries());
+    const plan=values.plan==='basic'?'Rose Basic — $24/mo':'Rose Pro — $79/mo';
+    try{
+      const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({businessName:values.businessName,website:values.website,email:values.email,plan,source:'homepage-direct-buy',purchasePath:'direct_checkout',sourcePage:location.href})});
+      const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Could not start checkout');
+      const checkout=new URL(data.checkoutUrl||'');
+      if(!/(^|\.)square\.link$/.test(checkout.hostname)&&checkout.hostname!=='checkout.square.site')throw new Error('Secure checkout is unavailable');
+      sessionStorage.setItem('roseCheckoutLeadId',data.id||'');
+      window.location.assign(checkout.href);
+    }catch(error){status.className='purchase-status err';status.textContent=error.message||'Could not start checkout';button.disabled=false;button.textContent=old}
+  });
   if(location.hash==='#purchase')show();
 })();
 </script>
