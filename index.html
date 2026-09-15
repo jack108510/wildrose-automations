@@ -388,7 +388,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
   const form=document.getElementById('directCheckoutForm');
   const status=document.getElementById('purchaseStatus');
   if(!area||!open||!close||!form)return;
-  function show(e){e?.preventDefault();area.classList.add('show');area.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';close.focus();history.replaceState(null,'','#purchase')}
+  function show(e){e?.preventDefault();const credit=document.getElementById('roseCreditCard');credit?.classList.remove('show');credit?.setAttribute('aria-hidden','true');credit?.setAttribute('inert','');area.classList.add('show');area.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';close.focus();history.replaceState(null,'','#purchase')}
   function hide(){area.classList.remove('show');area.setAttribute('aria-hidden','true');document.body.style.overflow='';open.focus();if(location.hash==='#purchase')history.replaceState(null,'',location.pathname+location.search)}
   open.addEventListener('click',show);close.addEventListener('click',hide);
   area.addEventListener('click',e=>{if(e.target===area)hide()});
@@ -678,9 +678,9 @@ ${data.message||''}`};
   const now=Date.now();
   const dismissedUntil=Number(localStorage.getItem(dismissedKey)||0);
   if(localStorage.getItem(submittedKey)==='1'||dismissedUntil>now)return;
-  function show(){if(location.hash==='#mockup'||localStorage.getItem('rosePreviewStarted')==='1'||document.body.classList.contains('rose-preview-started')||document.body.classList.contains('rose-preview-in-view'))return;if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now()){card.removeAttribute('inert');card.setAttribute('aria-hidden','false');card.classList.add('show')}}
+  function show(){if(location.hash==='#mockup'||location.hash==='#purchase'||document.getElementById('purchaseArea')?.classList.contains('show')||localStorage.getItem('rosePreviewStarted')==='1'||document.body.classList.contains('rose-preview-started')||document.body.classList.contains('rose-preview-in-view'))return;if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now()){card.removeAttribute('inert');card.setAttribute('aria-hidden','false');card.classList.add('show')}}
   function hide(days){card.classList.remove('show');card.setAttribute('aria-hidden','true');card.setAttribute('inert','');if(days)localStorage.setItem(dismissedKey,String(Date.now()+days*86400000))}
-  window.showRoseCreditOffer=show;window.addEventListener('hashchange',()=>{if(location.hash==='#mockup')hide(0)});
+  window.showRoseCreditOffer=show;window.addEventListener('hashchange',()=>{if(location.hash==='#mockup'||location.hash==='#purchase')hide(0)});
   card.querySelector('.rose-credit-close')?.addEventListener('click',()=>hide(7));
   setTimeout(show,30000);
   let scrollShown=false;
