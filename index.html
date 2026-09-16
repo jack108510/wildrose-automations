@@ -290,7 +290,7 @@ document.addEventListener("click",function(e){
   var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
   var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
   var eventName="";
-  if(txt.includes("buy your agent")||txt.includes("continue to checkout")) eventName="rose_buy_clicked";
+  if(txt.includes("buy your agent")||txt.includes("continue to payment")) eventName="rose_buy_clicked";
   else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
   else if(txt.includes("set up rose")||txt.includes("rose setup")||txt.includes("get rose")) eventName="rose_setup_call_clicked";
   else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
@@ -373,7 +373,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
       <input name="website" type="url" placeholder="https://yourbusiness.com" autocomplete="url" required>
       <input name="email" type="email" placeholder="Email for receipt and setup" autocomplete="email" required>
       <input name="plan" type="hidden" value="pro">
-      <button class="btn btn-orange" type="submit">Continue to Secure Payment</button>
+      <button class="btn btn-orange" type="submit">Continue to payment →</button>
       <div class="purchase-status" id="purchaseStatus" aria-live="polite"></div>
       <p class="purchase-note">Secure recurring payment through Square. No setup fee. Cancel anytime.</p>
     </form>
