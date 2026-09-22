@@ -6,7 +6,9 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 const ROOT=path.dirname(fileURLToPath(import.meta.url));
 const KEY_FILE='/Users/jackserver/jsw/keys/reachr-supabase.env';
-const isMarketplace=x=>JSON.stringify(x).toLowerCase().includes('marketplace');
+const norm=x=>String(x||'').trim().toLocaleLowerCase('en-US');
+// Classify only provenance fields, never message text (which may mention Marketplace incidentally).
+const isMarketplace=x=>[x.sourceUrl,x.messengerUrl,x.source,x.channel,x.surface,x.placement].some(v=>/marketplace/i.test(String(v||'')));
 const stableHash=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
 export function normalizeConversations(ledger,state){
   const allowed=new Map();
@@ -16,15 +18,16 @@ export function normalizeConversations(ledger,state){
     const url=String(record.messengerUrl||'').trim();
     let route;try{route=new URL(url)}catch{continue}
     if(!name||route.protocol!=='https:'||!['www.facebook.com','facebook.com','www.messenger.com','messenger.com','m.me'].includes(route.hostname))continue;
-    const key=name.toLocaleLowerCase('en-US');
-    if(allowed.has(key)){allowed.set(key,null);continue;} // ambiguous name: fail closed
-    allowed.set(key,record);
+    for(const key of new Set([norm(name),norm(record.recipientName)].filter(Boolean))){
+      if(allowed.has(key)&&allowed.get(key)!==record){allowed.set(key,null);continue;} // ambiguous alias: fail closed
+      if(!allowed.has(key))allowed.set(key,record);
+    }
   }
   const byKey=new Map();
   for(const [sourceId,reply] of Object.entries(state.seen||{})){
-    if(isMarketplace(reply)||reply.classification?.reason==='outbound_or_empty')continue;
-    const record=allowed.get(String(reply.businessName||'').trim().toLocaleLowerCase('en-US'));
-    if(!record)continue;
+    if(isMarketplace(reply)||reply.classification?.reason==='outbound_or_empty'||reply.threadTextVerified!==true)continue;
+    const record=allowed.get(norm(reply.businessName));
+    if(!record||![norm(record.businessName),norm(record.recipientName)].includes(norm(reply.threadSpeaker)))continue; // exact inspected speaker, not inbox-row guess
     const body=String(reply.preview||'').trim();
     if(!body)continue;
     const key=stableHash([record.businessName,record.messengerUrl]);
