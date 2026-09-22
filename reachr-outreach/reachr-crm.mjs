@@ -14,6 +14,7 @@ export function contactEvents(db,id){return db.prepare('SELECT id,type,summary,s
 export function upsertVerifiedContact(db,input){
  const name=text(input.business_name,200),key=businessKey(name),url=text(input.messenger_url,700),email=text(input.email,254).toLowerCase(),stage=input.stage||'prospect',source=text(input.source,100),evidence=text(input.evidence,240),eventKey=text(input.event_key,250);
  if(!name||!validUrl(url)||!STAGES.has(stage)||!validEmail(email)||!source||!evidence||!eventKey)throw Error('invalid_verified_contact');
+ if(stage==='email_provided'&&!email)throw Error('email_required_for_stage');
  if(email&&input.email_source!=='prospect_provided_in_messenger')throw Error('email_provenance_required');
  const now=new Date().toISOString(),existing=db.prepare('SELECT * FROM crm_contacts WHERE business_key=?').get(key);
  if(existing?.email&&email&&existing.email!==email)throw Error('email_conflict_review_required');
