@@ -7,6 +7,7 @@ import crypto from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
 import {fileURLToPath} from 'node:url';
 import {normalizeConversations} from './reachr-conversation-sync.mjs';
+import {initCrm,listContacts,contactEvents,upsertVerifiedContact,updateContact} from './reachr-crm.mjs';
 const ROOT=path.dirname(fileURLToPath(import.meta.url));
 const ORIGIN='https://jack108510.github.io';
 const AUTH_URL='https://xacehhtgvubcqdoltazg.supabase.co/auth/v1/user';
@@ -17,6 +18,7 @@ function source(){const ledger=JSON.parse(fs.readFileSync(path.join(ROOT,'prospe
 export function makeApi({dbPath=DB_PATH,load=source,validate=validateToken,workerReady=false}={}){
  fs.mkdirSync(path.dirname(dbPath),{recursive:true,mode:0o700});
  const db=new DatabaseSync(dbPath);db.exec('PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, conversation_id TEXT NOT NULL, business_name TEXT NOT NULL, recipient_name TEXT NOT NULL, messenger_url TEXT NOT NULL, body TEXT NOT NULL, created_by TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN (\'draft\',\'approved\',\'claimed\',\'sending\',\'sent\',\'failed\',\'cancelled\')), created_at TEXT NOT NULL, approved_at TEXT, delivery TEXT, delivery_evidence TEXT);');
+ initCrm(db);
  const attempts=new Map();
  try{fs.chmodSync(dbPath,0o600)}catch{}
  function send(res,code,data,headers={}){res.writeHead(code,{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff',...headers});res.end(JSON.stringify(data));}
@@ -24,13 +26,22 @@ export function makeApi({dbPath=DB_PATH,load=source,validate=validateToken,worke
  async function handler(req,res){const h=cors(req),url=new URL(req.url,'http://localhost');
   if(req.headers.origin&&req.headers.origin!==ORIGIN)return send(res,403,{error:'origin_forbidden'});
   if(url.pathname===BASE+'/health'&&req.method==='GET')return send(res,200,{ok:true},h);
-  if(req.method==='OPTIONS'){if(req.headers.origin!==ORIGIN)return send(res,403,{error:'origin_forbidden'});res.writeHead(204,{...h,'access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'authorization,content-type','access-control-max-age':'600'});return res.end();}
+  if(req.method==='OPTIONS'){if(req.headers.origin!==ORIGIN)return send(res,403,{error:'origin_forbidden'});res.writeHead(204,{...h,'access-control-allow-methods':'GET,POST,PATCH,OPTIONS','access-control-allow-headers':'authorization,content-type','access-control-max-age':'600'});return res.end();}
   if(!url.pathname.startsWith(BASE+'/'))return send(res,404,{error:'not_found'},h);
   const token=/^Bearer (.+)$/.exec(req.headers.authorization||'')?.[1];if(!token)return send(res,401,{error:'unauthorized'},h);
   const peer=req.socket.remoteAddress||'local',now=Date.now(),rate=attempts.get(peer);if(!rate||now-rate.start>60000)attempts.set(peer,{start:now,count:1});else if(++rate.count>120)return send(res,429,{error:'rate_limited'},h);
   let user;try{user=await validate(token)}catch{return send(res,401,{error:'unauthorized'},h)}
   if(!user?.id)return send(res,401,{error:'unauthorized'},h);
   if(user.email!=='wildejack1010@gmail.com'||!user.email_confirmed_at)return send(res,403,{error:'forbidden'},h);
+  if(url.pathname===BASE+'/crm/contacts'&&req.method==='GET')return send(res,200,{contacts:listContacts(db)},h);
+  const eventPath=new RegExp('^'+BASE+'/crm/contacts/([0-9a-f-]+)/events$').exec(url.pathname);
+  if(eventPath&&req.method==='GET')return db.prepare('SELECT id FROM crm_contacts WHERE id=?').get(eventPath[1])?send(res,200,{events:contactEvents(db,eventPath[1])},h):send(res,404,{error:'not_found'},h);
+  const crmWrite=url.pathname===BASE+'/crm/contacts'&&req.method==='POST';
+  const crmEdit=new RegExp('^'+BASE+'/crm/contacts/([0-9a-f-]+)$').exec(url.pathname);
+  if(crmWrite||(crmEdit&&req.method==='PATCH')){
+   let payload='';try{for await(const part of req){payload+=part;if(payload.length>8192)throw Error('too_large')}payload=JSON.parse(payload)}catch{return send(res,400,{error:'invalid_body'},h)}
+   try{return crmWrite?send(res,201,upsertVerifiedContact(db,payload),h):send(res,200,updateContact(db,crmEdit[1],payload),h)}catch(error){return send(res,error.message==='not_found'?404:409,{error:error.message},h)}
+  }
   let rows;try{rows=load()}catch{return send(res,503,{error:'source_unavailable'},h)}
   const conversations=rows.map(x=>x.conversation);
   if(url.pathname===BASE+'/conversations'&&req.method==='GET')return send(res,200,conversations.map(({id,business_name,recipient_name,updated_at,sender_actor_id,sender_actor_name})=>({id,business_name,recipient_name,updated_at,sender_verified:Boolean(workerReady&&sender_actor_id&&sender_actor_name)})),h);
