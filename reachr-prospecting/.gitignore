@@ -2,6 +2,7 @@
 discovery-*-results.json
 discovery-*-vetted.json
 discovery-*-vetted.md
+rose-website-candidates.json
 
 # Runtime artifacts
 *.log

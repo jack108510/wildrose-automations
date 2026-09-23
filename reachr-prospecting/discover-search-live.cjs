@@ -6,6 +6,8 @@ const { deterministicShuffle } = require('./discovery-order.cjs');
 const { selectDiscoveryController } = require('./discovery-controller.cjs');
 const { buildRecentFeedJobs, mergeCandidates } = require('./discovery-plan.cjs');
 const { inferBusinessName } = require('./business-name-inference.cjs');
+const { composeReachrMessage } = require('./content.js');
+const { loadCandidates: loadRoseCandidates, addCandidate: addRoseCandidate, saveCandidates: saveRoseCandidates } = require('./rose-website-candidates.cjs');
 
 const CDP = 'http://127.0.0.1:9223';
 const args = process.argv.slice(2);
@@ -25,10 +27,11 @@ const groupOffsetValue = args.find(arg => arg.startsWith('--group-offset='))?.sp
 const GROUP_OFFSET = Number.isInteger(Number(groupOffsetValue)) && Number(groupOffsetValue) >= 0 ? Number(groupOffsetValue) : 0;
 const sourceOrderSeed = args.find(arg => arg.startsWith('--source-order-seed='))?.split('=')[1] || null;
 const resultPath = path.join(__dirname, 'discovery-50-results.json');
+const roseResultPath = path.join(__dirname, 'rose-website-candidates.json');
 const source = fs.readFileSync(path.join(__dirname, 'content.js'), 'utf8');
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const norm = (value = '') => String(value).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-const draftFor = businessName => `Hey, I’m Jack. I’m a student at SMU and I’ve been creating software called Reachr that helps businesses post across Facebook groups without having to do it all manually.\n\nI noticed ${businessName} is already promoting through Facebook groups. I’m looking for real business experience and feedback as we build it out. Would ${businessName} be interested in testing the tool for free and letting us know what you think?`;
+const draftFor = composeReachrMessage;
 
 function get(url) {
   return new Promise((resolve, reject) => http.get(url, response => {
@@ -76,6 +79,7 @@ function connect(url) {
   const existingCount = data.prospects?.length || 0;
   const target = Math.max(BASE_TARGET, existingCount + TARGET_ADDITIONS);
   const prospects = new Map((data.prospects || []).map(prospect => [norm(prospect.businessName), prospect]));
+  const roseCandidates = loadRoseCandidates(roseResultPath);
   const tabs = await get(`${CDP}/json/list`);
   const controllerTarget = selectDiscoveryController(tabs);
   if (!controllerTarget) throw Error('No CDP page is available for discovery.');
@@ -153,6 +157,7 @@ function connect(url) {
           }
           attempts.push({ group: openedJob.group, mode: openedJob.mode, count: pageCandidates.size, ok: scanOk, diagnostics });
           for (const candidate of pageCandidates.values()) {
+            addRoseCandidate(roseCandidates, candidate, openedJob.group);
             const businessUrl = String(candidate.businessUrl || '').trim();
             const postUrl = String(candidate.postUrl || '').trim();
             if (!businessUrl || !postUrl) continue;
@@ -166,6 +171,7 @@ function connect(url) {
               postUrl,
               businessUrl,
               observedText: candidate.observedText,
+              websiteUrls: candidate.websiteUrls || [],
               observedAt: candidate.observedAt,
               promotionSignals: candidate.promotionSignals,
             };
@@ -211,6 +217,7 @@ function connect(url) {
   data.count = found.length;
   data.searchAttempts = attempts;
   fs.writeFileSync(resultPath, `${JSON.stringify(data, null, 2)}\n`);
+  const roseWebsiteCandidates = saveRoseCandidates(roseResultPath, roseCandidates);
   console.log(JSON.stringify({
     count: found.length,
     addedThisRun: Math.max(0, found.length - existingCount),
@@ -222,6 +229,7 @@ function connect(url) {
     searches: successfulSearches,
     attemptedSearches: attempts.length,
     newTotal: found.length,
+    roseWebsiteCandidates,
     names: found.map(item => item.businessName),
   }, null, 2));
 })().catch(error => {

@@ -26,6 +26,10 @@ It intentionally does **not** auto-send unsolicited Messenger DMs. Inbox sync is
 
 Goal: up to 50 verified prospects per day. The scanner does not fabricate volume when fewer qualified visible promotions exist.
 
+## Rose website candidates
+
+The separate `discover-search-live.cjs` batch scan also saves `rose-website-candidates.json` for Rose demo review. It collects external website links visible in a promotional post, including links written as text. A missing Facebook post permalink does not discard a Rose website candidate. Reachr's outreach prospect export keeps its stricter profile and post URL requirements. The Rose sidecar stays private and is excluded from Git.
+
 ## Installation
 
 The Amplr runner now includes this directory as a second unpacked extension on the next managed-Chrome launch:
