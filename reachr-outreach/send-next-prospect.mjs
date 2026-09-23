@@ -106,7 +106,7 @@ export function getPageMessageRouteEvidence(url) {
 export function composeMessage(input) {
   const prospect = typeof input === 'string' ? { businessName: input } : input;
   const businessName = prospect.businessName;
-  return `Hey, I’m Jack. I’m a student at SMU and I’ve been creating a software called Reachr that helps businesses post across Facebook groups without having to do it all manually.\n\nI’m looking for real business experience and feedback as we build it out. Would ${businessName} be interested in testing the tool for free and letting us know what you think?`;
+  return `Hey there, I saw ${businessName} posting in Facebook groups. I built Reachr so you can write a promotion once, choose your groups, and have it posted on a schedule. It saves you from opening each group and posting manually every day.\n\nI’m looking for a few businesses to try it free and give honest feedback. Want to see how it works?`;
 }
 
 // Delivery requires a newly rendered thread message and an empty composer.

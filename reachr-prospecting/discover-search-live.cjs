@@ -6,6 +6,7 @@ const { deterministicShuffle } = require('./discovery-order.cjs');
 const { selectDiscoveryController } = require('./discovery-controller.cjs');
 const { buildRecentFeedJobs, mergeCandidates } = require('./discovery-plan.cjs');
 const { inferBusinessName } = require('./business-name-inference.cjs');
+const { composeReachrMessage } = require('./content.js');
 
 const CDP = 'http://127.0.0.1:9223';
 const args = process.argv.slice(2);
@@ -28,7 +29,7 @@ const resultPath = path.join(__dirname, 'discovery-50-results.json');
 const source = fs.readFileSync(path.join(__dirname, 'content.js'), 'utf8');
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const norm = (value = '') => String(value).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-const draftFor = businessName => `Hey, I’m Jack. I’m a student at SMU and I’ve been creating software called Reachr that helps businesses post across Facebook groups without having to do it all manually.\n\nI noticed ${businessName} is already promoting through Facebook groups. I’m looking for real business experience and feedback as we build it out. Would ${businessName} be interested in testing the tool for free and letting us know what you think?`;
+const draftFor = composeReachrMessage;
 
 function get(url) {
   return new Promise((resolve, reject) => http.get(url, response => {
