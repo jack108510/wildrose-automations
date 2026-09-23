@@ -13,7 +13,7 @@
   function normalizeBusinessName(value) { return clean(value, 120).replace(/\s*[·|]\s*(admin|moderator|group expert).*$/i, '').trim(); }
   function composeReachrMessage(businessName) {
     const name = normalizeBusinessName(businessName); if (!name) return '';
-    return `Hey, I’m Jack. I’m a student at SMU and I’ve been creating software called Reachr that helps businesses post across Facebook groups without having to do it all manually.\n\nI noticed ${name} is already promoting through Facebook groups. I’m looking for real business experience and feedback as we build it out. Would ${name} be interested in testing the tool for free and letting us know what you think?`;
+    return `Hey there, I saw ${name} posting in Facebook groups. I built Reachr so you can write a promotion once, choose your groups, and have it posted on a schedule. It saves you from opening each group and posting manually every day.\n\nI’m looking for a few businesses to try it free and give honest feedback. Want to see how it works?`;
   }
   function dedupeKey(record = {}) { const post = stripQuery(record.postUrl); if (post) return `post:${post}`; const business = stripQuery(record.businessUrl); if (business) return `business:${business}`; return `name:${clean(record.businessName).toLowerCase()}|group:${clean(record.sourceGroupUrl).toLowerCase()}`; }
   function canonicalPostUrl(article) { const link = [...article.querySelectorAll('a[href]')].find(a => /\/groups\/[^/]+\/(posts|permalink)\//i.test(a.href)); return link ? stripQuery(link.href) : ''; }

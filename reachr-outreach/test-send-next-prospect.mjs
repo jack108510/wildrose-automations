@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import prospectingCopy from '../reachr-prospecting/content.js';
 import { allowUnverifiedComposerActor, classifyMessengerBlockingDialog, composeMessage, deliveryConfirmedAfterFreshReopen, deliveryConfirmedByComposerState, getPageMessageRouteEvidence, isConfirmedSend, messengerExplicitFailure, normalize, outreachDate, pickNextProspect, selectSendButtonLabel, senderIdentityAllowed, verifyComposerActorEvidence } from './send-next-prospect.mjs';
 
 assert.equal(normalize('  Example   Martial Arts '), 'example martial arts');
-assert.equal(composeMessage('Example Martial Arts'), `Hey, I’m Jack. I’m a student at SMU and I’ve been creating a software called Reachr that helps businesses post across Facebook groups without having to do it all manually.\n\nI’m looking for real business experience and feedback as we build it out. Would Example Martial Arts be interested in testing the tool for free and letting us know what you think?`);
+assert.equal(composeMessage('Example Martial Arts'), `Hey there, I saw Example Martial Arts posting in Facebook groups. I built Reachr so you can write a promotion once, choose your groups, and have it posted on a schedule. It saves you from opening each group and posting manually every day.\n\nI’m looking for a few businesses to try it free and give honest feedback. Want to see how it works?`);
+assert.equal(composeMessage('Example Martial Arts'), prospectingCopy.composeReachrMessage('Example Martial Arts'));
 
 const queuedProspect = { businessName: 'Example Martial Arts', messengerUrl: 'https://m.me/examplemartialarts', status: 'queued' };
 const queued = { prospects: [queuedProspect] };
