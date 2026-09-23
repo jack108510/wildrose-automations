@@ -251,7 +251,8 @@ body.rose-preview-in-view #rose-hero-widget .wr-ai{display:none!important}
   .rose-label{display:none!important}
   .rose-hero .hero-cta{display:flex!important;width:100%;justify-content:center!important}
   .rose-hero .hero-cta .btn{width:min(330px,100%)!important;justify-content:center!important;height:52px!important}
-  .rose-hero-widget{display:none!important}
+  .rose-hero-widget{display:block!important;position:fixed!important;right:12px!important;bottom:12px!important;width:auto!important;min-height:0!important;margin:0!important;z-index:2147483000!important}
+  .rose-hero-widget::before{display:none!important}
   .mockup-cta{padding:68px 0 96px!important}
   .mockup-cta:after{display:none!important}
   .mockup-tag{display:none!important}
@@ -481,10 +482,11 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
 </section>
 
 <script
-  src="/wildrose-widget-sandbox.js?v=voice-first-1"
+  src="/wildrose-widget-sandbox.js?v=mobile-launcher-contrast-1"
   data-api-base="https://wildrose-widget.wildeautomations.com"
   data-title="Rose"
   data-accent="#ff5722"
+  data-fallback-url="mailto:jack@wildroseautomations.ca"
   data-greeting="Hi, I’m Rose. Ask questions about our services or tell me what you need a quote for, and I’ll help you reach the owner."
   data-placeholder="Ask a question or describe your request…"
   data-business-context="You are the visitor-facing assistant for Wildrose Automations. Help visitors with FAQs, capture quote requests and contact details, and offer owner handoff. Do not act as an owner configuration tool. Rose Basic is $24/month with 75 voice minutes; Pro is $79/month with 250 voice minutes. Extra voice minutes are $0.29/minute. Custom integrations are separately scoped. Do not promise completed bookings, payments or integrations."
@@ -587,6 +589,7 @@ src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
     const hero=document.querySelector('.rose-hero');
     const root=document.querySelector('#rose-hero-widget .wr-ai');
     if(!hero||!root)return;
+    if(window.matchMedia('(max-width:620px)').matches){setRoseCorner(true);return}
     const heroBottom=hero.offsetTop+hero.offsetHeight;
     const y=window.scrollY;
     if(!corner && y>heroBottom-170) setRoseCorner(true);
