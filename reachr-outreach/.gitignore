@@ -1,0 +1,47 @@
+# Runtime and customer data — never commit
+prospects.json
+prospects.backup-*.json
+outreach-attempts.json
+reply-monitor-state.json
+route-resolution-state.json
+continuous-source-cursor.json
+rose-enrichment-state.json
+reachr-sms-approval-state.json
+reachr-thread-evidence.json
+reachr-inbox-import.json
+reachr-crm-seed.json
+*-messages.json
+message-export*.json
+messenger-route-search.json
+official-page-search-results.json
+official-page-search-sequential.json
+resolved-facebook-pages.json
+verified-route-catalog.json
+send-one-config.json
+.reachr-approval.json
+
+# Local locks, pauses, logs, databases, and generated output
+*.lock
+.*.lock
+*.sqlite
+*.sqlite-*
+*.log
+logs/
+archive/
+*.tmp
+*.pid
+*.paused
+.hermes/
+
+# Credentials, browser sessions, and environment
+.env
+.env.*
+*.pem
+*.key
+credentials*.json
+cookies*.json
+session*.json
+chrome-profile/
+browser-profile/
+*.har
+*.db

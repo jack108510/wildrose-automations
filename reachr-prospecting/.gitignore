@@ -1,0 +1,11 @@
+# Discovery output and reviewed prospect/customer data — never commit
+discovery-*-results.json
+discovery-*-vetted.json
+discovery-*-vetted.md
+
+# Runtime artifacts
+*.log
+*.tmp
+*.pid
+.env
+.env.*

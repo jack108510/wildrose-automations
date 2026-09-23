@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Reachr — Prospect & Messenger Approval",
+  "version": "0.3.0",
+  "description": "Evidence-backed prospect review plus explicit human approval for Messenger replies.",
+  "action": { "default_popup": "popup.html", "default_title": "Reachr approval queue" },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["activeTab", "storage", "tabs", "alarms"],
+  "host_permissions": ["*://*.facebook.com/*", "*://*.messenger.com/*"],
+  "content_scripts": [
+    { "matches": ["*://*.facebook.com/*"], "js": ["content.js"], "run_at": "document_idle" },
+    { "matches": ["*://*.messenger.com/*", "*://www.facebook.com/messages/*"], "js": ["messenger.js"], "run_at": "document_idle" }
+  ]
+}

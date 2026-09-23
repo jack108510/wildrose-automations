@@ -6,7 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
 import {fileURLToPath} from 'node:url';
-import {normalizeConversations} from './reachr-conversation-sync.mjs';
+import {buildInboxThreads,mergeImportedMessages} from './reachr-conversation-sync.mjs';
 import {initCrm,listContacts,contactEvents,upsertVerifiedContact,updateContact} from './reachr-crm.mjs';
 const ROOT=path.dirname(fileURLToPath(import.meta.url));
 const ORIGIN='https://jack108510.github.io';
@@ -14,7 +14,14 @@ const AUTH_URL='https://xacehhtgvubcqdoltazg.supabase.co/auth/v1/user';
 const PUBLISHABLE='sb_publishable_1TNu5hqotJ7GGQXfjliivQ_ttK51EAA';
 const DB_PATH=process.env.REACHR_INBOX_DB||'/Users/jackserver/jsw/keys/reachr-inbox.sqlite';
 const BASE='/reachr-inbox';
-function source(){const ledger=JSON.parse(fs.readFileSync(path.join(ROOT,'prospects.json'),'utf8')),state=JSON.parse(fs.readFileSync(path.join(ROOT,'reply-monitor-state.json'),'utf8')),evidencePath='/Users/jackserver/jsw/keys/reachr-thread-evidence.json';if(fs.existsSync(evidencePath))state.seen={...state.seen,...JSON.parse(fs.readFileSync(evidencePath,'utf8')).seen};return normalizeConversations(ledger,state).map(x=>({...x,conversation:{...x.conversation,id:x.conversation.external_key,updated_at:x.messages.at(-1)?.observed_at||null}}));}
+export function source({ledgerPath=path.join(ROOT,'prospects.json'),statePath=path.join(ROOT,'reply-monitor-state.json'),evidencePath='/Users/jackserver/jsw/keys/reachr-thread-evidence.json',planPath='/Users/jackserver/jsw/keys/reachr-inbox-import.json'}={}){
+ const ledger=JSON.parse(fs.readFileSync(ledgerPath,'utf8')),state=JSON.parse(fs.readFileSync(statePath,'utf8'));
+ if(fs.existsSync(evidencePath))state.seen={...state.seen,...JSON.parse(fs.readFileSync(evidencePath,'utf8')).seen};
+ const rows=buildInboxThreads(ledger,state);
+ if(!fs.existsSync(planPath))return rows;
+ const stat=fs.lstatSync(planPath);if(!stat.isFile()||stat.mode&0o077||stat.uid!==process.getuid())throw Error('private_import_cache_unavailable');
+ return mergeImportedMessages(rows,JSON.parse(fs.readFileSync(planPath,'utf8')));
+}
 export function makeApi({dbPath=DB_PATH,load=source,validate=validateToken,workerReady=false}={}){
  fs.mkdirSync(path.dirname(dbPath),{recursive:true,mode:0o700});
  const db=new DatabaseSync(dbPath);db.exec('PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, conversation_id TEXT NOT NULL, business_name TEXT NOT NULL, recipient_name TEXT NOT NULL, messenger_url TEXT NOT NULL, body TEXT NOT NULL, created_by TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN (\'draft\',\'approved\',\'claimed\',\'sending\',\'sent\',\'failed\',\'cancelled\')), created_at TEXT NOT NULL, approved_at TEXT, delivery TEXT, delivery_evidence TEXT);');
@@ -44,7 +51,7 @@ export function makeApi({dbPath=DB_PATH,load=source,validate=validateToken,worke
   }
   let rows;try{rows=load()}catch{return send(res,503,{error:'source_unavailable'},h)}
   const conversations=rows.map(x=>x.conversation);
-  if(url.pathname===BASE+'/conversations'&&req.method==='GET')return send(res,200,conversations.map(({id,business_name,recipient_name,updated_at,sender_actor_id,sender_actor_name})=>({id,business_name,recipient_name,updated_at,sender_verified:Boolean(workerReady&&sender_actor_id&&sender_actor_name)})),h);
+  if(url.pathname===BASE+'/conversations'&&req.method==='GET')return send(res,200,conversations.map(({id,business_name,recipient_name,messenger_url,updated_at,review_candidate,preview_source,verified_inbound,sender_actor_id,sender_actor_name})=>({id,business_name,recipient_name,messenger_url,updated_at,review_candidate:Boolean(review_candidate),preview_source:preview_source||null,verified_inbound:Boolean(verified_inbound),sender_verified:Boolean(workerReady&&sender_actor_id&&sender_actor_name)})),h);
   if(url.pathname===BASE+'/messages'&&req.method==='GET'){const row=rows.find(x=>x.conversation.id===url.searchParams.get('conversation_id'));return row?send(res,200,row.messages,h):send(res,404,{error:'not_found'},h)}
   if(url.pathname===BASE+'/jobs'&&req.method==='GET')return send(res,200,db.prepare('SELECT id,conversation_id,business_name,recipient_name,body,status,created_at,approved_at,delivery,delivery_evidence FROM jobs WHERE created_by=? ORDER BY created_at DESC LIMIT 100').all(user.id),h);
   if(req.method!=='POST')return send(res,404,{error:'not_found'},h);
