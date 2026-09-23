@@ -21,6 +21,7 @@
     businessContext: script?.dataset.businessContext || "",
     services: script?.dataset.services || "",
     demo: script?.dataset.demo === "true",
+    livePreview: script?.dataset.livePreview === "true",
   };
 
   const css = `
@@ -103,8 +104,9 @@
   }
 
   if (cfg.demo) {
-    $(".wr-note").textContent = "A short scripted example. No call is made.";
-    $(".wr-start-voice").textContent = "Show example";
+    $(".wr-status").textContent = cfg.livePreview ? "Ready when you are" : "A sample conversation";
+    $(".wr-note").textContent = cfg.livePreview ? "Talk to the assistant about this business." : "A short scripted example. No call is made.";
+    $(".wr-start-voice").textContent = cfg.livePreview ? "Start talking" : "Show example";
     addDemoSuggestions();
     const demoStyle = document.createElement("style");
     demoStyle.textContent = ".wr-demo-suggestions{display:flex;gap:6px;flex-wrap:wrap;padding:5px 0 8px 36px}.wr-demo-suggestions button{border:1px solid rgba(255,87,34,.24);background:rgba(255,255,255,.72);color:#9b3c1b;border-radius:999px;padding:8px 10px;font:700 11px Inter,system-ui,sans-serif;cursor:pointer}.wr-demo-suggestions button:hover{background:#fff}.wr-ai.inline .wr-msg.bot{background:rgba(255,255,255,.78)}.wr-ai.inline .wr-chat-log{gap:12px}.wr-ai.inline .wr-compose{background:rgba(255,255,255,.64)}";
@@ -112,9 +114,11 @@
   }
 
   function previewAssistantName(brand) {
-    const first = brand.replace(/[^a-z0-9 ]/gi, " ").trim().split(/\s+/)[0] || "Site";
+    const initials = brand.match(/^[A-Za-z](?:\s*&\s*[A-Za-z])+/)?.[0]?.replace(/\s+/g, "");
+    const first = initials || brand.replace(/[^a-z0-9 ]/gi, " ").trim().split(/\s+/)[0] || "Site";
     const value = brand.toLowerCase();
     const role = /locat|utility|contract|build|roof|plumb|electric|service|repair|trade/.test(value) ? "Site Scout"
+      : /clean|janitor|maid/.test(value) ? "Clean Team"
       : /vet|clinic|health|care|dental|animal|pet/.test(value) ? "Care Guide"
       : /real estate|home|property/.test(value) ? "Home Guide"
       : /restaurant|food|cafe|bar/.test(value) ? "Table Guide"
@@ -140,7 +144,9 @@
       image.onerror = () => { image.onerror = null; image.src = "wildrose.png"; };
       image.src = cfg.logo;
     });
-    cfg.greeting = `Hi, I'm the ${cfg.businessName} assistant. I can help with questions or collect a request for the team. My answers will come from information the business approves.`;
+    cfg.greeting = cfg.livePreview
+      ? `Hi, I'm a demo assistant for ${cfg.businessName}. Ask me about information on their website. I can't book or contact their team from this preview.`
+      : `Hi, I'm the ${cfg.businessName} assistant. I can help with questions or collect a request for the team. My answers will come from information the business approves.`;
     log.replaceChildren();
     addMsg("bot", cfg.greeting);
     addDemoSuggestions();
@@ -277,7 +283,7 @@
   }
   async function ensureChat() {
     if (chatId) return chatId;
-    const data = await api("/api/chat/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, title: cfg.title, assistantName: cfg.title, greetingMessage: cfg.greeting, previewMode: cfg.inline || !cfg.loadPublished });
+    const data = await api("/api/chat/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, title: cfg.title, assistantName: cfg.title, greetingMessage: cfg.greeting, previewMode: cfg.livePreview || cfg.inline || !cfg.loadPublished, prospectPreview: cfg.livePreview });
     chatId = data.chatId;
     return chatId;
   }
@@ -287,7 +293,7 @@
     input.value = "";
     addMsg("user", content);
     const pending = addMsg("bot", "Thinking…");
-    if (cfg.demo) {
+    if (cfg.demo && !cfg.livePreview) {
       const lower = content.toLowerCase();
       let answer;
       if (demoStage === "project") {
@@ -327,7 +333,7 @@
   $(".wr-start-voice").addEventListener("click", async () => {
     const status = $(".wr-status"), note = $(".wr-note"), orb = $(".wr-orb"), startBtn = $(".wr-start-voice"), endBtn = $(".wr-end-voice");
     if (voiceBusy) return;
-    if (cfg.demo) {
+    if (cfg.demo && !cfg.livePreview) {
       voiceBusy = true;
       startBtn.disabled = true;
       status.textContent = "Visitor asks";
@@ -355,7 +361,7 @@
       status.textContent = "Connecting…";
       const [{ RetellWebClient }, call] = await Promise.all([
         import("https://esm.sh/retell-client-js-sdk@2.0.7"),
-        api("/api/voice/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, title: cfg.title, assistantName: cfg.title, greetingMessage: cfg.greeting, previewMode: cfg.inline || !cfg.loadPublished })
+        api("/api/voice/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, title: cfg.title, assistantName: cfg.title, greetingMessage: cfg.greeting, previewMode: cfg.livePreview || cfg.inline || !cfg.loadPublished, prospectPreview: cfg.livePreview })
       ]);
       retellClient = new RetellWebClient();
       let speechReleaseTimer = null;
