@@ -1,11 +1,12 @@
 # Rose onboarding and demo preview
 
 This is the standalone Rose purchase page and website style preview. The left side
-rotates through four illustrative website chat walkthroughs with different questions,
-Rose responses, and example tool handoffs. Plan selection
-and secure checkout sit beside it on desktop and come first on mobile; the
-interactive Rose preview follows below. Custom tool integrations are scoped
-separately during setup.
+mounts the real Rose widget beside an animated visitor. Speech bubbles rotate
+through four illustrative conversations and example tool handoffs. The hero
+widget can be used directly; interacting with it pauses the animation. Plan
+selection and secure checkout sit beside the scene on desktop and come first on
+mobile. The larger interactive Rose preview follows below. Custom tool
+integrations are scoped separately during setup.
 
 Run `python3 site_preview_server.py` from this folder, then open
 <http://127.0.0.1:8799/>. On a Mac, `start-preview.command` does both.
