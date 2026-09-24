@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#faf7f2">
+  <title>Rose — Purchase Preview</title>
+  <style>
+    :root{--ink:#241e1a;--muted:#716761;--orange:#f45b30;--orange-dark:#d84a24;--line:#e9e0d8;--paper:#fffdfb;--soft:#faf7f2}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--soft);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}:focus-visible{outline:3px solid #ffa17d;outline-offset:3px}
+    .topbar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,72px);border-bottom:1px solid var(--line);background:#fffdfb}.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:850;letter-spacing:-.055em}.brand img{width:35px;height:35px;object-fit:cover;border-radius:10px}.brand .slash{font-weight:500;color:#b5a69c}.topbar-right{display:flex;align-items:center;gap:22px}.topbar-right span{font-size:12px;font-weight:750;color:#877970}.topbar-right a{border:1px solid #d8c6ba;background:#fff;border-radius:999px;padding:10px 16px;font-size:12px;font-weight:850;color:#6e3926}
+    .layout{min-height:calc(100vh - 70px);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(480px,.95fr)}.buy-side{padding:clamp(32px,4vw,62px) clamp(25px,5.1vw,88px) 40px;display:flex;align-items:center}.buy-content{width:min(660px,100%);margin:0 auto}.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:900;color:#a84a2a;text-transform:uppercase;letter-spacing:.11em}.eyebrow:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--orange)}h1{font-size:clamp(50px,4.7vw,72px);line-height:.96;letter-spacing:-.078em;margin:16px 0 16px;font-weight:780;max-width:680px}h1 em{font-style:normal;color:var(--orange)}.lead{max-width:610px;font-size:17px;line-height:1.47;color:#5f554e;margin:0 0 30px}
+    .order{border:1px solid #e7d9ce;background:var(--paper);border-radius:26px;padding:23px;box-shadow:0 26px 85px rgba(79,43,24,.08)}.order-heading{display:flex;align-items:start;justify-content:space-between;gap:18px;margin-bottom:16px}.order-heading h2{font-size:23px;letter-spacing:-.055em;margin:0 0 5px}.order-heading p{font-size:12px;color:#81756d;margin:0;line-height:1.4}.order-heading .step{font-size:10px;color:#ad5838;letter-spacing:.08em;text-transform:uppercase;font-weight:900;white-space:nowrap;margin-top:5px}.plans{display:grid;gap:9px}.plan{display:flex;align-items:center;gap:12px;width:100%;min-height:76px;border:1.5px solid #e8ded5;border-radius:16px;padding:12px 15px;background:#fff;text-align:left;transition:.15s ease}.plan:hover{border-color:#e5af99}.plan.selected{border-color:var(--orange);background:#fff8f4;box-shadow:0 0 0 2px #ffe4d9}.radio{width:19px;height:19px;flex:none;border:2px solid #d5c6bb;border-radius:50%}.plan.selected .radio{border-color:var(--orange);background:radial-gradient(circle,var(--orange) 0 44%,transparent 49%)}.plan-copy{min-width:0;flex:1}.plan-copy b{display:block;font-size:15px;letter-spacing:-.02em}.plan-copy small{display:block;color:#776b62;font-size:12px;line-height:1.35;margin-top:3px}.plan-price{display:block;text-align:right;font-size:24px;font-weight:850;letter-spacing:-.06em;white-space:nowrap}.plan-price small{display:block;font-size:11px;font-weight:700;letter-spacing:0;color:#8a7e75;margin-top:2px}
+    .features{display:flex;flex-wrap:wrap;gap:7px 17px;margin:16px 2px;color:#61564e;font-size:11px;font-weight:750}.features span:before{content:"✓";color:var(--orange);font-weight:900;margin-right:5px}.total{border-top:1px solid #eee6df;padding:16px 0 13px;display:flex;justify-content:space-between;align-items:center;gap:20px}.total span{font-size:12px;color:#756960;font-weight:750}.total b{font-size:24px;letter-spacing:-.06em}.continue{width:100%;height:53px;border:0;border-radius:13px;background:var(--orange);color:#fff;font-size:15px;font-weight:850;box-shadow:0 15px 28px rgba(244,91,48,.20)}.continue:hover{background:var(--orange-dark)}.terms{margin:12px 0 0;text-align:center;color:#8c7d72;font-size:11px;line-height:1.4}.setup-note{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;margin:19px 3px 0}.setup-note .number{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;background:#fce5db;color:#ae4f2d;font-size:11px;font-weight:950}.setup-note b{display:block;font-size:12px;margin:2px 0 3px}.setup-note p{font-size:12px;color:#766a61;line-height:1.48;margin:0}
+    .preview-side{min-width:0;display:grid;grid-template-rows:auto 1fr auto;padding:30px 28px 24px;border-left:1px solid #e9ded3;background:radial-gradient(circle at 53% 27%,rgba(255,87,34,.15),transparent 37%),linear-gradient(140deg,#f8f2eb,#eee2d5)}.preview-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:590px;width:100%;margin:0 auto}.preview-heading h2{font-size:17px;letter-spacing:-.035em;margin:0}.preview-heading span{font-size:11px;color:#8a786d;font-weight:750}.widget-stage{display:grid;place-items:center;min-width:0}.widget-slot{width:min(500px,100%);min-height:620px}#rose-workground-widget{width:100%;min-height:620px}#rose-workground-widget .wr-ai.inline{width:100%}#rose-workground-widget .wr-ai.inline .wr-panel{width:100%;height:620px}.preview-foot{max-width:540px;width:100%;margin:0 auto;text-align:center;color:#8c7b6e;font-size:11px}
+    .modal{position:fixed;inset:0;z-index:2147483100;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(29,21,17,.62);backdrop-filter:blur(8px)}.modal.show{display:flex}.modal-card{width:min(520px,100%);max-height:calc(100vh - 36px);overflow:auto;background:#fffdfb;border:1px solid #fff;border-radius:25px;padding:26px;box-shadow:0 38px 110px rgba(0,0,0,.27)}.modal-head{display:flex;justify-content:space-between;align-items:start;gap:12px}.modal-head h2{font-size:31px;letter-spacing:-.065em;margin:8px 0 6px}.modal-head p{font-size:13px;color:#776a61;line-height:1.45;margin:0}.close{width:35px;height:35px;flex:none;border:1px solid var(--line);border-radius:50%;background:#fff;font-size:20px}.modal-plan{margin:19px 0 17px;padding:13px 15px;display:flex;justify-content:space-between;gap:10px;border:1px solid #eadbd0;border-radius:14px;background:#fff8f3;font-size:13px}.modal-plan strong{text-align:right}.buyer-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:850;color:#67584e}.field input{width:100%;height:46px;border:1px solid #e1d5ca;border-radius:11px;padding:0 12px;background:#fff;color:var(--ink);outline:0}.field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ffe3d7}.buyer-form .continue{grid-column:1/-1;margin-top:5px}.modal-small{grid-column:1/-1;font-size:11px;text-align:center;color:#8d7e73;margin:0}.summary{margin:20px 0;padding:14px 16px;background:#fbf6f1;border:1px solid var(--line);border-radius:15px}.summary div{display:flex;justify-content:space-between;gap:15px;padding:7px 0;font-size:13px}.summary span{color:#84766c}.summary b{text-align:right;overflow-wrap:anywhere}.result{display:none}.result.show{display:block}.result p{font-size:14px;line-height:1.5;color:#6e625a}.result .continue{margin-top:8px}.modal-form-hidden{display:none}
+    @media(max-width:1140px){.layout{grid-template-columns:minmax(0,1fr) minmax(440px,.9fr)}.buy-side{padding-left:30px;padding-right:30px}h1{font-size:58px}.widget-slot{width:min(430px,100%);min-height:580px}#rose-workground-widget{min-height:580px}#rose-workground-widget .wr-ai.inline .wr-panel{height:580px}}
+    @media(max-width:850px){.layout{display:flex;flex-direction:column}.buy-side{padding:39px 24px 35px}.buy-content{margin:0 auto}.preview-side{border-left:0;border-top:1px solid #e9ded3;min-height:730px}.preview-heading{margin-bottom:20px}.preview-foot{margin-top:20px}}
+    @media(max-width:520px){.topbar{height:63px}.topbar-right span,.topbar-right a{display:none}.buy-side{padding:31px 17px 34px}h1{font-size:47px}.lead{font-size:16px;margin-bottom:24px}.order{padding:16px;border-radius:21px}.order-heading{display:block}.order-heading .step{display:none}.plan{min-height:74px;padding:11px}.plan-copy b{font-size:14px}.plan-copy small{font-size:11px}.plan-price{font-size:21px}.features{gap:7px 10px}.preview-side{padding:22px 14px 26px;min-height:690px}.widget-slot{width:min(430px,100%);min-height:560px}#rose-workground-widget{min-height:560px}#rose-workground-widget .wr-ai.inline .wr-panel{height:560px}.buyer-form{grid-template-columns:1fr}.field.full{grid-column:auto}}
+    .site-style{width:100%;margin:0 0 19px;padding:13px 14px 11px;border:1px solid #e8dbd0;border-radius:16px;background:#fffdfb;box-shadow:0 10px 30px rgba(79,43,24,.035)}.site-style label{display:block;font-size:12px;font-weight:850;margin:0 0 9px}.site-style form{display:flex;gap:8px}.site-style input{height:44px;min-width:0;flex:1;border:1px solid #dfd2c7;border-radius:10px;padding:0 12px;background:#fff;outline:0;color:var(--ink)}.site-style input:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ffe4d8}.site-style button{height:44px;border:0;border-radius:10px;padding:0 14px;background:#28211e;color:#fff;font-size:12px;font-weight:850;white-space:nowrap}.site-style button:hover{background:#4b3126}.site-style button:disabled{opacity:.6;cursor:wait}.site-status{min-height:15px;margin:9px 1px 0;color:#8d7d72;font-size:11px;line-height:1.4}.site-status.error{color:#ab361e}.preview-side{--site-stage:#f8f2eb;--site-accent:#ff5722;background:radial-gradient(circle at 53% 27%,color-mix(in srgb,var(--site-accent) 15%,transparent),transparent 37%),linear-gradient(140deg,var(--site-stage),#eee2d5)}
+    @media(max-width:520px){.site-style{padding:12px}.site-style form{display:grid;grid-template-columns:1fr}.site-style button{width:100%}}
+    /* Rose is the sole focal point of the preview column. */
+    .preview-side{display:flex;align-items:center;justify-content:center;padding:30px 22px;background:var(--site-stage);transition:background .25s ease}
+    .preview-stack{width:min(500px,100%);display:flex;flex-direction:column;align-items:center}
+    .preview-context{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin:0 0 14px 6px;color:#665a51;font-size:11px;font-weight:800;letter-spacing:.01em}
+    .preview-context[hidden]{display:none}
+    .preview-context:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--site-accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--site-accent) 15%,transparent)}
+    .widget-stage{display:block;width:100%}
+    .widget-slot{width:100%}
+    .preview-foot{margin:14px auto 0;max-width:440px;width:100%;text-align:center;color:#87786d;font-size:11px;line-height:1.4}
+    @media(max-width:850px){.preview-side{min-height:0;padding:32px 22px 36px}}
+    @media(max-width:520px){.preview-side{padding:26px 14px 31px}.preview-context{margin-left:5px}.preview-foot{padding:0 10px}}
+    .preview-on-site{display:inline-flex;align-items:center;justify-content:center;margin-top:17px;min-height:42px;padding:0 17px;border:1px solid color-mix(in srgb,var(--site-accent) 48%,#cfc2b7);border-radius:999px;background:rgba(255,255,255,.86);color:#30251f;font-size:12px;font-weight:850;box-shadow:0 6px 18px rgba(38,27,20,.05)}.preview-on-site:hover{background:#fff;transform:translateY(-1px)}
+    .preview-stack{width:min(430px,100%)}
+    .widget-slot{width:min(382px,100%);min-height:578px;margin:0 auto}
+    #rose-workground-widget{min-height:578px}
+    #rose-workground-widget .wr-ai.inline{width:100%}
+    #rose-workground-widget .wr-ai.inline .wr-panel{height:578px}
+    .preview-on-site[hidden]{display:none}
+    .website-modal{position:fixed;inset:0;z-index:2147483200;display:none;padding:20px;background:rgba(26,20,17,.78);backdrop-filter:blur(12px)}
+    .website-modal.show{display:flex;align-items:center;justify-content:center}
+    .website-frame{width:min(1180px,100%);height:min(850px,calc(100vh - 40px));display:flex;flex-direction:column;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 32px 110px rgba(0,0,0,.3)}
+    .website-toolbar{min-height:58px;padding:10px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #e8e4e0;background:#fff}
+    .website-dots{display:flex;gap:5px}.website-dots i{width:8px;height:8px;border-radius:50%;background:#d9d3cd}
+    .website-address{flex:1;min-width:0;padding:9px 13px;border:1px solid #ebe7e3;border-radius:8px;background:#f8f6f4;color:#6d625b;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .website-switch{height:34px;flex:none;padding:0 11px;border:1px solid #e8e1db;border-radius:8px;background:#fff;color:#5a4c43;font-size:11px;font-weight:800}
+    .website-close{width:34px;height:34px;flex:none;border:0;border-radius:8px;background:#f4f0ec;color:#493e37;font-size:21px}
+    .website-canvas{position:relative;flex:1;min-height:0;overflow:hidden;background:#f3f0ed}
+    .website-live,.website-image-scroll{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+    .website-image-scroll{overflow:auto;overscroll-behavior:contain}
+    .website-live[hidden],.website-image-scroll[hidden]{display:none}
+    .website-shot{display:block;width:100%;height:auto}.website-shot[hidden]{display:none}
+    .website-loading{position:absolute;inset:0;z-index:10;display:grid;place-items:center;padding:30px;text-align:center;color:#766b64;font-size:14px;background:#f3f0ed}.website-loading[hidden]{display:none}
+    .website-badge{padding:7px 10px;border-radius:999px;background:#f2ece7;color:#5a4c43;font-size:11px;font-weight:800;white-space:nowrap}
+    .website-canvas .wr-ai.contained{position:absolute;right:22px;bottom:22px;margin:0;z-index:20}
+    .website-canvas .wr-ai.contained .wr-panel{display:none;width:min(382px,calc(100vw - 55px));height:min(578px,calc(100vh - 155px))}
+    .website-canvas .wr-ai.contained .wr-panel.open{display:grid}
+    @media(max-width:720px){.website-modal{padding:0}.website-frame{height:100vh;border-radius:0}.website-toolbar{padding:9px 11px}.website-dots{display:none}.website-badge{display:none}.website-switch{padding:0 8px}.website-canvas .wr-ai.contained{right:12px;bottom:12px}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#top"><img src="wildrose.png" alt="">Wildrose <span class="slash">/ Rose</span></a><div class="topbar-right"><span>Chat · Voice · Lead handoff</span><a href="#plans">View plans ↓</a></div></header>
+  <main class="layout" id="top">
+    <section class="buy-side" aria-labelledby="page-title"><div class="buy-content">
+      <span class="eyebrow">Rose for your website</span>
+      <h1 id="page-title">Get <em>Rose</em> on your site.</h1>
+      <p class="lead">Rose answers from your approved business information, takes quote requests, and sends a clear summary to you for follow-up.</p>
+      <section class="site-style" aria-labelledby="site-style-title"><label id="site-style-title" for="siteUrl">See Rose with your website’s look</label><form id="siteStyleForm"><input id="siteUrl" name="siteUrl" type="text" inputmode="url" placeholder="yourbusiness.com" autocomplete="url" required><button id="styleButton" type="submit">Match my site →</button></form><p class="site-status" id="siteStatus" aria-live="polite">Uses your public site’s colors and logo. Business answers are set up later.</p></section>
+      <section class="order" id="plans" aria-labelledby="plans-title">
+        <div class="order-heading"><div><h2 id="plans-title">Choose a plan</h2><p>Both plans include chat, voice and owner handoff.</p></div><span class="step">01 / Your plan</span></div>
+        <div class="plans" role="group" aria-label="Rose plan">
+          <button class="plan selected" type="button" data-plan="basic" aria-pressed="true"><span class="radio" aria-hidden="true"></span><span class="plan-copy"><b>Rose Basic</b><small>75 voice minutes each month</small></span><span class="plan-price">$24<small>/ month</small></span></button>
+          <button class="plan" type="button" data-plan="pro" aria-pressed="false"><span class="radio" aria-hidden="true"></span><span class="plan-copy"><b>Rose Pro</b><small>250 voice minutes each month</small></span><span class="plan-price">$79<small>/ month</small></span></button>
+        </div>
+        <div class="features"><span>Answers from your context</span><span>Quote capture</span><span>Owner handoff</span></div>
+        <div class="total"><span>Monthly total</span><b id="totalPrice">$24</b></div>
+        <button class="continue" id="openSetup" type="button">Continue with Rose Basic →</button>
+        <p class="terms">No setup fee · Cancel anytime · Extra voice time $0.29/minute</p>
+      </section>
+      <div class="setup-note"><span class="number">02</span><div><b>We help you set it up</b><p>Confirm your business details and the lead handoff before Rose goes live. Custom integrations are scoped separately.</p></div></div>
+    </div></section>
+    <aside class="preview-side" aria-label="Rose product preview"><div class="preview-stack"><div class="preview-context" id="previewContext" hidden></div><div class="widget-stage"><div class="widget-slot"><div id="rose-workground-widget"></div></div></div><button class="preview-on-site" id="previewOnSite" type="button" hidden>Preview on your website ↗</button><div class="preview-foot" id="previewFoot">Visual preview only · No calls or messages are sent</div></div></aside>
+  </main>
+  <div class="website-modal" id="websiteModal" role="dialog" aria-modal="true" aria-label="Rose on your website" aria-hidden="true"><div class="website-frame"><div class="website-toolbar"><div class="website-dots" aria-hidden="true"><i></i><i></i><i></i></div><div class="website-address" id="websiteAddress"></div><span class="website-badge">Visual mockup</span><button class="website-switch" id="websiteSwitch" type="button">Image view</button><button class="website-close" id="closeWebsite" type="button" aria-label="Close website preview">×</button></div><div class="website-canvas" id="websiteCanvas"><iframe class="website-live" id="websiteLive" title="Your website with Rose preview" referrerpolicy="no-referrer"></iframe><div class="website-image-scroll" id="websiteImageScroll" hidden><img class="website-shot" id="websiteShot" alt="Captured view of the entered website" hidden></div><div class="website-loading" id="websiteLoading" hidden>Opening your website…</div></div></div></div>
+  <div class="modal" id="setupModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true"><div class="modal-card"><div class="modal-head"><div><span class="eyebrow">Continue with Rose</span><h2 id="modalTitle">A few setup details.</h2><p>These would be used for your receipt and Rose setup.</p></div><button class="close" id="closeModal" type="button" aria-label="Close">×</button></div><div id="setupStep"><div class="modal-plan"><span id="modalPlan">Rose Basic</span><strong id="modalPrice">$24/month</strong></div><form class="buyer-form" id="buyerForm"><div class="field"><label for="business">Business name</label><input id="business" name="business" placeholder="Your business" autocomplete="organization" required></div><div class="field"><label for="website">Website</label><input id="website" name="website" type="url" placeholder="https://yourbusiness.com" autocomplete="url" required></div><div class="field full"><label for="email">Email for setup and receipt</label><input id="email" name="email" type="email" placeholder="you@yourbusiness.com" autocomplete="email" required></div><button class="continue" type="submit">Preview checkout →</button><p class="modal-small">Local demo. Nothing is sent and no payment is taken.</p></form></div><div class="result" id="resultStep"><p>The live flow would open secure checkout next. Wildrose would then review your business information and installation with you.</p><div class="summary" id="orderSummary"></div><button class="continue" id="finishPreview" type="button">Close preview</button><p class="modal-small">No payment, lead or account was created.</p></div></div></div>
+  <script src="rose-workground-widget.js" data-mount="#rose-workground-widget" data-inline="true" data-demo="true" data-load-published="false" data-title="Your AI assistant" data-subtitle="Chat and voice" data-greeting="Hi, I'm your AI assistant. I can answer questions or collect a request for the team once your business information is set up." data-placeholder="Ask a question…" data-logo="wildrose.png" data-accent="#ff5722"></script>
+  <script>
+    (()=>{
+      const plans={basic:{name:'Rose Basic',price:'$24',monthly:'$24/month'},pro:{name:'Rose Pro',price:'$79',monthly:'$79/month'}};
+      let selected='basic',siteStyle=null,siteShotUrl='',siteShotRequest=0;const $=s=>document.querySelector(s),modal=$('#setupModal');
+      function setPlan(plan){selected=plan;document.querySelectorAll('.plan').forEach(button=>{const active=button.dataset.plan===plan;button.classList.toggle('selected',active);button.setAttribute('aria-pressed',String(active))});$('#totalPrice').textContent=plans[plan].price;$('#openSetup').textContent=`Continue with ${plans[plan].name} →`;$('#modalPlan').textContent=plans[plan].name;$('#modalPrice').textContent=plans[plan].monthly}
+      document.querySelectorAll('.plan').forEach(button=>button.addEventListener('click',()=>setPlan(button.dataset.plan)));
+      function openModal(){setPlan(selected);$('#resultStep').classList.remove('show');$('#setupStep').classList.remove('modal-form-hidden');modal.classList.add('show');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';$('#closeModal').focus()}
+      function closeModal(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';$('#openSetup').focus()}
+      $('#openSetup').addEventListener('click',openModal);$('#closeModal').addEventListener('click',closeModal);$('#finishPreview').addEventListener('click',closeModal);modal.addEventListener('click',event=>{if(event.target===modal)closeModal()});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&modal.classList.contains('show'))closeModal()});
+      $('#buyerForm').addEventListener('submit',event=>{event.preventDefault();if(!event.currentTarget.reportValidity())return;const data=new FormData(event.currentTarget),summary=$('#orderSummary');summary.replaceChildren();[['Plan',`${plans[selected].name} · ${plans[selected].monthly}`],['Business',data.get('business')],['Website',data.get('website')],['Email',data.get('email')]].forEach(([label,value])=>{const row=document.createElement('div'),name=document.createElement('span'),answer=document.createElement('b');name.textContent=label;answer.textContent=String(value);row.append(name,answer);summary.append(row)});$('#setupStep').classList.add('modal-form-hidden');$('#resultStep').classList.add('show');$('#finishPreview').focus()});
+      $('#siteStyleForm').addEventListener('submit',async event=>{
+        event.preventDefault();
+        const url=$('#siteUrl').value.trim();if(!url||!event.currentTarget.reportValidity())return;
+        const status=$('#siteStatus'),button=$('#styleButton');siteStyle=null;$('#previewOnSite').hidden=true;
+        if(location.protocol==='file:'){status.className='site-status error';status.textContent='Open the local preview server to scan a website: http://127.0.0.1:8799/';return}
+        button.disabled=true;button.textContent='Reading site…';status.className='site-status';status.textContent='Reading public colors and branding…';
+        try{
+          const response=await fetch('/api/site-style',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
+          const style=await response.json();if(!response.ok)throw new Error(style.error||'Could not read that website.');
+          siteStyle=style;window.__rosePurchasePreviewApplyStyle?.(style);$('#previewOnSite').hidden=false;
+          const side=$('.preview-side');side.style.setProperty('--site-stage',style.stage);side.style.setProperty('--site-accent',style.accent);
+          const context=$('#previewContext');context.textContent=`Styled for ${style.host}`;context.hidden=false;
+          $('#previewFoot').textContent='Style preview only · Business answers are added during setup';
+          status.textContent=`Rose is using colors and branding found on ${style.host}. Approximate preview.`;
+        }catch(error){status.className='site-status error';status.textContent=error.message||'Could not read that website. Try another public URL.'}
+        finally{button.disabled=false;button.textContent='Match my site →'}
+      });
+      const websiteModal=$('#websiteModal'),widgetHome=$('#rose-workground-widget'),websiteLive=$('#websiteLive'),imageScroll=$('#websiteImageScroll'),websiteLoading=$('#websiteLoading'),websiteSwitch=$('#websiteSwitch');
+      function closeWebsite(){
+        siteShotRequest++;
+        websiteModal.classList.remove('show');websiteModal.setAttribute('aria-hidden','true');
+        websiteLive.src='about:blank';websiteLive.hidden=false;imageScroll.hidden=true;websiteLoading.hidden=true;
+        const widget=$('.wr-ai');
+        if(widget){widget.classList.remove('contained');widget.classList.add('inline');widgetHome.append(widget);widget.querySelector('.wr-panel')?.classList.add('open');const launcher=widget.querySelector('.wr-fab');if(launcher)launcher.style.display='none'}
+        document.body.style.overflow='';
+        if(siteShotUrl){URL.revokeObjectURL(siteShotUrl);siteShotUrl=''}
+        $('#websiteShot').hidden=true;$('#websiteShot').removeAttribute('src');
+        $('#previewOnSite').focus();
+      }
+      $('#previewOnSite').addEventListener('click',()=>{
+        if(!siteStyle)return;
+        const widget=$('.wr-ai');
+        if(widget){widget.classList.remove('inline');widget.classList.add('contained');$('#websiteCanvas').append(widget);widget.querySelector('.wr-panel')?.classList.add('open');const launcher=widget.querySelector('.wr-fab');if(launcher)launcher.style.display='none'}
+        $('#websiteAddress').textContent=siteStyle.url;
+        imageScroll.hidden=true;websiteLive.hidden=false;websiteSwitch.textContent='Image view';
+        websiteLoading.hidden=true;
+        websiteModal.classList.add('show');websiteModal.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';$('#closeWebsite').focus();
+        websiteLive.src=siteStyle.url;
+      });
+      websiteSwitch.addEventListener('click',async()=>{
+        if(!siteStyle)return;
+        if(websiteLive.hidden){siteShotRequest++;imageScroll.hidden=true;websiteLive.hidden=false;websiteSwitch.textContent='Image view';websiteLoading.hidden=true;return}
+        websiteLive.hidden=true;imageScroll.hidden=false;websiteSwitch.textContent='Live site';
+        if(siteShotUrl){websiteLoading.hidden=true;return}
+        const requestId=++siteShotRequest;
+        websiteLoading.textContent='Capturing your website…';websiteLoading.hidden=false;
+        try{
+          const response=await fetch('/api/site-shot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:siteStyle.url})});
+          if(!response.ok){const error=await response.json();throw new Error(error.error||'Could not capture this website.')}
+          if(requestId!==siteShotRequest||!websiteModal.classList.contains('show'))return;
+          siteShotUrl=URL.createObjectURL(await response.blob());
+          const shot=$('#websiteShot');shot.onload=()=>{websiteLoading.hidden=true};shot.src=siteShotUrl;shot.hidden=false;imageScroll.scrollTop=0;
+        }catch(error){if(requestId===siteShotRequest&&websiteModal.classList.contains('show'))websiteLoading.textContent=error.message||'Could not capture this website.'}
+      });
+      $('#closeWebsite').addEventListener('click',closeWebsite);
+      websiteModal.addEventListener('click',event=>{if(event.target===websiteModal)closeWebsite()});
+      document.addEventListener('keydown',event=>{if(event.key==='Escape'&&websiteModal.classList.contains('show'))closeWebsite()});
+      $('#siteUrl').addEventListener('input',()=>{siteStyle=null;$('#previewOnSite').hidden=true});
+      const initialWebsite=new URLSearchParams(location.search).get('website');
+      if(initialWebsite){$('#siteUrl').value=initialWebsite;setTimeout(()=>$('#siteStyleForm').requestSubmit(),200)}
+    })();
+  </script>
+</body>
+</html>
