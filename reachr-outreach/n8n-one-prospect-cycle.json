@@ -1,0 +1,57 @@
+{
+  "name": "Reachr — One Prospect Full-Stack Cycle",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/9 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "7e1f60ee-1ad6-4f45-ab8a-347e71f219c6",
+      "name": "Every nine minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        280,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "cd /Users/jackserver/wildrose-automations/reachr-outreach && REACHR_ENABLE_FULL_CYCLE=1 node one-prospect-cycle.mjs --confirm-live --source-groups=4 --source-additions=8 --verify-limit=5"
+      },
+      "id": "bb2f2997-039d-44bc-b562-a3f0f1b7b484",
+      "name": "Run one full prospect cycle",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        520,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Every nine minutes": {
+      "main": [
+        [
+          {
+            "node": "Run one full prospect cycle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Edmonton"
+  },
+  "pinData": {}
+}

@@ -34,6 +34,12 @@ n8n schedules the queue producer, sender, reply monitor, and optional inbound-SM
 | CRM/inbox sync | `reachr-conversation-sync.mjs`, `reachr-inbox-api.mjs` |
 | Local dashboard | `reachr-dashboard-server.mjs`, `reachr-dashboard.html` |
 
+## Account-specific Facebook Chats senders
+
+`send-next-jordan.mjs` and `send-next-jack.mjs` use the local Facebook Chats session. Each sends at most one approved queued message per run, checks the signed-in account and recipient, and requires a fresh conversation readback before recording delivery. Their independent limits are 48 attempts per America/Edmonton day with at least 20 minutes between attempts. A queued entry must contain an exact `jordanApproval` or `jackApproval` for the sender, recipient, and message. The Jack launch agent template is disabled. Local pause markers remain authoritative; publishing this source does not activate either sender.
+
+`dry-run-next-jordan.mjs` checks the next Jordan route without sending. `approve-jordan-batch.mjs` is an operator utility for a locally reviewed batch; its approval manifest and the resulting queue are local runtime data.
+
 ## Safety model
 
 - One outbound message at most per sender invocation.

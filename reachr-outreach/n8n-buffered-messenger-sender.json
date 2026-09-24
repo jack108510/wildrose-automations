@@ -21,7 +21,7 @@
     },
     {
       "parameters": {
-        "command": "cd /Users/jackserver/wildrose-automations/reachr-outreach && REACHR_ALLOW_UNVERIFIED_COMPOSER_ACTOR=1 node send-next-prospect.mjs"
+        "command": "cd /Users/jackserver/wildrose-automations/reachr-outreach && node send-next-prospect.mjs"
       },
       "id": "bb2f2997-039d-44bc-b562-a3f0f1b7b484",
       "name": "Send one verified queued prospect",

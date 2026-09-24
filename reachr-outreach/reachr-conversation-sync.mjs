@@ -8,7 +8,7 @@ const ROOT=path.dirname(fileURLToPath(import.meta.url));
 const KEY_FILE='/Users/jackserver/jsw/keys/reachr-supabase.env';
 const norm=x=>String(x||'').trim().toLocaleLowerCase('en-US');
 // Classify only provenance fields, never message text (which may mention Marketplace incidentally).
-const isMarketplace=x=>[x.sourceGroup,x.sourceEvidence,x.sourceUrl,x.messengerUrl,x.source,x.channel,x.surface,x.placement].some(v=>/marketplace/i.test(String(v||'')));
+const isMarketplace=x=>[x.sourceGroup,x.sourceEvidence,x.sourceUrl,x.messengerUrl,x.messagingSource,x.source,x.channel,x.surface,x.placement].some(v=>/marketplace/i.test(String(v||'')));
 const stableHash=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
 export function normalizeConversations(ledger,state){
   const allowed=new Map();
@@ -83,8 +83,8 @@ export function mergeImportedMessages(rows,plan){
   if(!additions.length)return row;
   const messages=[...row.messages];
   for(const item of additions){const {direction,body,observed_at,provenance}=item;
-   const index=messages.findIndex(x=>x.direction===direction&&x.body===body&&(x.provenance===provenance||Number.isFinite(Date.parse(x.observed_at))&&Number.isFinite(Date.parse(observed_at))&&Math.abs(Date.parse(x.observed_at)-Date.parse(observed_at))<=5*60*1000));
-   if(index>=0){if(provenance.startsWith('messenger_aria_label:')&&messages[index].provenance.startsWith('confirmed-ledger:'))messages[index]={direction,body,observed_at,provenance};continue}
+   const index=messages.findIndex(x=>x.provenance===provenance||/^(confirmed-ledger|outbound-ledger):/.test(x.provenance)&&x.direction===direction&&x.body===body&&Number.isFinite(Date.parse(x.observed_at))&&Number.isFinite(Date.parse(observed_at))&&Math.abs(Date.parse(x.observed_at)-Date.parse(observed_at))<=5*60*1000);
+   if(index>=0){if(provenance.startsWith('messenger_aria_label:')&&/^(confirmed-ledger|outbound-ledger):/.test(messages[index].provenance))messages[index]={direction,body,observed_at,provenance};continue}
    messages.push({direction,body,observed_at,provenance});
   }
   messages.sort((a,b)=>Date.parse(a.observed_at||0)-Date.parse(b.observed_at||0));

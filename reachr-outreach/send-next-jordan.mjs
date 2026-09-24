@@ -17,19 +17,19 @@ import { waitForCdp } from './cdp-readiness.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const QUEUE_PATH = path.join(ROOT, 'prospects.json');
-const OUTBOUND_PAUSE_PATH = '/Users/jackserver/jsw/keys/reachr-outbound.paused';
-const MESSENGER_STATE_PATH = path.join(ROOT, 'messenger-sender-state.json');
+const OUTBOUND_PAUSE_PATH = path.join(ROOT, 'jordan-outbound.paused');
+const MESSENGER_STATE_PATH = path.join(ROOT, 'jordan-sender-state.json');
 const LOCK_PATH = path.join(ROOT, '.send-next-prospect.lock');
 const CDP_LOCK_PATH = path.join(ROOT, '.reachr-cdp.lock');
 const DEBUG_ENDPOINT = process.env.REACHR_CDP_ENDPOINT || 'http://127.0.0.1:9223/json/list';
 const CDP_CALL_TIMEOUT_MS = 15_000;
-const SEND_GAP_MS = 9 * 60 * 1000;
-const DAILY_CAP = 150;
+const SEND_GAP_MS = 20 * 60 * 1000;
+const DAILY_CAP = 48;
 const BATCH_MODE = false;
-// Personal-account outreach must be sent from Jack's verified personal actor,
-// never silently from the managed Wildrose Page.
-const REQUIRED_SENDER_IDENTITY = 'Jack Sereda';
-const JACK_COMPOSER_LABELS = new Set(['jack sereda', 'jack @jack.sereda.2025']);
+const REQUIRED_SENDER_IDENTITY = 'Jordan Slone';
+const REQUIRED_PROFILE_PATH = '/jordan.slone.778365/';
+const MANUAL_BASELINE_DATE = '2026-09-23';
+const MANUAL_BASELINE_COUNT = 3;
 
 const getJson = url => new Promise((resolve, reject) => http.get(url, res => {
   let body = ''; res.on('data', chunk => body += chunk); res.on('end', () => {
@@ -47,9 +47,7 @@ export function composerDraftMatches(state = {}, expected = '') {
 }
 
 export function senderIdentityAllowed(actualIdentity, requiredIdentity = REQUIRED_SENDER_IDENTITY) {
-  const actual = normalize(actualIdentity);
-  if (normalize(requiredIdentity) === normalize(REQUIRED_SENDER_IDENTITY)) return JACK_COMPOSER_LABELS.has(actual);
-  return actual === normalize(requiredIdentity);
+  return normalize(actualIdentity) === normalize(requiredIdentity);
 }
 
 // The operator may explicitly allow sending when Messenger hides the actor label.
@@ -108,13 +106,10 @@ export function messengerExplicitFailure(statusItems = []) {
 // the exact visible signed-in account menu is an acceptable fallback on the same
 // live Messenger target. Page timeline and URL context are never actor proof.
 export function verifyComposerActorEvidence(evidence = {}, requiredIdentity = REQUIRED_SENDER_IDENTITY) {
-  if (!['composer_ancestor', 'messenger_account_menu'].includes(evidence.actorSource)) {
+  if (!['composer_ancestor', 'facebook_me_profile'].includes(evidence.actorSource)) {
     return { verified: false, actor: '', source: evidence.actorSource || '' };
   }
   let label = String(evidence.actorLabel || '').replace(/^(?:reply|message|send)\s+as\s+/i, '').trim();
-  if (evidence.actorSource === 'messenger_account_menu') {
-    label = label.match(/^(Jack\s+@jack\.sereda\.2025)\b/i)?.[1] || '';
-  }
   if (!senderIdentityAllowed(label, requiredIdentity)) {
     return { verified: false, actor: label, source: evidence.actorSource };
   }
@@ -128,11 +123,11 @@ export function getPageMessageRouteEvidence(url) {
     const route = new URL(url);
     const source = route.searchParams.get('messaging_source') || '';
     const sourceId = route.searchParams.get('source_id') || '';
-    const isMessenger = /(^|\.)messenger\.com$/i.test(route.hostname);
-    const conversationRoute = /^\/t\/[^/?#]+\/?$/i.test(route.pathname);
+    const isMessenger = route.hostname === 'www.facebook.com';
+    const conversationRoute = /^\/messages\/t\/\d+\/?$/i.test(route.pathname);
     return {
       url: route.toString(),
-      routeType: conversationRoute ? 'messenger_personal_conversation' : 'unverified_messenger_route',
+      routeType: conversationRoute ? 'facebook_personal_conversation' : 'unverified_facebook_route',
       messagingSource: source,
       sourceId,
       allowed: isMessenger && conversationRoute
@@ -145,7 +140,15 @@ export function getPageMessageRouteEvidence(url) {
 export function composeMessage(input) {
   const prospect = typeof input === 'string' ? { businessName: input } : input;
   const businessName = prospect.businessName;
-  return `Hey, I’m Jack. I’m a student at SMU and I’ve been creating a software called Reachr that helps businesses post across Facebook groups without having to do it all manually.\n\nI’m looking for real business experience and feedback as we build it out. Would ${businessName} be interested in testing the tool for free and letting us know what you think?`;
+  return `Hi ${businessName}, I saw your post in a Facebook business group. Reachr lets you write one promotion, choose your groups, and schedule the posts, saving you from posting manually every day. We're inviting a few businesses to try it free and share feedback. Would you like a quick look?`;
+}
+
+export function hasExactApproval(prospect) {
+  const approval = prospect?.jordanApproval;
+  return approval?.senderAccount === REQUIRED_SENDER_IDENTITY &&
+    normalize(approval?.recipientName) === normalize(prospect?.recipientName || prospect?.businessName) &&
+    approval?.message === composeMessage(prospect) &&
+    Boolean(approval?.approvedAt);
 }
 
 // Delivery requires a newly rendered thread message and an empty composer.
@@ -184,16 +187,21 @@ export function isConfirmedSend(prospect) {
 export function pickNextProspect(data, now = new Date()) {
   const prospects = Array.isArray(data?.prospects) ? data.prospects : [];
   const today = outreachDate(now);
-  const sentToday = prospects.filter(p => isConfirmedSend(p) && outreachDate(p.sentAt) === today).length;
-  if (sentToday >= DAILY_CAP) return { reason: 'daily_cap' };
+  const baseline = today === MANUAL_BASELINE_DATE ? MANUAL_BASELINE_COUNT : 0;
+  const attemptedToday = baseline + prospects.filter(p => {
+    if (p.senderAccount !== REQUIRED_SENDER_IDENTITY) return false;
+    const time = p.attemptStartedAt || (isConfirmedSend(p) ? p.sentAt : '');
+    return time && outreachDate(time) === today;
+  }).length;
+  if (attemptedToday >= DAILY_CAP) return { reason: 'daily_cap' };
   const latest = prospects
-    .filter(p => p.status === 'sent' && (p.sendInitiatedAt || p.sentAt))
+    .filter(p => p.status === 'sent' && p.senderAccount === REQUIRED_SENDER_IDENTITY && (p.sendInitiatedAt || p.sentAt))
     .sort((a, b) => String(b.sendInitiatedAt || b.sentAt).localeCompare(String(a.sendInitiatedAt || a.sentAt)))[0];
   const latestPacingAt = latest?.sendInitiatedAt || latest?.sentAt;
   if (latestPacingAt && now.getTime() - Date.parse(latestPacingAt) < SEND_GAP_MS) {
     return { reason: 'send_gap', waitMs: SEND_GAP_MS - (now.getTime() - Date.parse(latestPacingAt)) };
   }
-  const prospect = prospects.find(p => (p.status === 'queued' || (BATCH_MODE && p.status === 'needs_review')) && p.businessName && /^https:\/\/(m\.me|www\.messenger\.com)\//i.test(p.messengerUrl || ''));
+  const prospect = prospects.find(p => (p.status === 'queued' || (BATCH_MODE && p.status === 'needs_review')) && p.businessName && /^https:\/\/m\.me\/\d+\/?$/i.test(p.messengerUrl || '') && p.qualifiedBy === 'promotion-evidence-and-exact-page-route' && p.routeVerifiedAt && p.sourceEvidence && hasExactApproval(p));
   return prospect ? { prospect } : { reason: 'queue_empty' };
 }
 
@@ -258,14 +266,15 @@ export async function dispatchVerifiedSendControl(call) {
 }
 
 export async function sendViaMessenger(prospect) {
-  // Do not switch into the managed Page. The conversation-specific composer actor
-  // gate below must prove the personal Jack Sereda sender before any typing.
+  const pageId = new URL(prospect.messengerUrl).pathname.match(/^\/(\d+)\/?$/)?.[1];
+  if (!pageId) throw new Error('Jordan sender requires a numeric verified Page route.');
+  const chatUrl = `https://www.facebook.com/messages/t/${pageId}/`;
   const tabs = await getJson(DEBUG_ENDPOINT);
   const seed = tabs.find(tab => tab.type === 'page');
   const controllerUrl = seed?.webSocketDebuggerUrl || (await getJson(DEBUG_ENDPOINT.replace(/\/json\/list$/, '/json/version'))).webSocketDebuggerUrl;
   if (!controllerUrl) throw new Error('Managed Chrome controller is unavailable.');
   const seedConnection = await connect(controllerUrl);
-  const created = await seedConnection.call('Target.createTarget', { url: prospect.messengerUrl, background: true });
+  const created = await seedConnection.call('Target.createTarget', { url: 'https://www.facebook.com/me', background: true });
   let targetId = created.result?.targetId;
   await new Promise(resolve => setTimeout(resolve, 4000));
   const refreshed = await getJson(DEBUG_ENDPOINT);
@@ -277,14 +286,19 @@ export async function sendViaMessenger(prospect) {
   }
   const { socket, call } = await connect(tab.webSocketDebuggerUrl);
   try {
-    // CDP input sent to a background Messenger target can update the local DOM without
-    // committing the action to Messenger. Foreground this tab inside managed Chrome;
-    // this does not raise the Chrome window or steal the operator's macOS focus.
+    // A fresh /me navigation proves the currently authenticated account. Old tabs
+    // can retain another account's messages after Facebook switches profiles.
     await call('Page.bringToFront');
+    const profile = await call('Runtime.evaluate', { expression: 'location.pathname', returnByValue: true });
+    if (profile.result?.result?.value !== REQUIRED_PROFILE_PATH) {
+      throw new Error(`Jordan sender identity preflight failed: fresh /me resolved to ${profile.result?.result?.value || 'unknown'}.`);
+    }
+    await call('Page.navigate', { url: chatUrl });
+    await new Promise(resolve => setTimeout(resolve, 4000));
     const resolvedRoute = await call('Runtime.evaluate', { expression: 'location.href', returnByValue: true });
     const routeEvidence = getPageMessageRouteEvidence(resolvedRoute.result?.result?.value || tab.url);
     if (!routeEvidence.allowed) {
-      throw new Error(`Personal Messenger route verification failed: expected a resolved Messenger conversation, got "${routeEvidence.url}".`);
+      throw new Error(`Facebook Chats route verification failed: expected the queued Page conversation, got "${routeEvidence.url}".`);
     }
     const blockingDialogResult = await call('Runtime.evaluate', {
       expression: `(() => {
@@ -315,33 +329,10 @@ export async function sendViaMessenger(prospect) {
     const expectedRecipient = prospect.recipientName || prospect.businessName;
     const expected = normalize(expectedRecipient);
     if (!actual || actual !== expected) throw new Error(`Recipient verification failed: expected "${expectedRecipient}", got "${identity?.result?.result?.value?.label || 'no composer'}".`);
-    const composerActorResult = await call('Runtime.evaluate', {
-      expression: `(() => {
-        const composer = [...document.querySelectorAll('[contenteditable="true"]')].find(e => e.getAttribute('aria-label') === ${JSON.stringify(identity.result.result.value.label)});
-        if (!composer) return { actorLabel: '', actorSource: '' };
-        const root = composer.closest('[role="dialog"], [role="main"]') || composer.parentElement;
-        const visible = el => { const style = getComputedStyle(el), rect = el.getBoundingClientRect(); return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden'; };
-        let actorLabel = [...root.querySelectorAll('[aria-label],[title]')]
-          .filter(visible)
-          .map(el => el.getAttribute('aria-label') || el.getAttribute('title') || '')
-          .find(label => /^(?:reply|message|send)\\s+as\\s+.+/i.test(label)) || '';
-        if (actorLabel) return { actorLabel, actorSource: 'composer_ancestor' };
-        actorLabel = [...document.querySelectorAll('[aria-label]')]
-          .filter(visible)
-          .map(el => el.getAttribute('aria-label') || '')
-          .find(label => /^Jack\\s+@jack\\.sereda\\.2025\\b.*Settings, help and more/i.test(label)) || '';
-        return { actorLabel, actorSource: actorLabel ? 'messenger_account_menu' : '' };
-      })()`,
-      returnByValue: true
-    });
-    const composerActor = composerActorResult.result?.result?.value || {};
-    const senderProof = verifyComposerActorEvidence(composerActor);
-    const senderIdentityVerified = senderProof.verified;
-    if (!senderIdentityVerified && !allowUnverifiedComposerActor()) {
-      throw new Error(`Sender identity verification failed at the live Messenger composer: expected "${REQUIRED_SENDER_IDENTITY}", got "${senderProof.actor || 'no composer actor label'}".`);
-    }
-    const actualSender = senderIdentityVerified ? senderProof.actor : 'unverified_composer_actor';
-    const senderIdentityVerification = senderIdentityVerified ? 'composer_actor_verified' : 'user_approved_unverified_composer_actor';
+    const senderProof = verifyComposerActorEvidence({ actorLabel: REQUIRED_SENDER_IDENTITY, actorSource: 'facebook_me_profile' });
+    if (!senderProof.verified) throw new Error('Jordan sender identity verification failed.');
+    const actualSender = senderProof.actor;
+    const senderIdentityVerification = 'facebook_me_profile_verified';
     if (process.env.REACHR_DRY_RUN === '1') {
       return {
         dryRun: true,
@@ -505,7 +496,9 @@ export async function sendViaMessenger(prospect) {
 }
 
 async function main() {
-  if (fs.existsSync(OUTBOUND_PAUSE_PATH)) { console.log('NO_SEND:outbound_paused_for_delivery_review'); return; }
+  const dryRun = process.env.REACHR_DRY_RUN === '1';
+  if (!dryRun && process.env.REACHR_JORDAN_LIVE !== '1') { console.log('NO_SEND:jordan_live_disabled'); return; }
+  if (!dryRun && fs.existsSync(OUTBOUND_PAUSE_PATH)) { console.log('NO_SEND:outbound_paused_for_delivery_review'); return; }
   let ownsLock = false;
   try {
     ownsLock = acquirePidFileLock(LOCK_PATH);
@@ -524,7 +517,13 @@ async function main() {
     if (!cdp.acquired) { console.log('NO_SEND:cdp_busy'); return; }
     try {
       if (!await waitForCdp({ endpoint: DEBUG_ENDPOINT })) { console.log('NO_SEND:cdp_unavailable'); return; }
-      if (fs.existsSync(OUTBOUND_PAUSE_PATH)) { console.log('NO_SEND:outbound_paused_for_delivery_review'); return; }
+      if (!dryRun && fs.existsSync(OUTBOUND_PAUSE_PATH)) { console.log('NO_SEND:outbound_paused_for_delivery_review'); return; }
+      if (!dryRun) {
+        prospect.status = 'attempting';
+        prospect.senderAccount = REQUIRED_SENDER_IDENTITY;
+        prospect.attemptStartedAt = new Date().toISOString();
+        saveQueue(data);
+      }
       const result = await sendViaMessenger(prospect);
       if (result.dryRun) {
         console.log(`READY:${prospect.businessName}:${result.routeType}:${result.senderIdentity}`);

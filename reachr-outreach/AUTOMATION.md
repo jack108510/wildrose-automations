@@ -12,6 +12,7 @@ The committed files are the complete source blueprint for the current Reachr out
 | SMS approval handler | Accepts signed one-time approval commands for a proposed response | `n8n-twilio-inbound-approval.json` |
 | CRM/inbox | Syncs verified conversation evidence into a private local CRM/API | n/a |
 | Dashboard | Displays local operational state | n/a |
+| Jordan / Jack Facebook Chats senders | Use separate signed-in identity checks, exact approvals, 48-attempt daily limits, and fresh delivery readback | `jack-sender-schedule.plist` is disabled; Jordan scheduling is local |
 
 All workflow exports in Git are inactive. Live activation state belongs to the local n8n instance and must be checked there.
 

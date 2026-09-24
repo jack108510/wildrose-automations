@@ -45,3 +45,7 @@ chrome-profile/
 browser-profile/
 *.har
 *.db
+
+# Sender-specific state and locally approved batches
+*-sender-state.json
+jordan-outreach-approved-manifest*.json
