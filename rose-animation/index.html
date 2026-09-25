@@ -76,6 +76,23 @@
       .flow{top:812px}.stage-foot{bottom:16px}
     }
     @media(max-width:410px){.stage{height:980px}.widget-wrap{top:315px}#roseWidget .wr-ai.inline .wr-panel{height:480px}.flow{top:817px}}
+    .flow{top:192px;right:5%;width:285px;display:block}
+    .flow-title{margin:0 0 10px}
+    .workflow-card{min-height:235px;padding:17px;border:1px solid #704431;border-radius:16px;background:linear-gradient(155deg,#382319,#2a1b15);box-shadow:0 18px 38px rgba(0,0,0,.18);animation:wfEnter .36s ease both}
+    .wf-head{display:flex;align-items:center;gap:10px}.wf-mark{width:35px;height:35px;flex:none;display:grid;place-items:center;border:1px solid #8d553b;border-radius:10px;background:#4a2c1d;color:#ffb58c;font-size:10px;font-weight:900;letter-spacing:.03em}.wf-tool{color:#ffd4bb;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.wf-state{margin-left:auto;color:#eeb491;font-size:9px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.workflow-card.working .wf-state:before{content:"";display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:#ff9560;box-shadow:0 0 0 4px rgba(255,149,96,.15);animation:wfPulse 1s ease-in-out infinite}.workflow-card.done .wf-state{color:#ffd4a7}
+    .wf-title{margin:16px 0 5px;color:#fff5ed;font-size:17px;font-weight:760;letter-spacing:-.025em;line-height:1.25}.wf-detail{min-height:32px;margin:0;color:#cfae9b;font-size:11px;line-height:1.42}
+    .wf-visual{min-height:73px;margin-top:14px;padding-top:12px;border-top:1px solid #68412e}
+    .wf-search{display:flex;align-items:center;gap:7px;height:34px;padding:0 10px;border:1px solid #78503a;border-radius:8px;background:#211713;color:#ffe8d9;font-size:11px;font-weight:670;white-space:nowrap;overflow:hidden}.wf-search b{color:#ff986b;font-size:18px;line-height:1}.workflow-card.working .wf-search span{overflow:hidden;white-space:nowrap;border-right:1px solid #ff9f74;animation:wfType 2.1s steps(20,end) infinite alternate}.wf-result{display:flex;align-items:center;gap:6px;margin-top:10px;color:#d9b8a6;font-size:10px;font-weight:710}.wf-result i{width:7px;height:7px;border-radius:50%;background:#ff986b}.workflow-card.working .wf-result i{animation:wfPulse .9s ease-in-out infinite}.workflow-card.done .wf-result{color:#ffd5b8}
+    .wf-slots{display:flex;gap:5px}.wf-slot{flex:1;padding:9px 3px;border:1px solid #6c4633;border-radius:7px;color:#d2ab96;text-align:center;font-size:9px;font-weight:800}.wf-slot.selected{border-color:#ff9a69;background:#65402b;color:#fff1e4}.workflow-card.working .wf-slot:nth-child(1){animation:wfSlot 1.3s ease-in-out infinite}.workflow-card.working .wf-slot:nth-child(2){animation:wfSlot 1.3s ease-in-out .25s infinite}.workflow-card.working .wf-slot:nth-child(3){animation:wfSlot 1.3s ease-in-out .5s infinite}.wf-date{margin-bottom:9px;color:#eac5ae;font-size:10px;font-weight:750}
+    .wf-field{display:flex;justify-content:space-between;gap:7px;padding:5px 0;border-bottom:1px solid #573827;color:#d0a994;font-size:10px}.wf-field b{max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ffe4d2;font-weight:780}.workflow-card.working .wf-field:nth-child(2) b{animation:wfPulse 1.2s ease-in-out infinite}
+    .wf-message{padding:9px 10px;border:1px solid #78503a;border-radius:9px;background:#211713}.wf-message b{display:block;color:#ffe5d4;font-size:10px}.wf-message span{display:block;margin-top:5px;color:#cda994;font-size:9px}.wf-message:after{content:"→";display:block;margin-top:7px;color:#ff9a69;text-align:right;font-size:15px;font-weight:900}.workflow-card.working .wf-message:after{animation:wfSend 1.5s ease-in-out infinite}
+    .wf-idle{display:flex;gap:6px;align-items:center;height:48px}.wf-idle i{width:7px;height:7px;border-radius:50%;background:#ff986b;animation:wfPulse 1.1s ease-in-out infinite}.wf-idle i:nth-child(2){animation-delay:.2s}.wf-idle i:nth-child(3){animation-delay:.4s}
+    .tool-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.tool-list .tool{min-height:49px;margin:0;padding:7px 9px;gap:7px;border-radius:9px;transform:none}.tool-list .tool:before{width:6px;height:6px}.tool-list .tool strong{font-size:10px}.tool-list .tool span{font-size:8px;margin-top:2px}.tool-list .tool.working{opacity:1;border-color:#b96e46;background:#452a1c}.tool-list .tool.working:before{background:#ff985f;animation:wfPulse 1s ease-in-out infinite}
+    @keyframes wfEnter{from{opacity:.35;transform:translateY(9px)}to{opacity:1;transform:none}}@keyframes wfPulse{50%{opacity:.35;transform:scale(.8)}}@keyframes wfType{from{max-width:0}to{max-width:190px}}@keyframes wfSlot{45%{border-color:#ff9a69;color:#fff0e5;background:#5d3928}}@keyframes wfSend{50%{transform:translateX(7px);opacity:.55}}
+    @media(max-width:1100px){.flow{right:3%;width:240px}.workflow-card{padding:13px}.wf-title{font-size:15px}}
+    @media(max-width:760px){.stage{height:1250px}.flow{top:812px;left:20px;right:20px;width:auto;display:block}.workflow-card{min-height:218px}.tool-list{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-foot{bottom:15px}}
+    @media(max-width:410px){.stage{height:1280px}.flow{top:817px}}
+    @media(prefers-reduced-motion:reduce){.workflow-card,.wf-idle i,.workflow-card.working .wf-search span,.workflow-card.working .wf-result i,.workflow-card.working .wf-slot,.workflow-card.working .wf-message:after,.tool-list .tool.working:before{animation:none}}
   </style>
 </head>
 <body>
@@ -88,7 +105,7 @@
       <div class="bubble visitor-bubble" id="visitorSpeech">Could I get a quote for a repair?</div>
       <div class="bubble rose-bubble" id="roseSpeech">Hi! I’m Rose. How can I help?</div>
       <div class="widget-wrap" id="roseWidget"></div>
-      <div class="flow" id="flow" aria-label="Example workflow activity"><div class="flow-title">Workflow activity</div></div>
+      <div class="flow" id="flow" aria-label="Illustrative workflow activity"><div class="flow-title">Rose is working on</div><div class="workflow-card" id="workflowCard" aria-live="polite"></div><div class="tool-list" id="toolList"></div></div>
       <div class="stage-foot"><span class="caption" id="caption">Customer asks a question</span><button type="button" id="next">Next example →</button></div>
     </section>
     <nav class="scenarios" aria-label="Example conversations"><span class="scenarios-label">Explore examples</span><button type="button" data-scene="0" class="active">Quote request</button><button type="button" data-scene="1">Appointment</button><button type="button" data-scene="2">Service question</button><button type="button" data-scene="3">Job status</button></nav>
@@ -104,7 +121,7 @@
           {at:6200,who:'rose',text:'I can send that to the team. What email should they use?',caption:'Rose collects a contact'},
           {at:9000,who:'visitor',text:'sam@example.com',caption:'Customer shares an email'},
           {at:11000,who:'rose',text:'Thanks. I’ll pass along the details.',caption:'Rose prepares the handoff'}
-        ],tools:[{at:12100,name:'Gmail',status:'SUMMARY SENT'},{at:13000,name:'HubSpot',status:'LEAD CREATED'},{at:13900,name:'Twilio',status:'ALERT SENT'}]},
+        ],tools:[{at:4600,name:'Knowledge',status:'ANSWER FOUND'},{at:12400,name:'HubSpot',status:'LEAD CREATED'},{at:13800,name:'Gmail',status:'SUMMARY SENT'},{at:14700,name:'Twilio',status:'ALERT SENT'}]},
         {name:'BOOK AN APPOINTMENT',lines:[
           {at:0,who:'visitor',text:'Can I book a repair for Tuesday?',caption:'Customer asks for a visit'},
           {at:1800,who:'rose',text:'I can check. What needs repairing?',caption:'Rose clarifies the job'},
@@ -112,7 +129,7 @@
           {at:6200,who:'rose',text:'There is an opening at 9:30. Shall I reserve it?',caption:'Rose offers a time'},
           {at:9000,who:'visitor',text:'Yes, that works.',caption:'Customer confirms'},
           {at:11000,who:'rose',text:'You’re booked. I’ll send the details.',caption:'Rose confirms the visit'}
-        ],tools:[{at:7600,name:'Calendar',status:'SLOT FOUND'},{at:12100,name:'Gmail',status:'INVITE SENT'},{at:13700,name:'Twilio',status:'REMINDER SET'}]},
+        ],tools:[{at:11200,name:'Calendar',status:'BOOKED'},{at:13200,name:'Gmail',status:'INVITE SENT'},{at:14500,name:'Twilio',status:'REMINDER SET'}]},
         {name:'SERVICE QUESTION',lines:[
           {at:0,who:'visitor',text:'Do you repair heat pumps in Dartmouth?',caption:'Customer asks about a service'},
           {at:1800,who:'rose',text:'Let me check the approved service information.',caption:'Rose checks the business context'},
@@ -129,13 +146,91 @@
           {at:11200,who:'rose',text:'Of course. I’ll send the update.',caption:'Rose confirms the next step'}
         ],tools:[{at:5700,name:'HubSpot',status:'JOB FOUND'},{at:12700,name:'Twilio',status:'UPDATE SENT'},{at:14000,name:'Gmail',status:'RECAP SENT'}]}
       ];
-      const studio=document.querySelector('#stage'),visitor=document.querySelector('#visitorSpeech'),rose=document.querySelector('#roseSpeech'),flow=document.querySelector('#flow'),widget=document.querySelector('#roseWidget'),orb=widget.querySelector('.wr-orb');
+      const workflowFrames=[
+        [
+          {at:0,tool:'Rose',kind:'idle',state:'working',verb:'LISTENING',title:'Understanding the request',detail:'Rose identifies the service the customer needs.'},
+          {at:2200,tool:'Knowledge',kind:'search',state:'working',verb:'SEARCHING',title:'Searching service information',detail:'Looking for the right repair category.',value:'kitchen faucet repair',result:'Checking approved service notes'},
+          {at:4600,tool:'Knowledge',kind:'search',state:'done',verb:'FOUND',title:'Service match found',detail:'The repair request is in scope.',value:'kitchen faucet repair',result:'Kitchen plumbing · repair request'},
+          {at:9100,tool:'HubSpot',kind:'record',state:'working',verb:'PREPARING',title:'Preparing a new lead',detail:'Rose organizes the request for the team.',fields:[['Service','Faucet repair'],['Contact','sam@example.com']]},
+          {at:12400,tool:'HubSpot',kind:'record',state:'done',verb:'CREATED',title:'Lead created',detail:'The team has a clean record to follow up.',fields:[['Service','Faucet repair'],['Contact','sam@example.com']]},
+          {at:13400,tool:'Gmail',kind:'message',state:'working',verb:'DRAFTING',title:'Preparing a summary',detail:'Rose packages the conversation for the inbox.',value:'Kitchen repair request',result:'Service, issue, and contact details'},
+          {at:13800,tool:'Gmail',kind:'message',state:'done',verb:'SENT',title:'Summary sent',detail:'The repair details are ready for the team.',value:'Kitchen repair request',result:'Service, issue, and contact details'},
+          {at:14700,tool:'Twilio',kind:'message',state:'done',verb:'ALERTED',title:'Owner alerted',detail:'A short notification completes the handoff.',value:'New quote request',result:'Kitchen faucet · sam@example.com'}
+        ],
+        [
+          {at:0,tool:'Rose',kind:'idle',state:'working',verb:'LISTENING',title:'Understanding the booking',detail:'Rose gets the service and preferred day.'},
+          {at:2100,tool:'Calendar',kind:'calendar',state:'working',verb:'CHECKING',title:'Checking availability',detail:'Looking for an opening on Tuesday.',value:'Tuesday · repair visit'},
+          {at:5000,tool:'Calendar',kind:'calendar',state:'done',verb:'FOUND',title:'9:30 AM is available',detail:'Rose offers the open time to the customer.',value:'Tuesday · repair visit'},
+          {at:9200,tool:'Calendar',kind:'calendar',state:'working',verb:'BOOKING',title:'Reserving the visit',detail:'The customer confirmed the 9:30 AM time.',value:'Tuesday · 9:30 AM'},
+          {at:11200,tool:'Calendar',kind:'calendar',state:'done',verb:'BOOKED',title:'Client booked',detail:'Tuesday at 9:30 AM is on the calendar.',value:'Tuesday · 9:30 AM'},
+          {at:12700,tool:'Gmail',kind:'message',state:'working',verb:'DRAFTING',title:'Sending confirmation',detail:'The customer gets the appointment details.',value:'Your Tuesday visit',result:'Faucet repair · 9:30 AM'},
+          {at:13200,tool:'Gmail',kind:'message',state:'done',verb:'SENT',title:'Confirmation sent',detail:'The appointment details are in their inbox.',value:'Your Tuesday visit',result:'Faucet repair · 9:30 AM'},
+          {at:14500,tool:'Twilio',kind:'message',state:'done',verb:'SCHEDULED',title:'Reminder scheduled',detail:'A text reminder is ready for the visit.',value:'Appointment reminder',result:'Tuesday · 9:30 AM'}
+        ],
+        [
+          {at:0,tool:'Rose',kind:'idle',state:'working',verb:'LISTENING',title:'Understanding the question',detail:'Rose identifies the service and location.'},
+          {at:1900,tool:'Knowledge',kind:'search',state:'working',verb:'SEARCHING',title:'Searching business information',detail:'Checking services and coverage.',value:'heat pumps · Dartmouth',result:'Searching approved answers'},
+          {at:3600,tool:'Knowledge',kind:'search',state:'done',verb:'FOUND',title:'Answer found',detail:'Heat pump service is available in Dartmouth.',value:'heat pumps · Dartmouth',result:'Service area and repair policy matched'},
+          {at:7400,tool:'HubSpot',kind:'record',state:'working',verb:'PREPARING',title:'Preparing follow-up',detail:'Rose gathers what the team will need.',fields:[['Service','Heat pump'],['Area','Dartmouth']]},
+          {at:11500,tool:'HubSpot',kind:'record',state:'done',verb:'CREATED',title:'Lead created',detail:'The callback request is organized.',fields:[['Service','Heat pump'],['Area','Dartmouth']]},
+          {at:13400,tool:'Gmail',kind:'message',state:'done',verb:'SENT',title:'Team notified',detail:'The follow-up request is shared.',value:'Heat pump callback',result:'Dartmouth service request'}
+        ],
+        [
+          {at:0,tool:'Rose',kind:'idle',state:'working',verb:'LISTENING',title:'Understanding the status request',detail:'Rose asks for the job reference.'},
+          {at:2700,tool:'HubSpot',kind:'search',state:'working',verb:'SEARCHING',title:'Searching job records',detail:'Matching the reference number.',value:'NC-4182',result:'Checking customer jobs'},
+          {at:5700,tool:'HubSpot',kind:'record',state:'done',verb:'FOUND',title:'Job found',detail:'Technician scheduled for 2 PM today.',fields:[['Job','NC-4182'],['Status','Scheduled · 2 PM']]},
+          {at:11300,tool:'Twilio',kind:'message',state:'working',verb:'PREPARING',title:'Preparing a text update',detail:'Rose confirms the status in writing.',value:'Repair update',result:'Technician scheduled for 2 PM'},
+          {at:12700,tool:'Twilio',kind:'message',state:'done',verb:'SENT',title:'Update sent',detail:'The customer has the latest status.',value:'Repair update',result:'Technician scheduled for 2 PM'},
+          {at:14000,tool:'Gmail',kind:'message',state:'done',verb:'SENT',title:'Recap sent',detail:'The team receives the conversation recap.',value:'Job NC-4182',result:'Customer update completed'}
+        ]
+      ];
+      const studio=document.querySelector('#stage'),visitor=document.querySelector('#visitorSpeech'),rose=document.querySelector('#roseSpeech'),toolList=document.querySelector('#toolList'),workflowCard=document.querySelector('#workflowCard'),widget=document.querySelector('#roseWidget'),orb=widget.querySelector('.wr-orb');
       const pause=document.querySelector('#pause'),duration=16000,reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
       widget.querySelector('.wr-status').textContent='Meet Rose';widget.querySelector('.wr-note').textContent='Hear a short voice example.';widget.querySelector('.wr-start-voice').textContent='Hear example';
-      let index=0,time=0,playing=!reduced,last=performance.now();
-      function reset(){time=reduced?15000:0;flow.querySelectorAll('.tool').forEach(el=>el.remove());for(const tool of scenarios[index].tools){const el=document.createElement('div');el.className='tool';el.dataset.name=tool.name;const copy=document.createElement('div'),name=document.createElement('strong'),status=document.createElement('span');name.textContent=tool.name;status.textContent='WAITING';copy.append(name,status);el.append(copy);flow.append(el)}document.querySelector('#sceneName').textContent=scenarios[index].name;document.querySelector('#scenarioCount').textContent=String(index+1).padStart(2,'0')+' / 04';document.querySelectorAll('[data-scene]').forEach((button,i)=>button.classList.toggle('active',i===index));last=performance.now();render()}
-      function render(){const scene=scenarios[index],lines=scene.lines.filter(line=>line.at<=time),latest=lines.at(-1),latestVisitor=lines.filter(line=>line.who==='visitor').at(-1),latestRose=lines.filter(line=>line.who==='rose').at(-1);visitor.textContent=latestVisitor?.text||scene.lines.find(line=>line.who==='visitor').text;rose.textContent=latestRose?.text||'Hi! I’m Rose. How can I help?';document.querySelector('#caption').textContent=latest?.caption||'Rose is ready';studio.classList.toggle('speaker-person',latest?.who==='visitor'&&time-latest.at<1500);const latestAction=scene.tools.filter(tool=>tool.at<=time).at(-1);const actionCurrent=latestAction&&latestAction.at>(latest?.at??-1);studio.dataset.speaker=actionCurrent?'tool':latest?.who||'visitor';orb.classList.toggle('speaking',latest?.who==='rose'&&time-latest.at<1700);orb.classList.toggle('live',latest?.who!=='rose');for(const tool of scene.tools){const el=[...flow.querySelectorAll('.tool')].find(item=>item.dataset.name===tool.name);const active=time>=tool.at;el.classList.toggle('active',active);el.querySelector('span').textContent=active?tool.status:'WAITING';}if(actionCurrent)document.querySelector('#caption').textContent=latestAction.name+' · '+latestAction.status.toLowerCase();document.querySelector('#clock').textContent='00:'+String(Math.floor(time/1000)).padStart(2,'0')}
-      function next(){index=(index+1)%scenarios.length;reset()}reset();if(reduced){pause.hidden=true}else{setInterval(()=>{const now=performance.now(),delta=now-last;last=now;if(!playing||document.hidden)return;time+=delta;if(time>=duration){next();return}render()},60);pause.addEventListener('click',()=>{playing=!playing;pause.textContent=playing?'Pause Ⅱ':'Play ▶';pause.setAttribute('aria-label',playing?'Pause animation':'Play animation')})}document.querySelector('#next').addEventListener('click',next);document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>{index=Number(button.dataset.scene);reset()}));widget.addEventListener('pointerdown',()=>{playing=false;pause.textContent='Play ▶';pause.setAttribute('aria-label','Play animation');orb.classList.remove('speaking','live')});
+      const marks={Rose:'ROSE',Knowledge:'KB',Calendar:'CAL',HubSpot:'CRM',Gmail:'MAIL',Twilio:'SMS'};
+      let index=0,time=0,playing=!reduced,last=performance.now(),shownFrame=-1;
+      function workflowVisual(frame){
+        if(frame.kind==='idle')return '<div class="wf-idle"><i></i><i></i><i></i></div>';
+        if(frame.kind==='search')return `<div class="wf-search"><b>⌕</b><span>${frame.value}</span></div><div class="wf-result"><i></i>${frame.result}</div>`;
+        if(frame.kind==='calendar')return `<div class="wf-date">${frame.value}</div><div class="wf-slots"><span class="wf-slot">8:00</span><span class="wf-slot ${frame.state==='done'?'selected':''}">9:30</span><span class="wf-slot">11:00</span></div>`;
+        if(frame.kind==='record')return frame.fields.map(([label,value])=>`<div class="wf-field"><span>${label}</span><b>${value}</b></div>`).join('');
+        return `<div class="wf-message"><b>${frame.value}</b><span>${frame.result}</span></div>`;
+      }
+      function showWorkflow(frame){
+        workflowCard.className=`workflow-card ${frame.kind} ${frame.state}`;
+        workflowCard.innerHTML=`<div class="wf-head"><span class="wf-mark">${marks[frame.tool]}</span><span class="wf-tool">${frame.tool}</span><span class="wf-state">${frame.verb}</span></div><h2 class="wf-title">${frame.title}</h2><p class="wf-detail">${frame.detail}</p><div class="wf-visual">${workflowVisual(frame)}</div>`;
+      }
+      function reset(){
+        time=reduced?15000:0;shownFrame=-1;toolList.replaceChildren();
+        for(const tool of scenarios[index].tools){const el=document.createElement('div');el.className='tool';el.dataset.name=tool.name;const copy=document.createElement('div'),name=document.createElement('strong'),status=document.createElement('span');name.textContent=tool.name;status.textContent='READY';copy.append(name,status);el.append(copy);toolList.append(el)}
+        document.querySelector('#sceneName').textContent=scenarios[index].name;
+        document.querySelector('#scenarioCount').textContent=String(index+1).padStart(2,'0')+' / 04';
+        document.querySelectorAll('[data-scene]').forEach((button,i)=>button.classList.toggle('active',i===index));last=performance.now();render();
+      }
+      function render(){
+        const scene=scenarios[index],lines=scene.lines.filter(line=>line.at<=time),latest=lines.at(-1),latestVisitor=lines.filter(line=>line.who==='visitor').at(-1),latestRose=lines.filter(line=>line.who==='rose').at(-1);
+        visitor.textContent=latestVisitor?.text||scene.lines.find(line=>line.who==='visitor').text;
+        rose.textContent=latestRose?.text||'Hi! I’m Rose. How can I help?';
+        const frames=workflowFrames[index],frameIndex=frames.findLastIndex(frame=>frame.at<=time),frame=frames[Math.max(frameIndex,0)];
+        if(frameIndex!==shownFrame){shownFrame=frameIndex;showWorkflow(frame)}
+        const workflowCurrent=frame.at>(latest?.at??-1);
+        studio.dataset.speaker=workflowCurrent?'tool':latest?.who||'visitor';
+        studio.classList.toggle('speaker-person',latest?.who==='visitor'&&time-latest.at<1500);
+        orb.classList.toggle('speaking',latest?.who==='rose'&&time-latest.at<1700);
+        orb.classList.toggle('live',latest?.who!=='rose');
+        for(const tool of scene.tools){const el=[...toolList.children].find(item=>item.dataset.name===tool.name);const done=time>=tool.at,working=!done&&frame.tool===tool.name&&frame.state==='working';el.classList.toggle('active',done);el.classList.toggle('working',working);el.querySelector('span').textContent=done?tool.status:working?frame.verb:'READY'}
+        document.querySelector('#caption').textContent=workflowCurrent?frame.title:latest?.caption||'Rose is ready';
+        document.querySelector('#clock').textContent='00:'+String(Math.floor(time/1000)).padStart(2,'0');
+      }
+      function next(){index=(index+1)%scenarios.length;reset()}
+      reset();
+      if(reduced){pause.hidden=true}else{
+        setInterval(()=>{const now=performance.now(),delta=now-last;last=now;if(!playing||document.hidden)return;time+=delta;if(time>=duration){next();return}render()},60);
+        pause.addEventListener('click',()=>{playing=!playing;pause.textContent=playing?'Pause Ⅱ':'Play ▶';pause.setAttribute('aria-label',playing?'Pause animation':'Play animation')});
+      }
+      document.querySelector('#next').addEventListener('click',next);
+      document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>{index=Number(button.dataset.scene);reset()}));
+      widget.addEventListener('pointerdown',()=>{playing=false;pause.textContent='Play ▶';pause.setAttribute('aria-label','Play animation');orb.classList.remove('speaking','live')});
     })();
   </script>
 </body>
