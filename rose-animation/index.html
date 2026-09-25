@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#061c17">
+  <meta name="theme-color" content="#1b120e">
   <title>Rose in motion · Wildrose</title>
   <meta name="description" content="See how Rose turns customer conversations into useful work.">
   <style>
@@ -27,13 +27,55 @@
     .widget-wrap{position:absolute;z-index:3;left:50%;top:218px;width:334px;transform:translateX(-50%)}
     #roseWidget .wr-ai.inline{width:100%;max-width:none}#roseWidget .wr-ai.inline .wr-panel{height:320px;border-radius:23px;box-shadow:0 30px 70px rgba(0,0,0,.28)}#roseWidget .wr-panel:after{border-radius:22px}#roseWidget .wr-head{padding:11px 14px 6px}#roseWidget .wr-mark{width:35px;height:35px}#roseWidget .wr-title h3{font-size:15px}#roseWidget .wr-title small{font-size:10px}#roseWidget .wr-tabs{margin:0 12px 8px}#roseWidget .wr-tab{height:30px;font-size:11px}#roseWidget .wr-voice{min-height:0;padding:4px 8px 12px}#roseWidget .wr-orb{width:98px;height:98px;margin-bottom:7px}#roseWidget .wr-status{font-size:15px}#roseWidget .wr-note{font-size:10px;margin-bottom:8px}#roseWidget .wr-primary,#roseWidget .wr-secondary{height:31px;font-size:10px}
     .flow{position:absolute;z-index:3;right:5.5%;top:190px;width:260px;display:flex;flex-direction:column;gap:12px}.flow-title{color:#8caa98;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1px}.tool{display:flex;align-items:center;gap:13px;min-height:64px;padding:12px 15px;border:1px solid #244536;border-radius:13px;background:#102b20;opacity:.46;transform:translateY(6px);transition:opacity .45s,transform .45s,border-color .45s,background .45s}.tool:before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:#779987}.tool strong{display:block;font-size:13px;color:#f3f8f0}.tool span{display:block;margin-top:4px;font-size:10px;font-weight:730;letter-spacing:.04em;color:#a4bba9}.tool.active{opacity:1;transform:none;border-color:#47715a;background:#19402c;box-shadow:0 17px 36px rgba(0,0,0,.15)}.tool.active:before{background:#ff976c;box-shadow:0 0 0 5px rgba(255,151,108,.13)}.tool.active span{color:#9eddb3}
-    .stage-foot{position:absolute;z-index:5;left:30px;right:30px;bottom:23px;display:flex;align-items:center;gap:18px}.stage-foot .caption{min-width:230px;max-width:280px;color:#b0c5b5;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.track{height:3px;flex:1;overflow:hidden;border-radius:5px;background:#294c38}.track span{display:block;height:100%;width:0;background:#ff946b}.stage-foot button{flex:none;padding:8px 11px;border:1px solid #355844;border-radius:8px;background:#163829;color:#edf6ed;font-size:10px;font-weight:750}.stage-foot button:hover{background:#205039}
+    .stage-foot{position:absolute;z-index:5;left:30px;right:30px;bottom:23px;display:flex;align-items:center;gap:18px}.stage-foot .caption{min-width:230px;max-width:280px;color:#b0c5b5;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stage-foot button{flex:none;padding:8px 11px;border:1px solid #355844;border-radius:8px;background:#163829;color:#edf6ed;font-size:10px;font-weight:750}.stage-foot button:hover{background:#205039}
     .scenarios{display:flex;align-items:center;gap:8px;margin-top:16px}.scenarios-label{margin-right:12px;color:#8ba999;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.scenarios button{padding:9px 13px;border:1px solid transparent;border-radius:8px;background:transparent;color:#9fbbab;font-size:11px;font-weight:740}.scenarios button.active{border-color:#315843;background:#153626;color:#fff}.scenarios button:hover{color:#fff}
     @keyframes idle{50%{transform:translateY(-4px) rotate(1deg)}}@keyframes gesture{42%{transform:rotate(-18deg)}72%{transform:rotate(6deg)}}@keyframes step{50%{transform:rotate(8deg)}}
     @media(max-width:1100px){.intro{gap:35px}.person{left:3%;width:210px}.visitor-bubble{left:3%;width:250px}.flow{right:3%;width:205px}.widget-wrap{width:305px}.rose-bubble{width:320px}.tool{padding:10px}}
     @media(max-width:760px){.shell{width:calc(100% - 28px)}.site-head{height:65px;padding:0 14px}.head-tag{display:none}main{padding:42px 0 50px}.intro{display:block;margin-bottom:30px}h1{font-size:clamp(49px,10.5vw,72px)}.intro-aside{padding:0;margin-top:25px}.intro-aside p{font-size:16px;margin-bottom:14px}.stage{height:760px;border-radius:16px}.scene-meta{top:17px;left:16px;right:16px}.person{left:20px;top:110px;bottom:auto;width:65px}.person-art{width:58px;height:98px}.person-label{display:none}.visitor-bubble{top:116px;bottom:auto;left:103px;width:calc(100% - 122px);max-width:none;min-height:72px;padding:13px 15px;font-size:13px}.visitor-bubble:after{left:14px}.rose-bubble{top:224px;left:auto;right:20px;width:calc(100% - 105px);max-width:none;min-height:63px;padding:12px 15px;font-size:13px;transform:none}.rose-bubble:after{left:auto;right:28px}.stage[data-speaker="visitor"] .rose-bubble{transform:translateY(10px)}.widget-wrap{top:306px;width:min(300px,calc(100% - 44px))}#roseWidget .wr-ai.inline .wr-panel{height:294px}#roseWidget .wr-orb{width:82px;height:82px}.flow{top:612px;left:20px;right:20px;width:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.flow-title{grid-column:1/-1;font-size:8px}.tool{min-height:43px;padding:6px;gap:4px;border-radius:8px}.tool:before{width:5px;height:5px}.tool strong{font-size:9px}.tool span{font-size:7px}.stage-foot{left:15px;right:15px;bottom:13px;gap:8px}.stage-foot .caption{min-width:0;max-width:125px;font-size:9px}.stage-foot button{font-size:9px;padding:7px}.scenarios{flex-wrap:wrap;gap:4px}.scenarios-label{width:100%;margin:0 0 5px}.scenarios button{padding:8px 9px;font-size:10px}}
     @media(max-width:410px){.stage{height:790px}.flow{top:625px}.widget-wrap{top:315px}#roseWidget .wr-ai.inline .wr-panel{height:305px}.scene-meta>div{gap:6px}.scene-name{font-size:8px}.clock{font-size:9px}.scene-meta button{padding:6px 8px}.visitor-bubble{left:91px;width:calc(100% - 106px)}.rose-bubble{right:15px;width:calc(100% - 91px)}}
     @media(prefers-reduced-motion:reduce){.person-art,.person-art .front-arm,.person-art .front-leg{animation:none}.bubble,.tool{transition:none}}
+    /* Rose's orange palette, with the widget at a comfortable native scale. */
+    :root{color:#fff8f3;background:#1b120e}
+    .site-head{border-color:#513326}
+    .brand span{color:#c4a697}.head-tag{color:#c49b85}
+    .intro-aside p{color:#f0ddd2}.intro-aside small{color:#b99684}
+    .stage{height:785px;border-color:#5a3929;background:radial-gradient(ellipse at 50% 59%,rgba(155,73,37,.19),transparent 43%),linear-gradient(145deg,#291a14,#1d130f 72%)}
+    .stage:before{background:radial-gradient(circle at 50% 54%,rgba(255,116,59,.1),transparent 35%)}
+    .scene-index{color:#d69c7c}.scene-name{color:#fff0e5}
+    .scene-meta button{border-color:#654332;background:#382419;color:#ffeadc}.scene-meta button:hover{background:#51301f}.clock{color:#cda58e}
+    .person{bottom:150px}.person-art .ground{fill:#110a07}.person-art .line{stroke:#ff824a}.person-label{color:#c4a08c}
+    .bubble{border-color:#744936;background:#3b271d;color:#fff2e8}
+    .bubble:after{border-color:#744936}.visitor-bubble{bottom:350px}
+    .rose-bubble{top:95px;background:#fff5ec;border-color:#edd6c6;color:#43281c}.rose-bubble:after{border-color:#edd6c6}
+    .widget-wrap{top:195px;width:360px}
+    #roseWidget .wr-ai.inline .wr-panel{height:500px;border-radius:30px;box-shadow:0 30px 75px rgba(0,0,0,.32)}
+    #roseWidget .wr-panel:after{border-radius:29px}
+    #roseWidget .wr-head{padding:17px 17px 12px}#roseWidget .wr-mark{width:44px;height:44px}
+    #roseWidget .wr-title h3{font-size:17px}#roseWidget .wr-title small{font-size:12px}
+    #roseWidget .wr-tabs{margin:0 17px 12px}#roseWidget .wr-tab{height:38px;font-size:13px}
+    #roseWidget .wr-voice{min-height:330px;padding:18px 12px 26px}
+    #roseWidget .wr-orb{width:148px;height:148px;margin-bottom:18px}
+    #roseWidget .wr-status{font-size:22px}#roseWidget .wr-note{font-size:13px;margin-bottom:17px}
+    #roseWidget .wr-primary,#roseWidget .wr-secondary{height:46px;font-size:13px}
+    .flow{top:285px}.flow-title{color:#c09a84}
+    .tool{border-color:#583a2b;background:#302016;opacity:.56}.tool:before{background:#b58c74}
+    .tool strong{color:#fff3e9}.tool span{color:#c8a996}
+    .tool.active{border-color:#cf784b;background:#4a291a}.tool.active:before{background:#ff864d}.tool.active span{color:#ffd0b7}
+    .stage-foot{justify-content:space-between}.stage-foot .caption{max-width:none;color:#d6b9a5}
+    .stage-foot button{border-color:#67412e;background:#3c261b;color:#fff2e6}.stage-foot button:hover{background:#59301d}
+    .scenarios-label{color:#c69a80}.scenarios button{color:#d6ad98}.scenarios button.active{border-color:#744731;background:#3a2318;color:#fff}.scenarios button:hover{color:#fff}
+    @media(max-width:1100px){.widget-wrap{width:340px}}
+    @media(max-width:760px){
+      .stage{height:960px}.person{top:110px;bottom:auto}.visitor-bubble{top:116px;bottom:auto}
+      .rose-bubble{top:224px}.widget-wrap{top:310px;width:min(340px,calc(100% - 36px))}
+      #roseWidget .wr-ai.inline .wr-panel{height:480px}
+      #roseWidget .wr-head{padding:15px 15px 10px}#roseWidget .wr-tabs{margin:0 15px 10px}
+      #roseWidget .wr-orb{width:132px;height:132px;margin-bottom:13px}
+      #roseWidget .wr-status{font-size:20px}#roseWidget .wr-note{font-size:12px;margin-bottom:14px}
+      #roseWidget .wr-primary,#roseWidget .wr-secondary{height:43px;font-size:12px}
+      .flow{top:812px}.stage-foot{bottom:16px}
+    }
+    @media(max-width:410px){.stage{height:980px}.widget-wrap{top:315px}#roseWidget .wr-ai.inline .wr-panel{height:480px}.flow{top:817px}}
   </style>
 </head>
 <body>
@@ -47,7 +89,7 @@
       <div class="bubble rose-bubble" id="roseSpeech">Hi! I’m Rose. How can I help?</div>
       <div class="widget-wrap" id="roseWidget"></div>
       <div class="flow" id="flow" aria-label="Example workflow activity"><div class="flow-title">Workflow activity</div></div>
-      <div class="stage-foot"><span class="caption" id="caption">Customer asks a question</span><div class="track"><span id="progress"></span></div><button type="button" id="next">Next example →</button></div>
+      <div class="stage-foot"><span class="caption" id="caption">Customer asks a question</span><button type="button" id="next">Next example →</button></div>
     </section>
     <nav class="scenarios" aria-label="Example conversations"><span class="scenarios-label">Explore examples</span><button type="button" data-scene="0" class="active">Quote request</button><button type="button" data-scene="1">Appointment</button><button type="button" data-scene="2">Service question</button><button type="button" data-scene="3">Job status</button></nav>
   </main>
@@ -92,7 +134,7 @@
       widget.querySelector('.wr-status').textContent='Meet Rose';widget.querySelector('.wr-note').textContent='Hear a short voice example.';widget.querySelector('.wr-start-voice').textContent='Hear example';
       let index=0,time=0,playing=!reduced,last=performance.now();
       function reset(){time=reduced?15000:0;flow.querySelectorAll('.tool').forEach(el=>el.remove());for(const tool of scenarios[index].tools){const el=document.createElement('div');el.className='tool';el.dataset.name=tool.name;const copy=document.createElement('div'),name=document.createElement('strong'),status=document.createElement('span');name.textContent=tool.name;status.textContent='WAITING';copy.append(name,status);el.append(copy);flow.append(el)}document.querySelector('#sceneName').textContent=scenarios[index].name;document.querySelector('#scenarioCount').textContent=String(index+1).padStart(2,'0')+' / 04';document.querySelectorAll('[data-scene]').forEach((button,i)=>button.classList.toggle('active',i===index));last=performance.now();render()}
-      function render(){const scene=scenarios[index],lines=scene.lines.filter(line=>line.at<=time),latest=lines.at(-1),latestVisitor=lines.filter(line=>line.who==='visitor').at(-1),latestRose=lines.filter(line=>line.who==='rose').at(-1);visitor.textContent=latestVisitor?.text||scene.lines.find(line=>line.who==='visitor').text;rose.textContent=latestRose?.text||'Hi! I’m Rose. How can I help?';document.querySelector('#caption').textContent=latest?.caption||'Rose is ready';studio.classList.toggle('speaker-person',latest?.who==='visitor'&&time-latest.at<1500);const latestAction=scene.tools.filter(tool=>tool.at<=time).at(-1);const actionCurrent=latestAction&&latestAction.at>(latest?.at??-1);studio.dataset.speaker=actionCurrent?'tool':latest?.who||'visitor';orb.classList.toggle('speaking',latest?.who==='rose'&&time-latest.at<1700);orb.classList.toggle('live',latest?.who!=='rose');for(const tool of scene.tools){const el=[...flow.querySelectorAll('.tool')].find(item=>item.dataset.name===tool.name);const active=time>=tool.at;el.classList.toggle('active',active);el.querySelector('span').textContent=active?tool.status:'WAITING';}if(actionCurrent)document.querySelector('#caption').textContent=latestAction.name+' · '+latestAction.status.toLowerCase();document.querySelector('#clock').textContent='00:'+String(Math.floor(time/1000)).padStart(2,'0');document.querySelector('#progress').style.width=Math.min(time/duration*100,100)+'%'}
+      function render(){const scene=scenarios[index],lines=scene.lines.filter(line=>line.at<=time),latest=lines.at(-1),latestVisitor=lines.filter(line=>line.who==='visitor').at(-1),latestRose=lines.filter(line=>line.who==='rose').at(-1);visitor.textContent=latestVisitor?.text||scene.lines.find(line=>line.who==='visitor').text;rose.textContent=latestRose?.text||'Hi! I’m Rose. How can I help?';document.querySelector('#caption').textContent=latest?.caption||'Rose is ready';studio.classList.toggle('speaker-person',latest?.who==='visitor'&&time-latest.at<1500);const latestAction=scene.tools.filter(tool=>tool.at<=time).at(-1);const actionCurrent=latestAction&&latestAction.at>(latest?.at??-1);studio.dataset.speaker=actionCurrent?'tool':latest?.who||'visitor';orb.classList.toggle('speaking',latest?.who==='rose'&&time-latest.at<1700);orb.classList.toggle('live',latest?.who!=='rose');for(const tool of scene.tools){const el=[...flow.querySelectorAll('.tool')].find(item=>item.dataset.name===tool.name);const active=time>=tool.at;el.classList.toggle('active',active);el.querySelector('span').textContent=active?tool.status:'WAITING';}if(actionCurrent)document.querySelector('#caption').textContent=latestAction.name+' · '+latestAction.status.toLowerCase();document.querySelector('#clock').textContent='00:'+String(Math.floor(time/1000)).padStart(2,'0')}
       function next(){index=(index+1)%scenarios.length;reset()}reset();if(reduced){pause.hidden=true}else{setInterval(()=>{const now=performance.now(),delta=now-last;last=now;if(!playing||document.hidden)return;time+=delta;if(time>=duration){next();return}render()},60);pause.addEventListener('click',()=>{playing=!playing;pause.textContent=playing?'Pause Ⅱ':'Play ▶';pause.setAttribute('aria-label',playing?'Pause animation':'Play animation')})}document.querySelector('#next').addEventListener('click',next);document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>{index=Number(button.dataset.scene);reset()}));widget.addEventListener('pointerdown',()=>{playing=false;pause.textContent='Play ▶';pause.setAttribute('aria-label','Play animation');orb.classList.remove('speaking','live')});
     })();
   </script>
