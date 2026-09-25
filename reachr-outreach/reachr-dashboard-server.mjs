@@ -5,6 +5,8 @@ import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { summarizeOutreach } from './dashboard-data.mjs';
+import { buildCommandCenterConversations } from './command-center-model.mjs';
+import { source as loadInboxSource } from './reachr-inbox-api.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.REACHR_DASHBOARD_PORT || 4188);
@@ -13,6 +15,19 @@ const REPLY_STATE = path.join(ROOT, 'reply-monitor-state.json');
 const PAGE = path.join(ROOT, 'reachr-dashboard.html');
 const PREFIX = '/reachr-command-center';
 const AUTH_FILE = process.env.REACHR_DASHBOARD_AUTH_FILE || '';
+const MANAGEMENT_STATE = process.env.REACHR_DASHBOARD_STATE_FILE || '/Users/jackserver/jsw/keys/reachr-command-center-state.json';
+
+function readManagement() {
+  return fs.existsSync(MANAGEMENT_STATE) ? JSON.parse(fs.readFileSync(MANAGEMENT_STATE, 'utf8')) : {};
+}
+
+function conversations() {
+  const ledger = JSON.parse(fs.readFileSync(LEDGER, 'utf8'));
+  const replies = fs.existsSync(REPLY_STATE) ? JSON.parse(fs.readFileSync(REPLY_STATE, 'utf8')) : { seen: {} };
+  let imported = [];
+  try { imported = loadInboxSource(); } catch (error) { console.error(`Command Center imported thread evidence unavailable: ${error.message}`); }
+  return buildCommandCenterConversations(ledger, replies, readManagement(), imported);
+}
 
 function authorized(request) {
   if (!AUTH_FILE) return true; // Local-only development. Public tunnel requires the auth file.
@@ -56,6 +71,48 @@ http.createServer((request, response) => {
       response.writeHead(500, { 'content-type': 'application/json; charset=utf-8' });
       return response.end(JSON.stringify({ error: error.message }));
     }
+  }
+  if (route === '/api/conversations' && request.method === 'GET') {
+    try {
+      const rows = conversations();
+      return json(response, { conversations: rows.map(({ messages, candidatePreviews, ...summary }) => summary), total: rows.length, needsReview: rows.filter(row => row.status === 'needs_review').length, updatedAt: new Date().toISOString() });
+    } catch (error) {
+      response.writeHead(500, { 'content-type': 'application/json; charset=utf-8' });
+      return response.end(JSON.stringify({ error: error.message }));
+    }
+  }
+  const conversationId = /^\/api\/conversations\/([0-9a-f]{24})$/.exec(route)?.[1];
+  if (conversationId && request.method === 'GET') {
+    try {
+      const row = conversations().find(item => item.id === conversationId);
+      if (!row) { response.writeHead(404); return response.end('Conversation unavailable'); }
+      return json(response, row);
+    } catch (error) {
+      response.writeHead(500, { 'content-type': 'application/json; charset=utf-8' });
+      return response.end(JSON.stringify({ error: error.message }));
+    }
+  }
+  if (conversationId && request.method === 'PATCH') {
+    const origin = request.headers.origin;
+    if (origin && !['https://n8n.wildeautomations.com', `http://127.0.0.1:${PORT}`].includes(origin)) { response.writeHead(403); return response.end('Origin unavailable'); }
+    if (!/^application\/json(?:;|$)/i.test(request.headers['content-type'] || '')) { response.writeHead(415); return response.end('JSON required'); }
+    let body = '';
+    request.on('data', chunk => { body += chunk; if (body.length > 3000) request.destroy(); });
+    request.on('end', () => {
+      try {
+        const input = JSON.parse(body);
+        if (!['needs_review', 'awaiting_reply', 'interested', 'waiting', 'closed'].includes(input.status) || typeof input.note !== 'string' || input.note.length > 2000) { response.writeHead(400); return response.end('Invalid update'); }
+        if (!conversations().some(item => item.id === conversationId)) { response.writeHead(404); return response.end('Conversation unavailable'); }
+        const saved = readManagement();
+        saved[conversationId] = { status: input.status, note: input.note, updatedAt: new Date().toISOString() };
+        fs.mkdirSync(path.dirname(MANAGEMENT_STATE), { recursive: true, mode: 0o700 });
+        const temp = `${MANAGEMENT_STATE}.${crypto.randomUUID()}.tmp`;
+        fs.writeFileSync(temp, `${JSON.stringify(saved, null, 2)}\n`, { mode: 0o600 });
+        fs.renameSync(temp, MANAGEMENT_STATE);
+        return json(response, saved[conversationId]);
+      } catch (error) { response.writeHead(500); return response.end('Could not save conversation'); }
+    });
+    return;
   }
   if (route === '/api/replies') {
     try {
