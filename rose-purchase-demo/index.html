@@ -108,6 +108,37 @@
     @media(max-width:850px){.buy-side{padding:42px 24px 52px}.buy-content{display:flex;flex-direction:column;max-width:640px;gap:0}.order{order:1}.film-showcase{order:2;width:100%;margin-top:37px}.setup-note{order:3;align-self:stretch;margin-top:23px}.film-heading h1{font-size:clamp(49px,7vw,66px)}.film-screen{padding-left:21px;padding-right:21px}.stage-speech{font-size:15px}.film-tool-event span{display:block}.demo-section{display:block}.demo-copy{padding:60px 24px 38px}.demo-section .preview-side{min-height:0;border-left:0;border-top:1px solid #e9d8ca;padding:43px 24px 50px}}
     @media(max-width:520px){.buy-side{padding:30px 18px 42px}.order{padding:17px}.film-showcase{margin-top:34px}.film-heading h1{font-size:clamp(43px,11vw,55px);margin:15px 0 12px}.film-heading .lead{font-size:15px}.live-film{border-radius:17px}.film-toolbar{padding:0 9px}.film-example{display:none}.film-screen{height:493px;grid-template-columns:minmax(0,.77fr) minmax(0,1.23fr);gap:8px;padding:18px 9px 47px}.stage-kicker{left:13px;top:12px;font-size:8px}.stage-visitor,.stage-rose{padding-top:29px}.stage-speech{min-height:104px;padding:8px;font-size:11px}.stage-connection{display:none}.visitor-figure{width:89px;height:150px;margin-top:37px}.stage-visitor>strong{font-size:8px}.stage-rose #hero-rose-widget{margin-top:17px}#hero-rose-widget .wr-panel{height:264px;border-radius:21px}#hero-rose-widget .wr-head{padding:7px 8px 4px}#hero-rose-widget .wr-mark{width:26px;height:26px}#hero-rose-widget .wr-title h3{font-size:11px}#hero-rose-widget .wr-title small{font-size:7px}#hero-rose-widget .wr-tabs{margin:0 6px 4px}#hero-rose-widget .wr-tab{height:23px;font-size:9px}#hero-rose-widget .wr-view{padding:0 5px 4px}#hero-rose-widget .wr-orb{width:73px;height:73px;margin-bottom:4px}#hero-rose-widget .wr-status{font-size:11px;margin-bottom:2px}#hero-rose-widget .wr-note{font-size:8px;margin-bottom:4px}#hero-rose-widget .wr-primary,#hero-rose-widget .wr-secondary{height:24px;font-size:8px}#hero-rose-widget .wr-compose{margin:0 5px 5px}#hero-rose-widget .wr-input{min-width:0;font-size:8px}#hero-rose-widget .wr-send{width:24px;height:24px}.film-tool-events{left:9px;right:9px;bottom:9px;gap:3px;min-height:28px}.film-tool-event{gap:2px;padding:4px}.film-tool-event strong{font-size:7px}.film-tool-event span{display:none}.film-tool-event i{font-size:10px}.film-player{gap:7px;padding:0 9px}.film-player>span{min-width:98px;max-width:125px;font-size:9px}.film-player button{padding:5px 6px}.demo-copy{padding:50px 18px 32px}.demo-copy h2{font-size:42px}.demo-copy-inner>p{font-size:15px}.demo-section .preview-side{padding:31px 16px 40px}}
     @media(max-width:520px){.film-tool-event{display:grid;grid-template-columns:11px 1fr;grid-template-rows:auto auto;column-gap:2px;row-gap:0;min-height:34px}.film-tool-event i{grid-column:1;grid-row:1/3;align-self:center}.film-tool-event strong{grid-column:2;grid-row:1}.film-tool-event span{display:block;grid-column:2;grid-row:2;margin:0;font-size:6px;line-height:1.1}}
+    /* Keep the conversation and the real Rose widget on one visual baseline. */
+    .buy-content{grid-template-columns:minmax(0,1.12fr) minmax(390px,.88fr);column-gap:clamp(32px,4vw,58px)}
+    .film-heading h1{font-size:clamp(49px,4.3vw,65px);max-width:650px}
+    .film-heading .lead{margin-bottom:18px}
+    .live-film{border-color:#30343a;border-radius:18px;box-shadow:0 18px 48px rgba(28,36,42,.12)}
+    .film-screen{height:430px;grid-template-columns:minmax(0,.83fr) minmax(0,1.17fr);gap:22px;align-items:center;padding:43px 26px 51px;background:radial-gradient(circle at 72% 48%,rgba(255,119,66,.09),transparent 38%),linear-gradient(145deg,#fcf8f5,#f7f0eb)}
+    .film-screen:before{background-image:linear-gradient(rgba(134,91,66,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(134,91,66,.045) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,transparent,black 30%,transparent 95%)}
+    .stage-visitor,.stage-rose{padding-top:0}
+    .stage-visitor{display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:stretch}
+    .stage-rose{justify-content:center;align-self:stretch}
+    .stage-connection{display:none}
+    .stage-speech{width:100%;min-height:63px;padding:11px 15px;border-radius:15px;font-size:14px;line-height:1.3;box-shadow:0 6px 16px rgba(102,59,37,.06)}
+    .visitor-speech{align-self:flex-end}
+    .rose-speech{background:#fff5ef}
+    .visitor-figure{width:96px;height:161px;margin:16px auto 0}
+    .stage-visitor>strong{margin-top:0;font-size:9px;letter-spacing:.12em}
+    #hero-rose-widget{margin-top:13px}
+    #hero-rose-widget .wr-ai.inline{max-width:310px;margin:auto}
+    #hero-rose-widget .wr-panel{height:272px;border-radius:23px;box-shadow:0 13px 30px rgba(85,52,36,.12)}
+    #hero-rose-widget .wr-panel:after{border-radius:22px}
+    #hero-rose-widget .wr-orb{width:78px;height:78px}
+    #hero-rose-widget .wr-status{font-size:13px}
+    .film-tool-events{left:26px;right:26px;bottom:10px;min-height:27px}
+    .film-tool-events:empty:before{content:"CONNECTING TO YOUR WORKFLOW";border:0;justify-content:start;padding-left:3px;color:#9b8578;font-size:9px;letter-spacing:.12em}
+    .film-tool-event{flex:0 1 auto;min-width:0;padding:5px 9px;border-radius:7px;box-shadow:none}
+    .film-tool-event strong{font-size:9px}
+    .film-tool-event span{font-size:8px}
+    .film-player{height:43px}
+    @media(max-width:1000px){.buy-content{grid-template-columns:minmax(0,1fr) minmax(350px,.9fr);gap:28px}.film-screen{gap:10px;padding-left:13px;padding-right:13px}.film-tool-events{left:13px;right:13px}}
+    @media(max-width:850px){.buy-content{display:flex;gap:0}.film-screen{gap:22px;padding-left:26px;padding-right:26px}.film-tool-events{left:26px;right:26px}}
+    @media(max-width:520px){.film-showcase{margin-top:30px}.film-heading h1{font-size:clamp(40px,10vw,49px)}.film-screen{height:520px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px;padding:39px 15px 45px}.stage-visitor{flex:none;display:grid;grid-template-columns:54px minmax(0,1fr);column-gap:12px;align-items:center;align-self:auto;height:90px}.visitor-speech{grid-column:2;grid-row:1;min-height:61px}.visitor-speech:after{left:10px}.visitor-figure{grid-column:1;grid-row:1;width:48px;height:81px;margin:0}.stage-visitor>strong{display:none}.stage-rose{flex:none;align-self:auto;display:flex;align-items:stretch}.rose-speech{align-self:flex-end;min-height:55px;width:calc(100% - 66px);font-size:12px}.rose-speech:after{left:auto;right:36px}.stage-rose #hero-rose-widget{margin:11px auto 0;width:min(290px,100%)}#hero-rose-widget .wr-panel{height:263px}#hero-rose-widget .wr-orb{width:77px;height:77px}.film-tool-events{left:15px;right:15px;bottom:8px;gap:4px}.film-tool-event{padding:3px 5px}.film-tool-event strong{font-size:8px}.film-tool-event span{font-size:7px}}
   </style>
 </head>
 <body>
@@ -117,7 +148,7 @@
       <div class="purchase-intro film-showcase">
         <div class="film-heading"><span class="eyebrow">Rose for your website</span><h1 id="page-title">Watch <em>Rose</em> take the lead.</h1><p class="lead">A visitor starts a chat. Rose handles the conversation and prepares the follow-up.</p></div>
         <section class="live-film" id="roseScene" aria-label="Illustrative product walkthrough: a visitor chats with Rose and example tool handoffs appear">
-          <div class="film-toolbar"><span class="film-brand"><i aria-hidden="true"></i> ROSE IN ACTION</span><div><span class="film-example">ILLUSTRATIVE <span id="filmSceneCounter">01 / 04</span></span><span class="film-clock" id="filmClock">00:00</span><button id="sceneToggle" type="button" aria-label="Pause animation">Pause Ⅱ</button></div></div>
+          <div class="film-toolbar"><span class="film-brand"><i aria-hidden="true"></i> ROSE IN ACTION</span><div><span class="film-example">EXAMPLE <span id="filmSceneCounter">01 / 04</span></span><span class="film-clock" id="filmClock">00:00</span><button id="sceneToggle" type="button" aria-label="Pause animation">Pause Ⅱ</button></div></div>
           <div class="film-screen">
             <div class="stage-kicker"><i aria-hidden="true"></i><span id="filmScenarioName">QUOTE REQUEST</span></div>
             <div class="stage-visitor"><div class="stage-speech visitor-speech" id="visitorSpeech">Can I get a quote?</div><div class="visitor-figure" aria-hidden="true"><svg viewBox="0 0 102 172"><ellipse class="figure-shadow" cx="51" cy="164" rx="31" ry="5"/><g class="figure-body"><circle class="figure-head" cx="51" cy="25" r="15"/><path class="figure-torso" d="M51 43v65"/><path class="figure-arm figure-arm-back" d="M51 57 24 87"/><path class="figure-arm figure-arm-front" d="M51 57 78 82"/><path class="figure-leg figure-leg-back" d="M51 108 27 151"/><path class="figure-leg figure-leg-front" d="M51 108 74 151"/></g></svg></div><strong>Website visitor</strong></div>
@@ -156,6 +187,9 @@
       const roseSpeech=document.querySelector('#roseSpeech');
       const heroWidget=document.querySelector('#hero-rose-widget');
       const heroOrb=heroWidget.querySelector('.wr-orb');
+      heroWidget.querySelector('.wr-status').textContent='Meet Rose';
+      heroWidget.querySelector('.wr-note').textContent='Hear a short voice example.';
+      heroWidget.querySelector('.wr-start-voice').textContent='Hear example';
       const filmEvents=document.querySelector('#toolEvents');
       const filmDuration=16500;
       const filmScenarios=[
