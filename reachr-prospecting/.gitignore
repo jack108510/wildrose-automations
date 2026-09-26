@@ -1,0 +1,12 @@
+# Discovery output and reviewed prospect/customer data — never commit
+discovery-*-results.json
+discovery-*-vetted.json
+discovery-*-vetted.md
+rose-website-candidates.json
+
+# Runtime artifacts
+*.log
+*.tmp
+*.pid
+.env
+.env.*

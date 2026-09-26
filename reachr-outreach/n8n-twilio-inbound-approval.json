@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Reachr — SMS Approval Webhook Template",
+    "active": false,
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "reachr-approval-sms",
+          "responseMode": "onReceived",
+          "responseData": "firstEntryJson",
+          "options": { "responseCode": 200 }
+        },
+        "id": "reachr-approval-webhook",
+        "name": "Reachr Approval SMS Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [240, 220]
+      },
+      {
+        "parameters": {
+          "jsCode": "const src = $json.body || $json || {};\nconst b64 = (v) => Buffer.from(String(v || ''), 'utf8').toString('base64');\nreturn [{ json: { from_b64: b64(src.From), to_b64: b64(src.To), body_b64: b64(src.Body), sid_b64: b64(src.MessageSid || src.SmsSid || src.Sid), received_at: new Date().toISOString() } }];"
+        },
+        "id": "reachr-normalize-sms",
+        "name": "Normalize SMS Payload",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [500, 220]
+      },
+      {
+        "parameters": {
+          "command": "=cd /Users/jackserver/wildrose-automations/reachr-outreach && node handle-approval-sms.mjs --from-b64 {{$json.from_b64}} --to-b64 {{$json.to_b64}} --body-b64 {{$json.body_b64}} --sid-b64 {{$json.sid_b64}}",
+          "executeTimeout": 60
+        },
+        "id": "reachr-handle-approval",
+        "name": "Handle Reachr Approval",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [760, 220]
+      }
+    ],
+    "connections": {
+      "Reachr Approval SMS Webhook": {
+        "main": [[{ "node": "Normalize SMS Payload", "type": "main", "index": 0 }]]
+      },
+      "Normalize SMS Payload": {
+        "main": [[{ "node": "Handle Reachr Approval", "type": "main", "index": 0 }]]
+      }
+    },
+    "settings": { "executionOrder": "v1" },
+    "pinData": {}
+  }
+]
