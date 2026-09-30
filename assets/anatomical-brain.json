@@ -1,0 +1,65 @@
+{
+  "source": "https://github.com/StarKnightt/brain-explorer/blob/master/public/models/brain-atlas.glb",
+  "sourceSha256": "ce761741d866e32d7a5b7638f4cacd5ec03e2b582e72c8218aba483ac28125e8",
+  "license": "CC0-1.0",
+  "meshes": [
+    {
+      "name": "unified-cortex",
+      "positions": {
+        "offset": 0,
+        "count": 75132,
+        "componentType": 5126
+      },
+      "normals": {
+        "offset": 901584,
+        "count": 75132,
+        "componentType": 5126
+      },
+      "indices": {
+        "offset": 1803168,
+        "count": 450768,
+        "componentType": 5125
+      },
+      "curvature": {
+        "offset": 3606240,
+        "count": 75132
+      }
+    },
+    {
+      "name": "cerebellum",
+      "positions": {
+        "offset": 3906768,
+        "count": 24000,
+        "componentType": 5126
+      },
+      "normals": {
+        "offset": 4194768,
+        "count": 24000,
+        "componentType": 5126
+      },
+      "indices": {
+        "offset": 4482768,
+        "count": 144000,
+        "componentType": 5123
+      }
+    },
+    {
+      "name": "brain-stem",
+      "positions": {
+        "offset": 4770768,
+        "count": 7998,
+        "componentType": 5126
+      },
+      "normals": {
+        "offset": 4866744,
+        "count": 7998,
+        "componentType": 5126
+      },
+      "indices": {
+        "offset": 4962720,
+        "count": 48000,
+        "componentType": 5123
+      }
+    }
+  ]
+}

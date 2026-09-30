@@ -1,0 +1,109 @@
+/* Rose's reference appearance. Reuse this stylesheet with the .wr-ai widget. */
+.wr-ai {
+  --ink: #171310;
+  --muted: #403630;
+  --accent: #f35b22;
+}
+.wr-ai .wr-panel {
+  background:
+    radial-gradient(ellipse at 2% 0%, rgba(255,255,255,.35), transparent 52%),
+    linear-gradient(135deg, rgba(225,219,214,.74), rgba(187,165,152,.57) 35%, rgba(188,178,170,.69) 69%, rgba(170,160,153,.66));
+  border: 1px solid rgba(255,242,232,.76);
+  box-shadow:
+    0 28px 75px rgba(0,0,0,.34),
+    0 0 40px rgba(224,89,34,.10),
+    inset 0 1px 1px rgba(255,255,255,.78),
+    inset 0 -2px 4px rgba(255,255,255,.17);
+  backdrop-filter: blur(28px) saturate(.8);
+  -webkit-backdrop-filter: blur(28px) saturate(.8);
+}
+.wr-ai .wr-panel:before {
+  background:
+    radial-gradient(ellipse at 5% 8%, rgba(255,255,255,.32), transparent 47%),
+    radial-gradient(ellipse at 90% 18%, rgba(192,105,72,.12), transparent 62%),
+    linear-gradient(140deg, rgba(255,255,255,.12), transparent 50%);
+}
+.wr-ai .wr-panel:after {
+  inset: 3px;
+  border: 1px solid rgba(255,242,231,.23);
+  border-radius: 35px;
+}
+.wr-ai .wr-mark, .wr-ai .wr-dot {
+  background: linear-gradient(145deg, rgba(255,255,255,.72), rgba(244,236,229,.31));
+  border: 1px solid rgba(255,255,255,.38);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 5px 13px rgba(39,24,17,.12);
+}
+.wr-ai .wr-title h3 { color: #161310; }
+.wr-ai .wr-title small { color: #49413a; }
+.wr-ai .wr-tabs {
+  background: rgba(234,225,218,.13);
+  border-color: rgba(255,245,237,.49);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+}
+.wr-ai .wr-tab { color: #554d46; }
+.wr-ai .wr-tab.active {
+  color: #181410;
+  background: linear-gradient(145deg, rgba(251,245,239,.74), rgba(239,228,219,.49));
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.51), 0 3px 8px rgba(38,25,18,.09);
+}
+.wr-ai .wr-view .wr-orb {
+  /* Show the actual copper orb from the supplied story reference with a CSS crop.
+     The original image is preserved; all three references use the same orb. */
+  background-color: #c96c49;
+  background-image: url('assets/rose-voice-reference.jpg');
+  background-size: 482.142857% auto;
+  background-position: 50.93% 43.69%;
+  border: 1px solid rgba(255,225,205,.77);
+  box-shadow:
+    0 0 0 1px rgba(255,222,201,.09),
+    0 18px 42px rgba(153,60,26,.17),
+    0 0 27px rgba(249,139,93,.14);
+}
+.wr-ai .wr-view .wr-orb:before { background: none; }
+.wr-ai .wr-view .wr-orb:after {
+  background: conic-gradient(from 20deg, transparent, rgba(255,241,229,.15), transparent, rgba(202,106,69,.06), transparent);
+  opacity: .15;
+}
+.wr-ai .wr-view .wr-orb.speaking {
+  box-shadow: 0 0 0 8px rgba(244,119,66,.06), 0 20px 48px rgba(175,69,26,.23), 0 0 30px rgba(249,139,93,.18);
+}
+.wr-ai .wr-status { color: #171310; }
+.wr-ai .wr-note { color: #211711; }
+.wr-ai .wr-primary, .wr-ai .wr-send {
+  background: linear-gradient(145deg, #fa7135, #ee511b);
+  border: 1px solid rgba(255,178,116,.65);
+  color: #fff8f0;
+  box-shadow: inset 0 1px 0 rgba(255,231,209,.22), 0 7px 18px rgba(209,74,24,.16);
+}
+.wr-ai .wr-secondary {
+  background: linear-gradient(145deg, #fa7135, #ee511b);
+  border: 1px solid rgba(255,178,116,.65);
+  color: #fff8f0;
+  box-shadow: inset 0 1px 0 rgba(255,231,209,.22), 0 7px 18px rgba(209,74,24,.16);
+}
+.wr-ai .wr-msg.bot { background: rgba(247,237,228,.51); color: #251b15; border-color: rgba(255,245,237,.44); }
+.wr-ai .wr-compose { background: rgba(242,232,223,.30); border-color: rgba(255,245,237,.48); }
+.wr-ai .wr-live-transcript { background: rgba(248,237,226,.30); border-color: rgba(255,245,237,.39); }
+.wr-ai .wr-live-line { color: #2b2019; background: rgba(255,244,233,.26); }
+.wr-ai .wr-live-line.user { color: #2b2019; background: rgba(245,151,101,.17); }
+.wr-ai .wr-live-label { color: #59473b; }
+.wr-ai:before { opacity: .28; }
+/* A darker stage lets the smoke-colored glass read like the supplied references. */
+:root { background: #080605; }
+.stage { background: radial-gradient(ellipse at 49% 49%, rgba(163,67,31,.11), transparent 49%), linear-gradient(145deg, #160d09, #090706 78%); }
+@media(max-width:520px) { .wr-ai .wr-panel:after { border-radius: 31px; } }
+
+/* Keep the copper orb circular and still; speaking is a slow light change. */
+.wr-ai .wr-panel { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.wr-ai .wr-view .wr-orb,
+.wr-ai .wr-view .wr-orb.live,
+.wr-ai .wr-view .wr-orb.speaking { animation: none; transform: none; border-radius: 50%; filter: none; }
+.wr-ai .wr-view .wr-orb:after { animation: none; transform: none; background: radial-gradient(circle at 38% 28%, #fff1dd70, transparent 66%); opacity: 0; transition: opacity .6s ease; }
+.wr-ai .wr-view .wr-orb.speaking:after { animation: roseSoftGlow 3.6s ease-in-out infinite; }
+@keyframes roseSoftGlow { 0%,100% { opacity: .08; } 50% { opacity: .22; } }
+.wr-ai .wr-panel.speaking .wr-status { animation: none; transform: none; opacity: 1; }
+.wr-ai .wr-voice > div { width: 100%; max-width: 292px; }
+.wr-ai .wr-status { min-height: 32px; line-height: 32px; }
+.wr-ai .wr-note { min-height: 38px; display: flex; align-items: center; justify-content: center; }
+@media(prefers-reduced-motion:reduce) { .wr-ai .wr-view .wr-orb.speaking:after { animation: none; opacity: .12; } }

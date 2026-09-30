@@ -1,747 +1,2908 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wildrose Automations — Rose AI Website Assistant</title>
-<meta name="description" content="Wildrose Automations builds clean business websites with Rose, an AI front desk that answers visitors, captures leads, and routes follow-up.">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-:root{
-  --bg:#faf8f5;
-  --ink:#1a1a1a;
-  --muted:#6b6b6b;
-  --line:#e8e4dd;
-  --surface:#fff;
-  --accent:#1a1a1a;
-  --hl:#ff5722;
-  --dark:#141414;
-}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;font-size:16px;line-height:1.6}
-::selection{background:var(--hl);color:#fff}
-a{text-decoration:none;color:inherit}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-
-/* NAV */
-nav{position:relative;top:auto;left:auto;right:auto;z-index:100;background:#000;border-bottom:1px solid rgba(255,255,255,.10);transition:none;padding:16px 0}
-nav.scrolled{background:#000;border-bottom:1px solid rgba(255,255,255,.10);padding:16px 0}
-nav.nav-hidden{transform:none}
-nav .wrap{display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.3px;color:#fff}
-.brand-mark{width:36px;height:36px;background:var(--dark);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--hl);font-weight:900;font-size:18px;font-family:'Instrument Serif',serif;font-style:italic}
-.nav-links{display:flex;gap:36px;align-items:center}
-.nav-links a{font-size:14px;font-weight:500;color:rgba(255,255,255,.72);transition:color .2s}
-.nav-links a:hover{color:#fff}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;font-size:14px;font-weight:600;border-radius:100px;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
-.btn-dark{background:var(--dark);color:#fff}
-.btn-dark:hover{background:#000;transform:translateY(-1px)}
-.btn-hl{background:var(--hl);color:#fff}
-.btn-hl:hover{background:#e64a19;transform:translateY(-1px)}
-.btn-ol{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
-.btn-ol:hover{background:var(--ink);color:#fff}
-.btn-light{background:#fff;color:var(--dark)}
-.btn-light:hover{background:#f4f0eb;transform:translateY(-1px)}
-
-/* HERO */
-.hero{padding:160px 0 100px;position:relative}
-.hero .wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:60px;align-items:center}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#fff;border:1px solid var(--line);border-radius:100px;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:28px}
-.pill .dot{width:8px;height:8px;border-radius:50%;background:#ff5722;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-3px;line-height:1.02;margin-bottom:24px}
-.hero h1 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;letter-spacing:-1px}
-.hero p.lead{font-size:19px;color:var(--muted);line-height:1.7;margin-bottom:36px;max-width:520px}
-.hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.hero-meta{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap}
-.hero-meta-item{font-size:13px;color:var(--muted)}
-.hero-meta-item strong{display:block;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px}
-.hero-proof{margin-top:28px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-radius:16px;display:inline-flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);box-shadow:0 10px 30px rgba(0,0,0,.04)}
-.hero-proof strong{color:var(--ink)}
-.hero-proof .pin{width:34px;height:34px;border-radius:10px;background:rgba(255,87,34,.12);color:var(--hl);display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0}
-
-/* PRICE CARD (hero right) */
-.price-card{background:var(--dark);color:#fff;border-radius:24px;padding:40px 36px;position:relative;overflow:hidden}
-.price-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,87,34,.2),transparent 70%);border-radius:50%}
-.price-card .pc-tag{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:20px;position:relative}
-.price-card .pc-amount{font-size:64px;font-weight:800;letter-spacing:-2px;line-height:1;position:relative}
-.price-card .pc-amount sup{font-size:28px;font-weight:600;vertical-align:super;color:#999}
-.price-card .pc-amount span{font-size:18px;font-weight:400;color:#888}
-.price-card .pc-includes{list-style:none;margin:28px 0;padding-top:28px;border-top:1px solid #333}
-.price-card .pc-includes li{padding:8px 0;font-size:14px;color:#ccc;display:flex;align-items:center;gap:10px}
-.price-card .pc-includes li::before{content:'';width:16px;height:16px;border-radius:50%;background:rgba(255,87,34,.15);flex-shrink:0;position:relative}
-.price-card .pc-includes li::after{content:'✓';position:absolute;left:34px;color:var(--hl);font-size:11px;font-weight:700}
-.price-card .pc-cta{display:block;text-align:center;margin-top:24px;padding:14px;background:var(--hl);color:#fff;border-radius:12px;font-weight:600;font-size:15px;transition:background .2s}
-.price-card .pc-cta:hover{background:#e64a19}
-.pc-limit{position:relative;margin-top:18px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid #2b2b2b;color:#aaa;font-size:13px;line-height:1.5}
-.pc-limit strong{color:#fff}
-
-
-/* ROSE HERO DRAFT ONLY */
-.rose-hero{min-height:auto;display:flex;align-items:center;padding:74px 0 118px;background:#000;color:#fff;position:relative;overflow:hidden}
-.rose-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 36%,rgba(255,87,34,.24),transparent 27%),linear-gradient(#050505,#000 46%,#000 100%);pointer-events:none}.rose-hero::after{content:'';display:none}.rose-hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr;justify-items:center;text-align:center}.rose-label{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;padding:8px 14px;border-radius:980px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:13px;color:rgba(255,255,255,.72);font-weight:600}.rose-label span{width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 18px rgba(255,87,34,.85)}.rose-hero h1{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:clamp(56px,10vw,118px);line-height:.94;letter-spacing:-.075em;font-weight:650;max-width:1060px;margin:0 auto 26px}.rose-hero h1 em{display:block;font-family:inherit;font-style:normal;color:rgba(255,255,255,.62);font-weight:500}.rose-hero .lead{font-size:clamp(21px,2.4vw,30px);line-height:1.24;color:rgba(255,255,255,.68);max-width:790px;margin:0 auto 34px;letter-spacing:-.026em}.rose-hero .hero-cta{justify-content:center;margin-bottom:0}.rose-hero .btn-orange{background:#000;color:#ffb199;border:1px solid rgba(255,87,34,.78);box-shadow:0 0 0 1px rgba(255,87,34,.08),0 18px 48px rgba(0,0,0,.34)}.rose-hero .btn-orange:hover{background:rgba(255,87,34,.10);color:#fff;border-color:#ff5722;box-shadow:0 0 0 1px rgba(255,87,34,.22),0 22px 58px rgba(0,0,0,.42)}.rose-hero .btn-clear{border:1px solid rgba(255,87,34,.58);color:#ffb199;background:rgba(255,87,34,.08)}.rose-demo{position:relative;width:min(970px,94vw);margin:58px auto 0;padding-bottom:76px}.rose-device{position:relative;border-radius:36px;background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.065));border:1px solid rgba(255,255,255,.20);box-shadow:0 52px 145px rgba(0,0,0,.78),inset 0 1px rgba(255,255,255,.28);backdrop-filter:blur(24px);overflow:hidden}.rose-device-header{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.12)}.rose-dots{display:flex;gap:7px}.rose-dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3)}.rose-device-header strong{font-size:14px}.rose-device-header small{font-size:12px;color:rgba(255,255,255,.5)}.rose-flow{display:grid;grid-template-columns:1fr 300px;gap:20px;padding:24px;text-align:left}.rose-chat{min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;gap:13px}.rose-msg{padding:15px 17px;border-radius:22px;font-size:16px;line-height:1.38;box-shadow:0 12px 34px rgba(0,0,0,.18)}.rose-msg.visitor{align-self:flex-start;max-width:88%;background:rgba(255,255,255,.11);color:#fff}.rose-msg.bot{align-self:flex-end;max-width:92%;background:#fff;color:#1d1d1f}.lead-card{background:#f5f5f7;color:#1d1d1f;border-radius:25px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.34)}.lead-card .tag{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#86868b;font-weight:800;margin-bottom:14px}.lead-line{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid #ddd;font-size:14px}.lead-line span{color:#6e6e73}.lead-line strong{text-align:right}.sent{margin-top:18px;text-align:center;border-radius:980px;background:#1d1d1f;color:#fff;padding:12px 14px;font-size:14px;font-weight:700}.rose-steps{position:absolute;left:24px;right:24px;bottom:0;transform:translateY(48%);display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.rose-step{border-radius:20px;background:#fff;color:#1d1d1f;padding:18px;text-align:left;box-shadow:0 22px 60px rgba(0,0,0,.30)}.rose-step .n{color:#ff5722;font-weight:800;font-size:12px;margin-bottom:7px}.rose-step strong{display:block;font-size:16px;letter-spacing:-.025em}.rose-step p{font-size:13px;color:#6e6e73;margin-top:4px;line-height:1.35}.wr-fab{display:none!important}.rose-empty-space{height:390px;width:min(970px,94vw);margin:70px auto 0}.site-product{background:#000;color:#fff;padding:46px 0 88px;position:relative;overflow:hidden;margin-top:-1px;border-top:0}.site-product::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 16%,rgba(255,87,34,.18),transparent 30%),linear-gradient(#050505,#000 52%,#070707);pointer-events:none}.site-product .wrap{position:relative;z-index:1}.site-kicker{display:inline-flex;align-items:center;gap:9px;padding:8px 14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);border-radius:999px;color:rgba(255,255,255,.68);font-size:13px;font-weight:700;margin-bottom:22px}.site-kicker span{width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 18px rgba(255,87,34,.8)}.site-product h2{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:clamp(40px,5vw,66px);line-height:.97;letter-spacing:-.058em;font-weight:650;max-width:900px;margin:0}.site-product h2 em{display:block;font-style:normal;color:rgba(255,255,255,.58);font-weight:500}.site-product .site-lead{font-size:clamp(18px,1.55vw,22px);line-height:1.36;color:rgba(255,255,255,.66);max-width:500px;margin:24px 0 26px;letter-spacing:-.02em}.site-price-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:0}.site-price{display:inline-flex;align-items:baseline;gap:7px;padding:12px 16px;border-radius:16px;background:#fff;color:#111;font-weight:850;box-shadow:0 18px 54px rgba(0,0,0,.28)}.site-price strong{font-size:30px;letter-spacing:-.06em}.site-price span{font-size:13px;color:#555;font-weight:800}.site-note{color:rgba(255,255,255,.52);font-size:14px;max-width:230px;line-height:1.35}.site-cards{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.site-card{border:1px solid rgba(255,255,255,.14);background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.045));border-radius:30px;padding:30px;text-align:left;box-shadow:0 36px 120px rgba(0,0,0,.34)}.site-card h3{font-size:24px;letter-spacing:-.035em;margin-bottom:12px}.site-card p{color:rgba(255,255,255,.62);line-height:1.6}.site-list{display:grid;gap:12px;margin-top:22px}.site-list div{display:flex;gap:11px;color:rgba(255,255,255,.76);font-size:14px;line-height:1.42}.site-list div::before{content:'✓';color:#ff5722;font-weight:900}.site-mini{display:grid;gap:14px}.site-mini .mini{border-radius:22px;background:#fff;color:#111;padding:20px}.site-mini .mini strong{display:block;font-size:17px;letter-spacing:-.025em;margin-bottom:4px}.site-mini .mini span{font-size:13px;color:#666;line-height:1.45;display:block}.site-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.site-actions .btn{border-radius:999px}.site-actions .btn-orange{background:#ff5722;color:#fff}.site-actions .btn-clear{border:1px solid rgba(255,87,34,.58);color:#ffb199;background:rgba(255,87,34,.08)}
-.site-product .wrap{display:grid;grid-template-columns:.88fr 1.12fr;gap:64px;align-items:center}.site-copy{min-width:0}.site-product h2{max-width:560px}.site-price-row{margin-bottom:0}.site-visual{position:relative;min-height:420px}.site-preview{position:relative;border-radius:34px;background:#f7f4ef;color:#111;border:1px solid rgba(255,255,255,.18);box-shadow:0 50px 145px rgba(0,0,0,.55);overflow:hidden;transform:rotate(-1.2deg)}.preview-bar{height:42px;background:#fff;border-bottom:1px solid #e6e1d9;display:flex;align-items:center;gap:8px;padding:0 18px}.preview-bar i{width:9px;height:9px;border-radius:50%;background:#ddd}.preview-screen{padding:30px}.preview-nav{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#777;margin-bottom:48px}.preview-logo{font-weight:900;color:#111;letter-spacing:-.03em}.preview-hero{display:grid;grid-template-columns:1fr .68fr;gap:20px;align-items:end}.preview-hero h3{font-size:42px;line-height:.96;letter-spacing:-.065em;margin:0 0 12px}.preview-hero p{font-size:14px;color:#6f6a64;line-height:1.55}.preview-btns{display:flex;gap:8px;margin-top:18px}.preview-btn{height:32px;border-radius:999px;padding:0 14px;display:flex;align-items:center;font-size:12px;font-weight:800}.preview-btn.primary{background:#ff5722;color:#fff}.preview-btn.secondary{border:1px solid #ddd;color:#111;background:#fff}.preview-photo{height:170px;border-radius:24px;background:linear-gradient(135deg,#1c1c1c,#3b2b24 45%,#ff5722);position:relative;overflow:hidden}.preview-photo::after{content:'';position:absolute;inset:auto -10% -25% -10%;height:65%;background:rgba(255,255,255,.16);border-radius:50% 50% 0 0}.preview-services{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:30px}.preview-services div{border-radius:16px;background:#fff;padding:14px;font-size:12px;font-weight:800;color:#2b2b2b;box-shadow:0 10px 30px rgba(0,0,0,.05)}.mobile-preview{position:absolute;right:-10px;bottom:22px;width:178px;border-radius:32px;background:#101010;border:8px solid #1c1c1c;box-shadow:0 34px 90px rgba(0,0,0,.55);padding:16px 12px;color:#fff}.mobile-pill{width:54px;height:5px;border-radius:999px;background:#333;margin:0 auto 18px}.mobile-preview h4{font-size:20px;line-height:1;letter-spacing:-.05em;margin-bottom:16px}.mobile-card{height:58px;border-radius:16px;background:rgba(255,255,255,.1);margin-bottom:9px}.mobile-cta{height:34px;border-radius:999px;background:#ff5722;margin-top:14px}.float-price{position:absolute;left:-18px;bottom:44px;background:#fff;color:#111;border-radius:26px;padding:18px 20px;box-shadow:0 30px 90px rgba(0,0,0,.44);transform:rotate(2.5deg)}.float-price strong{font-size:44px;letter-spacing:-.08em;line-height:.88}.float-price span{display:block;color:#666;font-size:13px;font-weight:800;margin-top:4px}.site-cards{display:grid;grid-template-columns:1fr;gap:16px;margin-top:24px}.site-card{padding:0;background:transparent;border:0;box-shadow:none}.site-list{grid-template-columns:1fr;max-width:430px}.site-mini{grid-template-columns:1fr 1fr 1fr;margin-top:24px}.site-mini .mini{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}.site-mini .mini span{color:rgba(255,255,255,.58)}.site-screenshot-frame{position:relative;border-radius:42px;overflow:hidden;border:0;box-shadow:0 44px 126px rgba(0,0,0,.52);transform:rotate(-.35deg);background:#000}.site-screenshot-frame img{display:block;width:100%;height:auto;border-radius:42px;vertical-align:top}.mobile-shot{position:absolute;right:-10px;top:80px;width:160px;height:330px;border-radius:32px;overflow:hidden;border:6px solid #151515;box-shadow:0 28px 74px rgba(0,0,0,.52);background:#111;transform:rotate(1.4deg)}.mobile-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}.site-visual .float-price{z-index:3}.site-screenshot-frame,.mobile-shot{z-index:1}.mobile-shot{z-index:2}@media(max-width:900px){.rose-hero{padding-top:98px}.rose-flow{grid-template-columns:1fr}.lead-card{order:-1}.rose-steps{position:relative;left:auto;right:auto;bottom:auto;transform:none;margin-top:14px}.rose-demo{padding-bottom:0}.site-product .wrap{grid-template-columns:1fr}.site-visual{min-height:420px}.site-mini{grid-template-columns:1fr}}
-@media(max-width:560px){.rose-hero{padding:72px 0 118px}.rose-hero h1{font-size:54px}.rose-hero .lead{font-size:20px}.rose-demo{margin-top:40px}.rose-device{border-radius:26px}.rose-flow{padding:15px}.lead-card{display:block}.rose-steps{grid-template-columns:1fr}.rose-msg{font-size:14px}.hero-cta .btn,.site-actions .btn{width:100%;justify-content:center}.site-product{padding:78px 0 74px}.site-card{padding:0}.site-price strong{font-size:30px}.site-list{grid-template-columns:1fr}.site-visual{min-height:372px}.preview-screen{padding:22px}.preview-hero{grid-template-columns:1fr}.preview-hero h3{font-size:32px}.preview-photo{height:120px}.preview-services{grid-template-columns:1fr}.mobile-preview{width:142px;right:-2px;bottom:12px}.mobile-shot{width:118px;height:282px;right:-2px;top:78px;bottom:auto}.float-price{left:0;bottom:24px}.float-price strong{font-size:34px}}
-
-/* LOGO BAR */
-.logos{padding:60px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
-.logos .wrap{text-align:center}
-.logos-label{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
-.logo-row{display:flex;justify-content:center;align-items:center;gap:56px;flex-wrap:wrap}
-.logo-item{display:flex;align-items:center;justify-content:center;height:72px;transition:transform .25s}
-.logo-item:hover{transform:scale(1.05)}
-.logo-item img{height:72px;width:auto;max-width:200px;object-fit:contain}
-
-/* SECTION GENERIC */
-.section{padding:110px 0}
-.section-light{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.section-dark{background:var(--dark);color:#fff}
-.eyebrow{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--hl);margin-bottom:12px}
-.sec-title{font-size:clamp(32px,4.5vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:16px}
-.sec-title .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic}
-.sec-sub{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:56px}
-.section-dark .sec-sub{color:#999}
-.section-dark .eyebrow{color:var(--hl)}
-
-/* HOW IT WORKS */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.step{position:relative}
-.step-n{font-family:'Instrument Serif',serif;font-size:56px;font-style:italic;color:var(--hl);line-height:1;margin-bottom:16px;opacity:.8}
-.step h3{font-size:18px;font-weight:700;margin-bottom:10px}
-.step p{font-size:14px;color:var(--muted);line-height:1.6}
-
-/* PRICING */
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
-.plan{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px 32px;position:relative}
-.plan.featured{border:2px solid var(--dark);box-shadow:0 20px 60px rgba(0,0,0,.08)}
-.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--hl);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 16px;border-radius:100px}
-.plan-name{font-size:16px;font-weight:700;margin-bottom:8px}
-.plan-price{font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
-.plan-price span{font-size:16px;font-weight:400;color:var(--muted)}
-.rose-hero-widget{margin:54px auto 0;display:flex;justify-content:center;align-items:center;position:relative;width:min(460px,94vw);min-height:560px}.rose-hero-widget::before{content:'';position:absolute;inset:-22px -46px;border-radius:52px;background:radial-gradient(circle at 50% 50%,rgba(255,87,34,.22),transparent 58%);filter:blur(4px);pointer-events:none;transition:opacity .22s ease}.rose-hero-widget.corner-active::before{opacity:0}.rose-hero-widget > div{position:relative;z-index:1}
-.plan-desc{font-size:14px;color:var(--muted);margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--line)}
-.plan ul{list-style:none;margin-bottom:28px}
-.plan ul li{font-size:14px;padding:10px 0;color:var(--ink);display:flex;align-items:flex-start;gap:10px}
-.plan ul li::before{content:'✓';color:var(--hl);font-weight:700;flex-shrink:0}
-.plan .btn{width:100%;justify-content:center}
-.plan-note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
-
-/* PORTFOLIO */
-#work{background:#fff}.work-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:34px}.work-head .sec-sub{margin-bottom:0}.work-note{font-size:13px;font-weight:700;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:8px 14px;white-space:nowrap}
-.port-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-.port-card{background:linear-gradient(180deg,#fff,#fbfaf8);border:1px solid var(--line);border-radius:24px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;display:flex;flex-direction:column;box-shadow:0 18px 55px rgba(26,26,26,.045)}
-.port-card:hover{box-shadow:0 20px 70px rgba(26,26,26,.10);border-color:#ddd6cc;transform:translateY(-3px)}
-.port-visual{height:205px;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.port-visual img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .35s ease,filter .35s ease}
-.port-card:hover .port-visual img{transform:scale(1.035);filter:saturate(1.04)}
-.port-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 35%,rgba(0,0,0,.44));pointer-events:none}
-.port-visual .pv-text{position:absolute;left:18px;bottom:16px;z-index:1;font-size:18px;font-weight:850;letter-spacing:-.4px;color:#fff;font-family:'Inter',sans-serif;text-shadow:0 2px 12px rgba(0,0,0,.4)}
-.port-body{padding:24px;flex:1;display:flex;flex-direction:column}
-.port-tag{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--hl);margin-bottom:8px}
-.port-body h3{font-size:21px;font-weight:800;margin-bottom:8px;letter-spacing:-.5px}
-.port-body p{font-size:14px;color:var(--muted);line-height:1.62;margin-bottom:18px;flex:1}
-.port-link{font-size:13px;font-weight:800;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:gap .2s,color .2s}
-.port-link:hover{gap:10px;color:var(--hl)}
-
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
-.stat{text-align:center}
-.stat-num{font-family:'Instrument Serif',serif;font-size:clamp(48px,6vw,72px);font-style:italic;color:var(--hl);line-height:1;margin-bottom:8px}
-.stat-label{font-size:14px;color:#999;font-weight:500}
-
-/* AUTOMATION MENTION */
-.auto-mention{padding:80px 0;text-align:center}
-.auto-mention p{font-size:20px;color:var(--muted);margin-bottom:20px}
-.auto-mention a{font-size:16px;font-weight:600;color:var(--hl);display:inline-flex;align-items:center;gap:8px;transition:gap .2s}
-.auto-mention a:hover{gap:12px}
-
-/* FAQ */
-.faq-list{max-width:760px;margin:0 auto}
-.faq-item{border-bottom:1px solid #333;padding:0}
-.faq-q{display:flex;justify-content:space-between;align-items:center;padding:24px 0;cursor:pointer;font-size:17px;font-weight:600;user-select:none}
-.faq-q .icon{font-size:24px;color:var(--hl);transition:transform .2s}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding-left:0}
-.faq-a p{padding:0 0 24px;color:#999;font-size:15px;line-height:1.7}
-.faq-item.open .faq-a{max-height:300px}
-.faq-item.open .faq-q .icon{transform:rotate(45deg)}
-
-/* CTA */
-.cta{padding:120px 0;text-align:center;background:var(--dark);color:#fff;position:relative;overflow:hidden}
-.cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,87,34,.08),transparent 70%);border-radius:50%}
-.cta .wrap{position:relative;z-index:1}
-.cta h2{font-size:clamp(36px,5vw,60px);font-weight:800;letter-spacing:-2px;margin-bottom:16px}
-.cta h2 .serif{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;color:var(--hl)}
-.cta p{font-size:18px;color:#888;margin-bottom:36px}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.cta-note{margin-top:22px;color:#777;font-size:14px}
-
-/* FOOTER */
-footer{background:var(--dark);color:#666;padding:48px 0;border-top:1px solid #222}
-footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
-.ft-brand{color:#fff;font-weight:800;font-size:18px}
-.ft-links{display:flex;gap:24px}
-.ft-links a{font-size:13px;color:#666;transition:color .2s}
-.ft-links a:hover{color:#fff}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .hero .wrap{grid-template-columns:1fr;gap:40px}
-  .hero{text-align:left}
-  .pricing-grid,.port-grid,.steps{grid-template-columns:1fr}
-  .work-head{align-items:flex-start;flex-direction:column}.work-note{white-space:normal}
-  .ai-panel{grid-template-columns:1fr;padding:24px}
-  .ai-points{grid-template-columns:1fr}
-  .ai-fields{grid-template-columns:1fr}
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .nav-links{display:none}
-}
-@media(max-width:560px){
-  .wrap{padding:0 20px}
-  nav{padding:16px 0}
-  nav .btn{display:none}
-  .brand{font-size:16px}
-  .hero{padding:130px 0 70px}
-  .hero .wrap{grid-template-columns:minmax(0,1fr)}
-  .hero .wrap > div{min-width:0;width:100%}
-  .hero h1{font-size:34px;letter-spacing:-1.2px;line-height:1.08;overflow-wrap:break-word}
-  .hero p.lead{font-size:17px;max-width:100%;overflow-wrap:break-word}
-  .hero-proof{display:flex;width:100%;max-width:100%;align-items:flex-start;overflow:visible}
-  .hero-proof span:last-child{min-width:0}
-  .hero-cta .btn{padding:12px 18px}
-  .price-card{width:100%;max-width:100%;padding:34px 28px;border-radius:22px}
-  .pc-limit{overflow-wrap:break-word}
-  .price-card .pc-cta{font-size:14px}
-  .stats-row{grid-template-columns:1fr 1fr}
-  .hero-meta{gap:20px}
-}
-
-/* ROSE SCROLL-TO-CORNER BEHAVIOR */
-.wr-ai.inline{transition:opacity .16s ease,transform .22s cubic-bezier(.2,.8,.2,1)}
-.wr-ai.inline.corner{animation:roseCornerIn .18s ease both}@keyframes roseCornerIn{from{opacity:.35;transform:translateY(10px) scale(.94)}to{opacity:1;transform:none}}
-.wr-ai.inline.corner{position:fixed!important;right:22px!important;bottom:22px!important;width:auto!important;margin:0!important;z-index:2147483000!important}
-.wr-ai.inline.corner:before{right:-26px!important;bottom:-26px!important;transform:none!important;width:176px!important;height:176px!important}
-.wr-ai.inline.corner .wr-fab{display:grid!important}
-.wr-ai.inline.corner.corner-open .wr-fab{display:none!important}
-.wr-ai.inline.corner .wr-close{display:grid!important}
-.wr-ai.inline.corner .wr-panel{position:absolute!important;right:0!important;bottom:0!important;display:none!important;width:min(382px,calc(100vw - 24px))!important;height:min(578px,calc(100vh - 24px))!important}
-.wr-ai.inline.corner .wr-panel.open{display:grid!important;animation:wrGlassIn .28s cubic-bezier(.18,.9,.2,1)!important}
-@media(max-width:520px){.wr-ai.inline.corner{right:12px!important;bottom:12px!important}.wr-ai.inline.corner .wr-panel{width:calc(100vw - 24px)!important;height:min(620px,calc(100vh - 24px))!important}}
-/* END ROSE SCROLL-TO-CORNER BEHAVIOR */
-
-/* ROSE LAUNCH CREDIT POPUP */
-.rose-credit-card{position:fixed;left:22px;bottom:22px;z-index:2147482600;width:min(372px,calc(100vw - 28px));padding:18px;border:1px solid rgba(255,87,34,.34);border-radius:26px;background:linear-gradient(180deg,rgba(20,20,20,.96),rgba(7,7,7,.96));color:#fff;box-shadow:0 28px 90px rgba(0,0,0,.42),0 0 70px rgba(255,87,34,.14),inset 0 1px rgba(255,255,255,.10);transform:translateY(18px) scale(.985);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s linear .28s;backdrop-filter:blur(18px)}
-.rose-credit-card.show{opacity:1;visibility:visible;transition-delay:0s;transform:none;pointer-events:auto}.rose-credit-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}.rose-credit-kicker{display:inline-flex;align-items:center;gap:9px;color:rgba(255,255,255,.72);font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.rose-credit-kicker span{width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 18px rgba(255,87,34,.78)}.rose-credit-close{display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.12);border-radius:50%;background:rgba(255,255,255,.06);color:rgba(255,255,255,.64);font-size:18px;line-height:1;cursor:pointer}.rose-credit-close:hover{color:#fff;background:rgba(255,255,255,.12)}.rose-credit-card h3{font-size:25px;line-height:1.04;letter-spacing:-.055em;margin:0 0 10px;font-weight:900}.rose-credit-card p{font-size:14px;line-height:1.55;color:rgba(255,255,255,.66);margin:0 0 16px}.rose-credit-form{display:grid;gap:10px}.rose-credit-form input{width:100%;height:46px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(255,255,255,.075);color:#fff;padding:0 14px;font:inherit;font-size:14px;outline:none}.rose-credit-form input::placeholder{color:rgba(255,255,255,.38)}.rose-credit-form input:focus{border-color:rgba(255,87,34,.72);box-shadow:0 0 0 3px rgba(255,87,34,.13)}.rose-credit-form button{height:48px;border:0;border-radius:14px;background:#ff5722;color:#fff;font:inherit;font-size:14px;font-weight:850;cursor:pointer;box-shadow:0 14px 38px rgba(255,87,34,.24)}.rose-credit-form button:hover{background:#f04e1c;transform:translateY(-1px)}.rose-credit-form button:disabled{opacity:.72;cursor:wait;transform:none}.rose-credit-foot{display:block;margin-top:10px;font-size:12px;color:rgba(255,255,255,.42)}.rose-credit-success{display:none;margin-top:12px;padding:12px 13px;border-radius:14px;background:rgba(35,197,94,.12);border:1px solid rgba(35,197,94,.25);color:#c7f8d9;font-size:13px;line-height:1.45}.rose-credit-card.done .rose-credit-form,.rose-credit-card.done .rose-credit-foot{display:none}.rose-credit-card.done .rose-credit-success{display:block}@media(max-width:640px){.rose-credit-card{left:14px;right:14px;bottom:14px;width:auto;border-radius:24px;padding:16px}.rose-credit-card h3{font-size:23px}}
-/* END ROSE LAUNCH CREDIT POPUP */
-
-
-/* BLACK THEME MOCKUP SECTION */
-.mockup-cta{position:relative;overflow:hidden;background:#000;color:#fff;padding:150px 0 260px;margin-top:-1px;border-top:0;isolation:isolate}
-.mockup-cta:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 22%,rgba(255,87,34,.18),transparent 28%),radial-gradient(circle at 82% 70%,rgba(255,87,34,.20),transparent 22%),radial-gradient(circle at 18% 84%,rgba(255,255,255,.075),transparent 20%),#000;pointer-events:none}.mockup-cta:after{display:none}.mockup-cta .wrap{position:relative;z-index:1;text-align:center}.mockup-tag{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,87,34,.28);background:linear-gradient(180deg,rgba(255,87,34,.16),rgba(255,255,255,.055));border-radius:999px;padding:9px 14px;color:rgba(255,255,255,.78);font-size:13px;font-weight:850;box-shadow:0 18px 52px rgba(255,87,34,.10)}.mockup-tag span{width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 18px rgba(255,87,34,.70)}.mockup-cta h2{font-size:clamp(44px,7vw,86px);letter-spacing:-.082em;line-height:.90;margin:28px auto 30px;max-width:940px;font-weight:950}.mockup-cta h2 em{font-style:normal;color:#ff5722;text-shadow:0 0 36px rgba(255,87,34,.28)}.mockup-cta p{font-size:18px;line-height:1.7;color:rgba(255,255,255,.64);max-width:690px;margin:0 auto 48px}.mockup-search{position:relative;max-width:860px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));border:1px solid rgba(255,255,255,.18);border-radius:34px;padding:14px;box-shadow:0 34px 110px rgba(0,0,0,.46),0 0 90px rgba(255,87,34,.16),inset 0 1px rgba(255,255,255,.12);display:grid;grid-template-columns:1fr auto;gap:10px;backdrop-filter:blur(22px)}.mockup-search:before{content:'Your website';position:absolute;left:26px;top:15px;color:rgba(255,255,255,.36);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.12em}.mockup-search input{border:0;outline:0;background:transparent;padding:30px 22px 13px;font-size:23px;font-weight:850;color:#fff;min-width:0}.mockup-search input::placeholder{color:rgba(255,255,255,.35)}.mockup-search .btn{border-radius:22px;padding:17px 25px;box-shadow:0 18px 48px rgba(255,87,34,.26)}.mockup-micro{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px;color:rgba(255,255,255,.46);font-size:13px;font-weight:800}.mockup-micro span{display:inline-flex;align-items:center;gap:7px}.mockup-micro span:before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,87,34,.72)}@media(max-width:620px){.mockup-cta{padding:88px 0 156px}.mockup-cta:after{right:-6px;bottom:80px;width:112px;height:112px;border-radius:30px;opacity:.55}.mockup-cta h2{font-size:clamp(46px,13vw,68px);line-height:.88;margin-top:30px}.mockup-cta p{font-size:18px;line-height:1.65;margin-bottom:44px}.mockup-search{grid-template-columns:1fr;border-radius:31px;padding:13px}.mockup-search input{font-size:22px;padding:31px 17px 15px}.mockup-search .btn{justify-content:center;width:100%;padding:18px 20px}.mockup-micro{max-width:330px;margin-left:auto;margin-right:auto;gap:8px 12px}}
-.mockup-frame-wrap{display:none;position:relative;z-index:1;width:min(1120px,calc(100% - 48px));margin:76px auto 140px;border:1px solid rgba(255,255,255,.14);border-radius:32px;overflow:hidden;background:#0b0b0b;box-shadow:0 36px 120px rgba(0,0,0,.52),0 0 70px rgba(255,87,34,.08)}.mockup-frame-wrap.show{display:block}.mockup-frame-top{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.10);color:rgba(255,255,255,.55);font-size:13px;font-weight:800}.mockup-frame-top i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18)}.mockup-frame-top span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mockup-frame{display:block;width:100%;height:min(980px,88vh);border:0;background:#fbf7f1}.mockup-status{display:none;margin:18px auto 0;color:rgba(255,255,255,.55);font-size:13px;font-weight:750}.mockup-status.show{display:block}@media(max-width:620px){.mockup-frame-wrap{width:calc(100% - 28px);border-radius:22px}.mockup-frame{height:780px}.mockup-frame-top{font-size:12px}}
-/* END BLACK THEME MOCKUP SECTION */
-
-body.rose-preview-in-view #rose-hero-widget .wr-ai{display:none!important}
-@media(max-width:620px){
-  html,body{max-width:100%;overflow-x:hidden!important}
-  .wrap{width:100%;padding-left:24px;padding-right:24px}
-  .rose-hero{padding:42px 0 70px;overflow:hidden}
-  .rose-hero h1{font-size:clamp(37px,11.8vw,46px)!important;line-height:.99!important;letter-spacing:-.052em!important;max-width:342px!important;overflow-wrap:normal!important;text-wrap:balance;margin-bottom:18px!important}
-  .rose-hero .lead{font-size:16px!important;line-height:1.38!important;max-width:342px!important;text-wrap:balance;margin-bottom:24px!important}
-  .rose-label{display:none!important}
-  .rose-hero .hero-cta{display:flex!important;width:100%;justify-content:center!important}
-  .rose-hero .hero-cta .btn{width:min(330px,100%)!important;justify-content:center!important;height:52px!important}
-  .rose-hero-widget{display:block!important;position:fixed!important;right:12px!important;bottom:12px!important;width:auto!important;min-height:0!important;margin:0!important;z-index:2147483000!important}
-  .rose-hero-widget::before{display:none!important}
-  .mockup-cta{padding:68px 0 96px!important}
-  .mockup-cta:after{display:none!important}
-  .mockup-tag{display:none!important}
-  .mockup-cta h2{font-size:34px!important;line-height:.98!important;letter-spacing:-.045em!important;margin:0 auto 14px!important;max-width:330px!important;text-wrap:balance}
-  .mockup-cta p{font-size:16px!important;line-height:1.45!important;margin-bottom:24px!important;max-width:330px!important}
-  .mockup-search{grid-template-columns:1fr!important;border-radius:22px!important;padding:10px!important;gap:8px!important;box-shadow:0 22px 70px rgba(0,0,0,.34),0 0 50px rgba(255,87,34,.12)!important}
-  .mockup-search:before{left:22px!important;top:12px!important;font-size:11px!important}
-  .mockup-search input{font-size:17px!important;padding:24px 12px 10px!important;min-width:0!important}
-  .mockup-search button{width:100%!important;justify-content:center!important;height:50px!important;padding:0 16px!important}
-  .mockup-hints{display:none!important}
-  .mockup-frame-wrap{width:calc(100% - 20px)!important;margin:40px auto 80px!important;border-radius:18px!important}
-  .mockup-frame{height:700px!important}
-}
-</style>
-<!-- Wildrose analytics: Microsoft Clarity -->
-<script type="text/javascript">
-(function(c,l,a,r,i,t,y){
-  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-})(window,document,"clarity","script","y3isf2gtkw");
-window.wrTrack=function(name,params){
-  try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}
-  try{
-    if(window.fbq&&name){
-      var map={
-
-        rose_setup_call_clicked:"Contact"
-      };
-      if(map[name]) window.fbq("track",map[name],params||{});
-      window.fbq("trackCustom",name,params||{});
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1b120e">
+  <title>Rose in motion · Wildrose</title>
+  <meta name="description" content="See how Rose turns customer conversations into useful work.">
+  <style>
+    :root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f9faf6;background:#061c17;font-synthesis:none}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #ff9169;outline-offset:3px}
+    .shell{width:min(1370px,calc(100% - 48px));margin:auto}
+    .site-head{height:82px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 20px;border:1px solid #214036;border-top:0;border-radius:0 0 13px 13px}
+    .brand{display:inline-flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:19px;font-weight:820;letter-spacing:-.05em}.brand img{width:27px;height:27px;object-fit:contain;filter:brightness(0) invert(1)}.brand span{color:#a7bdb2;font-weight:550}
+    .head-tag{font-size:10px;font-weight:760;letter-spacing:.14em;text-transform:uppercase;color:#8ba89a}
+    main{padding:64px 0 72px}
+    .intro{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.7fr);align-items:end;gap:80px;margin-bottom:48px}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:#ff9b73;font-size:11px;font-weight:820;letter-spacing:.15em;text-transform:uppercase}.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#ff8154;box-shadow:0 0 0 5px rgba(255,129,84,.13)}
+    h1{max-width:820px;margin:20px 0 0;font-size:clamp(57px,6vw,90px);font-weight:650;letter-spacing:-.078em;line-height:.99}h1 em{font-style:normal;color:#ff8e65}
+    .intro-aside{padding-bottom:5px}.intro-aside p{max-width:410px;margin:0 0 24px;color:#d0ded3;font-size:18px;line-height:1.42}.intro-aside small{display:block;max-width:410px;color:#8aa99a;font-size:11px;line-height:1.5}
+    .stage{position:relative;height:620px;overflow:hidden;border:1px solid #2a493d;border-radius:20px;background:radial-gradient(ellipse at 50% 63%,rgba(38,85,65,.3),transparent 42%),linear-gradient(145deg,#09241a,#071c17 70%)}
+    .stage:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 51% 54%,rgba(255,139,94,.09),transparent 33%);pointer-events:none}
+    .stage:after{content:"";position:absolute;left:50%;bottom:87px;width:550px;height:70px;transform:translateX(-50%);border-radius:50%;background:rgba(0,0,0,.24);filter:blur(34px);pointer-events:none}
+    .scene-meta{position:absolute;z-index:5;top:25px;left:30px;right:30px;display:flex;justify-content:space-between;align-items:center;gap:20px}.scene-meta>div{display:flex;align-items:center;gap:12px}.scene-index{color:#77a18a;font-size:10px;font-weight:800;letter-spacing:.14em}.scene-name{color:#e9f1e9;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.scene-meta button{padding:8px 12px;border:1px solid #2f5042;border-radius:9px;background:#123227;color:#dce8dc;font-size:10px;font-weight:760}.scene-meta button:hover{background:#1a4232}.clock{color:#8bab98;font-size:10px;font-weight:740;letter-spacing:.1em}
+    .person{position:absolute;z-index:2;left:7%;bottom:134px;width:250px;display:flex;flex-direction:column;align-items:center}.person-art{width:102px;height:172px;transform-origin:50% 90%;animation:idle 3.4s ease-in-out infinite}.person-art svg{display:block;width:100%;height:100%;overflow:visible}.person-art .ground{fill:#020d09;opacity:.6}.person-art .line{fill:none;stroke:#ff8c64;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.person-art .front-arm,.person-art .front-leg{transform-box:fill-box;transform-origin:top center;animation:gesture 3.4s ease-in-out infinite}.person-art .front-leg{animation-name:step;animation-duration:3.8s}.speaker-person .person-art{animation-duration:.8s}.speaker-person .front-arm{animation-duration:.8s}.person-label{margin-top:0;color:#8fad9a;font-size:10px;font-weight:800;letter-spacing:.17em;text-transform:uppercase}
+    .bubble{position:absolute;z-index:4;max-width:320px;min-height:76px;padding:17px 20px;border:1px solid #355244;border-radius:16px;color:#edf5ec;background:#163729;box-shadow:0 20px 42px rgba(0,0,0,.16);font-size:17px;font-weight:660;line-height:1.36;letter-spacing:-.02em;transition:opacity .32s,transform .32s,filter .32s}.bubble:after{content:"";position:absolute;bottom:-7px;width:12px;height:12px;background:inherit;transform:rotate(45deg);border-right:1px solid #355244;border-bottom:1px solid #355244}.visitor-bubble{left:5.5%;bottom:332px;width:310px}.visitor-bubble:after{left:68%}.rose-bubble{left:50%;top:107px;transform:translateX(-50%);width:360px;max-width:360px;background:#f7f8f0;border-color:#d3ddd0;color:#183629}.rose-bubble:after{left:calc(50% - 6px);border-color:#d3ddd0}.stage[data-speaker="visitor"] .rose-bubble{opacity:0;transform:translate(-50%,12px);pointer-events:none}.stage[data-speaker="rose"] .visitor-bubble{opacity:.38;filter:blur(1px);transform:translateY(-4px)}.stage[data-speaker="tool"] .visitor-bubble,.stage[data-speaker="tool"] .rose-bubble{opacity:.26;filter:blur(1px)}
+    .widget-wrap{position:absolute;z-index:3;left:50%;top:218px;width:334px;transform:translateX(-50%)}
+    .flow{position:absolute;z-index:3;right:5.5%;top:190px;width:260px;display:flex;flex-direction:column;gap:12px}.flow-title{color:#8caa98;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1px}.tool{display:flex;align-items:center;gap:13px;min-height:64px;padding:12px 15px;border:1px solid #244536;border-radius:13px;background:#102b20;opacity:.46;transform:translateY(6px);transition:opacity .45s,transform .45s,border-color .45s,background .45s}.tool:before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:#779987}.tool strong{display:block;font-size:13px;color:#f3f8f0}.tool span{display:block;margin-top:4px;font-size:10px;font-weight:730;letter-spacing:.04em;color:#a4bba9}.tool.active{opacity:1;transform:none;border-color:#47715a;background:#19402c;box-shadow:0 17px 36px rgba(0,0,0,.15)}.tool.active:before{background:#ff976c;box-shadow:0 0 0 5px rgba(255,151,108,.13)}.tool.active span{color:#9eddb3}
+    .stage-foot{position:absolute;z-index:5;left:30px;right:30px;bottom:23px;display:flex;align-items:center;gap:18px}.stage-foot .caption{min-width:230px;max-width:280px;color:#b0c5b5;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stage-foot button{flex:none;padding:8px 11px;border:1px solid #355844;border-radius:8px;background:#163829;color:#edf6ed;font-size:10px;font-weight:750}.stage-foot button:hover{background:#205039}
+    .scenarios{display:flex;align-items:center;gap:8px;margin-top:16px}.scenarios-label{margin-right:12px;color:#8ba999;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.scenarios button{padding:9px 13px;border:1px solid transparent;border-radius:8px;background:transparent;color:#9fbbab;font-size:11px;font-weight:740}.scenarios button.active{border-color:#315843;background:#153626;color:#fff}.scenarios button:hover{color:#fff}
+    @keyframes idle{50%{transform:translateY(-4px) rotate(1deg)}}@keyframes gesture{42%{transform:rotate(-18deg)}72%{transform:rotate(6deg)}}@keyframes step{50%{transform:rotate(8deg)}}
+    @media(max-width:1100px){.intro{gap:35px}.person{left:3%;width:210px}.visitor-bubble{left:3%;width:250px}.flow{right:3%;width:205px}.widget-wrap{width:305px}.rose-bubble{width:320px}.tool{padding:10px}}
+    @media(max-width:760px){.shell{width:calc(100% - 28px)}.site-head{height:65px;padding:0 14px}.head-tag{display:none}main{padding:42px 0 50px}.intro{display:block;margin-bottom:30px}h1{font-size:clamp(49px,10.5vw,72px)}.intro-aside{padding:0;margin-top:25px}.intro-aside p{font-size:16px;margin-bottom:14px}.stage{height:760px;border-radius:16px}.scene-meta{top:17px;left:16px;right:16px}.person{left:20px;top:110px;bottom:auto;width:65px}.person-art{width:58px;height:98px}.person-label{display:none}.visitor-bubble{top:116px;bottom:auto;left:103px;width:calc(100% - 122px);max-width:none;min-height:72px;padding:13px 15px;font-size:13px}.visitor-bubble:after{left:14px}.rose-bubble{top:224px;left:auto;right:20px;width:calc(100% - 105px);max-width:none;min-height:63px;padding:12px 15px;font-size:13px;transform:none}.rose-bubble:after{left:auto;right:28px}.stage[data-speaker="visitor"] .rose-bubble{transform:translateY(10px)}.widget-wrap{top:306px;width:min(300px,calc(100% - 44px))}.flow{top:612px;left:20px;right:20px;width:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.flow-title{grid-column:1/-1;font-size:8px}.tool{min-height:43px;padding:6px;gap:4px;border-radius:8px}.tool:before{width:5px;height:5px}.tool strong{font-size:9px}.tool span{font-size:7px}.stage-foot{left:15px;right:15px;bottom:13px;gap:8px}.stage-foot .caption{min-width:0;max-width:125px;font-size:9px}.stage-foot button{font-size:9px;padding:7px}.scenarios{flex-wrap:wrap;gap:4px}.scenarios-label{width:100%;margin:0 0 5px}.scenarios button{padding:8px 9px;font-size:10px}}
+    @media(max-width:410px){.stage{height:790px}.flow{top:625px}.widget-wrap{top:315px}.scene-meta>div{gap:6px}.scene-name{font-size:8px}.clock{font-size:9px}.scene-meta button{padding:6px 8px}.visitor-bubble{left:91px;width:calc(100% - 106px)}.rose-bubble{right:15px;width:calc(100% - 91px)}}
+    @media(prefers-reduced-motion:reduce){.person-art,.person-art .front-arm,.person-art .front-leg{animation:none}.bubble,.tool{transition:none}}
+    /* Rose's orange palette, with the widget at a comfortable native scale. */
+    :root{color:#fff8f3;background:#1b120e}
+    .site-head{border-color:#513326}
+    .brand span{color:#c4a697}.head-tag{color:#c49b85}
+    .intro-aside p{color:#f0ddd2}.intro-aside small{color:#b99684}
+    .stage{height:785px;border-color:#5a3929;background:radial-gradient(ellipse at 50% 59%,rgba(155,73,37,.19),transparent 43%),linear-gradient(145deg,#291a14,#1d130f 72%)}
+    .stage:before{background:radial-gradient(circle at 50% 54%,rgba(255,116,59,.1),transparent 35%)}
+    .scene-index{color:#d69c7c}.scene-name{color:#fff0e5}
+    .scene-meta button{border-color:#654332;background:#382419;color:#ffeadc}.scene-meta button:hover{background:#51301f}.clock{color:#cda58e}
+    .person{bottom:150px}.person-art .ground{fill:#110a07}.person-art .line{stroke:#ff824a}.person-label{color:#c4a08c}
+    .bubble{border-color:#744936;background:#3b271d;color:#fff2e8}
+    .bubble:after{border-color:#744936}.visitor-bubble{bottom:350px}
+    .rose-bubble{top:95px;background:#fff5ec;border-color:#edd6c6;color:#43281c}.rose-bubble:after{border-color:#edd6c6}
+    .widget-wrap{top:195px;width:360px}
+    .flow{top:285px}.flow-title{color:#c09a84}
+    .tool{border-color:#583a2b;background:#302016;opacity:.56}.tool:before{background:#b58c74}
+    .tool strong{color:#fff3e9}.tool span{color:#c8a996}
+    .tool.active{border-color:#cf784b;background:#4a291a}.tool.active:before{background:#ff864d}.tool.active span{color:#ffd0b7}
+    .stage-foot{justify-content:space-between}.stage-foot .caption{max-width:none;color:#d6b9a5}
+    .stage-foot button{border-color:#67412e;background:#3c261b;color:#fff2e6}.stage-foot button:hover{background:#59301d}
+    .scenarios-label{color:#c69a80}.scenarios button{color:#d6ad98}.scenarios button.active{border-color:#744731;background:#3a2318;color:#fff}.scenarios button:hover{color:#fff}
+    @media(max-width:1100px){.widget-wrap{width:340px}}
+    @media(max-width:760px){
+      .stage{height:960px}.person{top:110px;bottom:auto}.visitor-bubble{top:116px;bottom:auto}
+      .rose-bubble{top:224px}.widget-wrap{top:310px;width:min(340px,calc(100% - 36px))}
+      .flow{top:812px}.stage-foot{bottom:16px}
     }
-  }catch(e){}
-};
-document.addEventListener("click",function(e){
-  var el=e.target.closest&&e.target.closest("button,a"); if(!el) return;
-  var txt=(el.dataset.analytics||el.dataset.plan||el.textContent||"").trim().toLowerCase();
-  var eventName="";
-  if(txt.includes("buy your agent")||txt.includes("continue to payment")) eventName="rose_buy_clicked";
-  else if(txt.includes("build")&&txt.includes("preview")) eventName="rose_mockup_started";
-  else if(txt.includes("set up rose")||txt.includes("rose setup")||txt.includes("get rose")) eventName="rose_setup_call_clicked";
-  else if(txt.includes("send setup")||txt.includes("save setup")) eventName="rose_setup_submit_clicked";
-  else if(txt.includes("book")||txt.includes("call")) eventName="rose_setup_call_clicked";
-  if(eventName) window.wrTrack(eventName);
-},true);
-document.addEventListener("submit",function(e){
-  var id=e.target&&e.target.id;
-  if(id==="checkoutForm"||id==="roseLeadForm"||id==="siteEmailForm"||id==="roseCreditForm") window.wrTrack("rose_checkout_lead_submit");
-  if(id==="onboardingForm") window.wrTrack("rose_onboarding_submit");
-  if(id==="mockForm"||id==="heroForm"||id==="roseMockupForm") window.wrTrack("rose_mockup_submit");
-},true);
-</script>
+    @media(max-width:410px){.stage{height:980px}.widget-wrap{top:315px}.flow{top:817px}}
+    .flow{top:192px;right:5%;width:285px;display:block}
+    .flow-title{margin:0 0 10px}
+    .workflow-card{min-height:235px;padding:17px;border:1px solid #704431;border-radius:16px;background:linear-gradient(155deg,#382319,#2a1b15);box-shadow:0 18px 38px rgba(0,0,0,.18);animation:wfEnter .36s ease both}
+    .wf-head{display:flex;align-items:center;gap:10px}.wf-mark{width:35px;height:35px;flex:none;display:grid;place-items:center;border:1px solid #8d553b;border-radius:10px;background:#4a2c1d;color:#ffb58c;font-size:10px;font-weight:900;letter-spacing:.03em}.wf-tool{color:#ffd4bb;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.wf-state{margin-left:auto;color:#eeb491;font-size:9px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.workflow-card.working .wf-state:before{content:"";display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:#ff9560;box-shadow:0 0 0 4px rgba(255,149,96,.15);animation:wfPulse 1s ease-in-out infinite}.workflow-card.done .wf-state{color:#ffd4a7}
+    .wf-title{margin:16px 0 5px;color:#fff5ed;font-size:17px;font-weight:760;letter-spacing:-.025em;line-height:1.25}.wf-detail{min-height:32px;margin:0;color:#cfae9b;font-size:11px;line-height:1.42}
+    .wf-visual{min-height:73px;margin-top:14px;padding-top:12px;border-top:1px solid #68412e}
+    .wf-search{display:flex;align-items:center;gap:7px;height:34px;padding:0 10px;border:1px solid #78503a;border-radius:8px;background:#211713;color:#ffe8d9;font-size:11px;font-weight:670;white-space:nowrap;overflow:hidden}.wf-search b{color:#ff986b;font-size:18px;line-height:1}.workflow-card.working .wf-search span{overflow:hidden;white-space:nowrap;border-right:1px solid #ff9f74;animation:wfType 2.1s steps(20,end) infinite alternate}.wf-result{display:flex;align-items:center;gap:6px;margin-top:10px;color:#d9b8a6;font-size:10px;font-weight:710}.wf-result i{width:7px;height:7px;border-radius:50%;background:#ff986b}.workflow-card.working .wf-result i{animation:wfPulse .9s ease-in-out infinite}.workflow-card.done .wf-result{color:#ffd5b8}
+    .wf-slots{display:flex;gap:5px}.wf-slot{flex:1;padding:9px 3px;border:1px solid #6c4633;border-radius:7px;color:#d2ab96;text-align:center;font-size:9px;font-weight:800}.wf-slot.selected{border-color:#ff9a69;background:#65402b;color:#fff1e4}.workflow-card.working .wf-slot:nth-child(1){animation:wfSlot 1.3s ease-in-out infinite}.workflow-card.working .wf-slot:nth-child(2){animation:wfSlot 1.3s ease-in-out .25s infinite}.workflow-card.working .wf-slot:nth-child(3){animation:wfSlot 1.3s ease-in-out .5s infinite}.wf-date{margin-bottom:9px;color:#eac5ae;font-size:10px;font-weight:750}
+    .wf-field{display:flex;justify-content:space-between;gap:7px;padding:5px 0;border-bottom:1px solid #573827;color:#d0a994;font-size:10px}.wf-field b{max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ffe4d2;font-weight:780}.workflow-card.working .wf-field:nth-child(2) b{animation:wfPulse 1.2s ease-in-out infinite}
+    .wf-message{padding:9px 10px;border:1px solid #78503a;border-radius:9px;background:#211713}.wf-message b{display:block;color:#ffe5d4;font-size:10px}.wf-message span{display:block;margin-top:5px;color:#cda994;font-size:9px}.wf-message:after{content:"→";display:block;margin-top:7px;color:#ff9a69;text-align:right;font-size:15px;font-weight:900}.workflow-card.working .wf-message:after{animation:wfSend 1.5s ease-in-out infinite}
+    .wf-idle{display:flex;gap:6px;align-items:center;height:48px}.wf-idle i{width:7px;height:7px;border-radius:50%;background:#ff986b;animation:wfPulse 1.1s ease-in-out infinite}.wf-idle i:nth-child(2){animation-delay:.2s}.wf-idle i:nth-child(3){animation-delay:.4s}
+    .tool-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.tool-list .tool{min-height:49px;margin:0;padding:7px 9px;gap:7px;border-radius:9px;transform:none}.tool-list .tool:before{width:6px;height:6px}.tool-list .tool strong{font-size:10px}.tool-list .tool span{font-size:8px;margin-top:2px}.tool-list .tool.working{opacity:1;border-color:#b96e46;background:#452a1c}.tool-list .tool.working:before{background:#ff985f;animation:wfPulse 1s ease-in-out infinite}
+    @keyframes wfEnter{from{opacity:.35;transform:translateY(9px)}to{opacity:1;transform:none}}@keyframes wfPulse{50%{opacity:.35;transform:scale(.8)}}@keyframes wfType{from{max-width:0}to{max-width:190px}}@keyframes wfSlot{45%{border-color:#ff9a69;color:#fff0e5;background:#5d3928}}@keyframes wfSend{50%{transform:translateX(7px);opacity:.55}}
+    @media(max-width:1100px){.flow{right:3%;width:240px}.workflow-card{padding:13px}.wf-title{font-size:15px}}
+    @media(max-width:760px){.stage{height:1250px}.flow{top:812px;left:20px;right:20px;width:auto;display:block}.workflow-card{min-height:218px}.tool-list{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-foot{bottom:15px}}
+    @media(max-width:410px){.stage{height:1280px}.flow{top:817px}}
+    @media(prefers-reduced-motion:reduce){.workflow-card,.wf-idle i,.workflow-card.working .wf-search span,.workflow-card.working .wf-result i,.workflow-card.working .wf-slot,.workflow-card.working .wf-message:after,.tool-list .tool.working:before{animation:none}}
+    /* Connected workflow graph with transient tool popups. */
+    .flow{top:116px;right:3.7%;width:430px;height:558px;margin:0}
+    .workflow-graph{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.94;pointer-events:none}
+    .flow-title{position:absolute;z-index:2;top:5px;left:14px;margin:0;color:#d7a98e;font-size:10px;letter-spacing:.18em}
+    .workflow-card{position:absolute;z-index:3;top:259px;left:calc(50% - 142px);width:284px;min-height:220px;padding:15px;border-color:#80513a;border-radius:14px;background:rgba(49,30,22,.95);box-shadow:0 20px 45px rgba(0,0,0,.32);backdrop-filter:blur(12px)}
+    .workflow-card .wf-title{margin-top:13px;font-size:16px}.workflow-card .wf-detail{font-size:10px}.workflow-card .wf-visual{margin-top:10px;padding-top:10px}
+    .tool-list{position:absolute;z-index:2;inset:0;display:block;margin:0;pointer-events:none}
+    .tool-list .tool{position:absolute;width:122px;min-height:45px;padding:6px 8px;border-color:#9b6040;background:rgba(71,41,26,.95);opacity:0;transform:translateY(12px) scale(.92);box-shadow:0 12px 28px rgba(0,0,0,.2)}
+    .tool-list .tool.working,.tool-list .tool.active{opacity:1;transform:translateY(0) scale(1)}
+    .tool-list .tool:nth-child(1){top:84px;left:8px}.tool-list .tool:nth-child(2){top:138px;right:5px}.tool-list .tool:nth-child(3){bottom:18px;left:2px}.tool-list .tool:nth-child(4){bottom:18px;right:9px}
+    .tool-list .tool strong{font-size:10px}.tool-list .tool span{font-size:7px;letter-spacing:.03em}
+    @media(max-width:1150px){.widget-wrap{left:43%}.rose-bubble{left:43%}.stage[data-speaker="visitor"] .rose-bubble{transform:translate(-50%,12px)}.flow{right:2%;top:125px;width:330px;height:550px}.workflow-card{left:calc(50% - 125px);width:250px}.tool-list .tool{width:105px}.tool-list .tool:nth-child(2){right:0}}
+    @media(max-width:760px){.stage{height:1420px}.widget-wrap{left:50%}.rose-bubble{left:auto}.stage[data-speaker="visitor"] .rose-bubble{transform:translateY(10px)}.flow{top:813px;left:10px;right:10px;width:auto;height:535px}.workflow-card{top:230px;left:calc(50% - 140px);width:280px}.tool-list .tool{width:112px}.tool-list .tool:nth-child(3),.tool-list .tool:nth-child(4){bottom:4px}}
+    @media(max-width:410px){.stage{height:1440px}.flow{top:818px;height:540px}.workflow-card{left:10px;right:10px;width:auto}.tool-list .tool{width:102px}}
+    /* Let the tool marks and moving connections carry the workflow story. */
+    .flow{top:119px;height:560px}
+    .flow-title{top:0;left:10px}
+    .workflow-card{top:392px;left:calc(50% - 133px);width:266px;min-height:104px;padding:11px 13px;border-color:#9a5a3b;background:rgba(44,27,20,.93)}
+    .workflow-card .wf-head{gap:9px}
+    .workflow-card .wf-mark{width:38px;height:38px;border:0;background:transparent}
+    .workflow-card .wf-mark img{width:32px;height:32px;object-fit:contain}
+    .workflow-card .wf-tool{font-size:11px;letter-spacing:.02em;text-transform:none}
+    .workflow-card .wf-state{font-size:8px}
+    .workflow-card .wf-title{margin:7px 0 0;font-size:15px}
+    .workflow-card .wf-detail,.workflow-card .wf-visual{display:none}
+    .tool-list{display:none}
+    @media(max-width:1150px){.workflow-card{left:calc(50% - 120px);width:240px}}
+    @media(max-width:760px){.flow{top:813px;height:535px}.workflow-card{top:382px;left:calc(50% - 130px);width:260px}}
+    @media(max-width:410px){.flow{top:818px;height:540px}.workflow-card{top:387px;left:calc(50% - 120px);right:auto;width:240px}}
+    @media(prefers-reduced-motion:reduce){.workflow-card{animation:none}}
+    /* Circular tool nodes in a luminous web, with notification cards below. */
+    .flow{right:1.5%;width:33%;height:560px;isolation:isolate}
+    .flow:before{content:"";position:absolute;inset:22px -12px 112px;background:radial-gradient(ellipse at 50% 48%,rgba(255,116,57,.12),transparent 68%);pointer-events:none}
+    .flow-title{left:50%;transform:translateX(-50%);white-space:nowrap;color:#e0ac8c;font-size:9px;letter-spacing:.22em}
+    .flow-title:before{content:"";display:inline-block;width:5px;height:5px;margin:0 8px 1px 0;border-radius:50%;background:#ff985d;box-shadow:0 0 12px #ff7842}
+    .workflow-graph{opacity:1}
+    .workflow-card{top:433px;left:7%;width:86%;min-height:90px;border-radius:17px;border-color:rgba(255,172,119,.24);background:linear-gradient(135deg,rgba(93,49,29,.5),rgba(34,22,17,.8));box-shadow:0 15px 35px #10080455,inset 0 1px 0 #ffcfa914;backdrop-filter:blur(20px)}
+    .workflow-card .wf-title{font-size:14px}.workflow-card .wf-state{font-size:7px}
+    @media(min-width:1151px){.widget-wrap,.rose-bubble{left:46%}.stage[data-speaker="visitor"] .rose-bubble{transform:translate(-50%,12px)}}
+    @media(min-width:761px) and (max-width:1150px){.flow{right:1%;width:31%}.workflow-card{left:3%;width:94%}.workflow-card .wf-head{gap:5px}.workflow-card .wf-tool{font-size:10px}}
+    @media(max-width:760px){.flow{left:10px;right:10px;width:auto;height:550px}.workflow-card{top:431px;left:8%;width:84%}.flow-title{top:12px}}
+    .scenarios{overflow-x:auto;flex-wrap:nowrap;padding-bottom:7px;scrollbar-width:thin;scrollbar-color:#75432d transparent}.scenarios-label{width:auto;flex:none;margin:0 10px 0 0}.scenarios button{flex:none;white-space:nowrap}
 
-<!-- Meta Pixel: Rose ads -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2453637905131468');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1"
-/></noscript>
 
+    .person{left:2%;top:auto;bottom:96px;width:25%;gap:9px}.person-art{width:154px;height:254px;max-width:100%;filter:drop-shadow(0 0 20px rgba(255,122,56,.10))}.person-label{display:block;margin:0;font-size:10px;letter-spacing:.2em}
+    .visitor-bubble{left:2%;top:auto;bottom:386px;width:25%;max-width:330px}.visitor-bubble:after{left:calc(50% - 6px)}
+    @media(min-width:761px) and (max-width:1150px){
+      .person{left:2%;width:23%;bottom:110px}.person-art{width:120px;height:218px}.visitor-bubble{left:2%;width:23%;bottom:365px;font-size:14px;padding:14px}
+      .widget-wrap,.rose-bubble{left:45%;width:30%}
+    }
+    @media(max-width:760px){
+      .person{left:13px;top:105px;bottom:auto;width:72px;gap:2px}.person-art{width:72px;height:115px}.person-label{font-size:7px;letter-spacing:.09em}
+      .visitor-bubble{left:101px;top:112px;bottom:auto;width:calc(100% - 117px);max-width:none;min-height:72px;padding:12px;font-size:13px}.visitor-bubble:after{left:15px}
+      .rose-bubble{top:248px;right:18px;width:calc(100% - 70px)}.widget-wrap{top:344px}
+      .flow{top:848px}.stage{height:1470px}
+    }
+    @media(max-width:410px){.person{left:10px;width:66px}.person-art{width:66px;height:112px}.visitor-bubble{left:88px;width:calc(100% - 103px)}.rose-bubble{right:15px;width:calc(100% - 55px)}}
 
-<style>
-.email-modal{position:fixed;inset:0;z-index:2147482700;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.58);backdrop-filter:blur(8px)}.email-modal.show{display:flex}.email-card{width:min(520px,100%);border-radius:28px;background:#fff;color:#171411;padding:24px;box-shadow:0 34px 110px rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.55)}.email-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.email-top h3{font-size:28px;line-height:1.05;margin:0}.email-top p{margin:8px 0 0;color:#756b62}.email-close{width:38px;height:38px;border-radius:999px;border:1px solid #eadfd2;background:#fbf7f1;font-size:20px;cursor:pointer}.email-form{display:grid;gap:10px}.email-form input,.email-form textarea{width:100%;border:1px solid #e3d6c8;border-radius:14px;padding:13px 14px;font:inherit;background:#fffaf5;color:#171411}.email-form textarea{min-height:116px;resize:vertical}.email-form button{border:0;border-radius:999px;padding:14px 18px;background:#ff5722;color:#fff;font-weight:900;cursor:pointer}.email-status{min-height:20px;font-size:13px;color:#756b62}.email-status.ok{color:#0b8f58}.email-status.err{color:#b42318}
-</style>
-<style>
-.purchase-area{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.78);backdrop-filter:blur(12px)}
-.purchase-area.show{display:flex}.purchase-card{position:relative;width:min(760px,100%);max-height:calc(100vh - 44px);overflow:auto;border:1px solid rgba(255,255,255,.13);border-radius:28px;padding:34px;background:#0d0d0d;color:#fff;box-shadow:0 40px 140px rgba(0,0,0,.7)}
-.purchase-close{position:absolute;right:18px;top:18px;width:40px;height:40px;border:1px solid #333;border-radius:999px;background:#171717;color:#fff;font-size:23px;cursor:pointer}.purchase-kicker{color:#ff7043;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.13em}.purchase-card h2{margin:10px 48px 8px 0;font-size:clamp(32px,5vw,52px);line-height:.95;letter-spacing:-.055em}.purchase-intro{max-width:570px;margin:0 0 26px;color:#aaa;line-height:1.55}.purchase-plans{display:grid;grid-template-columns:1fr 1fr;gap:14px}.purchase-plan{display:flex;flex-direction:column;padding:24px;border:1px solid #2a2a2a;border-radius:20px;background:#141414}.purchase-plan.featured{border-color:rgba(255,87,34,.65);box-shadow:0 0 42px rgba(255,87,34,.10)}.purchase-plan h3{margin:0;font-size:21px}.purchase-price{margin:9px 0 15px;font-size:35px;font-weight:950}.purchase-price span{color:#888;font-size:14px;font-weight:700}.purchase-plan p{flex:1;margin:0 0 20px;color:#aaa;line-height:1.5;font-size:14px}.purchase-plan .btn{width:100%;justify-content:center}.purchase-plan.selected{border-color:#ff5722;background:#19110e;box-shadow:0 0 0 1px #ff5722,0 0 42px rgba(255,87,34,.12)}.purchase-checkout-form{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px}.purchase-checkout-form input{width:100%;border:1px solid #333;border-radius:13px;padding:13px 14px;background:#171717;color:#fff;font:inherit;outline:none}.purchase-checkout-form input:focus{border-color:#ff5722;box-shadow:0 0 0 3px rgba(255,87,34,.12)}.purchase-checkout-form input[name="email"],.purchase-checkout-form button,.purchase-status{grid-column:1/-1}.purchase-checkout-form button{border:0;cursor:pointer}.purchase-checkout-form button:disabled{opacity:.65;cursor:wait}.purchase-status{min-height:19px;color:#aaa;font-size:13px;text-align:center}.purchase-status.err{color:#ff9f82}.purchase-note{margin:4px 0 0;text-align:center;color:#777;font-size:12px}@media(max-width:620px){.purchase-card{padding:28px 18px 20px;border-radius:22px}.purchase-plans,.purchase-checkout-form{grid-template-columns:1fr}.purchase-card h2{font-size:38px}.purchase-checkout-form input[name="email"],.purchase-checkout-form button,.purchase-status{grid-column:auto}}
-</style>
-<style>
-/* Keep the payment action visibly primary even when global button styles load later. */
-.purchase-checkout-form .btn-orange{background:#ff5722!important;color:#fff!important;border:1px solid #ff5722!important;box-shadow:0 10px 24px rgba(255,87,34,.28)!important}
-.purchase-checkout-form .btn-orange:hover{background:#e64a19!important;border-color:#e64a19!important}
-</style>
+    /* Keep the actual Rose widget independent from the illustrated conversation. */
+    .stage{height:860px}.widget-wrap{top:190px;width:382px}
+    .person{left:1.5%;width:27%;bottom:100px;gap:12px}.person-art{width:220px;height:320px}.person-label{font-size:12px;letter-spacing:.16em;color:#f0c5aa}
+    .visitor-bubble{left:2%;width:27%;max-width:350px;bottom:459px;padding:20px 22px;font-size:20px;line-height:1.45;font-weight:650;background:#4a2c1d;border-color:#bc7950;color:#fff7ee;box-shadow:0 16px 34px #0b050333}
+    .stage[data-speaker] .visitor-bubble{opacity:1;filter:none;transform:none}
+    .stage[data-speaker="tool"] .rose-bubble{opacity:1;filter:none}
+    .flow{top:140px}
+    @media(min-width:761px) and (max-width:1150px){.widget-wrap{width:34%;left:46%}.person{left:1%;width:27%;bottom:110px}.person-art{width:168px;height:292px}.visitor-bubble{left:1.5%;width:27%;bottom:445px;padding:17px;font-size:18px}.rose-bubble{left:46%;width:34%;font-size:16px}.flow{right:1%;width:30%}}
+    @media(max-width:760px){
+      .stage{height:1560px}.person{left:10px;top:100px;bottom:auto;width:110px;gap:5px}.person-art{width:110px;height:174px}.person-label{font-size:9px}
+      .visitor-bubble{left:132px;top:109px;bottom:auto;width:calc(100% - 148px);min-height:110px;padding:15px;font-size:16px;line-height:1.42;max-width:none}
+      .rose-bubble{top:298px;left:auto;right:18px;width:calc(100% - 36px);max-width:none;font-size:15px;padding:14px 16px;min-height:65px}
+      .widget-wrap{top:386px;left:50%;width:calc(100% - 36px);max-width:430px}.flow{top:981px;left:10px;right:10px;width:auto;height:550px}
+    }
+    @media(max-width:410px){.person{left:7px;width:100px}.person-art{width:100px;height:170px}.visitor-bubble{left:116px;width:calc(100% - 128px);font-size:15px;padding:13px}.rose-bubble{right:15px;width:calc(100% - 30px)}}
+    .wr-ai[data-simulation-paused="true"] .wr-orb:after{animation-play-state:paused}
+    @media(min-width:1151px){.person{bottom:230px}.visitor-bubble{bottom:589px}}
+    @media(min-width:761px) and (max-width:1150px){.person{bottom:215px}.visitor-bubble{bottom:550px}}
+    .anatomy-surface{z-index:0}#workflowGraph{z-index:1;pointer-events:auto;cursor:grab;touch-action:pan-y}#workflowGraph.dragging{cursor:grabbing}#workflowGraph:focus-visible{outline:1px solid #df9a72;outline-offset:-6px;border-radius:18px}.brain-hint{position:absolute;top:29px;left:50%;transform:translateX(-50%);font-size:10px;color:#c59a83;pointer-events:none;white-space:nowrap;z-index:2}
+  </style>
+  <link rel="stylesheet" href="rose-appearance.css?v=calm-1">
+  <link rel="stylesheet" href="demo-layout.css?v=brain-demo-close-1">
+  <link rel="stylesheet" href="rose-reveal.css?v=inline-preview-1">
 </head>
 <body>
-
-<nav id="nav">
-  <div class="wrap">
-    <a class="brand" href="#top">
-      <img src="logos/wildrose.png" style="height:36px;width:36px;border-radius:8px" alt="Wildrose">
-      Wildrose
-    </a>
-    <div class="nav-links">
-      <a href="/">Home</a>
-      <a href="#mockup">Rose Setup</a>
+  <nav class="wr-site-nav" aria-label="Wildrose navigation">
+    <div class="wr-site-wrap">
+      <a class="wr-site-brand" href="https://wildroseautomations.ca/"><img src="https://wildroseautomations.ca/logos/wildrose.png" width="36" height="36" alt="">Wildrose</a>
+      <div class="wr-site-links"><a href="https://wildroseautomations.ca/">Home</a><a href="#try-rose">Rose Setup</a></div>
+      <a class="wr-site-buy" href="#try-rose">Buy Agent</a>
     </div>
-    <a href="#purchase" class="btn btn-hl" id="openPurchaseArea" data-analytics="buy your agent" aria-controls="purchaseArea">Buy Agent</a>
-  </div>
-</nav>
-
-<section class="purchase-area" id="purchaseArea" aria-hidden="true" aria-labelledby="purchaseTitle">
-  <div class="purchase-card" role="dialog" aria-modal="true">
-    <button class="purchase-close" id="closePurchaseArea" type="button" aria-label="Close purchase area">×</button>
-    <div class="purchase-kicker">Get Rose</div>
-    <h2 id="purchaseTitle">Choose your agent.</h2>
-    <p class="purchase-intro">Choose a plan, enter your details, and continue directly to secure Square checkout. We’ll email the setup steps afterward.</p>
-    <div class="purchase-plans">
-      <article class="purchase-plan" data-plan-card="basic">
-        <h3>Rose Basic</h3>
-        <div class="purchase-price">$24<span>/month</span></div>
-        <p>AI chat, Rose voice, lead capture, owner handoff, and 75 voice minutes each month.</p>
-        <button class="btn btn-orange" type="button" data-plan-choice="basic">Choose Basic</button>
-      </article>
-      <article class="purchase-plan selected" data-plan-card="pro">
-        <h3>Rose Pro</h3>
-        <div class="purchase-price">$79<span>/month</span></div>
-        <p>Everything in Basic with 250 voice minutes each month for busier websites.</p>
-        <button class="btn btn-orange" type="button" data-plan-choice="pro">Choose Pro</button>
-      </article>
+  </nav>
+  <section class="wr-site-hero" id="top" aria-labelledby="heroTitle">
+    <div class="wr-site-wrap wr-site-hero-inner">
+      <div class="wr-site-label"><span aria-hidden="true"></span>Introducing Rose</div>
+      <h1 id="heroTitle">Give your website<br><em>a front desk.</em></h1>
+      <p class="wr-site-lead">Rose answers questions, captures quote requests, and sends the lead to you — while the visitor is still on the page.</p>
+      <a class="wr-site-cta" href="#try-rose">See Rose on My Site</a>
+      <div class="wr-site-widget" id="liveRoseVoice"></div>
     </div>
-    <form class="purchase-checkout-form" id="directCheckoutForm">
-      <input name="businessName" placeholder="Business name" autocomplete="organization" required>
-      <input name="website" type="url" placeholder="https://yourbusiness.com" autocomplete="url" required>
-      <input name="email" type="email" placeholder="Email for receipt and setup" autocomplete="email" required>
-      <input name="plan" type="hidden" value="pro">
-      <button class="btn btn-orange" type="submit">Continue to payment →</button>
-      <div class="purchase-status" id="purchaseStatus" aria-live="polite"></div>
-      <p class="purchase-note">Secure recurring payment through Square. No setup fee. Cancel anytime.</p>
-    </form>
-  </div>
-</section>
-<script>
-(function(){
-  const API='https://wildrose-widget.wildeautomations.com';
-  const area=document.getElementById('purchaseArea');
-  const open=document.getElementById('openPurchaseArea');
-  const close=document.getElementById('closePurchaseArea');
-  const form=document.getElementById('directCheckoutForm');
-  const status=document.getElementById('purchaseStatus');
-  if(!area||!open||!close||!form)return;
-  function show(e){e?.preventDefault();const credit=document.getElementById('roseCreditCard');credit?.classList.remove('show');credit?.setAttribute('aria-hidden','true');credit?.setAttribute('inert','');area.classList.add('show');area.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';close.focus();history.replaceState(null,'','#purchase')}
-  function hide(){area.classList.remove('show');area.setAttribute('aria-hidden','true');document.body.style.overflow='';open.focus();if(location.hash==='#purchase')history.replaceState(null,'',location.pathname+location.search)}
-  open.addEventListener('click',show);close.addEventListener('click',hide);
-  area.addEventListener('click',e=>{if(e.target===area)hide()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&area.classList.contains('show'))hide()});
-  area.addEventListener('click',e=>{
-    const pick=e.target.closest('[data-plan-choice]');if(!pick)return;
-    const plan=pick.dataset.planChoice;form.plan.value=plan;
-    area.querySelectorAll('[data-plan-card]').forEach(card=>card.classList.toggle('selected',card.dataset.planCard===plan));
-    form.businessName.focus();
-  });
-  form.addEventListener('submit',async e=>{
-    e.preventDefault();if(!form.reportValidity())return;
-    const button=form.querySelector('button[type="submit"]');const old=button.textContent;
-    button.disabled=true;button.textContent='Opening secure payment…';status.className='purchase-status';status.textContent='Saving your order…';
-    const values=Object.fromEntries(new FormData(form).entries());
-    const plan=values.plan==='basic'?'Rose Basic — $24/mo':'Rose Pro — $79/mo';
-    try{
-      const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({businessName:values.businessName,website:values.website,email:values.email,plan,source:'homepage-direct-buy',purchasePath:'direct_checkout',sourcePage:location.href})});
-      const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Could not start checkout');
-      const checkout=new URL(data.checkoutUrl||'');
-      if(!/(^|\.)square\.link$/.test(checkout.hostname)&&checkout.hostname!=='checkout.square.site')throw new Error('Secure checkout is unavailable');
-      sessionStorage.setItem('roseCheckoutLeadId',data.id||'');
-      window.location.assign(checkout.href);
-    }catch(error){status.className='purchase-status err';status.textContent=error.message||'Could not start checkout';button.disabled=false;button.textContent=old}
-  });
-  if(location.hash==='#purchase')show();
-})();
-</script>
-
-<!-- HERO -->
-<section class="rose-hero" id="top">
-  <div class="wrap">
-    <div class="rose-label"><span></span> Introducing Rose</div>
-    <h1>Give your website<br><em>a front desk.</em></h1>
-    <p class="lead">Rose answers questions, captures quote requests, and sends the lead to you — while the visitor is still on the page.</p>
-    <div class="hero-cta">
-      <a href="#mockup" class="btn btn-orange">See Rose on My Site</a>
-    </div>
-    <div class="rose-hero-widget" id="rose-hero-widget"></div>
-  </div>
-</section>
-
-<style>
-.recovery-section,#work.recovery-section{padding:72px 0;background:#080808;color:#fff;scroll-margin-top:90px;border-top:1px solid #242424}
-.recovery-section h2{font-size:clamp(30px,5vw,46px);margin-bottom:22px}.recovery-section h3{color:#ff5722;margin-bottom:12px;font-size:23px}
-.recovery-section p{color:#bbb;line-height:1.7;margin:12px 0}.recovery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:20px}
-.recovery-card{padding:26px;border:1px solid #303030;border-radius:20px;background:#111}.recovery-card .plan-price{font-size:32px;color:white}
-</style>
-<section class="recovery-section" id="how">
-  <div class="wrap"><h2>How Rose works</h2><div class="recovery-grid">
-    <article class="recovery-card"><h3>1. Preview your site</h3><p>Enter your website below to see a branded Rose preview. A preview does not install Rose or start a subscription.</p></article>
-    <article class="recovery-card"><h3>2. Confirm the details</h3><p>Choose a plan and provide your business information, FAQs and where the owner should receive quote requests. Review the setup before going live.</p></article>
-    <article class="recovery-card"><h3>3. Help your visitors</h3><p>Rose answers from your business information, captures contact and request details, and hands them to you for follow-up.</p></article>
-  </div></div>
-</section>
-<section class="recovery-section" id="pricing">
-  <div class="wrap"><h2>Rose pricing</h2><div class="recovery-grid">
-    <article class="recovery-card"><h3>Rose Basic</h3><p class="plan-price">$24/month</p><p>75 voice minutes/month. Visitor FAQ answers, quote capture and owner handoff.</p><a href="#mockup" class="btn btn-orange">Preview Rose</a></article>
-    <article class="recovery-card"><h3>Rose Pro</h3><p class="plan-price">$79/month</p><p>250 voice minutes/month. Visitor FAQ answers, quote capture and owner handoff.</p><a href="#mockup" class="btn btn-orange">Preview Rose</a></article>
-  </div><p>Extra voice minutes: $0.29/minute on either plan. Custom integrations are separately scoped.</p></div>
-</section>
-<section class="recovery-section" id="work">
-  <div class="wrap"><h2>What Rose can help with</h2><div class="recovery-grid">
-    <article class="recovery-card"><h3>Visitor FAQs</h3><p>Help visitors understand your services using the business information you provide.</p></article>
-    <article class="recovery-card"><h3>Quote requests</h3><p>Capture the visitor’s contact information and job details so you can review the request. Rose does not replace your quote approval.</p></article>
-    <article class="recovery-card"><h3>Owner handoff</h3><p>Send captured details to the owner for follow-up. CRM, booking, payment and other custom integrations require separate scoping; they are not included by default.</p></article>
-  </div><p>These are supported uses, not customer testimonials. <a href="#mockup">Try the website preview below.</a></p></div>
-</section>
-<section class="mockup-cta" id="mockup">
-  <div class="wrap">
-    <div class="mockup-tag"><span></span> Website preview</div>
-    <h2>See how Rose would look<br><em>on your website.</em></h2>
-    <p>Paste your website and see Rose placed right on the page — branded to fit, floating in the corner, ready to catch the next lead.</p>
-    <form class="mockup-search" id="roseMockupForm">
-      <input id="roseMockupWebsite" name="website" placeholder="wildroseautomations.ca" autocomplete="url" inputmode="url">
-      <button class="btn btn-hl" type="submit">See Rose on my site →</button>
-    </form>
-    <div class="mockup-micro"><span>Website first</span><span>Branded preview</span><span>Rose overlay</span></div>
-    <div class="mockup-status" id="mockupStatus">Building the preview below…</div>
-  </div>
-  <div class="mockup-frame-wrap" id="mockupFrameWrap" aria-label="Rose site mockup preview">
-    <div class="mockup-frame-top"><i></i><i></i><i></i><span id="mockupFrameLabel">Rose mockup preview</span></div>
-    <iframe class="mockup-frame" id="mockupFrame" title="Rose mockup preview" loading="lazy"></iframe>
-  </div>
-</section>
-
-<script
-  src="/wildrose-widget-sandbox.js?v=voice-universal-1"
-  data-api-base="https://wildrose-widget.wildeautomations.com"
-  data-title="Rose"
-  data-accent="#ff5722"
-  data-fallback-url="mailto:jack@wildroseautomations.ca"
-  data-greeting="Hi, I’m Rose. Ask questions about our services or tell me what you need a quote for, and I’ll help you reach the owner."
-  data-placeholder="Ask a question or describe your request…"
-  data-business-context="You are the visitor-facing assistant for Wildrose Automations. Help visitors with FAQs, capture quote requests and contact details, and offer owner handoff. Do not act as an owner configuration tool. Rose Basic is $24/month with 75 voice minutes; Pro is $79/month with 250 voice minutes. Extra voice minutes are $0.29/minute. Custom integrations are separately scoped. Do not promise completed bookings, payments or integrations."
-  data-mount="#rose-hero-widget"
-  data-inline="true"
-  data-default-view="voice"
-></script>
-
-<script>
-(function(){
-  const form=document.querySelector('#roseMockupForm');
-  const input=document.querySelector('#roseMockupWebsite');
-  const frame=document.querySelector('#mockupFrame');
-  const frameWrap=document.querySelector('#mockupFrameWrap');
-  const frameLabel=document.querySelector('#mockupFrameLabel');
-  const status=document.querySelector('#mockupStatus');
-  const mockupSection=document.querySelector('#mockup');
-  function syncPreviewRoseVisibility(forceInView){
-    if(!document.body.classList.contains('rose-preview-started'))return;
-    const target=frameWrap?.classList.contains('show')?frameWrap:mockupSection;
-    if(!target)return;
-    const rect=target.getBoundingClientRect();
-    const visible=forceInView===true || (rect.bottom>90 && rect.top<window.innerHeight-90);
-    document.body.classList.toggle('rose-preview-in-view',visible);
+  </section>
+  <main class="shell">
+    <section class="rose-reveal" id="roseReveal" aria-labelledby="roseRevealTitle">
+      <p class="rose-reveal__eyebrow">Rose, made yours</p>
+      <h2 id="roseRevealTitle">One Rose. Your look.</h2>
+      <form class="wr-try-form" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
+        <label for="tryRoseWebsite">Try Rose on your website</label>
+        <div class="wr-try-bar">
+          <input id="tryRoseWebsite" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com" required maxlength="2048" aria-describedby="tryRoseNote">
+          <button type="submit">Build my preview <span aria-hidden="true">→</span></button>
+        </div>
+        <p id="tryRoseNote">Enter a public website address. Your preview appears below on this page; nothing is installed.</p>
+      </form>
+      <div class="rose-reveal__stage" role="img" aria-label="One orange Rose assistant expands into a lineup of seven colourful design variations">
+        <svg class="rose-reveal__arch" viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true"><path d="M 85 315 C 130 72, 369 20, 500 20 C 685 20, 890 90, 927 315"/></svg>
+        <div class="rose-reveal__floor" aria-hidden="true"></div>
+        <div id="roseRevealCards" aria-hidden="true"></div>
+      </div>
+      <section class="wr-inline-preview" id="roseSitePreview" aria-label="Rose website preview" hidden>
+        <div class="wr-inline-preview__bar"><span class="wr-inline-preview__dots" aria-hidden="true">● ● ●</span><strong id="rosePreviewTitle">Building your Rose preview…</strong><button type="button" id="rosePreviewClose" aria-label="Close website preview">Close</button></div>
+        <iframe id="rosePreviewFrame" title="Rose preview for your website" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </section>
+    </section>
+    <section class="stage" id="stage" data-speaker="visitor" aria-labelledby="brainTitle">
+      <h2 class="brain-title" id="brainTitle">Meet Rose’s brain.</h2>
+      <div class="demo-layout">
+        <div class="terminal" aria-label="Illustrated Customer and Rose conversation">
+          <div class="terminal-top"><span class="terminal-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>customer ↔ rose</span><span class="terminal-live">ILLUSTRATED PLAYBACK</span></div>
+          <div class="terminal-log" id="conversation" role="log" aria-live="off"></div>
+          <div class="terminal-footer"><span class="terminal-cursor" aria-hidden="true">›</span><span id="terminalStatus">Rose is listening</span><span class="terminal-pulse" aria-hidden="true"></span></div>
+        </div>
+        <div class="flow" id="flow" aria-label="Translucent brain visualization synchronized to illustrated workflow events"><div class="brain-scene"><canvas class="workflow-graph" id="workflowGraph" aria-label="Animated brain; drag or use arrow keys to rotate" tabindex="0"></canvas><div class="workflow-card" id="workflowCard" aria-live="polite"></div><div class="tool-list" id="toolList"></div></div></div>
+      </div>
+    </section>
+    <p class="demo-disclaimer">The brain conversation is illustrated playback, separate from the live Rose voice test above.</p>
+  </main>
+  <script src="rose-reveal.js?v=2" defer></script>
+  <script src="https://wildroseautomations.ca/wildrose-widget-sandbox.js?v=voice-universal-1" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" data-accent="#ff5722" data-logo="https://wildroseautomations.ca/logos/wildrose.png" data-fallback-url="mailto:jack@wildroseautomations.ca" data-greeting="Hi, I’m Rose. Ask questions about our services or tell me what you need a quote for, and I’ll help you reach the owner." data-placeholder="Ask a question or describe your request…" data-business-context="You are the visitor-facing assistant for Wildrose Automations. Help visitors with FAQs, capture quote requests and contact details, and offer owner handoff. Do not act as an owner configuration tool. Rose Basic is $24/month with 75 voice minutes; Pro is $79/month with 250 voice minutes. Extra voice minutes are $0.29/minute. Custom integrations are separately scoped. Do not promise completed bookings, payments or integrations." data-mount="#liveRoseVoice" data-inline="true" data-default-view="voice"></script>
+  <script src="brain-3d.js?v=calm-1"></script>
+  <script>
+    (async()=>{
+      const scenarios=[
+  {
+    "name": "QUOTE REQUEST",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Hi, do you fix leaking kitchen taps?",
+        "caption": "Hi, do you fix leaking kitchen taps?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "We do. What’s happening with yours?",
+        "caption": "We do. What’s happening with yours?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "It’s been dripping all week. Could I get a quote?",
+        "caption": "It’s been dripping all week. Could I get a quote?"
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "Of course. What email can we reach you on?",
+        "caption": "Of course. What email can we reach you on?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "It’s sam@example.com.",
+        "caption": "It’s sam@example.com."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Thanks, Sam. Our team will get back to you.",
+        "caption": "Thanks, Sam. Our team will get back to you."
+      }
+    ],
+    "tools": [
+      {
+        "at": 4600,
+        "name": "Knowledge",
+        "status": "ANSWER FOUND"
+      },
+      {
+        "at": 12400,
+        "name": "HubSpot",
+        "status": "LEAD CREATED"
+      },
+      {
+        "at": 13800,
+        "name": "Gmail",
+        "status": "SUMMARY SENT"
+      },
+      {
+        "at": 14700,
+        "name": "Twilio",
+        "status": "ALERT SENT"
+      }
+    ]
+  },
+  {
+    "name": "BOOK AN APPOINTMENT",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Do you have anyone available to fix my tap on Tuesday?",
+        "caption": "Do you have anyone available to fix my tap on Tuesday?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "I can check. Is it a leak or another issue?",
+        "caption": "I can check. Is it a leak or another issue?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "It’s leaking under the kitchen sink.",
+        "caption": "It’s leaking under the kitchen sink."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "We have 9:30 available. Does that work for you?",
+        "caption": "We have 9:30 available. Does that work for you?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Yes, that would be great.",
+        "caption": "Yes, that would be great."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "You’re booked for Tuesday at 9:30.",
+        "caption": "You’re booked for Tuesday at 9:30."
+      }
+    ],
+    "tools": [
+      {
+        "at": 11200,
+        "name": "Calendar",
+        "status": "BOOKED"
+      },
+      {
+        "at": 13200,
+        "name": "Gmail",
+        "status": "INVITE SENT"
+      },
+      {
+        "at": 14500,
+        "name": "Twilio",
+        "status": "REMINDER SET"
+      }
+    ]
+  },
+  {
+    "name": "SERVICE QUESTION",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Do you repair heat pumps in Dartmouth?",
+        "caption": "Do you repair heat pumps in Dartmouth?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "Let me check whether we cover your area.",
+        "caption": "Let me check whether we cover your area."
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "Mine keeps switching off. Could someone take a look?",
+        "caption": "Mine keeps switching off. Could someone take a look?"
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "Yes, we cover Dartmouth. What number can we call?",
+        "caption": "Yes, we cover Dartmouth. What number can we call?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "You can reach me at 555-0104.",
+        "caption": "You can reach me at 555-0104."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Thanks. Our service team will give you a call.",
+        "caption": "Thanks. Our service team will give you a call."
+      }
+    ],
+    "tools": [
+      {
+        "at": 3600,
+        "name": "Knowledge",
+        "status": "ANSWER FOUND"
+      },
+      {
+        "at": 11500,
+        "name": "HubSpot",
+        "status": "LEAD CREATED"
+      },
+      {
+        "at": 13400,
+        "name": "Gmail",
+        "status": "TEAM NOTIFIED"
+      }
+    ]
+  },
+  {
+    "name": "JOB STATUS",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Hi, what time is someone coming to fix my boiler?",
+        "caption": "Hi, what time is someone coming to fix my boiler?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "Let me check. Do you have your job number?",
+        "caption": "Let me check. Do you have your job number?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "Yes, it’s NC-4182.",
+        "caption": "Yes, it’s NC-4182."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "Your technician is due today at 2 PM.",
+        "caption": "Your technician is due today at 2 PM."
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Great. Could you text me that?",
+        "caption": "Great. Could you text me that?"
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Of course. I’ll send you the details.",
+        "caption": "Of course. I’ll send you the details."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5700,
+        "name": "HubSpot",
+        "status": "JOB FOUND"
+      },
+      {
+        "at": 12700,
+        "name": "Twilio",
+        "status": "UPDATE SENT"
+      },
+      {
+        "at": 14000,
+        "name": "Gmail",
+        "status": "RECAP SENT"
+      }
+    ]
   }
-  if(!form||!input||!frame||!frameWrap)return;
-  window.addEventListener('scroll',()=>syncPreviewRoseVisibility(),{passive:true});
-  window.addEventListener('resize',()=>syncPreviewRoseVisibility());
-  window.addEventListener('hashchange',()=>setTimeout(()=>syncPreviewRoseVisibility(),50));
-  function buildInline(raw){
-    const site=raw.trim();
-    if(!site){input.focus();return;}
-    const clean=site.replace(/^https?:\/\//i,'').replace(/\/$/,'');
-    frameLabel.textContent='Building Rose mockup for '+clean;
-    try{localStorage.setItem('rosePreviewStarted','1');document.body.classList.add('rose-preview-started','rose-preview-in-view');document.getElementById('roseCreditCard')?.classList.remove('show')}catch(e){}
-    status?.classList.add('show');
-    frameWrap.classList.add('show');
-    frame.src='ai-tool-mockup-final.html?v=site-assistant-2&website='+encodeURIComponent(site)+'&embed=1';
-    frameWrap.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(()=>syncPreviewRoseVisibility(true),80);
-    setTimeout(()=>syncPreviewRoseVisibility(),900);
-  }
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    buildInline(input.value);
-  });
-  function shouldFocusWebsiteInput(){
-    return window.matchMedia('(max-width: 700px), (pointer: coarse)').matches;
-  }
-  function focusWebsiteInputFromCTA(e){
-    if(!shouldFocusWebsiteInput())return;
-    const link=e.target.closest('a[href="#mockup"]');
-    if(!link)return;
-    e.preventDefault();
-    mockupSection.scrollIntoView({behavior:'smooth',block:'start'});
-    // iOS only opens the keyboard when focus happens directly inside the tap handler.
-    input.focus({preventScroll:false});
-    try{input.setSelectionRange(input.value.length,input.value.length)}catch(_){ }
-    setTimeout(()=>input.focus({preventScroll:true}),120);
-    history.replaceState(null,'','#mockup');
-  }
-  document.addEventListener('click',focusWebsiteInputFromCTA,true);
-  frame.addEventListener('load',()=>{
-    status?.classList.remove('show');
-    syncPreviewRoseVisibility();
-    const clean=(input.value||'').replace(/^https?:\/\//i,'').replace(/\/$/,'');
-    frameLabel.textContent=clean ? 'Rose mockup for '+clean : 'Rose mockup preview';
-  });
-  const initialWebsite=new URLSearchParams(location.search).get('website');
-  if(initialWebsite){
-    input.value=initialWebsite;
-    window.addEventListener('load',()=>setTimeout(()=>buildInline(initialWebsite),250));
-  }
-})();
-</script>
-<script>
-// Move Rose into the corner after the hero section, with hysteresis so it does not flicker.
-(function(){
-  let corner=false;
-  function setRoseCorner(next){
-    const slot=document.querySelector('#rose-hero-widget');
-    const root=document.querySelector('#rose-hero-widget .wr-ai');
-    if(!slot||!root)return;
-    if(corner===next)return;
-    corner=next;
-    slot.classList.toggle('corner-active',corner);
-    root.classList.toggle('corner',corner);
-    root.classList.remove('corner-open');
-    const panel=root.querySelector('.wr-panel');
-    const fab=root.querySelector('.wr-fab');
-    if(corner){
-      panel?.classList.remove('open');
-      if(fab) fab.style.display='grid';
-    }else{
-      panel?.classList.add('open');
-      if(fab) fab.style.display='none';
+];
+      const workflowFrames=[
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request",
+      "detail": "Rose identifies the service the customer needs."
+    },
+    {
+      "at": 2200,
+      "tool": "Knowledge",
+      "kind": "search",
+      "state": "working",
+      "verb": "SEARCHING",
+      "title": "Searching service information",
+      "detail": "Looking for the right repair category.",
+      "value": "kitchen faucet repair",
+      "result": "Checking approved service notes"
+    },
+    {
+      "at": 4600,
+      "tool": "Knowledge",
+      "kind": "search",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Service match found",
+      "detail": "The repair request is in scope.",
+      "value": "kitchen faucet repair",
+      "result": "Kitchen plumbing · repair request"
+    },
+    {
+      "at": 9100,
+      "tool": "HubSpot",
+      "kind": "record",
+      "state": "working",
+      "verb": "PREPARING",
+      "title": "Preparing a new lead",
+      "detail": "Rose organizes the request for the team.",
+      "fields": [
+        [
+          "Service",
+          "Faucet repair"
+        ],
+        [
+          "Contact",
+          "sam@example.com"
+        ]
+      ]
+    },
+    {
+      "at": 12400,
+      "tool": "HubSpot",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Lead created",
+      "detail": "The team has a clean record to follow up.",
+      "fields": [
+        [
+          "Service",
+          "Faucet repair"
+        ],
+        [
+          "Contact",
+          "sam@example.com"
+        ]
+      ]
+    },
+    {
+      "at": 13400,
+      "tool": "Gmail",
+      "kind": "message",
+      "state": "working",
+      "verb": "DRAFTING",
+      "title": "Preparing a summary",
+      "detail": "Rose packages the conversation for the inbox.",
+      "value": "Kitchen repair request",
+      "result": "Service, issue, and contact details"
+    },
+    {
+      "at": 13800,
+      "tool": "Gmail",
+      "kind": "message",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Summary sent",
+      "detail": "The repair details are ready for the team.",
+      "value": "Kitchen repair request",
+      "result": "Service, issue, and contact details"
+    },
+    {
+      "at": 14700,
+      "tool": "Twilio",
+      "kind": "message",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Owner alerted",
+      "detail": "A short notification completes the handoff.",
+      "value": "New quote request",
+      "result": "Kitchen faucet · sam@example.com"
     }
-  }
-  function syncRoseCorner(){
-    const hero=document.querySelector('.rose-hero');
-    const root=document.querySelector('#rose-hero-widget .wr-ai');
-    if(!hero||!root)return;
-    if(window.matchMedia('(max-width:620px)').matches){setRoseCorner(true);return}
-    const heroBottom=hero.offsetTop+hero.offsetHeight;
-    const y=window.scrollY;
-    if(!corner && y>heroBottom-170) setRoseCorner(true);
-    else if(corner && y<heroBottom-320) setRoseCorner(false);
-  }
-  function bindRoseCornerClicks(){
-    const root=document.querySelector('#rose-hero-widget .wr-ai');
-    if(!root||root.dataset.cornerBound)return;
-    root.dataset.cornerBound='true';
-    root.querySelector('.wr-fab')?.addEventListener('click',()=>root.classList.add('corner-open'));
-    root.querySelector('.wr-close')?.addEventListener('click',()=>root.classList.remove('corner-open'));
-  }
-  window.addEventListener('scroll',syncRoseCorner,{passive:true});
-  window.addEventListener('resize',syncRoseCorner);
-  window.addEventListener('load',()=>{bindRoseCornerClicks();syncRoseCorner();});
-  setTimeout(()=>{bindRoseCornerClicks();syncRoseCorner();},250);
-})();
-</script>
-
-
-<div class="email-modal" id="emailModal" aria-hidden="true">
-  <div class="email-card" role="dialog" aria-modal="true" aria-labelledby="emailTitle">
-    <div class="email-top"><div><h3 id="emailTitle">Email Wildrose</h3><p>Send the website, question, or setup note. It creates a real Wildrose lead/task.</p></div><button class="email-close" id="closeEmailForm" type="button" aria-label="Close email form">×</button></div>
-    <form class="email-form" id="siteEmailForm">
-      <input name="name" placeholder="Your name" autocomplete="name">
-      <input name="email" type="email" placeholder="Your email" autocomplete="email" required>
-      <input name="website" type="url" placeholder="Website URL optional" autocomplete="url">
-      <textarea name="message" placeholder="What do you want help with?" required></textarea>
-      <button type="submit">Send message →</button>
-      <div class="email-status" id="emailStatus"></div>
-    </form>
-  </div>
-</div>
-
-<div class="rose-credit-card" id="roseCreditCard" role="dialog" aria-modal="false" aria-labelledby="roseCreditTitle" aria-describedby="roseCreditCopy" aria-hidden="true" inert>
-  <div class="rose-credit-top">
-    <div class="rose-credit-kicker"><span></span> Rose launch offer</div>
-    <button class="rose-credit-close" type="button" aria-label="Close Rose launch offer">×</button>
-  </div>
-  <h3 id="roseCreditTitle">Get a $50 Rose launch credit</h3>
-  <p id="roseCreditCopy">Leave your email and we’ll send the install checklist, pricing, and a first-month credit for adding Rose to your website.</p>
-  <form class="rose-credit-form" id="roseCreditForm">
-    <input name="email" type="email" placeholder="Email address" autocomplete="email" required>
-    <input name="website" type="url" placeholder="Website URL optional" autocomplete="url">
-    <button type="submit">Send my Rose credit →</button>
-  </form>
-  <small class="rose-credit-foot">No spam. Just the setup steps and offer.</small>
-  <div class="rose-credit-success">Done — we saved it. We’ll send the Rose setup checklist and launch credit.</div>
-</div>
-
-
-<script>
-(function(){
-  const API='https://wildrose-widget.wildeautomations.com';
-  const modal=document.getElementById('emailModal');
-  const open=document.getElementById('openEmailForm');
-  const close=document.getElementById('closeEmailForm');
-  const form=document.getElementById('siteEmailForm');
-  const status=document.getElementById('emailStatus');
-  if(!modal||!open||!form)return;
-  function show(){modal.classList.add('show');modal.setAttribute('aria-hidden','false');setTimeout(()=>form.querySelector('input[name=email]')?.focus(),60)}
-  function hide(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true')}
-  open.addEventListener('click',e=>{e.preventDefault();show()});
-  close?.addEventListener('click',hide);
-  modal.addEventListener('click',e=>{if(e.target===modal)hide()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide()});
-  form.addEventListener('submit',async e=>{
-    e.preventDefault(); if(!form.reportValidity())return;
-    const button=form.querySelector('button'); const old=button.textContent; button.disabled=true; button.textContent='Sending…'; status.className='email-status'; status.textContent='Sending…';
-    const data=Object.fromEntries(new FormData(form).entries());
-    const payload={businessName:data.name||data.website||'Wildrose website contact',business:data.name||data.website||'Wildrose website contact',email:data.email,website:data.website||'',plan:'Wildrose website contact',source:'homepage-email-form',sourcePage:location.href,notes:`Website contact form
-Name: ${data.name||'Not provided'}
-Email: ${data.email}
-Website: ${data.website||'Not provided'}
-
-Message:
-${data.message||''}`};
-    try{const res=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const json=await res.json().catch(()=>({}));if(!res.ok)throw new Error(json.error||'Could not send message');status.className='email-status ok';status.textContent='Sent — Wildrose has it.';form.reset();window.wrTrack&&window.wrTrack('rose_setup_call_clicked',{source:'homepage-email-form'});setTimeout(hide,1400)}
-    catch(err){status.className='email-status err';status.textContent=err.message||'Could not send. Try again.'}
-    finally{button.disabled=false;button.textContent=old}
-  });
-})();
-</script>
-
-<script>
-// Delayed Rose launch-credit capture. Uses the live Wildrose lead API and hides itself after dismissal/submission.
-(function(){
-  const API=location.hostname==='localhost'||location.hostname==='127.0.0.1'?'https://wildrose-widget.wildeautomations.com':'https://wildrose-widget.wildeautomations.com';
-  const card=document.getElementById('roseCreditCard');
-  const form=document.getElementById('roseCreditForm');
-  if(!card||!form)return;
-  const dismissedKey='roseCreditDismissedUntil';
-  const submittedKey='roseCreditSubmitted';
-  const now=Date.now();
-  const dismissedUntil=Number(localStorage.getItem(dismissedKey)||0);
-  if(localStorage.getItem(submittedKey)==='1'||dismissedUntil>now)return;
-  function show(){if(location.hash==='#mockup'||location.hash==='#purchase'||document.getElementById('purchaseArea')?.classList.contains('show')||localStorage.getItem('rosePreviewStarted')==='1'||document.body.classList.contains('rose-preview-started')||document.body.classList.contains('rose-preview-in-view'))return;if(!localStorage.getItem(submittedKey)&&Number(localStorage.getItem(dismissedKey)||0)<=Date.now()){card.removeAttribute('inert');card.setAttribute('aria-hidden','false');card.classList.add('show')}}
-  function hide(days){card.classList.remove('show');card.setAttribute('aria-hidden','true');card.setAttribute('inert','');if(days)localStorage.setItem(dismissedKey,String(Date.now()+days*86400000))}
-  window.showRoseCreditOffer=show;window.addEventListener('hashchange',()=>{if(location.hash==='#mockup'||location.hash==='#purchase')hide(0)});
-  card.querySelector('.rose-credit-close')?.addEventListener('click',()=>hide(7));
-  setTimeout(show,30000);
-  let scrollShown=false;
-  window.addEventListener('scroll',()=>{if(scrollShown)return;const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);if(window.scrollY/max>.75){scrollShown=true;show()}},{passive:true});
-  let roseTalkTimer=null;
-  document.addEventListener('click',event=>{
-    const started=event.target.closest&&event.target.closest('#rose-hero-widget .wr-start-voice,#rose-hero-widget .wr-send');
-    if(!started||roseTalkTimer)return;
-    roseTalkTimer=setTimeout(show,14000);
-  },true);
-  form.addEventListener('submit',async event=>{
-    event.preventDefault();
-    if(!form.reportValidity())return;
-    const button=form.querySelector('button');
-    const old=button.textContent;
-    button.disabled=true;button.textContent='Saving…';
-    const payload=Object.fromEntries(new FormData(form).entries());
-    payload.business=payload.website||'Rose launch credit popup';
-    payload.businessName=payload.business;
-    payload.plan='Rose launch credit — $50 first-month credit';
-    payload.source='launch-credit-popup';
-    payload.sourcePage=location.href;
-    payload.notes='Visitor requested the $50 Rose launch credit popup offer.';
-    try{
-      const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      const json=await response.json().catch(()=>({}));
-      if(!response.ok)throw new Error(json.error||'Could not save lead');
-      localStorage.setItem(submittedKey,'1');
-      window.wrTrack&&window.wrTrack('rose_checkout_lead_submit',{source:'launch-credit-popup'});
-      card.classList.add('done');
-      setTimeout(()=>card.classList.remove('show'),4200);
-    }catch(error){
-      button.disabled=false;button.textContent=old;
-      alert(error.message||'Could not save that. Please try again.');
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the booking",
+      "detail": "Rose gets the service and preferred day."
+    },
+    {
+      "at": 2100,
+      "tool": "Calendar",
+      "kind": "calendar",
+      "state": "working",
+      "verb": "CHECKING",
+      "title": "Checking availability",
+      "detail": "Looking for an opening on Tuesday.",
+      "value": "Tuesday · repair visit"
+    },
+    {
+      "at": 5000,
+      "tool": "Calendar",
+      "kind": "calendar",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "9:30 AM is available",
+      "detail": "Rose offers the open time to the customer.",
+      "value": "Tuesday · repair visit"
+    },
+    {
+      "at": 9200,
+      "tool": "Calendar",
+      "kind": "calendar",
+      "state": "working",
+      "verb": "BOOKING",
+      "title": "Reserving the visit",
+      "detail": "The customer confirmed the 9:30 AM time.",
+      "value": "Tuesday · 9:30 AM"
+    },
+    {
+      "at": 11200,
+      "tool": "Calendar",
+      "kind": "calendar",
+      "state": "done",
+      "verb": "BOOKED",
+      "title": "Client booked",
+      "detail": "Tuesday at 9:30 AM is on the calendar.",
+      "value": "Tuesday · 9:30 AM"
+    },
+    {
+      "at": 12700,
+      "tool": "Gmail",
+      "kind": "message",
+      "state": "working",
+      "verb": "DRAFTING",
+      "title": "Sending confirmation",
+      "detail": "The customer gets the appointment details.",
+      "value": "Your Tuesday visit",
+      "result": "Faucet repair · 9:30 AM"
+    },
+    {
+      "at": 13200,
+      "tool": "Gmail",
+      "kind": "message",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Confirmation sent",
+      "detail": "The appointment details are in their inbox.",
+      "value": "Your Tuesday visit",
+      "result": "Faucet repair · 9:30 AM"
+    },
+    {
+      "at": 14500,
+      "tool": "Twilio",
+      "kind": "message",
+      "state": "done",
+      "verb": "SCHEDULED",
+      "title": "Reminder scheduled",
+      "detail": "A text reminder is ready for the visit.",
+      "value": "Appointment reminder",
+      "result": "Tuesday · 9:30 AM"
     }
-  });
-})();
-</script>
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the question",
+      "detail": "Rose identifies the service and location."
+    },
+    {
+      "at": 1900,
+      "tool": "Knowledge",
+      "kind": "search",
+      "state": "working",
+      "verb": "SEARCHING",
+      "title": "Searching business information",
+      "detail": "Checking services and coverage.",
+      "value": "heat pumps · Dartmouth",
+      "result": "Searching approved answers"
+    },
+    {
+      "at": 3600,
+      "tool": "Knowledge",
+      "kind": "search",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Answer found",
+      "detail": "Heat pump service is available in Dartmouth.",
+      "value": "heat pumps · Dartmouth",
+      "result": "Service area and repair policy matched"
+    },
+    {
+      "at": 7400,
+      "tool": "HubSpot",
+      "kind": "record",
+      "state": "working",
+      "verb": "PREPARING",
+      "title": "Preparing follow-up",
+      "detail": "Rose gathers what the team will need.",
+      "fields": [
+        [
+          "Service",
+          "Heat pump"
+        ],
+        [
+          "Area",
+          "Dartmouth"
+        ]
+      ]
+    },
+    {
+      "at": 11500,
+      "tool": "HubSpot",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Lead created",
+      "detail": "The callback request is organized.",
+      "fields": [
+        [
+          "Service",
+          "Heat pump"
+        ],
+        [
+          "Area",
+          "Dartmouth"
+        ]
+      ]
+    },
+    {
+      "at": 13400,
+      "tool": "Gmail",
+      "kind": "message",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Team notified",
+      "detail": "The follow-up request is shared.",
+      "value": "Heat pump callback",
+      "result": "Dartmouth service request"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the status request",
+      "detail": "Rose asks for the job reference."
+    },
+    {
+      "at": 2700,
+      "tool": "HubSpot",
+      "kind": "search",
+      "state": "working",
+      "verb": "SEARCHING",
+      "title": "Searching job records",
+      "detail": "Matching the reference number.",
+      "value": "NC-4182",
+      "result": "Checking customer jobs"
+    },
+    {
+      "at": 5700,
+      "tool": "HubSpot",
+      "kind": "record",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Job found",
+      "detail": "Technician scheduled for 2 PM today.",
+      "fields": [
+        [
+          "Job",
+          "NC-4182"
+        ],
+        [
+          "Status",
+          "Scheduled · 2 PM"
+        ]
+      ]
+    },
+    {
+      "at": 11300,
+      "tool": "Twilio",
+      "kind": "message",
+      "state": "working",
+      "verb": "PREPARING",
+      "title": "Preparing a text update",
+      "detail": "Rose confirms the status in writing.",
+      "value": "Repair update",
+      "result": "Technician scheduled for 2 PM"
+    },
+    {
+      "at": 12700,
+      "tool": "Twilio",
+      "kind": "message",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Update sent",
+      "detail": "The customer has the latest status.",
+      "value": "Repair update",
+      "result": "Technician scheduled for 2 PM"
+    },
+    {
+      "at": 14000,
+      "tool": "Gmail",
+      "kind": "message",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Recap sent",
+      "detail": "The team receives the conversation recap.",
+      "value": "Job NC-4182",
+      "result": "Customer update completed"
+    }
+  ]
+];
+      const extraScenarios=[
+  {
+    "name": "RESTAURANT RESERVATION",
+    "label": "Table booking",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Hi, do you have a table for four this Friday?",
+        "caption": "Hi, do you have a table for four this Friday?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "Let me check. What time were you hoping for?",
+        "caption": "Let me check. What time were you hoping for?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "Around seven, if possible.",
+        "caption": "Around seven, if possible."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "We have 7 PM available. Shall I book it?",
+        "caption": "We have 7 PM available. Shall I book it?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Yes, please. The name is Jamie.",
+        "caption": "Yes, please. The name is Jamie."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "All set, Jamie. Friday at seven for four people.",
+        "caption": "All set, Jamie. Friday at seven for four people."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Calendar",
+        "status": "BOOKED"
+      },
+      {
+        "at": 10000,
+        "name": "Gmail",
+        "status": "SENT"
+      },
+      {
+        "at": 14500,
+        "name": "Twilio",
+        "status": "SCHEDULED"
+      }
+    ]
+  },
+  {
+    "name": "ONLINE ORDER",
+    "label": "Order tracking",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Hi, my order still hasn’t arrived.",
+        "caption": "Hi, my order still hasn’t arrived."
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "I can check that. What’s your order number?",
+        "caption": "I can check that. What’s your order number?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "It’s 1048. I ordered it last week.",
+        "caption": "It’s 1048. I ordered it last week."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "It’s on its way and due to arrive tomorrow.",
+        "caption": "It’s on its way and due to arrive tomorrow."
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Oh, great. Can you send me the tracking link?",
+        "caption": "Oh, great. Can you send me the tracking link?"
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Of course. I’ll email it to you.",
+        "caption": "Of course. I’ll email it to you."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Shopify",
+        "status": "FOUND"
+      },
+      {
+        "at": 10000,
+        "name": "Gmail",
+        "status": "SENT"
+      },
+      {
+        "at": 14500,
+        "name": "Zendesk",
+        "status": "SAVED"
+      }
+    ]
+  },
+  {
+    "name": "SUPPORT REQUEST",
+    "label": "Support ticket",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "I can’t log in to my account. Can you help?",
+        "caption": "I can’t log in to my account. Can you help?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "I’ll help you get this sorted. What happens?",
+        "caption": "I’ll help you get this sorted. What happens?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "The page freezes after I enter my password.",
+        "caption": "The page freezes after I enter my password."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "I’ll ask our support team to take a look.",
+        "caption": "I’ll ask our support team to take a look."
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Thanks. My email is sam@example.com.",
+        "caption": "Thanks. My email is sam@example.com."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Thanks, Sam. Our support team will be in touch.",
+        "caption": "Thanks, Sam. Our support team will be in touch."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Zendesk",
+        "status": "CREATED"
+      },
+      {
+        "at": 10000,
+        "name": "Slack",
+        "status": "ALERTED"
+      },
+      {
+        "at": 14500,
+        "name": "Gmail",
+        "status": "SENT"
+      }
+    ]
+  },
+  {
+    "name": "WINDOW QUOTE",
+    "label": "Window quote",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Do you give quotes for replacing windows?",
+        "caption": "Do you give quotes for replacing windows?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "We do. How many windows need replacing?",
+        "caption": "We do. How many windows need replacing?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "Six, in a bungalow.",
+        "caption": "Six, in a bungalow."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "Would Thursday suit you for a measure-up?",
+        "caption": "Would Thursday suit you for a measure-up?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Thursday afternoon would be ideal.",
+        "caption": "Thursday afternoon would be ideal."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Great. I’ll send you the link to choose a time.",
+        "caption": "Great. I’ll send you the link to choose a time."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Salesforce",
+        "status": "CREATED"
+      },
+      {
+        "at": 10000,
+        "name": "Calendly",
+        "status": "READY"
+      },
+      {
+        "at": 14500,
+        "name": "Slack",
+        "status": "ALERTED"
+      }
+    ]
+  },
+  {
+    "name": "SALON WEBSITE ENQUIRY",
+    "label": "Salon website",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Do you build websites for hair salons?",
+        "caption": "Do you build websites for hair salons?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "Yes. What would you like your website to do?",
+        "caption": "Yes. What would you like your website to do?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "I’d like customers to book appointments online.",
+        "caption": "I’d like customers to book appointments online."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "That’s something we can help with. When do you need it?",
+        "caption": "That’s something we can help with. When do you need it?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Next month, ideally. Could someone send me a quote?",
+        "caption": "Next month, ideally. Could someone send me a quote?"
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Absolutely. I’ll pass your enquiry to our design team.",
+        "caption": "Absolutely. I’ll pass your enquiry to our design team."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Notion",
+        "status": "CREATED"
+      },
+      {
+        "at": 10000,
+        "name": "Asana",
+        "status": "CREATED"
+      },
+      {
+        "at": 14500,
+        "name": "Slack",
+        "status": "ALERTED"
+      }
+    ]
+  },
+  {
+    "name": "CUSTOMER RECEIPT",
+    "label": "Receipt request",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "I paid for my repair but didn’t get a receipt.",
+        "caption": "I paid for my repair but didn’t get a receipt."
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "I can help. Do you have the invoice number?",
+        "caption": "I can help. Do you have the invoice number?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "Yes, it’s 2041.",
+        "caption": "Yes, it’s 2041."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "I found your payment. Would you like a copy by email?",
+        "caption": "I found your payment. Would you like a copy by email?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Yes, please. It’s alex@example.com.",
+        "caption": "Yes, please. It’s alex@example.com."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Of course. I’ll send your receipt there.",
+        "caption": "Of course. I’ll send your receipt there."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "QuickBooks",
+        "status": "FOUND"
+      },
+      {
+        "at": 10000,
+        "name": "Stripe",
+        "status": "FOUND"
+      },
+      {
+        "at": 14500,
+        "name": "Gmail",
+        "status": "SENT"
+      }
+    ]
+  },
+  {
+    "name": "GYM CONSULTATION",
+    "label": "Gym consultation",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Do you offer a consultation before I join your gym?",
+        "caption": "Do you offer a consultation before I join your gym?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "We do. Would you prefer online or in person?",
+        "caption": "We do. Would you prefer online or in person?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "Online, please. I’m new to training.",
+        "caption": "Online, please. I’m new to training."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "How about Wednesday at 11 AM?",
+        "caption": "How about Wednesday at 11 AM?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "That works. Can you send me the call link?",
+        "caption": "That works. Can you send me the call link?"
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "You’re booked. I’ll email the link and details.",
+        "caption": "You’re booked. I’ll email the link and details."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Calendar",
+        "status": "BOOKED"
+      },
+      {
+        "at": 10000,
+        "name": "Zoom",
+        "status": "CREATED"
+      },
+      {
+        "at": 14500,
+        "name": "Outlook",
+        "status": "SENT"
+      }
+    ]
+  },
+  {
+    "name": "WEDDING PHOTOGRAPHY",
+    "label": "Wedding booking",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Hi, I’d like to book you for our wedding photos.",
+        "caption": "Hi, I’d like to book you for our wedding photos."
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "Lovely! What date is your wedding?",
+        "caption": "Lovely! What date is your wedding?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "June 12. We’ve already spoken to your photographer.",
+        "caption": "June 12. We’ve already spoken to your photographer."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "Great. Would you like the booking agreement by email?",
+        "caption": "Great. Would you like the booking agreement by email?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Yes, please. Send it to alex@example.com.",
+        "caption": "Yes, please. Send it to alex@example.com."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "I’ll send your agreement and package details.",
+        "caption": "I’ll send your agreement and package details."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Drive",
+        "status": "FOUND"
+      },
+      {
+        "at": 10000,
+        "name": "DocuSign",
+        "status": "READY"
+      },
+      {
+        "at": 14500,
+        "name": "Gmail",
+        "status": "SENT"
+      }
+    ]
+  },
+  {
+    "name": "EVENT ENQUIRY",
+    "label": "Event enquiry",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Can I hire your room for a birthday party?",
+        "caption": "Can I hire your room for a birthday party?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "Of course. What date and how many guests?",
+        "caption": "Of course. What date and how many guests?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "The 18th next month, for about twenty people.",
+        "caption": "The 18th next month, for about twenty people."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "I’ll check that with our events team.",
+        "caption": "I’ll check that with our events team."
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Do you have a projector for a photo slideshow?",
+        "caption": "Do you have a projector for a photo slideshow?"
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "I’ll include that and ask the team to get back to you.",
+        "caption": "I’ll include that and ask the team to get back to you."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Airtable",
+        "status": "SAVED"
+      },
+      {
+        "at": 10000,
+        "name": "Trello",
+        "status": "CREATED"
+      },
+      {
+        "at": 14500,
+        "name": "Teams",
+        "status": "ALERTED"
+      }
+    ]
+  },
+  {
+    "name": "NEWSLETTER SIGNUP",
+    "label": "Newsletter signup",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "How do I hear about your next pottery classes?",
+        "caption": "How do I hear about your next pottery classes?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "I can sign you up for class updates. Which ones?",
+        "caption": "I can sign you up for class updates. Which ones?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "The weekend classes, please.",
+        "caption": "The weekend classes, please."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "Sure. What email would you like us to use?",
+        "caption": "Sure. What email would you like us to use?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "sam@example.com. I’d love to get the updates.",
+        "caption": "sam@example.com. I’d love to get the updates."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "You’re on the list, Sam. Watch for our next class dates.",
+        "caption": "You’re on the list, Sam. Watch for our next class dates."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Mailchimp",
+        "status": "SAVED"
+      },
+      {
+        "at": 10000,
+        "name": "Sheets",
+        "status": "SAVED"
+      },
+      {
+        "at": 14500,
+        "name": "Gmail",
+        "status": "SENT"
+      }
+    ]
+  },
+  {
+    "name": "URGENT SERVICE",
+    "label": "Urgent repair",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "My boiler’s stopped working. Do you do emergency repairs?",
+        "caption": "My boiler’s stopped working. Do you do emergency repairs?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "We do. What’s the address?",
+        "caption": "We do. What’s the address?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "12 Harbour Street. There’s no heating at all.",
+        "caption": "12 Harbour Street. There’s no heating at all."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "I’ll flag this as urgent. What number can we call?",
+        "caption": "I’ll flag this as urgent. What number can we call?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "555-0104. We’re home all afternoon.",
+        "caption": "555-0104. We’re home all afternoon."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Thanks. I’ve asked our on-call team to contact you.",
+        "caption": "Thanks. I’ve asked our on-call team to contact you."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "ClickUp",
+        "status": "CREATED"
+      },
+      {
+        "at": 10000,
+        "name": "Twilio",
+        "status": "ALERTED"
+      },
+      {
+        "at": 14500,
+        "name": "Teams",
+        "status": "ALERTED"
+      }
+    ]
+  },
+  {
+    "name": "CUSTOMER FEEDBACK",
+    "label": "Customer feedback",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Can I leave some feedback about my appointment?",
+        "caption": "Can I leave some feedback about my appointment?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "Of course. How did it go?",
+        "caption": "Of course. How did it go?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "The staff were lovely, but I waited nearly an hour.",
+        "caption": "The staff were lovely, but I waited nearly an hour."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "I’m sorry about the wait. When was your appointment?",
+        "caption": "I’m sorry about the wait. When was your appointment?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Yesterday afternoon, at three.",
+        "caption": "Yesterday afternoon, at three."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Thank you. I’ll pass that to our manager.",
+        "caption": "Thank you. I’ll pass that to our manager."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Typeform",
+        "status": "SAVED"
+      },
+      {
+        "at": 10000,
+        "name": "Sheets",
+        "status": "SAVED"
+      },
+      {
+        "at": 14500,
+        "name": "Slack",
+        "status": "ALERTED"
+      }
+    ]
+  },
+  {
+    "name": "PROPERTY VIEWING",
+    "label": "Property viewing",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Is the apartment on King Street still available?",
+        "caption": "Is the apartment on King Street still available?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "It is. Would you like to arrange a viewing?",
+        "caption": "It is. Would you like to arrange a viewing?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "Yes. Could I come on Saturday morning?",
+        "caption": "Yes. Could I come on Saturday morning?"
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "We have 10 AM available. Would that suit you?",
+        "caption": "We have 10 AM available. Would that suit you?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Perfect. My name is Taylor.",
+        "caption": "Perfect. My name is Taylor."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "You’re booked for Saturday at ten, Taylor.",
+        "caption": "You’re booked for Saturday at ten, Taylor."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Airtable",
+        "status": "FOUND"
+      },
+      {
+        "at": 10000,
+        "name": "Calendar",
+        "status": "BOOKED"
+      },
+      {
+        "at": 14500,
+        "name": "Outlook",
+        "status": "SENT"
+      }
+    ]
+  },
+  {
+    "name": "CUSTOM ORDER",
+    "label": "Custom order",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Do you make outdoor signs for cafés?",
+        "caption": "Do you make outdoor signs for cafés?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "We do. What size are you thinking of?",
+        "caption": "We do. What size are you thinking of?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "About four feet wide, with our café’s logo.",
+        "caption": "About four feet wide, with our café’s logo."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "Great. When would you need it?",
+        "caption": "Great. When would you need it?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Before we open next month. Could I get a price?",
+        "caption": "Before we open next month. Could I get a price?"
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Absolutely. I’ll ask our team to quote for that.",
+        "caption": "Absolutely. I’ll ask our team to quote for that."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Monday",
+        "status": "CREATED"
+      },
+      {
+        "at": 10000,
+        "name": "Drive",
+        "status": "READY"
+      },
+      {
+        "at": 14500,
+        "name": "Slack",
+        "status": "ALERTED"
+      }
+    ]
+  },
+  {
+    "name": "TICKET DOWNLOAD HELP",
+    "label": "Ticket help",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "I can’t download the tickets I bought.",
+        "caption": "I can’t download the tickets I bought."
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "I can help get that sorted. Which event are they for?",
+        "caption": "I can help get that sorted. Which event are they for?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "The comedy show this Friday.",
+        "caption": "The comedy show this Friday."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "What happens when you tap Download?",
+        "caption": "What happens when you tap Download?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Nothing happens. I’m using Chrome on my laptop.",
+        "caption": "Nothing happens. I’m using Chrome on my laptop."
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "I’ll ask our support team to help you get your tickets.",
+        "caption": "I’ll ask our support team to help you get your tickets."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "Intercom",
+        "status": "SAVED"
+      },
+      {
+        "at": 10000,
+        "name": "GitHub",
+        "status": "CREATED"
+      },
+      {
+        "at": 14500,
+        "name": "Discord",
+        "status": "ALERTED"
+      }
+    ]
+  },
+  {
+    "name": "NEW ENQUIRY",
+    "label": "Lead handoff",
+    "lines": [
+      {
+        "at": 0,
+        "who": "visitor",
+        "text": "Do you clean offices outside normal working hours?",
+        "caption": "Do you clean offices outside normal working hours?"
+      },
+      {
+        "at": 1800,
+        "who": "rose",
+        "text": "We do. How big is the office?",
+        "caption": "We do. How big is the office?"
+      },
+      {
+        "at": 4100,
+        "who": "visitor",
+        "text": "About 3,000 square feet.",
+        "caption": "About 3,000 square feet."
+      },
+      {
+        "at": 6200,
+        "who": "rose",
+        "text": "And how often would you need us?",
+        "caption": "And how often would you need us?"
+      },
+      {
+        "at": 9000,
+        "who": "visitor",
+        "text": "Twice a week. Could someone email me a price?",
+        "caption": "Twice a week. Could someone email me a price?"
+      },
+      {
+        "at": 11000,
+        "who": "rose",
+        "text": "Of course. I’ll arrange a quote for you.",
+        "caption": "Of course. I’ll arrange a quote for you."
+      }
+    ],
+    "tools": [
+      {
+        "at": 5000,
+        "name": "HubSpot",
+        "status": "CREATED"
+      },
+      {
+        "at": 10000,
+        "name": "Zapier",
+        "status": "QUEUED"
+      },
+      {
+        "at": 14500,
+        "name": "Gmail",
+        "status": "SENT"
+      }
+    ]
+  }
+];
+      const extraFrames=[
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Calendar",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Checking table availability"
+    },
+    {
+      "at": 5000,
+      "tool": "Calendar",
+      "kind": "record",
+      "state": "done",
+      "verb": "BOOKED",
+      "title": "Table reserved"
+    },
+    {
+      "at": 7400,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing your reservation details"
+    },
+    {
+      "at": 10000,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Confirmation sent"
+    },
+    {
+      "at": 12300,
+      "tool": "Twilio",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing a reminder"
+    },
+    {
+      "at": 14500,
+      "tool": "Twilio",
+      "kind": "record",
+      "state": "done",
+      "verb": "SCHEDULED",
+      "title": "Reminder scheduled"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Shopify",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Looking up order 1048"
+    },
+    {
+      "at": 5000,
+      "tool": "Shopify",
+      "kind": "record",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Order found"
+    },
+    {
+      "at": 7400,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the tracking details"
+    },
+    {
+      "at": 10000,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Tracking link sent"
+    },
+    {
+      "at": 12300,
+      "tool": "Zendesk",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Updating the support conversation"
+    },
+    {
+      "at": 14500,
+      "tool": "Zendesk",
+      "kind": "record",
+      "state": "done",
+      "verb": "SAVED",
+      "title": "Conversation saved"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Zendesk",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Organizing the reported issue"
+    },
+    {
+      "at": 5000,
+      "tool": "Zendesk",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Support ticket created"
+    },
+    {
+      "at": 7400,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing a support handoff"
+    },
+    {
+      "at": 10000,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Support team alerted"
+    },
+    {
+      "at": 12300,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing your ticket confirmation"
+    },
+    {
+      "at": 14500,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Ticket confirmation sent"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Salesforce",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Recording the window enquiry"
+    },
+    {
+      "at": 5000,
+      "tool": "Salesforce",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Window enquiry saved"
+    },
+    {
+      "at": 7400,
+      "tool": "Calendly",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Finding measure-up times"
+    },
+    {
+      "at": 10000,
+      "tool": "Calendly",
+      "kind": "record",
+      "state": "done",
+      "verb": "READY",
+      "title": "Booking link prepared"
+    },
+    {
+      "at": 12300,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Sharing the quote request"
+    },
+    {
+      "at": 14500,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Window team notified"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Notion",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Recording the salon’s requirements"
+    },
+    {
+      "at": 5000,
+      "tool": "Notion",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Website enquiry saved"
+    },
+    {
+      "at": 7400,
+      "tool": "Asana",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing a quote review"
+    },
+    {
+      "at": 10000,
+      "tool": "Asana",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Quote review task created"
+    },
+    {
+      "at": 12300,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Sharing the website enquiry"
+    },
+    {
+      "at": 14500,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Design team notified"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "QuickBooks",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Looking up invoice 2041"
+    },
+    {
+      "at": 5000,
+      "tool": "QuickBooks",
+      "kind": "record",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Payment status found"
+    },
+    {
+      "at": 7400,
+      "tool": "Stripe",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Looking up the payment receipt"
+    },
+    {
+      "at": 10000,
+      "tool": "Stripe",
+      "kind": "record",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Receipt found"
+    },
+    {
+      "at": 12300,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing your receipt email"
+    },
+    {
+      "at": 14500,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Receipt sent"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Calendar",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Checking consultation times"
+    },
+    {
+      "at": 5000,
+      "tool": "Calendar",
+      "kind": "record",
+      "state": "done",
+      "verb": "BOOKED",
+      "title": "Consultation booked"
+    },
+    {
+      "at": 7400,
+      "tool": "Zoom",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the consultation call"
+    },
+    {
+      "at": 10000,
+      "tool": "Zoom",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Call link created"
+    },
+    {
+      "at": 12300,
+      "tool": "Outlook",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the consultation invitation"
+    },
+    {
+      "at": 14500,
+      "tool": "Outlook",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Invitation sent"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Drive",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Finding the photography package"
+    },
+    {
+      "at": 5000,
+      "tool": "Drive",
+      "kind": "record",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Package details found"
+    },
+    {
+      "at": 7400,
+      "tool": "DocuSign",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the booking agreement"
+    },
+    {
+      "at": 10000,
+      "tool": "DocuSign",
+      "kind": "record",
+      "state": "done",
+      "verb": "READY",
+      "title": "Signing request prepared"
+    },
+    {
+      "at": 12300,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the booking email"
+    },
+    {
+      "at": 14500,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Booking details sent"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Airtable",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Checking the event enquiry details"
+    },
+    {
+      "at": 5000,
+      "tool": "Airtable",
+      "kind": "record",
+      "state": "done",
+      "verb": "SAVED",
+      "title": "Event enquiry saved"
+    },
+    {
+      "at": 7400,
+      "tool": "Trello",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the event planning card"
+    },
+    {
+      "at": 10000,
+      "tool": "Trello",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Planning card created"
+    },
+    {
+      "at": 12300,
+      "tool": "Teams",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the event team handoff"
+    },
+    {
+      "at": 14500,
+      "tool": "Teams",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Events team notified"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Mailchimp",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing your newsletter signup"
+    },
+    {
+      "at": 5000,
+      "tool": "Mailchimp",
+      "kind": "record",
+      "state": "done",
+      "verb": "SAVED",
+      "title": "Newsletter signup saved"
+    },
+    {
+      "at": 7400,
+      "tool": "Sheets",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Recording your class interests"
+    },
+    {
+      "at": 10000,
+      "tool": "Sheets",
+      "kind": "record",
+      "state": "done",
+      "verb": "SAVED",
+      "title": "Preferences saved"
+    },
+    {
+      "at": 12300,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing a welcome email"
+    },
+    {
+      "at": 14500,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Welcome email sent"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "ClickUp",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing an urgent service task"
+    },
+    {
+      "at": 5000,
+      "tool": "ClickUp",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Urgent task created"
+    },
+    {
+      "at": 7400,
+      "tool": "Twilio",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the urgent team alert"
+    },
+    {
+      "at": 10000,
+      "tool": "Twilio",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "On-call team alerted"
+    },
+    {
+      "at": 12300,
+      "tool": "Teams",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Sharing the service request"
+    },
+    {
+      "at": 14500,
+      "tool": "Teams",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Service team notified"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Typeform",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Organizing the customer feedback"
+    },
+    {
+      "at": 5000,
+      "tool": "Typeform",
+      "kind": "record",
+      "state": "done",
+      "verb": "SAVED",
+      "title": "Feedback recorded"
+    },
+    {
+      "at": 7400,
+      "tool": "Sheets",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the feedback log"
+    },
+    {
+      "at": 10000,
+      "tool": "Sheets",
+      "kind": "record",
+      "state": "done",
+      "verb": "SAVED",
+      "title": "Feedback log updated"
+    },
+    {
+      "at": 12300,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the manager handoff"
+    },
+    {
+      "at": 14500,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Manager notified"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Airtable",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Checking the property listing"
+    },
+    {
+      "at": 5000,
+      "tool": "Airtable",
+      "kind": "record",
+      "state": "done",
+      "verb": "FOUND",
+      "title": "Listing details found"
+    },
+    {
+      "at": 7400,
+      "tool": "Calendar",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Checking viewing availability"
+    },
+    {
+      "at": 10000,
+      "tool": "Calendar",
+      "kind": "record",
+      "state": "done",
+      "verb": "BOOKED",
+      "title": "Viewing booked"
+    },
+    {
+      "at": 12300,
+      "tool": "Outlook",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the viewing invitation"
+    },
+    {
+      "at": 14500,
+      "tool": "Outlook",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Viewing details sent"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Monday",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Organizing the custom order"
+    },
+    {
+      "at": 5000,
+      "tool": "Monday",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Custom order request created"
+    },
+    {
+      "at": 7400,
+      "tool": "Drive",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing a place for artwork"
+    },
+    {
+      "at": 10000,
+      "tool": "Drive",
+      "kind": "record",
+      "state": "done",
+      "verb": "READY",
+      "title": "Artwork folder prepared"
+    },
+    {
+      "at": 12300,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the design team brief"
+    },
+    {
+      "at": 14500,
+      "tool": "Slack",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Design team notified"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "Intercom",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Recording the ticket download problem"
+    },
+    {
+      "at": 5000,
+      "tool": "Intercom",
+      "kind": "record",
+      "state": "done",
+      "verb": "SAVED",
+      "title": "Support conversation saved"
+    },
+    {
+      "at": 7400,
+      "tool": "GitHub",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing a ticket download issue"
+    },
+    {
+      "at": 10000,
+      "tool": "GitHub",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Issue created"
+    },
+    {
+      "at": 12300,
+      "tool": "Discord",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Sharing the customer’s ticket problem"
+    },
+    {
+      "at": 14500,
+      "tool": "Discord",
+      "kind": "record",
+      "state": "done",
+      "verb": "ALERTED",
+      "title": "Support team notified"
+    }
+  ],
+  [
+    {
+      "at": 0,
+      "tool": "Rose",
+      "kind": "idle",
+      "state": "working",
+      "verb": "LISTENING",
+      "title": "Understanding the request"
+    },
+    {
+      "at": 2300,
+      "tool": "HubSpot",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Organizing the cleaning enquiry"
+    },
+    {
+      "at": 5000,
+      "tool": "HubSpot",
+      "kind": "record",
+      "state": "done",
+      "verb": "CREATED",
+      "title": "Lead created"
+    },
+    {
+      "at": 7400,
+      "tool": "Zapier",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the approved handoff"
+    },
+    {
+      "at": 10000,
+      "tool": "Zapier",
+      "kind": "record",
+      "state": "done",
+      "verb": "QUEUED",
+      "title": "Handoff queued"
+    },
+    {
+      "at": 12300,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "working",
+      "verb": "WORKING",
+      "title": "Preparing the service summary"
+    },
+    {
+      "at": 14500,
+      "tool": "Gmail",
+      "kind": "record",
+      "state": "done",
+      "verb": "SENT",
+      "title": "Team summary sent"
+    }
+  ]
+];
+      scenarios.push(...extraScenarios);workflowFrames.push(...extraFrames);
+      const studio=document.querySelector('#stage'),conversation=document.querySelector('#conversation'),terminalStatus=document.querySelector('#terminalStatus'),toolList=document.querySelector('#toolList'),workflowCard=document.querySelector('#workflowCard');
+      const duration=18000,playbackRate=.72,reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const logos={"Rose": "wildrose.png", "Knowledge": "icons/knowledge.svg", "Calendar": "icons/googlecalendar.svg", "HubSpot": "icons/hubspot.svg", "Gmail": "icons/gmail.svg", "Twilio": "icons/twilio.svg", "Notion": "icons/notion.svg", "Airtable": "icons/airtable.svg", "Stripe": "icons/stripe.svg", "Shopify": "icons/shopify.svg", "Zendesk": "icons/zendesk.svg", "Asana": "icons/asana.svg", "Trello": "icons/trello.svg", "ClickUp": "icons/clickup.svg", "Zoom": "icons/zoom.svg", "Calendly": "icons/calendly.svg", "Sheets": "icons/googlesheets.svg", "Drive": "icons/googledrive.svg", "QuickBooks": "icons/quickbooks.svg", "Mailchimp": "icons/mailchimp.svg", "Discord": "icons/discord.svg", "Intercom": "icons/intercom.svg", "GitHub": "icons/github.svg", "Typeform": "icons/typeform.svg", "Zapier": "icons/zapier.svg", "Slack": "icons/slack.svg", "Salesforce": "icons/salesforce.svg", "Monday": "icons/mondaydotcom.svg", "Teams": "icons/microsoftteams.svg", "Outlook": "icons/microsoftoutlook.svg", "DocuSign": "icons/docusign.svg"};
+      let index=0,time=0,playing=!reduced,shownFrame=-1,shownTranscript='';
+      let shuffleBag=[];
+      function pickExample(){
+        if(!shuffleBag.length){shuffleBag=scenarios.map((_,i)=>i).filter(i=>i!==index);for(let i=shuffleBag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffleBag[i],shuffleBag[j]]=[shuffleBag[j],shuffleBag[i]]}}
+        return shuffleBag.pop();
+      }
+      const graphCanvas=document.querySelector('#workflowGraph'),graphContext=graphCanvas.getContext('2d');
+      await RoseBrain3D.ready;
+      const brainModel=RoseBrain3D.createModel(),webNodes=brainModel.nodes,webEdges=brainModel.edges;
+      const adjacency=webNodes.map(()=>[]);
+      for(const [a,b] of webEdges){const p=webNodes[a],q=webNodes[b],distance=Math.hypot(p.x-q.x,p.y-q.y,p.z-q.z);adjacency[a].push({i:b,distance});adjacency[b].push({i:a,distance})}
+      const toolNames=[...new Set(workflowFrames.flat().map(f=>f.tool).filter(t=>t!=='Rose'))];
+      const toolNode={Rose:0,...Object.fromEntries(toolNames.map((name,i)=>[name,1+(i*73+19)%(webNodes.length-1)]))};
+      const bulbNames=new Map(Object.entries(toolNode).map(([name,i])=>[i,name]));
+      let routeTool='',routePath=[0],speechRouteTool='',speechRoute=[0];
+      function shortestRoute(start,end){
+        const distances=webNodes.map(()=>Infinity),previous=webNodes.map(()=>-1),visited=new Set();distances[start]=0;
+        for(let step=0;step<webNodes.length;step++){
+          let current=-1;for(let i=0;i<distances.length;i++)if(!visited.has(i)&&(current<0||distances[i]<distances[current]))current=i;
+          if(current<0||!Number.isFinite(distances[current]))break;
+          if(current===end)break;visited.add(current);
+          for(const edge of adjacency[current]){const candidate=distances[current]+edge.distance;if(candidate<distances[edge.i]){distances[edge.i]=candidate;previous[edge.i]=current}}
+        }
+        if(start===end)return [start];if(previous[end]===-1)return [start];
+        const path=[end];while(path[0]!==start)path.unshift(previous[path[0]]);return path;
+      }
+      function activateTool(frame){
+        if(routeTool!==frame.tool){const start=routePath.at(-1)??0;routePath=shortestRoute(start,toolNode[frame.tool]??0);routeTool=frame.tool}
+        graphCanvas.dataset.tool=frame.tool;graphCanvas.dataset.routeBulb=String(routePath.at(-1));graphCanvas.dataset.routeLength=String(routePath.length);
+      }
+      let graphWidth=0,graphHeight=0,graphClock=0,graphLast=performance.now(),uiKey='',baseRevision=-1;
+      const baseCanvas=document.createElement('canvas'),baseContext=baseCanvas.getContext('2d');
+      function sizeGraph(){const rect=graphCanvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);graphWidth=rect.width;graphHeight=rect.height;graphCanvas.width=Math.round(graphWidth*ratio);graphCanvas.height=Math.round(graphHeight*ratio);graphContext.setTransform(ratio,0,0,ratio,0,0);baseRevision=-1}
+      // Jagged, flickering discharges, drawn in the projected brain network.
+      // Stable per 55ms tick so the bolts crackle without random frame noise.
+      function bolt(ctx,p,q,seed,alpha,scale){
+        if(!p||!q||alpha<=0)return;
+        const dx=q.x-p.x,dy=q.y-p.y,length=Math.hypot(dx,dy);
+        if(length<2)return;
+        const tick=Math.floor(graphClock/55),jitter=Math.min(8*scale,length*.17);
+        const points=[p];
+        for(let k=1;k<6;k++){
+          const t=k/6,noise=Math.sin((seed*31+k*97+tick*37)*12.9898)*43758.5453;
+          const offset=((noise-Math.floor(noise))*2-1)*jitter*Math.sin(Math.PI*t);
+          points.push({x:p.x+dx*t-dy/length*offset,y:p.y+dy*t+dx/length*offset});
+        }
+        points.push(q);
+        ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);
+        for(let k=1;k<points.length;k++)ctx.lineTo(points[k].x,points[k].y);
+        ctx.lineJoin='round';ctx.lineCap='round';
+        ctx.strokeStyle=`rgba(255,104,30,${alpha*.65})`;ctx.lineWidth=7*scale;ctx.shadowBlur=18*scale;ctx.shadowColor='#ff6a27';ctx.stroke();
+        ctx.shadowBlur=0;ctx.strokeStyle=`rgba(255,182,84,${alpha})`;ctx.lineWidth=2.7*scale;ctx.stroke();
+        ctx.strokeStyle=`rgba(255,249,223,${Math.min(1,alpha*1.25)})`;ctx.lineWidth=1.05*scale;ctx.stroke();
+      }
+      function drawGraph(now){
+        const delta=Math.min(Math.max(now-graphLast,0),100);graphLast=now;
+        if(playing&&!document.hidden&&!reduced){graphClock+=delta;time+=delta*playbackRate;if(time>=duration)next()}
+        const timelineKey=[index,scenarios[index].lines.filter(line=>line.at<=time).length,workflowFrames[index].filter(item=>item.at<=time).length,Math.floor(time/150),playing].join(':');
+        if(timelineKey!==uiKey){uiKey=timelineKey;render()}
+        if(!graphWidth||!graphHeight)sizeGraph();
+        const ctx=graphContext,frame=workflowFrames[index].filter(item=>item.at<=time).at(-1),active=toolNode[frame.tool]??0;
+        const completed=new Set(scenarios[index].tools.filter(tool=>time>=tool.at).map(tool=>tool.name));
+        const scale=Math.min(graphWidth/430,1.12);
+        const projected=RoseBrain3D.project(brainModel,graphWidth,graphHeight,graphClock),point=i=>projected[i];
+        ctx.clearRect(0,0,graphWidth,graphHeight);
+        RoseBrain3D.paint(ctx,brainModel,projected,graphWidth,graphHeight);
+        // Cache the stationary network; only electrical pulses change each frame.
+        if(baseRevision!==brainModel.revision){
+          baseCanvas.width=graphCanvas.width;baseCanvas.height=graphCanvas.height;
+          baseContext.setTransform(graphCanvas.width/graphWidth,0,0,graphCanvas.height/graphHeight,0,0);
+          for(const [a,b] of webEdges){const p=point(a),q=point(b),front=(p.z+q.z)/2>0;baseContext.beginPath();baseContext.moveTo(p.x,p.y);baseContext.lineTo(q.x,q.y);baseContext.strokeStyle=front?'#ffc59b25':'#efa16814';baseContext.lineWidth=front?.65:.45;baseContext.stroke()}
+          for(let i=0;i<webNodes.length;i++){
+            const p=point(i),name=bulbNames.get(i),radius=(name?2.7:i%11===0?1.2:.65)*scale*p.perspective;
+            baseContext.beginPath();baseContext.arc(p.x,p.y,radius,0,Math.PI*2);baseContext.fillStyle=p.z>0?'#ef9d6345':'#ef9d6320';baseContext.fill();
+            if(name){baseContext.beginPath();baseContext.arc(p.x,p.y,radius+2.5*scale,0,Math.PI*2);baseContext.strokeStyle='#efa66a35';baseContext.lineWidth=.7;baseContext.stroke()}
+          }
+          baseRevision=brainModel.revision;
+        }
+        ctx.drawImage(baseCanvas,0,0,graphWidth,graphHeight);
+        // All bright activity is keyed to this scenario's transcript and workflow timestamps.
+        // Silence between events leaves the anatomy and faint network visible, not random lightning.
+        const latestLine=scenarios[index].lines.filter(line=>line.at<=time).at(-1);
+        const lineAge=latestLine?time-latestLine.at:Infinity,frameAge=time-frame.at;
+        const strength=(age,span)=>age>=0&&age<span?Math.min(1,age/120)*(1-age/span):0;
+        const speechPower=strength(lineAge,1700),workPower=strength(frameAge,1450);
+        graphCanvas.dataset.cue=speechPower>=workPower&&speechPower>0?`speech:${latestLine.who}`:workPower>0?`tool:${frame.tool}:${frame.state}`:'idle';
+        graphCanvas.dataset.power=(Math.max(speechPower,workPower)).toFixed(2);
+        function discharge(path,power,age,seed){
+          if(power<=0||path.length<2)return null;
+          const travel=Math.min(1,age/620),position=(travel*path.length-1),tipIndex=Math.min(path.length-2,Math.max(0,Math.floor(position)));
+          let head=null;
+          for(let n=0;n<path.length-1;n++){
+            if(n>tipIndex)break;
+            const p=point(path[n]),q=point(path[n+1]),fraction=n===tipIndex?Math.min(1,Math.max(.08,position-n+1)):1;
+            const tip={x:p.x+(q.x-p.x)*fraction,y:p.y+(q.y-p.y)*fraction};
+            bolt(ctx,p,tip,seed+n,power*(n===tipIndex?1:.52),scale);
+            if(n===tipIndex)head=tip;
+          }
+          // A short cluster flares around the current impulse, then dies with its event.
+          for(let k=0;k<3;k++){
+            const at=path[Math.max(0,tipIndex-k)],branches=adjacency[at];
+            if(!branches.length)continue;
+            const branch=branches[(Math.floor(age/110)+seed+k*7)%branches.length];
+            if(branch.i!==path[Math.max(0,tipIndex-k)+1])bolt(ctx,point(at),point(branch.i),seed+97+k,power*(.58-k*.11),scale);
+          }
+          return head;
+        }
+        // Speech lights a path out from Rose; tool activity travels on the actual selected route.
+        if(speechRouteTool!==frame.tool){speechRoute=shortestRoute(0,active);if(speechRoute.length<2)speechRoute=[0,adjacency[0][0].i];speechRouteTool=frame.tool}
+        const speechHead=discharge(speechRoute,speechPower,lineAge,latestLine?.who==='rose'?37:11);
+        const toolHead=discharge(routePath,workPower,frameAge,71);
+        const head=workPower>speechPower?toolHead:speechHead;
+        const routeSet=new Set(routePath);
+        for(let i=0;i<webNodes.length;i++){
+          const p=point(i),name=bulbNames.get(i),hot=i===active,done=completed.has(name),onRoute=routeSet.has(i);
+          if(!hot&&!done&&!onRoute)continue;
+          const radius=(hot?6:name?3.4:i%11===0?1.6:.65)*scale*p.perspective;
+          ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fillStyle=hot?'#fff0d0':done?'#ffd2a0':onRoute?'#ffc990':'#ef9d6330';ctx.shadowBlur=hot?20:done?8:0;ctx.shadowColor='#ff9444';ctx.fill();ctx.shadowBlur=0;
+          if(name||i%13===0){ctx.beginPath();ctx.arc(p.x,p.y,radius+(hot?5:2.5)*scale,0,Math.PI*2);ctx.strokeStyle=hot?'#ffdcab99':done?'#ffb77b77':'#efa66a3d';ctx.lineWidth=.7;ctx.stroke()}
+        }
+        if(head){ctx.beginPath();ctx.arc(head.x,head.y,3.5*scale,0,Math.PI*2);ctx.fillStyle='#fff7de';ctx.shadowBlur=20;ctx.shadowColor='#ff984c';ctx.fill();ctx.shadowBlur=0}
+        if(!reduced)requestAnimationFrame(drawGraph);
+      }
+      graphCanvas.addEventListener('rose:brain-change',()=>{if(reduced)drawGraph(performance.now())});
+      sizeGraph();new ResizeObserver(()=>{sizeGraph();if(reduced)drawGraph(performance.now())}).observe(graphCanvas);if(!reduced)requestAnimationFrame(drawGraph);
 
-
-<script>
-// Let the embedded Rose mockup redirect the top-level page after checkout lead save.
-window.addEventListener('message',function(e){
-  try{
-    var data=e.data||{};
-    if(!data||!data.target)return;
-    if(data.type!=='roseCheckoutRedirect'&&data.type!=='roseOpenBuy')return;
-    var target=new URL(String(data.target), location.href);
-    if(!/(^|\.)square\.link$/.test(target.hostname) && target.hostname!==location.hostname && target.hostname!=='wildroseautomations.ca')return;
-    window.location.href=target.href;
-  }catch(err){console.error('Rose checkout redirect failed',err)}
-});
-</script>
-
+      function showWorkflow(frame){
+        activateTool(frame);
+        workflowCard.dataset.tool=frame.tool;
+        workflowCard.className=`workflow-card ${frame.kind} ${frame.state}`;
+        if(!workflowCard.firstElementChild)workflowCard.innerHTML='<div class="wf-head"><span class="wf-mark"><img alt=""></span><span class="wf-tool"></span><span class="wf-state"></span></div><h2 class="wf-title"></h2>';
+        const icon=workflowCard.querySelector('img');if(icon.getAttribute('src')!==logos[frame.tool])icon.src=logos[frame.tool];
+        for(const [selector,value] of [['.wf-tool',frame.tool],['.wf-state',frame.verb],['.wf-title',frame.title]]){const el=workflowCard.querySelector(selector);if(el.textContent!==value)el.textContent=value}
+      }
+      function reset(){
+        time=reduced?15000:0;shownFrame=-1;shownTranscript='';toolList.replaceChildren();
+        routeTool='';routePath=[0];speechRouteTool='';speechRoute=[0];
+        for(const tool of scenarios[index].tools){const el=document.createElement('div');el.className='tool';el.dataset.name=tool.name;const copy=document.createElement('div'),name=document.createElement('strong'),status=document.createElement('span');name.textContent=tool.name;status.textContent='READY';copy.append(name,status);el.append(copy);toolList.append(el)}
+        graphLast=performance.now();uiKey='';render();if(reduced)drawGraph(performance.now());
+      }
+      function render(){
+        const scene=scenarios[index],lines=scene.lines.filter(line=>line.at<=time),latest=lines.at(-1);
+        const transcriptKey=`${index}:${lines.length}`;
+        if(shownTranscript!==transcriptKey){
+          shownTranscript=transcriptKey;
+          const entries=lines.map(line=>{
+            const entry=document.createElement('div');entry.className=`terminal-entry ${line.who==='rose'?'terminal-rose':'terminal-customer'}`;
+            const label=document.createElement('span');label.className='terminal-speaker';label.textContent=line.who==='rose'?'rose':'customer';
+            const message=document.createElement('p');message.textContent=line.text;
+            entry.append(label,message);return entry;
+          });
+          conversation.replaceChildren(...entries);
+          conversation.scrollTop=conversation.scrollHeight;
+        }
+        const frames=workflowFrames[index],frameIndex=frames.findLastIndex(frame=>frame.at<=time),frame=frames[Math.max(frameIndex,0)];
+        if(frameIndex!==shownFrame){shownFrame=frameIndex;showWorkflow(frame)}
+        const workflowCurrent=frame.at>(latest?.at??-1);
+        studio.dataset.speaker=workflowCurrent?'tool':latest?.who||'visitor';
+        studio.classList.toggle('speaker-person',latest?.who==='visitor'&&time-latest.at<1500);
+        const nextReply=scene.lines.find(line=>line.who==='rose'&&line.at>time);
+        const status=nextReply&&latest?.who==='visitor'?'Rose is checking the request':latest?.who==='rose'?'Rose responded':'Rose is listening';
+        if(terminalStatus.textContent!==status)terminalStatus.textContent=status;
+        for(const tool of scene.tools){const el=[...toolList.children].find(item=>item.dataset.name===tool.name);const done=time>=tool.at,working=!done&&frame.tool===tool.name&&frame.state==='working';el.classList.toggle('active',done);el.classList.toggle('working',working);el.querySelector('span').textContent=done?tool.status:working?frame.verb:'READY'}
+      }
+      function next(){index=pickExample();playing=!reduced;reset()}
+      reset();
+    })().catch(error=>{console.error('Rose demo failed to initialize',error);document.querySelector('#flow').setAttribute('aria-label','Brain demo failed to load; reload the page');});
+  </script>
+  <script>
+    (()=>{
+      const form=document.getElementById('try-rose');
+      const input=document.getElementById('tryRoseWebsite');
+      const shell=document.getElementById('roseSitePreview');
+      const frame=document.getElementById('rosePreviewFrame');
+      const title=document.getElementById('rosePreviewTitle');
+      const builder='https://wildroseautomations.ca/ai-tool-mockup-final.html';
+      form.addEventListener('submit',event=>{
+        event.preventDefault();
+        const website=input.value.trim();
+        if(!website)return;
+        let site;
+        try { site=new URL(/^https?:\/\//i.test(website)?website:`https://${website}`); }
+        catch { input.setCustomValidity('Enter a valid website address.');input.reportValidity();return; }
+        if(!['http:','https:'].includes(site.protocol)||!site.hostname.includes('.')){
+          input.setCustomValidity('Enter a public website address.');input.reportValidity();return;
+        }
+        input.setCustomValidity('');
+        const url=new URL(builder);url.searchParams.set('website',site.href);url.searchParams.set('embed','1');
+        title.textContent=`Building Rose for ${site.hostname}…`;
+        frame.title=`Rose website preview for ${site.hostname}`;
+        shell.hidden=false;
+        frame.src=url.href;
+        shell.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+      input.addEventListener('input',()=>input.setCustomValidity(''));
+      frame.addEventListener('load',()=>{
+        if(!shell.hidden)title.textContent=frame.src.includes('buy=1')?'Choose your Rose plan':`Rose preview for ${frame.title.replace('Rose website preview for ','')}`;
+      });
+      document.getElementById('rosePreviewClose').addEventListener('click',()=>{
+        shell.hidden=true;frame.removeAttribute('src');form.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+      window.addEventListener('message',event=>{
+        if(event.origin!=='https://wildroseautomations.ca'||event.source!==frame.contentWindow||!event.data||typeof event.data!=='object')return;
+        if(event.data.type==='roseBuyView'){
+          title.textContent=event.data.active===true?'Choose your Rose plan':`Rose preview for ${frame.title.replace('Rose website preview for ','')}`;
+          shell.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+        if(event.data.type==='roseOpenBuy'){
+          try {
+            const target=new URL(event.data.target);
+            if(target.origin!==new URL(builder).origin||target.pathname!==new URL(builder).pathname||target.searchParams.get('buy')!=='1')return;
+            title.textContent='Choose your Rose plan';
+            frame.src=target.href;
+            shell.scrollIntoView({behavior:'smooth',block:'start'});
+          } catch { /* Ignore malformed messages. */ }
+        }
+        if(event.data.type==='roseCheckoutRedirect'){
+          try {const target=new URL(event.data.target);if(target.protocol==='https:')window.location.assign(target.href)}catch { /* Ignore malformed messages. */ }
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
