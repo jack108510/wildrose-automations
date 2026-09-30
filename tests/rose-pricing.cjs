@@ -12,6 +12,7 @@ const expectations = [
 for (const [file, expected] of expectations) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   for (const text of expected) assert(html.includes(text), `${file} missing ${text}`);
+  assert(html.includes('Prices in CAD'), `${file} must identify billing currency`);
   assert(!/(?:25|100|250) voice minutes|250\/month/.test(html), `${file} has stale pricing copy`);
   console.log('PASS pricing allowance', file);
 }
