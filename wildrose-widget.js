@@ -29,10 +29,11 @@
   const $ = sel => root.querySelector(sel), $$ = sel => Array.from(root.querySelectorAll(sel));
   const panel = $(".wr-panel"), fab = $(".wr-fab"), input = $(".wr-input"), log = $(".wr-chat-log"), toast = $(".wr-toast");
   let chatId = null, retellClient = null;
-  fab.addEventListener("click", () => { panel.classList.add("open"); fab.style.display = "none"; input.focus(); });
+  fab.addEventListener("click", () => { setView("voice"); panel.classList.add("open"); fab.style.display = "none"; });
   $(".wr-close").addEventListener("click", () => { panel.classList.remove("open"); fab.style.display = "flex"; });
   $$(".wr-tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
   function setView(view){ $$(".wr-tab").forEach(t=>t.classList.toggle("active",t.dataset.view===view)); $$(".wr-view").forEach(v=>v.classList.toggle("active",v.dataset.view===view)); $(".wr-compose").style.display = view === "chat" ? "flex" : "none"; }
+  setView("voice");
   function addMsg(role, text){ if(role === "bot"){ const row=document.createElement("div"); row.className="wr-row"; row.innerHTML='<div class="wr-avatar">R</div>'; const bubble=document.createElement("div"); bubble.className="wr-msg bot"; bubble.textContent=text; row.appendChild(bubble); log.appendChild(row); log.parentElement.scrollTop=log.parentElement.scrollHeight; return bubble; } const el=document.createElement("div"); el.className="wr-msg user"; el.textContent=text; log.appendChild(el); log.parentElement.scrollTop=log.parentElement.scrollHeight; return el; }
   async function api(path, body){ const r=await fetch(cfg.apiBase + path,{method:"POST",headers:{"Content-Type":"application/json","bypass-tunnel-reminder":"1"},body:JSON.stringify(body||{})}); const data=await r.json().catch(()=>({})); if(!r.ok) throw new Error(data.error||"Request failed"); return data; }
   async function ensureChat(){ if(chatId) return chatId; const data=await api("/api/chat/start",{page:location.href}); chatId=data.chatId; return chatId; }

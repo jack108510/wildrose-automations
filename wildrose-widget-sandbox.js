@@ -18,7 +18,7 @@
     website: script?.dataset.website || "",
     businessContext: script?.dataset.businessContext || "",
     services: script?.dataset.services || "",
-    defaultView: script?.dataset.defaultView || (script?.dataset.inline === "true" ? "chat" : "voice"),
+    defaultView: "voice", // Rose always opens in Voice, including inline and legacy chat embeds.
   };
   const fallbackHref = /^https:\/\//i.test(cfg.fallbackUrl) || /^mailto:[^\s@]+@[^\s@]+$/i.test(cfg.fallbackUrl)
     ? cfg.fallbackUrl

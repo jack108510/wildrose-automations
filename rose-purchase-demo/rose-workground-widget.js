@@ -164,6 +164,7 @@
     $$(".wr-view").forEach(v => v.classList.toggle("active", v.dataset.view === view));
     $(".wr-compose").style.display = view === "chat" ? "flex" : "none";
   }
+  setView("voice");
   function applyPublishedConfig(config) {
     if (!config) return;
     const a = config.appearance || {};
