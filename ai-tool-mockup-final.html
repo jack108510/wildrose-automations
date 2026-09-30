@@ -89,6 +89,16 @@ body.setup-mode.ready .screen{border-color:color-mix(in srgb,var(--orange) 16%,#
 /* END CENTERED POST-MOCKUP BUY BUTTON */
 
 /* END ROSE FUNNEL PREVIEW */
+/* Keep Rose compact over the client site; do not resize the mockup window. */
+body .site-frame .wr-ai.contained .wr-panel{width:min(310px,calc(100vw - 52px))!important;height:min(430px,calc(100vh - 110px))!important;border-radius:26px!important}
+body .site-frame .wr-ai.contained .wr-panel:after{border-radius:25px}
+body .site-frame .wr-ai.contained .wr-fab{width:54px!important;height:54px!important;border-radius:19px!important}
+body .site-frame .wr-ai.contained .wr-dot{width:40px;height:40px;border-radius:14px}
+body .site-frame .wr-ai.contained .wr-head{padding:12px 13px 9px}
+body .site-frame .wr-ai.contained .wr-tabs{margin:0 13px 9px}
+body .site-frame .wr-ai.contained .wr-voice{min-height:200px;padding:10px}
+body .site-frame .wr-ai.contained .wr-orb{width:100px;height:100px;margin-bottom:12px}
+@media(max-width:620px){body .site-frame .wr-ai.contained .wr-panel{width:min(280px,calc(100vw - 52px))!important;height:min(400px,calc(100vh - 110px))!important}}
 body.embed-mode .top,body.embed-mode .hero{display:none!important}body.embed-mode{background:#fbf7f1!important}body.embed-mode .mock-section{margin-top:0!important;padding-top:22px!important}body.embed-mode .mock-section.show{display:block!important}
 body.buy-mode .top,body.buy-mode .hero,body.buy-mode .browser,body.buy-mode .easy-buy{display:none!important}body.buy-mode .mock-section{padding-top:16px!important;margin-top:0!important}body.buy-mode .screen{min-height:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}body.buy-mode .buy-screen.active{margin-top:10px!important;margin-bottom:42px!important}
 .checkout-fallback-link{display:none}.checkout-fallback-link.show{display:inline-flex}
