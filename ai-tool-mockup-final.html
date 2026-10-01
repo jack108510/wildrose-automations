@@ -233,16 +233,18 @@ function automationList(v){return Array.isArray(v?.automations)&&v.automations.l
 function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2800)}
 function siteAssistantContext(data,brand,url){
   const services=[...(data.services||[]),...(data.detected?.services||[])].filter(Boolean).slice(0,8);
-  const tools=[...(data.currentTools||[]),...(data.detectedTools||[])].filter(Boolean).slice(0,8);
   return [
     `Business name: ${brand}`,
     `Website: ${host(url)}`,
     data.industry?`Industry/type: ${data.industry}`:'',
     data.summary?`Site summary: ${data.summary}`:'',
     data.email?`Public contact email: ${data.email}`:'',
+    data.phones?.length?`Public phone number: ${data.phones.join(', ')}`:'',
     services.length?`Services/products found on the site: ${services.join(', ')}`:'',
-    tools.length?`Detected tools/platforms: ${tools.join(', ')}`:'',
-    `Role: You are the helpful front desk assistant for ${brand}. Refer to yourself as ${brand}'s assistant, not Wildrose's assistant. Answer from the website context and collect lead/contact details when needed.`
+    data.areasServed?.length?`Areas served: ${data.areasServed.join(', ')}`:'',
+    data.hours?.length?`Hours: ${data.hours.join(', ')}`:'',
+    `Role: You are the helpful front desk assistant for ${brand}. Answer from this site's public facts. If the answer is not on the site, say you are not sure rather than inventing one.`,
+    data.siteContext?`Public website content: ${data.siteContext}`:''
   ].filter(Boolean).join('\n').slice(0,3600);
 }
 function widgetClientId(brand,url){return ('preview-'+(brand||host(url)||'rose')).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80)||'preview-rose'}
@@ -251,7 +253,7 @@ function installRealRoseWidget(cfg){
   document.getElementById('realRoseWidgetScript')?.remove();
   const script=document.createElement('script');
   script.id='realRoseWidgetScript';
-  script.src='wildrose-widget-sandbox.js?v=voice-universal-1';
+  script.src='wildrose-widget-sandbox.js?v=site-context-2';
   script.dataset.apiBase=API;
   script.dataset.title=cfg.title||'Rose';
   script.dataset.businessName=cfg.businessName||cfg.title||'Preview business';
@@ -268,6 +270,7 @@ function installRealRoseWidget(cfg){
   script.dataset.website=cfg.url||'';
   script.dataset.businessContext=cfg.businessContext||'';
   script.dataset.services=cfg.services||'';
+  script.dataset.previewMode='true';
   script.dataset.mount='.site-frame';
   script.dataset.contained='true';
   document.body.appendChild(script);
