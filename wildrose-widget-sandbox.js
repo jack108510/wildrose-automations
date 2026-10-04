@@ -80,6 +80,17 @@
   const log = $(".wr-chat-log");
   let chatId = null;
   let retellClient = null;
+  function voiceVisitorId() {
+    const key = "rose-voice-visitor";
+    try {
+      let id = localStorage.getItem(key);
+      if (!id || !/^[a-f0-9-]{20,80}$/i.test(id)) {
+        id = crypto.randomUUID();
+        localStorage.setItem(key, id);
+      }
+      return id;
+    } catch { return crypto.randomUUID(); }
+  }
   let voiceBusy = false;
 
   root.querySelectorAll("img").forEach(img => img.addEventListener("error", () => {
@@ -220,7 +231,7 @@
       status.textContent = "Connecting…";
       const [{ RetellWebClient }, call] = await Promise.all([
         import("https://esm.sh/retell-client-js-sdk@2.0.7"),
-        api("/api/voice/start", { page: location.href, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, previewMode: cfg.previewMode })
+        api("/api/voice/start", { page: location.href, voiceVisitorId: voiceVisitorId(), businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, previewMode: cfg.previewMode })
       ]);
       retellClient = new RetellWebClient();
       let speechReleaseTimer = null;
