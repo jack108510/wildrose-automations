@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const thanks = readFileSync('thank-you.html','utf8');
+const help = readFileSync('rose-install-help.html','utf8');
+assert.doesNotMatch(thanks, /const roseSnippet\s*=/, 'public thank-you must not construct client code from query parameters');
+assert.doesNotMatch(thanks, /id="copySnippetBtn"/, 'public thank-you must not offer unverified client code');
+assert.doesNotMatch(thanks, /id="snippetCode"/, 'public thank-you must not display unverified client code');
+assert.match(thanks, /Wildrose sends the client-specific install code after payment and setup are verified/i);
+assert.doesNotMatch(help, /<div class="code">.*wildrose-widget\.js/, 'install help must not show a nonfunctional example script');
+console.log('Rose public install handoff guards passed');
