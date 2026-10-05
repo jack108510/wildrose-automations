@@ -51,6 +51,26 @@ test('embeddable websites keep an iframe and do not trigger a screenshot capture
   } finally {await app.close()}
 });
 
+test('mobile screenshot preview keeps Rose panel in view after opening', async () => {
+  const app=await setup('screenshot');
+  try {
+    await app.page.setViewportSize({width:390,height:844});
+    await app.page.locator('.site-screenshot img').waitFor({timeout:12000});
+    await app.page.locator('.wr-fab').click();
+    await app.page.waitForFunction(()=>{
+      const panel=document.querySelector('.wr-panel.open');
+      return panel&&getComputedStyle(panel).opacity==='1';
+    },null,{timeout:7000});
+    const bounds=await app.page.evaluate(()=>{
+      const frame=document.querySelector('.site-frame').getBoundingClientRect();
+      const panel=document.querySelector('.wr-panel.open').getBoundingClientRect();
+      return {frame:{left:frame.left,right:frame.right,top:frame.top,bottom:frame.bottom},panel:{left:panel.left,right:panel.right,top:panel.top,bottom:panel.bottom}};
+    });
+    assert.ok(bounds.panel.left>=bounds.frame.left-1 && bounds.panel.right<=bounds.frame.right+1);
+    assert.ok(bounds.panel.top>=bounds.frame.top-1 && bounds.panel.bottom<=bounds.frame.bottom+1);
+  } finally {await app.close()}
+});
+
 test('failed captures show an honest original-site link without hiding Rose', async () => {
   const app=await setup('screenshot',true);
   try {
