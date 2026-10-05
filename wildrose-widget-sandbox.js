@@ -58,12 +58,15 @@
   style.textContent = css;
   document.head.appendChild(style);
 
+  const headerIdentity = cfg.previewMode
+    ? '<div class="wr-title"><h3>Ai Front Desk</h3></div>'
+    : `<div class="wr-mark"><img src="${cfg.logo}" alt=""></div><div class="wr-title"><h3>${cfg.title}</h3><small>${cfg.subtitle}</small></div>`;
   const root = document.createElement("div");
   root.className = cfg.inline ? "wr-ai inline" : (cfg.contained ? "wr-ai contained" : "wr-ai");
   root.innerHTML = `
     <button class="wr-fab" aria-label="Open Rose assistant"><span class="wr-dot"><img src="${cfg.logo}" alt=""></span></button>
-    <section class="wr-panel" aria-label="${cfg.title}">
-      <header class="wr-head"><div class="wr-top"><div class="wr-brand"><div class="wr-mark"><img src="${cfg.logo}" alt=""></div><div class="wr-title"><h3>${cfg.title}</h3><small>${cfg.subtitle}</small></div></div><button class="wr-close" aria-label="Close">×</button></div></header>
+    <section class="wr-panel" aria-label="${cfg.previewMode ? 'Ai Front Desk' : cfg.title}">
+      <header class="wr-head"><div class="wr-top"><div class="wr-brand">${headerIdentity}</div><button class="wr-close" aria-label="Close">×</button></div></header>
       <div class="wr-tabs" role="tablist"><button class="wr-tab" data-view="chat">Chat</button><button class="wr-tab active" data-view="voice">Voice</button></div>
       <main class="wr-view" data-view="chat"><div class="wr-chat-log"><div class="wr-row"><div class="wr-avatar"><img src="${cfg.logo}" alt=""></div><div class="wr-msg bot">${cfg.greeting}</div></div></div></main>
       <main class="wr-view active" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Tap start and speak naturally.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></main>
