@@ -100,7 +100,10 @@
 @media (prefers-reduced-motion: reduce) { .terminal-entry, .terminal-pulse { animation: none; } }
 
 
-/* Client access */
-.wr-site-login{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border:1px solid #ffffff55;border-radius:40px;color:#fff!important;background:#ffffff0a}
+/* Client and purchase actions stay together at the right edge of the header. */
+.wr-site-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-left:auto;white-space:nowrap}
+.wr-site-login,.wr-site-buy{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:40px;white-space:nowrap}
+.wr-site-login{border:1px solid #ffffff55;color:#fff!important;background:#ffffff0a}
 .wr-site-login:hover{background:#ffffff18;border-color:#ffffff99}
-@media(max-width:680px){.wr-site-nav .wr-site-wrap{gap:12px;flex-wrap:wrap}.wr-site-nav .wr-site-links{order:4;flex-basis:100%;justify-content:center;gap:24px}.wr-site-login,.wr-site-buy{padding:11px 15px}.wr-site-login{margin-left:auto}}
+.wr-site-buy{padding-inline:22px}
+@media(max-width:680px){.wr-site-nav .wr-site-wrap{gap:12px;flex-wrap:wrap}.wr-site-nav .wr-site-links{order:4;flex-basis:100%;justify-content:center;gap:24px}.wr-site-actions{gap:8px}.wr-site-login,.wr-site-buy{min-height:40px;padding:0 14px}}
