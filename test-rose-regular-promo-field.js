@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const page = fs.readFileSync(require('node:path').join(__dirname, 'ai-tool-mockup-final.html'), 'utf8');
+const form = page.match(/<form class="checkout-form" id="checkoutForm">([\s\S]*?)<\/form>/)?.[1] || '';
+assert.ok(form, 'regular checkout form exists');
+assert.match(form, /name="promoCode"[^>]*autocomplete="off"/, 'regular checkout offers an optional promo code field');
+assert.match(form, /id="promoResult"/, 'promo errors appear with the form');
+assert.match(page, /new FormData\(form\)/, 'checkout submits form fields, including promo code');
+assert.match(page, /if\(enteredPromo&&!saved\.promoApplied\)/, 'invalid codes cannot continue to payment');
+console.log('regular checkout promo field tests passed');
