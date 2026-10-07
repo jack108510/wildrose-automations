@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Start your Rose trial | Wildrose Automations</title>
+<style>
+:root{color-scheme:light;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#24201e;background:#f8f6f2}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 10% 5%,#ffe8db,transparent 42%),#f8f6f2}
+main{width:min(100%,560px)}.brand{display:block;font-size:13px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#b85a30;margin:0 0 20px 5px}
+.card{background:white;border:1px solid #e9ded6;border-radius:28px;padding:clamp(24px,6vw,40px);box-shadow:0 22px 70px #56332312}
+h1{font-size:clamp(28px,6vw,39px);line-height:1.12;letter-spacing:-.04em;margin:0 0 12px}p{line-height:1.55;color:#685f59;margin:0 0 22px}
+.offer{border:1px solid #f4d4c2;background:#fff8f3;border-radius:16px;padding:15px 18px;margin:0 0 24px}.offer strong{display:block;color:#9b451e;font-size:17px}.offer span{font-size:13px;color:#6d5c52}
+form{display:grid;gap:15px}label{display:grid;gap:6px;font-size:13px;font-weight:700}input{border:1px solid #d8d1cb;border-radius:11px;padding:13px 14px;font:inherit;font-size:16px;width:100%;color:#24201e;background:#fff}input[readonly]{background:#f7f5f2;color:#514943}input:focus{outline:2px solid #e9804a;outline-offset:1px}
+button{border:0;border-radius:12px;padding:16px 20px;background:#da6c37;color:#fff;font:inherit;font-weight:800;font-size:16px;cursor:pointer;margin-top:4px}button:hover{background:#bd5627}button:disabled{opacity:.65;cursor:wait}
+.note{font-size:13px;margin:18px 0 0}.error{color:#a2251e;font-weight:700;margin:0;font-size:14px}.error:empty{display:none}
+</style>
+</head>
+<body>
+<main>
+  <span class="brand">Wildrose Automations · Rose</span>
+  <div class="card">
+    <h1>Start your free month of Rose</h1>
+    <p>Rose Basic for KMC Spark's website. Submit your details and we'll help get Rose set up on your site.</p>
+    <div class="offer"><strong>First month free · no payment today</strong><span>Your month starts when Rose is activated. No automatic charge; continuing afterward requires arranging paid checkout.</span></div>
+    <form id="trialForm">
+      <label>Business name<input name="businessName" value="KMC Spark" required maxlength="180"></label>
+      <label>Website<input name="website" value="https://kmcspark.com/" readonly required></label>
+      <label>Business email<input name="email" type="email" value="hello@kmcspark.com" readonly required></label>
+      <input type="hidden" name="plan" value="Rose Basic — CA$39/mo">
+      <input type="hidden" name="promoCode" value="KMCSPARK">
+      <input type="hidden" name="source" value="kmcspark-direct-trial-checkout">
+      <p class="error" id="error" role="alert"></p>
+      <button type="submit">Start my free month →</button>
+    </form>
+    <p class="note">We’ll email the setup steps to hello@kmcspark.com. You approve Rose before it goes live.</p>
+  </div>
+</main>
+<script>
+const form = document.getElementById('trialForm');
+const error = document.getElementById('error');
+form.addEventListener('submit', async event => {
+  event.preventDefault();
+  const button = form.querySelector('button[type=submit]');
+  button.disabled = true;
+  button.textContent = 'Starting your trial…';
+  error.textContent = '';
+  try {
+    const payload = Object.fromEntries(new FormData(form).entries());
+    payload.sourcePage = location.href;
+    const response = await fetch('https://wildrose-widget.wildeautomations.com/api/rose-checkout-lead', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || 'Unable to start the trial right now.');
+    if (!result.promoApplied || result.checkoutRequired !== false || !result.nextUrl?.startsWith('https://wildroseautomations.ca/')) {
+      throw new Error('The free-month offer was not confirmed. No payment was taken. Please contact Wildrose.');
+    }
+    location.assign(result.nextUrl);
+  } catch (err) {
+    error.textContent = err.message || 'Unable to start the trial right now.';
+    button.disabled = false;
+    button.textContent = 'Start my free month →';
+  }
+});
+</script>
+</body>
+</html>
