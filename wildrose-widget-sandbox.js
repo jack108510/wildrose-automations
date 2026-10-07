@@ -9,6 +9,7 @@
     ownerEmail: script?.dataset.ownerEmail || script?.dataset.leadEmail || script?.dataset.notificationEmail || "",
     fallbackUrl: script?.dataset.fallbackUrl || "",
     businessId: script?.dataset.businessId || script?.dataset.clientId || "",
+    loadPublished: script?.dataset.loadPublished !== "false",
     mount: script?.dataset.mount || "",
     inline: script?.dataset.inline === "true",
     contained: script?.dataset.contained === "true",
@@ -111,6 +112,66 @@
     $(".wr-compose").style.display = view === "chat" ? "flex" : "none";
   }
   setView(cfg.defaultView);
+  function applyPublishedConfig(config) {
+    if (!config) return false;
+    const a = config.appearance || {};
+    const copy = a.widgetCopy || {};
+    cfg.title = a.assistantName || config.settings?.assistantName || cfg.title;
+    cfg.subtitle = copy.subtitle ?? a.greetingMessage ?? cfg.subtitle;
+    cfg.greeting = copy.greeting || config.greeting || a.greetingMessage || cfg.greeting;
+    cfg.accent = a.brandPrimary || cfg.accent;
+    cfg.businessContext = (config.context || []).map(n => n.text).filter(Boolean).join("\n").slice(0, 3600) || cfg.businessContext;
+    cfg.businessName = config.settings?.businessName || cfg.businessName;
+    cfg.website = config.settings?.website || cfg.website;
+    cfg.ownerEmail = config.settings?.ownerEmail || cfg.ownerEmail;
+    cfg.logo = a.avatarUrl || cfg.logo;
+    root.style.setProperty("--accent", a.brandPrimary || cfg.accent);
+    root.style.setProperty("--accent-soft", a.brandAccent || a.brandPrimary || cfg.accent);
+    root.style.setProperty("--rose-bg", a.backgroundColor || "#fffaf3");
+    root.style.setProperty("--rose-text", a.textColor || "#18120f");
+    root.style.setProperty("--rose-bubble", a.bubbleColor || "rgba(255,255,255,.54)");
+    root.style.setProperty("--rose-button", a.buttonColor || a.brandPrimary || cfg.accent);
+    root.style.setProperty("--sphere-a", a.brandPrimary || cfg.accent);
+    root.style.setProperty("--sphere-b", a.brandAccent || a.brandPrimary || cfg.accent);
+    $(".wr-title h3").forEach(el => el.textContent = copy.title || cfg.title);
+    $(".wr-title small").forEach(el => { el.textContent = cfg.subtitle; el.hidden = !String(cfg.subtitle || "").trim(); });
+    const greet = $(".wr-msg.bot"); if (greet) greet.textContent = cfg.greeting;
+    if (input) input.placeholder = `Ask ${cfg.title}…`;
+    if (copy.ready) $(".wr-status").textContent = copy.ready;
+    if (copy.voiceHint) $(".wr-note").textContent = copy.voiceHint;
+    if (copy.startButton) $(".wr-start-voice").textContent = copy.startButton;
+    if (copy.chatTab) $('[data-view="chat"].wr-tab').textContent = copy.chatTab;
+    if (copy.voiceTab) $('[data-view="voice"].wr-tab').textContent = copy.voiceTab;
+    return true;
+  }
+  async function loadPublishedConfig() {
+    if (!cfg.apiBase || !cfg.loadPublished || (!cfg.businessId && !cfg.website)) return null;
+    const qs = new URLSearchParams({ businessId: cfg.businessId || "", ownerEmail: cfg.ownerEmail || "", website: cfg.website || "" });
+    try {
+      const response = await fetch(`${cfg.apiBase}/api/rose-public-config?${qs}`, { cache: "no-store" });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.config) return null;
+      applyPublishedConfig(data.config);
+      return data.config;
+    } catch (err) {
+      console.warn("Rose published config unavailable", err);
+      return null;
+    }
+  }
+  if (cfg.mount === "#rose-workground-widget") {
+    window.__roseWorkgroundApplyConfig = applyPublishedConfig;
+    window.__roseWorkgroundLoadPublishedConfig = loadPublishedConfig;
+    window.__roseWorkgroundSetIdentity = identity => {
+      if (!identity) return;
+      cfg.businessId = identity.businessId || cfg.businessId;
+      cfg.businessName = identity.businessName || cfg.businessName;
+      cfg.ownerEmail = identity.ownerEmail || cfg.ownerEmail;
+      cfg.website = identity.website || cfg.website;
+      cfg.loadPublished = true;
+      return loadPublishedConfig();
+    };
+  }
+  if (cfg.mount !== "#rose-workground-widget") loadPublishedConfig();
   function addMsg(role, text) {
     if (role === "bot") {
       const row = document.createElement("div");
