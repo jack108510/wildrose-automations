@@ -4,6 +4,9 @@ const page = fs.readFileSync(require('node:path').join(__dirname, 'ai-tool-mocku
 const form = page.match(/<form class="checkout-form" id="checkoutForm">([\s\S]*?)<\/form>/)?.[1] || '';
 assert.ok(form, 'regular checkout form exists');
 assert.match(form, /name="promoCode"[^>]*autocomplete="off"/, 'regular checkout offers an optional promo code field');
+assert.match(page, /Rose Basic — CA\$39\/mo/, 'published Basic price matches backend');
+assert.match(page, /Rose Pro — CA\$129\/mo/, 'published Pro price matches backend');
+assert.doesNotMatch(page, /Rose (?:Basic|Pro) — \$(?:24|79)\/mo/, 'stale prices are absent');
 assert.match(form, /id="promoResult"/, 'promo errors appear with the form');
 assert.match(page, /new FormData\(form\)/, 'checkout submits form fields, including promo code');
 assert.match(page, /if\(enteredPromo&&!saved\.promoApplied\)/, 'invalid codes cannot continue to payment');
