@@ -59,16 +59,15 @@ fbq('trackCustom', 'rose_thank_you_viewed');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2453637905131468&ev=PageView&noscript=1" /></noscript>
 <!-- End Meta Pixel Code -->
-
 <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","y3isf2gtkw");window.wrTrack=function(name,params){try{if(window.clarity&&name)window.clarity("event",name)}catch(e){}};window.addEventListener("load",function(){window.wrTrack&&window.wrTrack("rose_install_guide_view");});</script>
 </head>
 <body>
-<nav class="nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a><span class="nav-note">Wildrose account signup</span></div></nav>
+<nav class="nav"><div class="wrap"><a class="brand" href="index.html"><img src="logos/wildrose.png" alt="">Wildrose</a><span class="nav-note">Rose website setup</span></div></nav>
 <header class="hero wrap">
   <div class="hero-card">
-    <span class="eyebrow">Sign up for Wildrose</span>
+    <span class="eyebrow">Website setup</span>
     <h1 id="title">Get Rose on <em>your website.</em></h1>
-    <p class="lead" id="intro">Create your Wildrose account first. After signup, your Rose install options unlock on this page.</p>
+    <p class="lead" id="intro">Invite Wildrose to your website. We install Rose, test it, and confirm when it is connected.</p>
     <p class="setup-id" id="setupId"></p>
     <div class="meta">
       <div class="pill"><small>Business</small><b id="businessOut">Your business</b></div>
@@ -78,29 +77,6 @@ fbq('trackCustom', 'rose_thank_you_viewed');
   </div>
 </header>
 
-
-
-<section class="signup-shell" id="signupShell">
-  <section class="account-card" id="accountCard" aria-label="Create Wildrose account">
-    <h2 id="accountTitle">Create your</h2>
-    <p id="accountCopy">Use your email, create a password, and confirm it.</p>
-    <form class="account-form" id="accountForm">
-      <label class="field-label">Email<span>Your Wildrose login email.</span><input id="accountEmail" name="email" type="email" autocomplete="email" required></label>
-      <label class="field-label">Password<span>Use at least 8 characters.</span><input id="accountPassword" name="password" type="password" minlength="8" autocomplete="new-password" placeholder="Password" required></label>
-      <label class="field-label">Confirm password<span>Type it again.</span><input id="accountPasswordConfirm" name="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Confirm password" required></label>
-      <button class="signup-submit" id="accountSubmit" type="submit">Create account</button>
-    </form>
-    <form class="profile-form" id="profileForm">
-      <label class="field-label">Name<span>Who should Wildrose contact?</span><input id="profileName" name="name" type="text" autocomplete="name" placeholder="Full name" required></label>
-      <label class="field-label">Phone number<span>For setup help only.</span><input id="profilePhone" name="phone" type="tel" autocomplete="tel" placeholder="Phone number" required></label>
-      <button class="signup-submit" id="profileSubmit" type="submit">Continue</button>
-      <button class="signup-secondary" id="profileSkip" type="button">Skip for now</button>
-    </form>
-    <div class="signup-security">We never ask for your website password here.</div>
-    <div class="account-status" id="accountStatus"></div>
-  </section>
-</section>
-<div class="wrap account-lock-note" id="accountLockNote"></div>
 
 
 <main class="wrap layout clean-install">
@@ -118,7 +94,7 @@ fbq('trackCustom', 'rose_thank_you_viewed');
         <button class="btn dark-ghost" id="accessBtn" type="button">I invited Wildrose</button>
         <button class="btn dark-ghost" id="checkBtn" type="button">Check connection</button>
       </div>
-      <a class="btn dark-ghost" id="dashboardLink" href="/dashboard.html">Open dashboard</a>
+      <a class="btn dark-ghost" id="dashboardLink" href="https://jack108510.github.io/rose-dashboard-preview/workground/">Back to Workground</a>
         <button class="btn dark-ghost problem-btn" id="problemBtn" type="button">I’m having problems</button>
       <p class="fine problem-note">If anything feels confusing, tap the problem button. It emails Wildrose with your setup details and we’ll reach back out.</p>
     </div>
@@ -143,14 +119,9 @@ const API='https://wildrose-widget.wildeautomations.com';
 const params=new URLSearchParams(location.search);
 function pending(){try{return JSON.parse(localStorage.getItem('rosePendingInstall')||'{}')||{}}catch{return {}}}
 const saved=pending();
-const data={id:params.get('clientId')||params.get('id')||saved.id||'',businessName:params.get('businessName')||saved.businessName||'',website:params.get('website')||saved.website||'',email:params.get('email')||saved.email||'',sitePlatform:params.get('sitePlatform')||params.get('platform')||saved.sitePlatform||''};
+const data={id:params.get('checkoutLeadId')||params.get('clientId')||params.get('id')||saved.id||'',businessName:params.get('businessName')||saved.businessName||'',website:params.get('website')||saved.website||'',email:params.get('email')||saved.email||'',sitePlatform:params.get('sitePlatform')||params.get('platform')||saved.sitePlatform||''};
 const cleanHost=(data.website||'').replace(/^https?:\/\//i,'').replace(/\/$/,'');
-const accountKey='roseAccountCreated:'+((data.id||'')+'|'+(data.email||'')).toLowerCase();
-function accountCreated(){try{return localStorage.getItem(accountKey)==='1'}catch{return false}}
-function setAccountUnlocked(done){document.body.classList.toggle('account-locked',!done);const card=document.getElementById('accountCard');card?.classList.toggle('done',done);card?.classList.remove('profile-step');document.getElementById('accountTitle').textContent=done?'Wildrose account ready':'Create your';document.getElementById('accountCopy').textContent=done?'Your account is ready.':'Use your email, create a password, and confirm it.';document.getElementById('accountForm').style.display=done?'none':'grid';document.getElementById('profileForm').style.display='none';document.querySelector('.signup-security').style.display=done?'none':'block';document.getElementById('accountStatus').textContent=done?'Account created — install options unlocked.':''}
-setAccountUnlocked(accountCreated());
 const business=data.businessName||cleanHost||'Your business';
-document.getElementById('accountEmail').value=data.email||'';
 const rawProvider=(data.sitePlatform||'Unknown').trim()||'Unknown';
 const lower=rawProvider.toLowerCase();
 const guides={
@@ -174,17 +145,16 @@ document.getElementById('websiteOut').textContent=cleanHost||'Your website';
 document.getElementById('providerOut').textContent=guide.unknown?'Not detected':guide.label+' · '+guide.kind;
 document.getElementById('pathLabel').textContent=guide.unknown?'Unknown builder solution':'Detected provider path';
 document.getElementById('pathLabel').className='path-label '+(guide.unknown?'unknown':'detected');
-document.getElementById('title').innerHTML=accountCreated()?'Setup Rose on <em>'+guide.label+'.</em>':'Sign up for <em>Wildrose.</em>';if(!accountCreated())document.getElementById('pathLabel').textContent='Create account';
-if(accountCreated())document.getElementById('intro').textContent=guide.unknown?'No problem. You do not need to know code or your website builder. Pick one easy option and Wildrose handles the rest.':'We detected '+guide.label+'. The easiest path is just inviting Wildrose with temporary access — we handle everything else.';
-document.getElementById('guideTitle').innerHTML=guide.unknown?'Install <em>Rose.</em>':'Install Rose on <em>'+guide.label+'.</em>';
+document.getElementById('title').innerHTML='Get Rose on <em>your website.</em>';
+document.getElementById('intro').textContent=guide.unknown?'No problem if you do not know your website builder. Invite Wildrose or ask for help, and we will handle the installation.':'We detected '+guide.label+'. Invite Wildrose with temporary access and we will install and verify Rose.';
+document.getElementById('guideTitle').textContent=guide.unknown?'Install Rose.':'Install Rose on '+guide.label+'.';
 document.getElementById('guideCopy').textContent='No code needed. Just invite Wildrose to your website account so we can install Rose for you.';
-document.getElementById('actionCopy').textContent='Use this email when your website asks who to invite. You can come back later from your dashboard.';
+document.getElementById('actionCopy').textContent='Use this email when your website asks who to invite. You can return later from Workground.';
 if(data.id){const el=document.getElementById('setupId');el.style.display='block';el.textContent='Setup ID: '+data.id;}
 function simpleInstallSteps(){const role=String(guide.role||'editor').replace(/\s+access$/i,''); const step2=/vercel/.test(lower)?['Open the team page','Open Settings, then Team Members. If the project says it is connected to GitHub, open that GitHub repository instead.']:/wix/.test(lower)?['Open Roles & Permissions','Open Settings, then Roles & Permissions.']:/shopify/.test(lower)?['Open Users and permissions','Open Settings, then Users and permissions.']:/wordpress|wp/.test(lower)?['Open Add New User','Open Users, then Add New.']:/squarespace/.test(lower)?['Open Permissions','Open Settings, then Permissions.']:/godaddy/.test(lower)?['Open Delegate Access','Open Account Settings, then Delegate Access.']:/webflow/.test(lower)?['Open Members or Collaborators','Open Workspace or Site settings, then Members or Collaborators.']:/github/.test(lower)?['Open Collaborators','Open the repository, then go to Settings, then Collaborators.']:/netlify/.test(lower)?['Open Team members','Open Team settings, then Members. If the site is connected to GitHub, open that GitHub repository instead.']:/cloudflare/.test(lower)?['Open Members','Open Manage Account, then Members. Choose the account that owns this Pages project.']:/custom html|static|pages/.test(lower)?['Open your host access page','Open the account where your website files are managed, then open the people/team access page.']:['Open the access page','Open your website account and choose the place where you add another person. If you cannot find it, tap I’m having problems.']; if(guide.unknown)return [['Open the place your website is edited','Start with the account you use to change your website. If a web person manages it, tap I’m having problems and we will contact you.'],step2,['Invite Wildrose','Add '+INSTALL_EMAIL+' with temporary admin/editor access. Do not send your password.'],['Come back here','After the invite is sent, tap I invited Wildrose. We will finish the install and reach out if anything else is needed.']]; return [['Open '+guide.label,'Log in to '+guide.label+' and choose the website/project for '+(cleanHost||'your business')+'.'],step2,['Invite Wildrose','Add '+INSTALL_EMAIL+' with '+role+' access. This lets us install Rose without ever needing your password.'],['Come back here','After the invite is sent, tap I invited Wildrose. We will install Rose, test it, and contact you if we need anything.']]}const visibleSteps=simpleInstallSteps();document.getElementById('steps').innerHTML=visibleSteps.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div><b>${s[0]}</b><span>${s[1]}</span></div></div>`).join('');
-
 document.getElementById('backupCards').innerHTML=(guide.unknown?[
   ['Guided screen-share','You keep control. Wildrose tells you exactly where to click.'],
-  ['Web-person handoff','Send this page to whoever manages your site. We give them the exact snippet.'],
+  ['Web-person handoff','Introduce us to whoever manages your site. We provide the verified install code.'],
   ['Hosted Rose page','If the builder blocks scripts, we make a hosted Rose page and you add a normal button/link.']
 ]:[
   ['After access is sent','Wildrose installs Rose, tests chat/voice, and checks lead delivery.'],
@@ -196,7 +166,7 @@ async function postJson(path,payload){const r=await fetch(API+path,{method:'POST
 function renderProgress(p){const el=document.getElementById('timeline'); if(!el||!p?.stages)return; const stages=p.stages.map(s=>({...s})); stages.forEach(s=>{if(s.key==='guide_opened'){s.done=true;s.at=s.at||new Date().toISOString()} if(s.key==='paid')s.label='Setup started'}); el.innerHTML=stages.map(s=>`<div class="tl ${s.done?'done':''}"><span>${s.label}${s.at?' · '+new Date(s.at).toLocaleDateString():''}</span></div>`).join('')}
 async function loadProgress(mark=false){try{const p=await postJson('/api/rose-install-progress',{checkoutLeadId:data.id,website:cleanHost,email:data.email,sitePlatform:data.sitePlatform,guideOpened:mark});renderProgress(p);return p}catch(e){return null}}
 async function checkConnection(manual=false){try{setStatus('', manual?'Checking live site…':'Checking connection…','Looking for the Rose install on '+(cleanHost||'your website')+'.');await loadProgress(!manual);const j=await postJson('/api/rose-install-status',{checkoutLeadId:data.id,website:cleanHost,clientId:params.get('clientId')||''});if(j.connected){setStatus('connected','Rose is connected',j.message||'Rose code is detected on the website. Wildrose still needs to test chat, voice, and lead delivery.');await loadProgress(false);window.wrTrack&&window.wrTrack('rose_install_connected')}else if(j.status==='check_failed'){setStatus('error','Automatic check unavailable',j.message||'Wildrose can still verify it manually.')}else{setStatus('', 'Waiting for access / install', j.message||'Rose is not detected yet. Send access and Wildrose will connect it.')}}catch(e){setStatus('error','Connection check failed',e.message||'Try again later.')}}
-async function saveAccessSent(){const payload={action:'invite_sent',businessName:business,website:cleanHost,email:data.email||'',purchaseEmail:data.email||'',checkoutLeadId:data.id,provider:guide.unknown?'Unknown builder':guide.label,sitePlatform:guide.unknown?'Unknown builder':guide.label,selectedInstallMethod:guide.unknown?'unknown-builder-universal-access':'detected-provider-access',sourcePage:location.href,accessInstructions:{provider:guide.label,role:guide.role,steps:guide.steps}};if(!payload.email){toast('Email missing — use the copied email and message Jack.');return}try{document.getElementById('accessBtn').disabled=true;const j=await postJson('/api/rose-install-action',payload);toast('Access noted — Wildrose task created');setStatus('', 'Access sent — Wildrose is connecting Rose', j.message||'We created the setup task. Use Check connection after the invite is accepted.');await loadProgress(false);window.wrTrack&&window.wrTrack('rose_access_sent')}catch(e){toast(e.message||'Could not save access')}}
+async function saveAccessSent(){const payload={action:'invite_sent',businessName:business,website:cleanHost,email:data.email||'',purchaseEmail:data.email||'',checkoutLeadId:data.id,provider:guide.unknown?'Unknown builder':guide.label,sitePlatform:guide.unknown?'Unknown builder':guide.label,selectedInstallMethod:guide.unknown?'unknown-builder-universal-access':'detected-provider-access',sourcePage:location.href,accessInstructions:{provider:guide.label,role:guide.role,steps:guide.steps}};if(!payload.email){toast('Email missing — use the copied email and message Wildrose.');return}const button=document.getElementById('accessBtn');try{button.disabled=true;const j=await postJson('/api/rose-install-action',payload);toast('Access noted — Wildrose task created');setStatus('', 'Access sent — Wildrose is connecting Rose', j.message||'We created the setup task. Use Check connection after the invite is accepted.');await loadProgress(false);window.wrTrack&&window.wrTrack('rose_access_sent')}catch(e){button.disabled=false;toast(e.message||'Could not save access')}}
 async function saveSupportAction(action,label){const payload={action,businessName:business,website:cleanHost,email:data.email||'',purchaseEmail:data.email||'',checkoutLeadId:data.id,provider:guide.unknown?'Unknown builder':guide.label,sitePlatform:guide.unknown?'Unknown builder':guide.label,selectedInstallMethod:action,sourcePage:location.href,accessInstructions:{provider:guide.label,role:guide.role,steps:guide.steps}};try{await postJson('/api/rose-install-action',payload);toast(label);setStatus('', label, 'Wildrose has this setup path saved. We will follow up and make it easy.');await loadProgress(false)}catch(e){toast(e.message||'Could not save')}}
 function webPersonMailto(){const subject=encodeURIComponent('Please help install Rose on '+(cleanHost||'our website'));const body=encodeURIComponent(`Hi,
 
@@ -221,25 +191,18 @@ Account email: ${data.email||''}
 Please reach back out to me.
 
 Page: ${location.href}
-`);setTimeout(()=>{location.href='mailto:${INSTALL_EMAIL}?subject='+subject+'&body='+body},250)}
+`);setTimeout(()=>{location.href='mailto:'+INSTALL_EMAIL+'?subject='+subject+'&body='+body},250)}
 document.getElementById('accessBtn').addEventListener('click',saveAccessSent);
 document.getElementById('checkBtn').addEventListener('click',()=>checkConnection(true));
 document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(INSTALL_EMAIL)}catch(e){}toast('Copied invite email')});
 document.getElementById('helpBtn').addEventListener('click',()=>saveSupportAction('needs_guided_setup','Guided setup requested'));
 document.getElementById('problemBtn')?.addEventListener('click',problemMailto);
 document.getElementById('webPersonBtn').addEventListener('click',webPersonMailto);
-
 document.getElementById('noAccessBtn').addEventListener('click',()=>saveSupportAction('hosted_fallback_needed','Hosted fallback requested'));
 document.getElementById('tuneNameBtn')?.addEventListener('click',()=>saveSupportAction('tune_name_greeting','Greeting/name change requested'));
 document.getElementById('tuneLeadBtn')?.addEventListener('click',()=>saveSupportAction('tune_lead_email','Lead email change requested'));
 document.getElementById('tuneQuestionsBtn')?.addEventListener('click',()=>saveSupportAction('tune_questions','Question tuning requested'));
 document.getElementById('tuneGeneralBtn')?.addEventListener('click',()=>saveSupportAction('tune_general','Rose tuning requested'));
-
-document.getElementById('accountForm')?.addEventListener('submit',async e=>{e.preventDefault();const btn=document.getElementById('accountSubmit');const status=document.getElementById('accountStatus');const email=document.getElementById('accountEmail').value.trim();const password=document.getElementById('accountPassword').value;const confirm=document.getElementById('accountPasswordConfirm').value;if(!email){status.textContent='Enter your email.';return}if(password.length<8){status.textContent='Use at least 8 characters.';return}if(password!==confirm){status.textContent='Passwords do not match.';return}btn.disabled=true;const old=btn.textContent;btn.textContent='Creating…';status.textContent='';try{const j=await postJson('/api/rose-account-password',{checkoutLeadId:data.id,email,website:cleanHost,password,sourcePage:location.href});data.email=email;try{localStorage.setItem(accountKey,'1')}catch(_){}const card=document.getElementById('accountCard');card?.classList.add('profile-step');document.getElementById('accountTitle').textContent='Account created';document.getElementById('accountCopy').textContent='Add your name and phone.';status.textContent='Account created. Add your contact details to continue.';window.wrTrack&&window.wrTrack('rose_account_password_created')}catch(err){status.textContent=err.message||'Could not create account.';btn.disabled=false;btn.textContent=old}});
-
-document.getElementById('profileForm')?.addEventListener('submit',async e=>{e.preventDefault();const btn=document.getElementById('profileSubmit');const status=document.getElementById('accountStatus');const name=document.getElementById('profileName').value.trim();const phone=document.getElementById('profilePhone').value.trim();if(!name){status.textContent='Enter your name.';return}if(!phone){status.textContent='Enter your phone number.';return}btn.disabled=true;const old=btn.textContent;btn.textContent='Saving…';status.textContent='';try{await postJson('/api/rose-install-action',{action:'account_profile',businessName:business,website:cleanHost,email:data.email||document.getElementById('accountEmail').value.trim(),purchaseEmail:data.email||document.getElementById('accountEmail').value.trim(),checkoutLeadId:data.id,provider:guide.unknown?'Unknown builder':guide.label,sitePlatform:guide.unknown?'Unknown builder':guide.label,name,phone,sourcePage:location.href});setAccountUnlocked(true);document.getElementById('pathLabel').textContent='Rose install';document.getElementById('title').innerHTML='Setup Rose on <em>'+guide.label+'.</em>';document.getElementById('intro').textContent=guide.unknown?'No problem. Pick one easy option and Wildrose handles the rest.':'We detected '+guide.label+'. The easiest path is just inviting Wildrose with temporary access — we handle everything else.';toast('Profile saved — install options unlocked');setTimeout(()=>document.querySelector('.layout')?.scrollIntoView({behavior:'smooth',block:'start'}),250);window.wrTrack&&window.wrTrack('rose_account_profile_saved')}catch(err){status.textContent=err.message||'Could not save contact details.';btn.disabled=false;btn.textContent=old}});
-
-document.getElementById('profileSkip')?.addEventListener('click',()=>{setAccountUnlocked(true);document.getElementById('pathLabel').textContent='Rose install';document.getElementById('title').innerHTML='Setup Rose on <em>'+guide.label+'.</em>';document.getElementById('intro').textContent=guide.unknown?'No problem. Pick one easy option and Wildrose handles the rest.':'We detected '+guide.label+'. The easiest path is just inviting Wildrose with temporary access — we handle everything else.';toast('Install options unlocked')});
 
 checkConnection(false);
 </script>
