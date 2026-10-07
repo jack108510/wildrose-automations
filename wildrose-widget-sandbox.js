@@ -125,6 +125,7 @@
     cfg.website = config.settings?.website || cfg.website;
     cfg.ownerEmail = config.settings?.ownerEmail || cfg.ownerEmail;
     cfg.logo = a.avatarUrl || cfg.logo;
+    if (a.avatarUrl) root.querySelectorAll(".wr-mark img,.wr-dot img,.wr-avatar img").forEach(img => img.src = a.avatarUrl);
     root.style.setProperty("--accent", a.brandPrimary || cfg.accent);
     root.style.setProperty("--accent-soft", a.brandAccent || a.brandPrimary || cfg.accent);
     root.style.setProperty("--rose-bg", a.backgroundColor || "#fffaf3");
