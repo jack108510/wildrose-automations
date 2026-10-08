@@ -160,6 +160,30 @@ body.buy-mode .top,body.buy-mode .hero,body.buy-mode .browser,body.buy-mode .eas
 #buyScreen .checkout-terms p{line-height:1.5;margin:8px 0 0}
 #buyScreen .enterprise-contact{background:#faf8f5;border:1px solid #eee8e2;border-radius:14px;padding:18px;font-size:14px}
 @media(max-width:620px){#buyScreen .buy-body{padding:20px!important;gap:16px!important}#buyScreen h2{font-size:29px!important}#buyScreen .buy-choice{gap:8px!important}#buyScreen .buy-choice button{padding:13px!important;min-height:130px!important}#buyScreen .buy-choice button.active{padding:12px!important}#buyScreen .buy-choice .money{font-size:27px!important}#buyScreen .buy-choice small{font-size:11px!important}#buyScreen .checkout-form{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}#buyScreen .optional-fields{grid-template-columns:minmax(0,1fr)}}
+/* A quieter, clearer CTA below the interactive preview. */
+.easy-buy{margin:24px auto 10px!important}
+.easy-actions{gap:0!important}
+.easy-actions .buy-agent{
+  width:min(280px,calc(100vw - 40px))!important;
+  min-width:0!important;
+  height:52px!important;
+  border-radius:14px!important;
+  background:var(--orange)!important;
+  box-shadow:0 8px 20px color-mix(in srgb,var(--orange) 18%,transparent)!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  letter-spacing:0!important;
+  cursor:pointer;
+  transition:background .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.easy-actions .buy-agent:hover{
+  transform:translateY(-1px);
+  background:color-mix(in srgb,var(--orange) 88%,#111)!important;
+  box-shadow:0 12px 24px color-mix(in srgb,var(--orange) 22%,transparent)!important;
+}
+.easy-actions .buy-agent:focus-visible{outline:3px solid #111827;outline-offset:3px}
+.buy-reassure{max-width:320px;margin:9px auto 0;font-size:12px;line-height:1.45}
+@media(prefers-reduced-motion:reduce){.easy-actions .buy-agent{transition:none}.easy-actions .buy-agent:hover{transform:none}}
 </style>
 <!-- Meta Pixel Code -->
 <script>
