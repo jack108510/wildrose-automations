@@ -159,12 +159,23 @@
   <link rel="stylesheet" href="rose-appearance.css?v=calm-1">
   <link rel="stylesheet" href="demo-layout.css?v=homepage-buy-cta-1">
   <link rel="stylesheet" href="rose-reveal.css?v=inline-preview-1">
+  <style>
+    .wr-install-path{max-width:1120px;margin:32px auto 54px;padding:clamp(24px,4vw,40px);border:1px solid #eadfd2;border-radius:28px;background:#fffaf5;color:#231913;scroll-margin-top:24px}
+    .wr-install-path h2{margin:0 0 10px;font-size:clamp(28px,4vw,42px);letter-spacing:-.055em;line-height:1.08}
+    .wr-install-path>p{max-width:720px;margin:0;color:#6b5d52;line-height:1.5}
+    .wr-install-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}
+    .wr-install-steps div{padding:18px;border:1px solid #eadfd2;border-radius:18px;background:#fff}
+    .wr-install-steps b{display:block;margin-bottom:6px;font-size:16px}.wr-install-steps span{display:block;color:#6b5d52;font-size:14px;line-height:1.45}
+    .wr-install-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.wr-install-actions a{font-size:14px;font-weight:750;text-decoration:none;color:#ba4318}
+    .wr-install-actions .primary{padding:12px 18px;border-radius:999px;background:#ff5722;color:#fff}
+    @media(max-width:700px){.wr-install-steps{grid-template-columns:1fr}.wr-install-path{margin:20px auto 36px}}
+  </style>
 </head>
 <body>
   <nav class="wr-site-nav" aria-label="Wildrose navigation">
     <div class="wr-site-wrap">
       <a class="wr-site-brand" href="https://wildroseautomations.ca/"><img src="https://wildroseautomations.ca/logos/wildrose.png" width="36" height="36" alt="">Wildrose</a>
-      <div class="wr-site-links"><a href="#try-rose">Rose Setup</a></div>
+      <div class="wr-site-links"><a href="#install-rose">How installation works</a></div>
       <div class="wr-site-actions">
         <a class="wr-site-login" href="https://jack108510.github.io/rose-dashboard-preview/login.html">Login</a>
         <a class="wr-site-buy" href="/ai-tool-mockup-final.html?buy=1">Buy Agent</a>
@@ -204,6 +215,16 @@
         <div class="wr-inline-preview__bar"><span class="wr-inline-preview__dots" aria-hidden="true">● ● ●</span><strong id="rosePreviewTitle">Building your Rose preview…</strong><button type="button" id="rosePreviewClose" aria-label="Close website preview">Close</button></div>
         <iframe id="rosePreviewFrame" title="Rose preview for your website" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </section>
+    </section>
+    <section class="wr-install-path" id="install-rose" aria-labelledby="installRoseTitle">
+      <h2 id="installRoseTitle">Getting Rose onto your website is simple.</h2>
+      <p>Wildrose handles the install and checks that Rose works on your live site. You only need to choose Rose and give temporary website access, or introduce us to your web person.</p>
+      <div class="wr-install-steps">
+        <div><b>1. Preview Rose</b><span>Try Rose with your website address. The preview changes nothing on your site.</span></div>
+        <div><b>2. Start setup</b><span>Choose Rose and tell us where new leads should go.</span></div>
+        <div><b>3. Invite Wildrose</b><span>Follow the steps for your website builder. We install Rose and verify it before calling it live.</span></div>
+      </div>
+      <div class="wr-install-actions"><a class="primary" href="/ai-tool-mockup-final.html?buy=1">Start Rose setup</a><a href="https://jack108510.github.io/rose-dashboard-preview/login.html">Already have Rose? Open your install steps</a></div>
     </section>
     <section class="stage" id="stage" data-speaker="visitor" aria-labelledby="brainTitle">
       <h2 class="brain-title" id="brainTitle">Meet Rose’s brain.</h2>
