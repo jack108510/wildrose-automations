@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rose setup — Wildrose Automations</title>
-  <meta name="description" content="Wildrose will email you personally to set up Rose on your website.">
+  <meta name="description" content="Open Rose Workground to configure your agent and arrange website installation.">
   <meta name="robots" content="noindex,nofollow">
   <style>
     :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171411;background:#fbf7f1}
@@ -21,14 +21,17 @@
   <header>Wildrose Automations</header>
   <main>
     <div class="eyebrow">Rose setup</div>
-    <h1>We’ll take it from here.</h1>
-    <p>Wildrose will email you personally at the address you entered. There’s no account to create or code to install right now.</p>
+    <h1>Your next step: Workground.</h1>
+    <p>Use the email from checkout to request a secure Rose Workground setup link. There you can configure and test your agent before it goes on your site.</p>
     <ol>
-      <li>We confirm any required payment and your business details.</li>
-      <li>We ask where leads should go and arrange temporary website access or work with your web person.</li>
-      <li>You approve Rose before we install and test it on your site.</li>
+      <li>Request your account link using the email from checkout.</li>
+      <li>Confirm your business details, test Rose, and publish your agent.</li>
+      <li>Choose a website setup path. Wildrose can install Rose and test lead delivery.</li>
     </ol>
+    <p><a id="workgroundLink" href="https://jack108510.github.io/rose-dashboard-preview/login.html?signup=1">Create your Workground account →</a></p>
+    <p>If payment has not been confirmed yet, Wildrose will verify it before your setup link is sent.</p>
     <small>Questions? Email <a href="mailto:jack@wildroseautomations.ca">jack@wildroseautomations.ca</a>. Please do not email a website password.</small>
   </main>
+  <script>const lead=new URLSearchParams(location.search).get('id');if(lead)document.getElementById('workgroundLink').href+='&lead='+encodeURIComponent(lead);</script>
 </body>
 </html>
