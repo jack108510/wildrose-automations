@@ -54,6 +54,7 @@ body:not(.account-locked) .clean-install .steps{display:grid!important;margin:18
 /* NONTECH INSTALL COPY + HELP BUTTON */
 .problem-btn{width:100%;margin-top:12px;background:#fff!important;color:#b42318!important;border-color:#fecaca!important}.problem-note{margin-top:10px!important;color:#7c4a2f!important}.clean-install .steps .step span{font-size:14px!important;line-height:1.5!important}.clean-install .steps .step b{font-size:16px!important}.clean-install .step{background:#fff!important}.primary-install-box .btns{align-items:center}.primary-install-box .btn{min-height:48px}
 
+.install-paths{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}.install-path{min-height:116px;padding:17px;border:1px solid #eadfd2;border-radius:18px;background:#fff;text-align:left;text-decoration:none;color:#171411;display:grid;align-content:start;gap:5px;cursor:pointer}.install-path.active{border-color:#f06a3e;background:#fff3eb;box-shadow:inset 0 0 0 1px #f06a3e}.install-path b{font-size:17px;letter-spacing:-.03em}.install-path span{font-size:13px;line-height:1.45;color:#6d6259;font-weight:650}.install-path:focus-visible,.platform-picker select:focus-visible{outline:2px solid #c64b22;outline-offset:2px}.platform-picker{display:grid;gap:6px;margin:4px 0 16px;font-size:13px;font-weight:850}.platform-picker select{width:100%;min-height:43px;padding:0 12px;border:1px solid #d9ccbf;border-radius:11px;background:#fff;color:#171411;font:700 14px Inter,system-ui}.invite-alternatives{display:grid;gap:10px;margin:17px 0}.invite-alternatives h3{margin:0;font-size:18px}.invite-alternatives .friction-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.invite-alternatives .option-card{text-align:left}@media(max-width:650px){.install-paths,.invite-alternatives .friction-options{grid-template-columns:1fr}}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -93,9 +94,11 @@ fbq('trackCustom', 'rose_thank_you_viewed');
 
 <main class="wrap layout clean-install">
   <section class="clean-install-card">
-    <span class="path-label detected" id="pathLabel">Detected provider path</span>
+    <span class="path-label detected" id="pathLabel">Website setup</span>
     <h2 id="guideTitle">Install Rose</h2>
     <p id="guideCopy">Invite Wildrose with temporary website access. We install Rose, test it, and tell you when it is live.</p>
+    <div class="install-paths" aria-label="Installation choices"><div class="install-path active" aria-current="step"><b>Invite Wildrose</b><span>We install Rose and test it for you. No password sharing.</span></div><a class="install-path" id="selfInstallLink" href="https://jack108510.github.io/rose-dashboard-preview/workground/?install=self"><b>Install it myself →</b><span>Sign in to Workground for your own code and platform steps.</span></a></div>
+    <label class="platform-picker" for="providerSelect">Where is your website built?<select id="providerSelect"><option value="">Choose your platform</option><option value="Wix">Wix</option><option value="Squarespace">Squarespace</option><option value="WordPress">WordPress</option><option value="Shopify">Shopify</option><option value="Webflow">Webflow</option><option value="GoDaddy">GoDaddy</option><option value="GitHub Pages">GitHub Pages</option><option value="Vercel">Vercel</option><option value="Netlify">Netlify</option><option value="Cloudflare Pages">Cloudflare Pages</option><option value="Static hosting">Other / static site</option></select></label>
     <p class="setup-id" id="setupId"></p>
     <div class="steps" id="steps"></div>
     <div class="primary-install-box">
@@ -111,13 +114,13 @@ fbq('trackCustom', 'rose_thank_you_viewed');
         <button class="btn dark-ghost problem-btn" id="problemBtn" type="button">I’m having problems</button>
       <p class="fine problem-note">If anything feels confusing, tap the problem button. It emails Wildrose with your setup details and we’ll reach back out.</p>
     </div>
+    <div class="invite-alternatives" id="helpDetails"><h3>Another way to give us access</h3><div class="friction-options" id="frictionOptions"><button class="option-card" id="helpBtn" type="button"><b>Walk me through it</b><span>We can guide you on a screen-share.</span></button><button class="option-card" id="webPersonBtn" type="button"><b>My web person handles it</b><span>Send them a handoff with this setup link.</span></button><button class="option-card" id="noAccessBtn" type="button"><b>I cannot invite you</b><span>Ask us about a hosted Rose page and button.</span></button></div></div>
     <div class="clean-status">
       <div class="status-panel" id="statusPanel" role="status" aria-live="polite"><div class="status-row"><span class="dot" id="statusDot"></span><span id="statusTitle">Checking connection…</span></div><p id="statusText">We check your site automatically every 2 minutes while this page is open. You can also check now.</p><div class="install-done" id="installDone">Rose is connected. Wildrose will test chat, voice, and lead delivery next.</div><div class="timeline" id="timeline"></div></div>
     </div>
     <details class="advanced-options">
       <summary>Other install options</summary>
       <div class="advanced-options-body">
-        <details class="help-details" id="helpDetails"><summary>Need help setting this up?</summary><div class="friction-options" id="frictionOptions"><button class="option-card" id="helpBtn" type="button"><b>I’m not sure where to invite you</b><span>Wildrose will guide you or do a quick screen-share.</span></button><button class="option-card" id="webPersonBtn" type="button"><b>I have a web person</b><span>Send them a simple handoff with the exact setup link.</span></button><button class="option-card" id="noAccessBtn" type="button"><b>I can’t give website access</b><span>We’ll use a hosted Rose page/button fallback.</span></button></div></details>
         <div class="mini-grid" id="backupCards"></div>
         <div class="snippet-card" id="snippetCard"><b>For your web person</b><span>Wildrose sends the client-specific install code after payment and setup are verified. Introduce us to your web person using the option above; we will provide the right code and check the live site after it is published.</span></div>
         <div class="mini-grid tune-grid"><div class="mini-card"><b>Want Rose changed before it goes live?</b><span>Tell Wildrose what to tune. These create setup tasks.</span></div><button class="option-card" id="tuneNameBtn" type="button"><b>Change greeting/name</b><span>Assistant name, welcome message, or tone.</span></button><button class="option-card" id="tuneLeadBtn" type="button"><b>Change lead email</b><span>Where Rose sends chats, calls, and summaries.</span></button><button class="option-card" id="tuneQuestionsBtn" type="button"><b>Change questions Rose asks</b><span>What Rose should collect before handing off.</span></button><button class="option-card" id="tuneGeneralBtn" type="button"><b>Ask Wildrose to tune it</b><span>General cleanup before it goes live.</span></button></div>
@@ -131,7 +134,8 @@ const INSTALL_EMAIL='invites@wildroseautomations.ca';
 const API='https://wildrose-widget.wildeautomations.com';
 const params=new URLSearchParams(location.search);
 function pending(){try{return JSON.parse(localStorage.getItem('rosePendingInstall')||'{}')||{}}catch{return {}}}
-const saved=pending();
+const useSaved=!['checkoutLeadId','clientId','id','businessName','website','email','sitePlatform','platform'].some(key=>params.has(key));
+const saved=useSaved?pending():{};
 const data={id:params.get('checkoutLeadId')||params.get('clientId')||params.get('id')||saved.id||'',businessName:params.get('businessName')||saved.businessName||'',website:params.get('website')||saved.website||'',email:params.get('email')||saved.email||'',sitePlatform:params.get('sitePlatform')||params.get('platform')||saved.sitePlatform||''};
 if(data.id)document.getElementById('accountSetupLink').href='https://jack108510.github.io/rose-dashboard-preview/login.html?signup=1&lead='+encodeURIComponent(data.id);
 const cleanHost=(data.website||'').replace(/^https?:\/\//i,'').replace(/\/$/,'');
@@ -157,10 +161,13 @@ const guide=pick();
 document.getElementById('businessOut').textContent=business;
 document.getElementById('websiteOut').textContent=cleanHost||'Your website';
 document.getElementById('providerOut').textContent=guide.unknown?'Not detected':guide.label+' · '+guide.kind;
-document.getElementById('pathLabel').textContent=guide.unknown?'Unknown builder solution':'Detected provider path';
+const providerSelect=document.getElementById('providerSelect');
+providerSelect.value=[...providerSelect.options].some(option=>option.value===guide.label)?guide.label:'';
+providerSelect.addEventListener('change',()=>{const next=new URL(location.href);next.searchParams.set('sitePlatform',providerSelect.value||'Unknown');location.href=next.href});
+document.getElementById('pathLabel').textContent=guide.unknown?'Choose your website platform':guide.label+' invite steps';
 document.getElementById('pathLabel').className='path-label '+(guide.unknown?'unknown':'detected');
 document.getElementById('title').innerHTML='Get Rose on <em>your website.</em>';
-document.getElementById('intro').textContent=guide.unknown?'No problem if you do not know your website builder. Invite Wildrose or ask for help, and we will handle the installation.':'We detected '+guide.label+'. Invite Wildrose with temporary access and we will install and verify Rose.';
+document.getElementById('intro').textContent=guide.unknown?'Choose how to get Rose on your website. We can install it for you, or you can use your own code in Workground.':'Choose how to get Rose on '+guide.label+'. We can install it for you, or you can use your own code in Workground.';
 document.getElementById('guideTitle').textContent=guide.unknown?'Install Rose.':'Install Rose on '+guide.label+'.';
 document.getElementById('guideCopy').textContent='No code needed. Just invite Wildrose to your website account so we can install Rose for you.';
 document.getElementById('actionCopy').textContent='Use this email when your website asks who to invite. You can return later from Workground.';
