@@ -172,7 +172,15 @@
       return loadPublishedConfig();
     };
   }
-  if (cfg.mount !== "#rose-workground-widget") loadPublishedConfig();
+  if (cfg.mount !== "#rose-workground-widget") {
+    (async () => {
+      if (await loadPublishedConfig() || cfg.previewMode || !cfg.apiBase || (!cfg.businessId && !cfg.website)) return;
+      for (let attempt = 0; attempt < 6; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, 10000));
+        if (await loadPublishedConfig()) return;
+      }
+    })();
+  }
   if (!cfg.previewMode && cfg.mount !== "#rose-workground-widget" && cfg.apiBase && (cfg.businessId || cfg.ownerEmail)) {
     fetch(`${cfg.apiBase}/api/rose-widget-present`, {
       method: "POST",
