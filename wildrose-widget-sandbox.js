@@ -173,6 +173,14 @@
     };
   }
   if (cfg.mount !== "#rose-workground-widget") loadPublishedConfig();
+  if (!cfg.previewMode && cfg.mount !== "#rose-workground-widget" && cfg.apiBase && (cfg.businessId || cfg.ownerEmail)) {
+    fetch(`${cfg.apiBase}/api/rose-widget-present`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page: location.href, businessId: cfg.businessId }),
+      keepalive: true,
+    }).catch(() => {});
+  }
   function addMsg(role, text) {
     if (role === "bot") {
       const row = document.createElement("div");
