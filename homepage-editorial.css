@@ -1,0 +1,57 @@
+/* Homepage art direction: editorial type, a measured grid, and Wildrose orange. */
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wr-site-wrap{max-width:1420px;padding-inline:clamp(22px,4vw,64px)}
+.wr-site-nav{background:#19110e;border-bottom:1px solid #533225;padding:12px 0}
+.wr-site-nav .wr-site-wrap{max-width:1420px}
+.wr-site-brand{font-size:17px!important;letter-spacing:-.045em;text-transform:uppercase}
+.wr-site-brand img{border-radius:3px}
+.wr-site-links a{font-size:12px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+.wr-site-login,.wr-site-buy{border-radius:4px;font-size:12px!important;letter-spacing:.055em;text-transform:uppercase}
+.wr-site-buy{background:#f35423}
+.wr-site-hero{background:#f3eee8;color:#21140f;padding:0;overflow:hidden}
+.wr-site-hero::before{inset:0;background:linear-gradient(90deg,rgba(75,53,38,.075) 1px,transparent 1px),linear-gradient(rgba(75,53,38,.075) 1px,transparent 1px);background-size:45px 45px;mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 100%)}
+.wr-site-hero::after{content:"";position:absolute;right:-14%;bottom:-26%;width:76%;height:62%;background:radial-gradient(ellipse,rgba(255,87,34,.5),rgba(255,87,34,.17) 46%,transparent 72%);filter:blur(22px);pointer-events:none}
+.wr-site-hero-inner{display:block;text-align:left}
+.wr-hero-index,.wr-hero-bottom-line{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:10px;font-weight:850;letter-spacing:.17em;text-transform:uppercase}
+.wr-hero-index{padding:17px 0;border-bottom:1px solid rgba(26,19,15,.4)}
+.wr-hero-index span:first-child{display:flex;align-items:center;gap:9px}
+.wr-hero-index i,.wr-live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff5722;box-shadow:0 0 0 4px rgba(255,87,34,.12)}
+.wr-hero-layout{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(380px,.82fr);align-items:stretch;min-height:710px;width:100%}
+.wr-hero-copy{position:relative;z-index:2;padding:clamp(64px,7vw,116px) 28px 70px 0;display:flex;flex-direction:column;align-items:flex-start}
+.wr-site-hero .wr-site-label{display:flex;gap:35px;align-items:center;margin:0 0 32px;padding:0;border:0;border-radius:0;background:transparent;color:#a23b1e;font-size:11px;font-weight:900;letter-spacing:.17em}
+.wr-site-hero .wr-site-label span{display:inline;width:auto;height:auto;border-radius:0;background:transparent;box-shadow:none;color:#987a69}
+.wr-site-hero h1{max-width:880px;margin:0 0 35px;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:clamp(65px,7.2vw,118px);line-height:.91;letter-spacing:-.091em;font-weight:850;color:#21140f}
+.wr-site-hero h1 em{display:inline;font-family:"Instrument Serif",serif;font-weight:400;font-style:italic;color:#ed4f20;letter-spacing:-.07em;white-space:nowrap}
+.wr-site-hero .wr-site-lead{max-width:520px;margin:0 0 30px;color:#65574e;font-size:clamp(18px,1.55vw,22px);font-weight:450;line-height:1.47;letter-spacing:-.035em}
+.wr-site-hero-actions{display:flex;justify-content:flex-start;flex-wrap:wrap;gap:10px;margin:0}
+.wr-site-hero-actions a{min-height:52px;padding:0 20px;display:inline-flex;align-items:center;justify-content:space-between;gap:28px;border-radius:4px;font-size:13px;font-weight:800}
+.wr-site-hero-buy{background:#f35423;color:white;min-width:0;box-shadow:none}
+.wr-site-hero-actions .wr-site-cta{background:rgba(255,255,255,.35);border:1px solid #bfa99a;color:#24150f;border-radius:4px}
+.wr-site-hero-actions .wr-site-cta:hover{background:#fff;color:#24150f}
+.wr-hero-caption{display:flex;gap:18px;align-items:flex-start;margin-top:auto;padding-top:55px}
+.wr-hero-caption span{font-family:"Instrument Serif",serif;color:#ef5423;font-size:34px;line-height:1}
+.wr-hero-caption p{margin:0;border-left:1px solid #bda999;padding-left:17px;color:#6f6157;font-size:12px;font-weight:600;line-height:1.45}
+.wr-hero-art{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 0 30px;isolation:isolate}
+.wr-hero-art-grid{position:absolute;inset:6% -10% 2% -5%;z-index:-3;background:linear-gradient(90deg,rgba(80,42,22,.13) 1px,transparent 1px),linear-gradient(rgba(80,42,22,.13) 1px,transparent 1px);background-size:42px 42px;transform:perspective(750px) rotateY(-11deg) rotateX(8deg);mask-image:radial-gradient(ellipse,#000 35%,transparent 73%)}
+.wr-hero-art-ring{position:absolute;z-index:-2;aspect-ratio:1;width:min(85%,580px);border:1px solid rgba(255,87,34,.55);border-radius:50%;box-shadow:0 0 0 44px rgba(255,87,34,.065),0 0 0 100px rgba(255,87,34,.04),0 0 80px rgba(255,87,34,.18);background:radial-gradient(circle at 50% 65%,rgba(255,87,34,.25),transparent 72%);transform:translate(6%,2%)}
+.wr-hero-art-word{position:absolute;top:9%;left:0;z-index:-1;color:rgba(241,81,30,.15);font-size:clamp(100px,15vw,220px);font-weight:900;letter-spacing:-.12em;line-height:1}
+.wr-hero-art-word span{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400}
+.wr-hero-widget-label{align-self:flex-start;display:flex;align-items:center;gap:11px;margin:0 0 12px 9%;color:#582a1c;font-size:10px;font-weight:900;letter-spacing:.16em}
+.wr-hero-widget-label span:last-child{margin-left:12px;font-size:18px;line-height:0}
+.wr-site-widget{width:min(460px,100%);min-height:560px;margin:0;display:flex;justify-content:center;align-items:center}
+.wr-site-widget::before{inset:-38px -45px;background:radial-gradient(circle,rgba(255,87,34,.27),transparent 65%)}
+.wr-hero-art-foot{width:min(460px,100%);display:flex;justify-content:space-between;gap:15px;margin-top:16px;color:#785d4c;font-size:9px;font-weight:850;letter-spacing:.12em}
+.wr-hero-bottom-line{padding:18px 0;border-top:1px solid rgba(26,19,15,.4)}
+main.shell{width:min(1420px,calc(100% - 48px));background:#1b120e;padding:0 clamp(22px,4vw,64px) 80px}
+body{background:#1b120e}
+.rose-reveal{margin-bottom:100px;padding-top:94px;background:linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px}
+.rose-reveal h2,.brain-title{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:clamp(49px,5vw,78px);font-weight:800;line-height:.98;letter-spacing:-.075em}
+.rose-reveal__eyebrow{color:#ff9063}
+.wr-try-bar,.wr-try-bar button,.terminal{border-radius:5px}
+.stage{background:linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px}
+.brain-title{text-align:left}
+.demo-disclaimer{text-align:left}
+@media(max-width:1050px){.wr-hero-layout{grid-template-columns:minmax(0,1fr) minmax(330px,.85fr)}.wr-site-hero h1{font-size:clamp(62px,7vw,90px)}}
+@media(max-width:760px){.wr-site-nav .wr-site-wrap{grid-template-columns:minmax(0,1fr) auto;gap:10px}.wr-site-brand{grid-column:1;grid-row:1;justify-self:start}.wr-site-actions{grid-column:2;grid-row:1;justify-self:end}.wr-site-links{grid-column:1/-1;grid-row:2;justify-self:start;display:flex;gap:0}.wr-site-links a{font-size:10px}.wr-hero-index span:last-child,.wr-hero-bottom-line span:last-child{display:none}.wr-hero-layout{grid-template-columns:1fr;min-height:0}.wr-hero-copy{padding:72px 0 25px}.wr-site-hero h1{font-size:clamp(68px,13vw,104px)}.wr-hero-caption{padding-top:42px}.wr-hero-art{padding:34px 0 42px}.wr-hero-art-grid{inset:0 -20px}.rose-reveal{padding-top:72px;margin-bottom:80px}main.shell{width:100%;padding-inline:14px}.brain-title{text-align:center}}
+@media(max-width:560px){.wr-site-nav .wr-site-wrap{grid-template-columns:1fr auto;justify-items:stretch;gap:8px}.wr-site-brand{grid-column:1;grid-row:1;justify-self:start;font-size:15px!important}.wr-site-actions{grid-column:2;grid-row:1;justify-self:end;gap:5px}.wr-site-login,.wr-site-buy{min-height:36px;padding:0 9px;font-size:10px!important}.wr-site-links{grid-column:1/-1;grid-row:2;justify-self:start}.wr-site-hero h1{font-size:clamp(62px,16vw,82px);letter-spacing:-.088em}.wr-site-hero .wr-site-lead{font-size:18px}.wr-site-hero-actions{width:100%;flex-direction:column}.wr-site-hero-actions a{width:100%;font-size:12px}.wr-site-widget{min-height:560px}.wr-hero-widget-label{margin-left:0}.wr-hero-art-word{top:7%;font-size:120px}.wr-hero-art-foot{font-size:8px}.rose-reveal h2,.brain-title{font-size:48px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
