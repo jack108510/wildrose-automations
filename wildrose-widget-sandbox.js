@@ -79,6 +79,7 @@
 
   const $ = sel => root.querySelector(sel);
   const $$ = sel => Array.from(root.querySelectorAll(sel));
+  $$(".wr-review-toggle").forEach(button => { button.hidden = true; });
   const panel = $(".wr-panel");
   const fab = $(".wr-fab");
   const input = $(".wr-input");
@@ -116,6 +117,7 @@
   setView(cfg.defaultView);
   function applyPublishedConfig(config) {
     if (!config) return false;
+    $$(".wr-review-toggle").forEach(button => { button.hidden = !(config.status === "published" && cfg.businessId && !cfg.previewMode && cfg.mount !== "#rose-workground-widget"); });
     const a = config.appearance || {};
     const copy = a.widgetCopy || {};
     cfg.title = a.assistantName || config.settings?.assistantName || cfg.title;
