@@ -10,7 +10,7 @@
   // backend against Square before an email setup link can be issued.
   const checkoutReturn = new URLSearchParams(location.search);
   if (checkoutReturn.get('type') === 'rose-checkout') {
-    const accountUrl = new URL('https://jack108510.github.io/rose-dashboard-preview/login.html');
+    const accountUrl = new URL('https://workground.wildroseautomations.ca/login.html');
     accountUrl.searchParams.set('signup', '1');
     accountUrl.searchParams.set('checkout', 'return');
     if (checkoutReturn.get('id')) accountUrl.searchParams.set('lead', checkoutReturn.get('id'));
@@ -81,7 +81,7 @@ fbq('trackCustom', 'rose_thank_you_viewed');
     <span class="eyebrow">Website setup</span>
     <h1 id="title">Get Rose on <em>your website.</em></h1>
     <p class="lead" id="intro">Invite Wildrose to your website. We install Rose, test it, and confirm when it is connected.</p>
-    <p class="fine">New buyer? <a id="accountSetupLink" href="https://jack108510.github.io/rose-dashboard-preview/login.html?signup=1">Create your Workground account</a> first to configure and test your agent.</p>
+    <p class="fine">New buyer? <a id="accountSetupLink" href="https://workground.wildroseautomations.ca/login.html?signup=1">Create your Workground account</a> first to configure and test your agent.</p>
     <div class="meta">
       <div class="pill"><small>Business</small><b id="businessOut">Your business</b></div>
       <div class="pill"><small>Website</small><b id="websiteOut">Your website</b></div>
@@ -97,7 +97,7 @@ fbq('trackCustom', 'rose_thank_you_viewed');
     <span class="path-label detected" id="pathLabel">Website setup</span>
     <h2 id="guideTitle">Install Rose</h2>
     <p id="guideCopy">Invite Wildrose with temporary website access. We install Rose, test it, and tell you when it is live.</p>
-    <div class="install-paths" aria-label="Installation choices"><div class="install-path active" aria-current="step"><b>Invite Wildrose</b><span>We install Rose and test it for you. No password sharing.</span></div><a class="install-path" id="selfInstallLink" href="https://jack108510.github.io/rose-dashboard-preview/workground/?install=self"><b>Install it myself →</b><span>Sign in to Workground for your own code and platform steps.</span></a></div>
+    <div class="install-paths" aria-label="Installation choices"><div class="install-path active" aria-current="step"><b>Invite Wildrose</b><span>We install Rose and test it for you. No password sharing.</span></div><a class="install-path" id="selfInstallLink" href="https://workground.wildroseautomations.ca/workground/?install=self"><b>Install it myself →</b><span>Sign in to Workground for your own code and platform steps.</span></a></div>
     <label class="platform-picker" for="providerSelect">Where is your website built?<select id="providerSelect"><option value="">Choose your platform</option><option value="Wix">Wix</option><option value="Squarespace">Squarespace</option><option value="WordPress">WordPress</option><option value="Shopify">Shopify</option><option value="Webflow">Webflow</option><option value="GoDaddy">GoDaddy</option><option value="GitHub Pages">GitHub Pages</option><option value="Vercel">Vercel</option><option value="Netlify">Netlify</option><option value="Cloudflare Pages">Cloudflare Pages</option><option value="Static hosting">Other / static site</option></select></label>
     <p class="setup-id" id="setupId"></p>
     <div class="steps" id="steps"></div>
@@ -110,7 +110,7 @@ fbq('trackCustom', 'rose_thank_you_viewed');
         <button class="btn dark-ghost" id="accessBtn" type="button">I invited Wildrose</button>
         <button class="btn dark-ghost" id="checkBtn" type="button">Check connection</button>
       </div>
-      <a class="btn dark-ghost" id="dashboardLink" href="https://jack108510.github.io/rose-dashboard-preview/workground/">Back to Workground</a>
+      <a class="btn dark-ghost" id="dashboardLink" href="https://workground.wildroseautomations.ca/workground/">Back to Workground</a>
         <button class="btn dark-ghost problem-btn" id="problemBtn" type="button">I’m having problems</button>
       <p class="fine problem-note">If anything feels confusing, tap the problem button. It emails Wildrose with your setup details and we’ll reach back out.</p>
     </div>
@@ -122,7 +122,7 @@ fbq('trackCustom', 'rose_thank_you_viewed');
       <summary>Other install options</summary>
       <div class="advanced-options-body">
         <div class="mini-grid" id="backupCards"></div>
-        <div class="snippet-card" id="snippetCard"><b>Install it yourself or hand it off</b><span>Sign in to Workground → Settings → Website → Do it myself for this account’s code and platform steps. You can copy both for your web person there.</span><a class="btn dark-ghost" href="https://jack108510.github.io/rose-dashboard-preview/workground/?install=self">Open Website settings</a></div>
+        <div class="snippet-card" id="snippetCard"><b>Install it yourself or hand it off</b><span>Sign in to Workground → Settings → Website → Do it myself for this account’s code and platform steps. You can copy both for your web person there.</span><a class="btn dark-ghost" href="https://workground.wildroseautomations.ca/workground/?install=self">Open Website settings</a></div>
         <div class="mini-grid tune-grid"><div class="mini-card"><b>Want Rose changed before it goes live?</b><span>Tell Wildrose what to tune. These create setup tasks.</span></div><button class="option-card" id="tuneNameBtn" type="button"><b>Change greeting/name</b><span>Assistant name, welcome message, or tone.</span></button><button class="option-card" id="tuneLeadBtn" type="button"><b>Change lead email</b><span>Where Rose sends chats, calls, and summaries.</span></button><button class="option-card" id="tuneQuestionsBtn" type="button"><b>Change questions Rose asks</b><span>What Rose should collect before handing off.</span></button><button class="option-card" id="tuneGeneralBtn" type="button"><b>Ask Wildrose to tune it</b><span>General cleanup before it goes live.</span></button></div>
       </div>
     </details>
@@ -137,7 +137,7 @@ function pending(){try{return JSON.parse(localStorage.getItem('rosePendingInstal
 const useSaved=!['checkoutLeadId','clientId','id','businessName','website','email','sitePlatform','platform'].some(key=>params.has(key));
 const saved=useSaved?pending():{};
 const data={id:params.get('checkoutLeadId')||params.get('clientId')||params.get('id')||saved.id||'',businessName:params.get('businessName')||saved.businessName||'',website:params.get('website')||saved.website||'',email:params.get('email')||saved.email||'',sitePlatform:params.get('sitePlatform')||params.get('platform')||saved.sitePlatform||''};
-if(data.id)document.getElementById('accountSetupLink').href='https://jack108510.github.io/rose-dashboard-preview/login.html?signup=1&lead='+encodeURIComponent(data.id);
+if(data.id)document.getElementById('accountSetupLink').href='https://workground.wildroseautomations.ca/login.html?signup=1&lead='+encodeURIComponent(data.id);
 const cleanHost=(data.website||'').replace(/^https?:\/\//i,'').replace(/\/$/,'');
 const business=data.businessName||cleanHost||'Your business';
 const rawProvider=(data.sitePlatform||'Unknown').trim()||'Unknown';
