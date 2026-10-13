@@ -150,15 +150,10 @@
     root.style.setProperty("--rose-button", a.buttonColor || a.brandPrimary || cfg.accent);
     root.style.setProperty("--sphere-a", a.brandPrimary || cfg.accent);
     root.style.setProperty("--sphere-b", a.brandAccent || a.brandPrimary || cfg.accent);
-    $$(".wr-title h3").forEach(el => el.textContent = copy.title || cfg.title);
+    $$(".wr-title h3").forEach(el => el.textContent = cfg.title);
     $$(".wr-title small").forEach(el => { el.textContent = cfg.subtitle; el.hidden = !String(cfg.subtitle || "").trim(); });
     const greet = $(".wr-msg.bot"); if (greet) greet.textContent = cfg.greeting;
     if (input) input.placeholder = `Ask ${cfg.title}…`;
-    if (copy.ready) $(".wr-status").textContent = copy.ready;
-    if (copy.voiceHint) $(".wr-note").textContent = copy.voiceHint;
-    if (copy.startButton) $(".wr-start-voice").textContent = copy.startButton;
-    if (copy.chatTab) $('[data-view="chat"].wr-tab').textContent = copy.chatTab;
-    if (copy.voiceTab) $('[data-view="voice"].wr-tab').textContent = copy.voiceTab;
     return true;
   }
   async function loadPublishedConfig() {
