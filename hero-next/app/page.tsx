@@ -30,7 +30,7 @@ export default function Home() {
     <section className="hero" id="rose" aria-label="Rose by Wildrose Automations">
       <nav className="hero-nav" aria-label="Wildrose navigation">
         <a className="logo-link" href="/" aria-label="Wildrose Automations home"><img src="/logos/wildrose.png" alt="" /><span>WILDROSE</span></a>
-        <div className="nav-links"><a href="#rose">ROSE</a><a href="#try-rose">ROSE SETUP</a><a href="/ai-tool-mockup-final.html?buy=1">PRICING</a><a href="https://jack108510.github.io/rose-dashboard-preview/login.html">LOGIN</a></div>
+        <div className="nav-links"><a href="#rose">ROSE</a><a href="#try-rose">ROSE SETUP</a><a href="/ai-tool-mockup-final.html?buy=1">PRICING</a><a href="https://workground.wildroseautomations.ca/login.html">LOGIN</a></div>
         <a className="buy-button" href="/ai-tool-mockup-final.html?buy=1">BUY AGENT <span aria-hidden="true">↗</span></a>
       </nav>
 
