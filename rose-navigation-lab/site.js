@@ -1,10 +1,26 @@
 const siteBasePath = new URL(".", document.currentScript.src).pathname;
+const catalog = window.TRAIL_PRODUCTS || [];
 const pages = [
   { title: "Shipping and delivery", url: `${siteBasePath}shipping.html`, description: "Delivery times, shipping costs, and tracking." },
   { title: "Returns and exchanges", url: `${siteBasePath}returns.html`, description: "Return policy, exchanges, and refunds." },
-  { title: "Ridge Shell", url: `${siteBasePath}rain-jacket.html`, description: "Waterproof trail jacket product." },
+  { title: "Shop all products", url: `${siteBasePath}shop.html`, description: "Browse all ten outdoor products, sizes, colors and models." },
   { title: "Size guide", url: `${siteBasePath}size-guide.html`, description: "Measurements and jacket sizing." },
+  ...catalog.map(product => ({ title: product.name, url: `${siteBasePath}products/${product.slug}.html`, description: `${product.description} ${product.category} ${product.colors.join(' ')} ${product.sizes.join(' ')} ${product.models.join(' ')}`, product })),
 ];
+function findPages(message) {
+  const q = message.toLowerCase();
+  if (/polic|help pages/.test(q)) return pages.slice(0, 2);
+  if (/ship|deliver|track/.test(q)) return pages.filter(p=>p.url.endsWith('shipping.html'));
+  if (/return|refund|exchange/.test(q)) return pages.filter(p=>p.url.endsWith('returns.html'));
+  if (/size guide|fit guide|measurement/.test(q)) return pages.filter(p=>p.url.endsWith('size-guide.html'));
+  const exact = catalog.filter(p=>q.includes(p.name.toLowerCase()) || q.includes(p.slug.replaceAll('-',' ')));
+  if (exact.length) return pages.filter(p=>exact.includes(p.product));
+  const tokens=q.replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>3 && !['show','take','open','what','have','with','about','tell','want','looking','products','product','different','options'].includes(w));
+  const ranked=pages.filter(p=>p.product).map(p=>({p,score:tokens.reduce((n,w)=>n+(p.title+' '+p.description).toLowerCase().includes(w),0)})).filter(x=>x.score).sort((a,b)=>b.score-a.score);
+  if (ranked.length) return ranked.slice(0,4).map(x=>x.p);
+  if (/shop|catalog|gear|browse|all/.test(q)) return pages.filter(p=>p.url.endsWith('shop.html'));
+  return [];
+}
 if (new URLSearchParams(location.search).has("test") && !new URLSearchParams(location.search).has("arrived")) sessionStorage.clear();
 const originalFetch = window.fetch.bind(window);
 window.fetch = async (input, options = {}) => {
@@ -13,19 +29,13 @@ window.fetch = async (input, options = {}) => {
   if (url.pathname === "/api/chat/start") return json({ chatId: "rose-navigation-lab" });
   if (url.pathname === "/api/chat/message") {
     const message = String(JSON.parse(options.body || "{}").content || "").toLowerCase();
-    const matches = /polic|help pages/.test(message) ? pages.slice(0, 2) : pages.filter(page => {
-      if (/ship|deliver|track/.test(message)) return page.url.endsWith("/shipping.html");
-      if (/return|refund|exchange/.test(message)) return page.url.endsWith("/returns.html");
-      if (/size|fit|measurement/.test(message)) return page.url.endsWith("/size-guide.html");
-      if (/jacket|rain|product|ridge|shell/.test(message)) return page.url.endsWith("/rain-jacket.html");
-      return false;
-    });
+    const matches = findPages(message);
     const test = new URLSearchParams(location.search).get("test");
-    return json({ reply: matches.length ? "I found these pages for you." : "Try asking for shipping, returns, the rain jacket, or the size guide.", sitePages: matches.map(page => ({ ...page, url: new URL(`${page.url}${test ? `?test=${encodeURIComponent(test)}&arrived=1` : ""}`, location.origin).href })) });
+    return json({ reply: matches.length ? matches.length===1 ? `I found ${matches[0].title}. I can take you there.` : `I found ${matches.length} good places to start.` : "Ask me about a product, color, size, shipping, returns, or the size guide.", sitePages: matches.map(page => ({ title:page.title,description:page.description, url: new URL(`${page.url}${test ? `?test=${encodeURIComponent(test)}&arrived=1` : ""}`, location.origin).href })) });
   }
   if (url.pathname === "/api/rose-site-navigation") {
     const query = String(JSON.parse(options.body || "{}").query || "").toLowerCase();
-    return json({ ok: true, pages: pages.filter(page => `${page.title} ${page.description}`.toLowerCase().includes(query)).map(page => ({ ...page, url: new URL(page.url, location.origin).href })) });
+    return json({ ok: true, pages: findPages(query).map(page => ({ title:page.title,description:page.description, url: new URL(page.url, location.origin).href })) });
   }
   if (url.pathname === "/api/rose-site-capabilities") return json({ ok: true });
   return originalFetch(input, options);
@@ -38,6 +48,16 @@ window.addEventListener("DOMContentLoaded", () => {
     document.querySelector('[data-view="chat"].wr-tab')?.click();
     document.querySelector(".wr-input")?.focus();
   }));
+  document.querySelectorAll("[data-open-voice]").forEach(button=>button.addEventListener("click",()=>{
+    document.querySelector('.wr-fab')?.click();
+    document.querySelector('[data-view="voice"].wr-tab')?.click();
+  }));
+  document.querySelectorAll('[data-option-group]').forEach(group=>group.addEventListener('click',event=>{
+    const choice=event.target.closest('[data-option]');if(!choice)return;
+    group.querySelectorAll('[data-option]').forEach(button=>{button.classList.toggle('is-selected',button===choice);button.setAttribute('aria-pressed',button===choice?'true':'false')});
+    const summary=document.querySelector('[data-selection]');if(summary) summary.textContent=[...document.querySelectorAll('.option-button.is-selected')].map(button=>button.dataset.option).join(' · ');
+  }));
+  const summary=document.querySelector('[data-selection]');if(summary) summary.textContent=[...document.querySelectorAll('.option-button.is-selected')].map(button=>button.dataset.option).join(' · ');
   document.querySelectorAll("[data-rose-prompt]").forEach(button => button.addEventListener("click", () => {
     document.querySelector(".wr-fab")?.click();
     document.querySelector('[data-view="chat"].wr-tab')?.click();
