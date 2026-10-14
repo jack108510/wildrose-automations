@@ -116,7 +116,7 @@
     img.style.display = "none";
     img.parentElement?.setAttribute("data-logo-fallback", "true");
   }));
-  fab.addEventListener("click", () => { setView(cfg.defaultView); panel.classList.add("open"); fab.style.display = "none"; });
+  fab.addEventListener("click", () => { setView(cfg.defaultView); panel.classList.add("open"); fab.style.display = "none"; window.wrFunnel?.('widget_open'); });
   $(".wr-close").addEventListener("click", () => { try { retellClient?.stopCall(); } catch {} voiceBusy = false; $(".wr-start-voice").disabled = false; panel.classList.remove("open"); fab.style.display = "grid"; });
   $$(".wr-tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
 
@@ -306,6 +306,7 @@
       const id = await ensureChat();
       const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageContext: { url: location.href } });
       pending.textContent = data.reply || "I can help with that.";
+      window.wrFunnel?.('chat_send');
     } catch (e) {
       showContactFallback(pending, "Rose is temporarily unavailable.");
       console.error(e);
@@ -347,6 +348,7 @@
   $(".wr-start-voice").addEventListener("click", async () => {
     const status = $(".wr-status"), note = $(".wr-note"), orb = $(".wr-orb"), startBtn = $(".wr-start-voice"), endBtn = $(".wr-end-voice");
     if (voiceBusy) return;
+    window.wrFunnel?.('voice_attempt');
     voiceBusy = true;
     startBtn.disabled = true;
     try { retellClient?.stopCall(); } catch {}
