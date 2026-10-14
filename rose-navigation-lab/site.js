@@ -55,6 +55,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('[data-option-group]').forEach(group=>group.addEventListener('click',event=>{
     const choice=event.target.closest('[data-option]');if(!choice)return;
     group.querySelectorAll('[data-option]').forEach(button=>{button.classList.toggle('is-selected',button===choice);button.setAttribute('aria-pressed',button===choice?'true':'false')});
+    if(group.dataset.optionGroup==='color'){
+      const art=document.querySelector('[data-product-art]');
+      if(art) art.src=art.src.replace(/-\d+\.svg$/,`-${choice.dataset.optionIndex}.svg`);
+    }
     const summary=document.querySelector('[data-selection]');if(summary) summary.textContent=[...document.querySelectorAll('.option-button.is-selected')].map(button=>button.dataset.option).join(' · ');
   }));
   const summary=document.querySelector('[data-selection]');if(summary) summary.textContent=[...document.querySelectorAll('.option-button.is-selected')].map(button=>button.dataset.option).join(' · ');
