@@ -109,7 +109,7 @@
   const input = $(".wr-input");
   const log = $(".wr-chat-log");
   let chatId = null;
-  const siteSessionKey = `rose-site-chat:${cfg.businessId || location.hostname}`;
+  const siteSessionKey = `rose-site-chat:live-v1:${cfg.businessId || location.hostname}`;
   let shoppingHistory = [];
   let lastProducts = [];
   let lastSitePages = [];
@@ -939,7 +939,7 @@
   async function api(path, body) {
     const r = await fetch(cfg.apiBase + path, { method: "POST", headers: { "Content-Type": "application/json", "bypass-tunnel-reminder": "1" }, body: JSON.stringify(body || {}) });
     const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(data.error || "Request failed");
+    if (!r.ok) { const error = new Error(data.error || "Request failed"); error.status = r.status; throw error; }
     return data;
   }
   async function ensureChat() {
@@ -961,8 +961,16 @@
     try {
       let products = [];
       try { products = await findProducts(content); } catch (error) { console.warn("Rose product search unavailable", error); }
-      const id = await ensureChat();
-      const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageContext: currentPageContext(), shoppingProducts: products });
+      const sendMessage = id => api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageContext: currentPageContext(), shoppingProducts: products });
+      let id = await ensureChat();
+      let data;
+      try { data = await sendMessage(id); }
+      catch (error) {
+        if (![400, 404, 410].includes(error.status)) throw error;
+        chatId = null; saveSiteSession();
+        id = await ensureChat();
+        data = await sendMessage(id);
+      }
       pending.textContent = data.reply || "I can help with that.";
       shoppingHistory.push({ role: "bot", text: pending.textContent }); saveSiteSession();
       renderProducts(products);
@@ -986,7 +994,12 @@
         pending.textContent = links.length === 1 ? "I found that page and am opening it." : "I found these pages. Choose one below.";
         renderSitePages(links);
         if (links.length === 1) navigateTo(links[0]);
-      } else showContactFallback(pending, "Rose is temporarily unavailable.");
+      } else {
+        const suggestions = await findProducts(content).catch(() => []);
+        renderProducts(suggestions);
+        lastProducts = suggestions; saveSiteSession();
+        showContactFallback(pending, suggestions.length ? "Rose's live chat is temporarily unavailable. You can still explore the matching products below." : "Rose's live chat is temporarily unavailable. Please try again shortly.");
+      }
       console.error(e);
     }
   }
