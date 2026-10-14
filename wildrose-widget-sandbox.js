@@ -118,7 +118,7 @@
   }));
   fab.addEventListener("click", () => { setView(cfg.defaultView); panel.classList.add("open"); fab.style.display = "none"; window.wrFunnel?.('widget_open'); });
   $(".wr-close").addEventListener("click", () => { try { retellClient?.stopCall(); } catch {} voiceBusy = false; $(".wr-start-voice").disabled = false; panel.classList.remove("open"); fab.style.display = "grid"; });
-  $$(".wr-tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
+  $$(".wr-tab").forEach(t => t.addEventListener("click", () => { if (cfg.inline) window.wrFunnel?.('widget_open'); setView(t.dataset.view); }));
 
   function setView(view) {
     view = view === "chat" ? "chat" : "voice";
