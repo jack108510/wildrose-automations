@@ -159,7 +159,7 @@
     shoppingHistory = Array.isArray(saved.messages) ? saved.messages.slice(-12) : [];
     shoppingHistory.forEach(message => addMsg(message.role === "user" ? "user" : "bot", String(message.text || "").slice(0, 1600)));
     lastProducts = Array.isArray(saved.products) ? saved.products.filter(product => product.provider === commerceProvider() && (product.provider !== "native" || product.url === location.href)).slice(0, 4) : [];
-    renderProducts(lastProducts);
+    renderProducts(lastProducts.filter(product => new URL(product.url, location.href).pathname !== location.pathname));
     lastSitePages = Array.isArray(saved.sitePages) ? saved.sitePages.slice(0, 4) : [];
     renderSitePages(lastSitePages);
     lastNavigationChoices = Array.isArray(saved.navigationChoices) ? saved.navigationChoices.filter(choice => !choice.provider || lastProducts.some(product => product.url === choice.url)).slice(0, 4) : [];
@@ -585,10 +585,10 @@
       if (widgetOptions.cartActions) {
         const add = document.createElement("button");
         add.type = "button";
-        add.textContent = "Add to cart";
+        add.textContent = product.provider === 'custom' && product.needsOptions ? 'Choose options' : 'Add to cart';
         add.dataset.cartState = "idle";
         add.setAttribute("aria-live", "polite");
-        add.addEventListener("click", () => addProduct(product, add));
+        add.addEventListener("click", () => product.provider === 'custom' && product.needsOptions ? navigateTo(product, root.querySelector('.wr-tab.active')?.dataset.view) : addProduct(product, add));
         actions.appendChild(add);
       }
       card.appendChild(info);
@@ -619,8 +619,26 @@
   }
   async function handleCartRequest(message, view = "chat") {
     if (!cartRequested(message)) return false;
+    await settingsReady;
     if (!cfg.shopping || !widgetOptions.cartActions) {
       addMsg("bot", "Cart actions are turned off for this site.");
+      return true;
+    }
+    const here = window.RoseCommerce?.currentProduct?.();
+    if (here && (!/\b(?:ridge|summit|switchback|cloudline|trailhead|roamer|canyon|daybreak|wayfinder|wildflower)\b/i.test(message) || message.toLowerCase().includes(here.title.toLowerCase()))) {
+      const selection = window.RoseCommerce.currentSelection();
+      if (!selection) { addMsg('bot', 'Choose a color, size, and model on this page first.'); return true; }
+      const note = addMsg('bot', `Adding ${here.title} to your demo bag…`);
+      try {
+        const before = await window.RoseCommerce.getCart();
+        const prior = before.items.filter(item => item.id === here.id).reduce((sum,item)=>sum+item.quantity,0);
+        await window.RoseCommerce.addItem({product:here,quantity:1});
+        const after = await window.RoseCommerce.getCart();
+        const count = after.items.filter(item => item.id === here.id).reduce((sum,item)=>sum+item.quantity,0);
+        if (count <= prior) throw new Error('I could not confirm that it was added.');
+        note.textContent = `Added ${here.title} · ${selection.color} · ${selection.size} · ${selection.model} to your demo bag. Want to look at another size or color?`;
+      } catch (error) { note.textContent = error.message; }
+      if (view === 'voice') $('.wr-note').textContent = note.textContent;
       return true;
     }
     let products = lastProducts;
@@ -736,7 +754,7 @@
     await settingsReady;
     if (!widgetOptions.cartActions) return;
     if (product.needsOptions) {
-      addMsg("bot", `Choose the options for ${product.title} on its product page, then use the store’s add to cart button.`);
+      addMsg("bot", `Open ${product.title} to choose its color, size, and model. Then I can add it to your demo bag.`);
       return;
     }
     if (product.provider === "shopify") return addShopifyProduct(product, button);

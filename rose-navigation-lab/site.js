@@ -44,6 +44,44 @@ window.fetch = async (input, options = {}) => {
 
 window.addEventListener("DOMContentLoaded", () => {
   const status = document.querySelector("#lab-status");
+  const commerce = window.RoseCommerce;
+  const money = value => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(value);
+  const updateBag = async () => {
+    const items = (await commerce.getCart()).items;
+    document.querySelectorAll('[data-bag-count]').forEach(count => count.textContent = items.reduce((sum,item)=>sum+item.quantity,0));
+    const content = document.querySelector('[data-bag-content]');
+    if (!content) return;
+    content.replaceChildren();
+    if (!items.length) {
+      const empty = document.createElement('p'); empty.className='bag-empty'; empty.textContent='Your bag is waiting for its first find.'; content.append(empty); return;
+    }
+    const list = document.createElement('div'); list.className='bag-items';
+    for (const item of items) {
+      const row=document.createElement('article'); row.className='bag-item';
+      const img=document.createElement('img'); img.src=item.image; img.alt='';
+      const detail=document.createElement('div');
+      const title=document.createElement('a'); title.href=`${siteBasePath}products/${item.id}.html`; title.textContent=item.title; title.className='bag-item-title';
+      const options=document.createElement('p'); options.textContent=[item.selection.color,item.selection.size,item.selection.model].join(' · ');
+      const quantity=document.createElement('p'); quantity.textContent=`Quantity ${item.quantity} · ${money(item.price*item.quantity)}`;
+      const remove=document.createElement('button'); remove.type='button'; remove.className='bag-remove'; remove.textContent='Remove'; remove.addEventListener('click',()=>commerce.removeItem(item.key));
+      detail.append(title,options,quantity,remove); row.append(img,detail); list.append(row);
+    }
+    const total=document.createElement('p'); total.className='bag-total'; total.textContent=`Demo total ${money(items.reduce((sum,item)=>sum+item.price*item.quantity,0))}`;
+    content.append(list,total);
+  };
+  window.addEventListener('rose:bag-change', updateBag);
+  updateBag();
+  document.querySelector('[data-add-bag]')?.addEventListener('click',async event=>{
+    const button=event.currentTarget;
+    const product=commerce.currentProduct();
+    if (!product) return;
+    try {
+      await commerce.addItem({product,quantity:1});
+      button.textContent='Added to demo bag ✓';
+      if(status) status.textContent=`Added ${product.title} · ${Object.values(commerce.currentSelection()).join(' · ')} to your demo bag.`;
+      setTimeout(()=>button.textContent='Add to demo bag ↗',2400);
+    } catch(error) { if(status) status.textContent=error.message; }
+  });
   document.querySelectorAll("[data-open-rose]").forEach(button => button.addEventListener("click", () => {
     document.querySelector(".wr-fab")?.click();
     document.querySelector('[data-view="chat"].wr-tab')?.click();
