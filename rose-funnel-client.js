@@ -1,7 +1,7 @@
 // Anonymous first-party Rose funnel milestones. No visitor text, URL query, contact fields or IP is sent.
 (function () {
   const script = document.currentScript;
-  const api = script?.dataset.apiBase || 'https://rose-analytics.wildeautomations.com';
+  const api = script?.dataset.apiBase || 'https://rose-publisher.wildeautomations.com';
   const params = new URLSearchParams(location.search);
   let sessionId;
   try {
