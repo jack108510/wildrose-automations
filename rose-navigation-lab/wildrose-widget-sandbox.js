@@ -21,7 +21,7 @@
     defaultView: script?.dataset.defaultView || (script?.dataset.inline === "true" ? "chat" : "voice"),
     shopping: script?.dataset.shopping !== "false",
   };
-  const widgetOptions = { navigation: true, autoOpen: true, productSuggestions: true, cartActions: true, voiceNavigation: true, siteControls: true };
+  const widgetOptions = { navigation: true, autoOpen: true, productSuggestions: true, cartActions: script?.dataset.cartActions !== "false", voiceNavigation: true, siteControls: true };
   const settingsReady = cfg.apiBase && cfg.businessId ? fetch(`${cfg.apiBase}/api/rose-public-config?businessId=${encodeURIComponent(cfg.businessId)}`)
     .then(response => response.ok ? response.json() : null)
     .then(data => {
@@ -455,7 +455,7 @@
   function wantsProducts(message) {
     if (navigationRequested(message) && /\b(?:shipping|delivery|returns?|refunds?|privacy|terms|contact|faq|about|size guide|sizing)\b/i.test(message)) return false;
     if (/\b(?:shipping|delivery|returns?|refunds?|privacy|terms|contact|faq|hours?|warranty|policy)\b/i.test(message) && !/\b(?:find|show|recommend|buy|add|product|item)\b/i.test(message)) return false;
-    return /\b(find|show|open|visit|look|search|shop|buy|recommend|product|item|best|fit|need|want|add|put|price|prices|cost|costs|stock|available|availability)\b/i.test(message) || /\bhow much\b/i.test(message);
+    return /\b(find|show|open|visit|look|looking|search|shop|buy|recommend|product|item|best|fit|need|want|add|put|price|prices|cost|costs|stock|available|availability|jacket|coat|shell|parka|vest|fleece|shirt|tee|pant|pants|short|shorts|pack|backpack|cap|hat|bottle)\b/i.test(message) || /\bhow much\b/i.test(message);
   }
   function shopRoot() {
     return window.Shopify?.routes?.root || "/";

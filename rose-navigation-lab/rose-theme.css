@@ -10,3 +10,4 @@
 .wr-ai .wr-msg.bot{background:#fffdf8!important;border-color:#dbe4d7!important}.wr-ai .wr-msg.user{background:#244e3b!important}.wr-ai .wr-send,.wr-ai .wr-primary{background:#244e3b!important;box-shadow:none!important}.wr-ai .wr-compose{background:#fffdf8!important;border-color:#d4dfd1!important}
 .wr-ai .wr-orb{background:radial-gradient(circle at 35% 25%,#fffefa,#dcefdc 28%,#9abfa4 57%,#244e3b 100%)!important;box-shadow:0 18px 60px #244e3b50,inset 0 3px 12px #ffffffa8!important}.wr-ai .wr-orb.speaking{box-shadow:0 18px 70px #244e3b88,0 0 0 12px #244e3b1c!important}
 .wr-ai .wr-orb:after{background:conic-gradient(from 20deg,transparent,#ffffff70,transparent,#244e3b30,transparent)!important}
+.wr-ai .wr-commerce-card .wr-product-actions{grid-template-columns:1fr!important}.wr-ai .wr-commerce-card .wr-product-actions a{background:#e9f0e8!important;color:#244e3b!important}

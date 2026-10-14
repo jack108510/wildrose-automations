@@ -26,8 +26,9 @@ const originalFetch = window.fetch.bind(window);
 window.fetch = async (input, options = {}) => {
   const url = new URL(input, location.href);
   const json = value => new Response(JSON.stringify(value), { status: 200, headers: { "Content-Type": "application/json" } });
-  if (url.pathname === "/api/chat/start") return json({ chatId: "rose-navigation-lab" });
-  if (url.pathname === "/api/chat/message") {
+  const automatedTest = new URLSearchParams(location.search).has("test");
+  if (automatedTest && url.pathname === "/api/chat/start") return json({ chatId: "rose-navigation-lab" });
+  if (automatedTest && url.pathname === "/api/chat/message") {
     const message = String(JSON.parse(options.body || "{}").content || "").toLowerCase();
     const matches = findPages(message);
     const test = new URLSearchParams(location.search).get("test");
