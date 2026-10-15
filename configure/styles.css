@@ -195,3 +195,8 @@ body{background:#f8f7f5;color:#222235}
 .site-footer{border-color:#dce2e9}
 .site-footer a:hover,.top-links a:hover{color:#d9542e}
 @media(max-width:520px){.progress{gap:7px}.progress span{gap:4px;align-items:flex-start;flex-direction:column}.progress span b{margin:0}.progress span i{width:23px;height:23px}}
+
+/* Keep the live preview level with the active setup card. */
+.setup-intro{grid-column:1 / -1}
+body.has-preview .shell{column-gap:32px;row-gap:0}
+@media(max-width:850px){body.has-preview .shell{row-gap:0}.preview{margin-top:22px}}
