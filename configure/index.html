@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#fffaf6">
+  <title>Configure your Rose agent · Wildrose</title>
+  <meta name="description" content="Build and try your Rose website assistant before checkout.">
+  <link rel="icon" href="https://wildroseautomations.ca/logos/wildrose.png">
+  <link rel="stylesheet" href="styles.css?v=20261014-3">
+  <script defer src="app.js?v=20261014-3"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <a class="brand" href="https://wildroseautomations.ca/" aria-label="Wildrose home"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt="">Wildrose <span>· Rose</span></a>
+      <div class="top-links"><span>Build now. Refine in Workground.</span><a href="mailto:jack@wildroseautomations.ca?subject=Rose%20setup%20help">Need help?</a></div>
+    </div>
+  </header>
+  <main class="shell">
+    <div class="configuration">
+      <div class="heading">
+        <span class="eyebrow">Rose for your business</span>
+        <h1>Make Rose yours.</h1>
+        <p>Start with your website. Shape your agent, then talk to Rose before you choose a plan.</p>
+      </div>
+      <nav class="progress" aria-label="Setup progress">
+        <span data-progress="1" class="current">01 <b>Business</b></span>
+        <span data-progress="2">02 <b>Your agent</b></span>
+        <span data-progress="3">03 <b>Checkout</b></span>
+      </nav>
+      <section class="panel step" id="businessStep" aria-labelledby="businessHeading">
+        <div class="section-kicker">01 / Business</div>
+        <h2 class="step-title" id="businessHeading">Start with your website</h2>
+        <p class="step-note">Rose will use your public site to learn your business name, what you do, and your visual style.</p>
+        <form id="businessForm" class="fields">
+          <label class="field">Website<input id="website" type="text" inputmode="url" autocomplete="url" placeholder="https://yourbusiness.com" required><small>Use your business website.</small></label>
+          <label class="field">Business name<input id="businessName" autocomplete="organization" placeholder="We’ll look for this on your site"></label>
+          <div id="scanStatus" class="scan-status" role="status" aria-live="polite"></div>
+          <div class="actions"><a class="back" href="https://wildroseautomations.ca/">← Back to Rose</a><button class="primary" type="submit" id="scanButton">Continue <span aria-hidden="true">→</span></button></div>
+        </form>
+      </section>
+      <section class="panel step" id="agentStep" aria-labelledby="agentHeading" hidden>
+        <div class="section-kicker">02 / Your agent</div>
+        <h2 class="step-title" id="agentHeading">Shape the conversation</h2>
+        <p class="step-note">See each change in the Rose preview. You can edit more in Workground after checkout.</p>
+        <div id="scanEvidence" class="scan-evidence" hidden>
+          <div class="scan-evidence-top"><span class="evidence-icon" aria-hidden="true">✓</span><div><strong>What Rose learned</strong><small id="scanEvidenceSite"></small></div><button class="text-button" type="button" data-back="1">Change site</button></div>
+          <p id="scanEvidenceSummary"></p>
+          <div id="scanSources" class="scan-sources" aria-label="Pages Rose read"></div>
+          <details class="scan-correction"><summary>Correct a business fact</summary><label class="field" for="businessFactsCorrection">What should Rose know instead?<textarea id="businessFactsCorrection" maxlength="1200" placeholder="For example: We serve Halifax and Dartmouth only. We do not offer emergency service."></textarea><small>Your correction takes priority over the website scan in the preview and Workground.</small></label></details>
+        </div>
+        <div class="subhead">What should Rose help visitors do?</div>
+        <div class="goals" role="group" aria-label="Agent goals">
+          <button class="goal" type="button" data-goal="answer_questions" aria-pressed="true">Answer questions</button>
+          <button class="goal" type="button" data-goal="capture_leads" aria-pressed="true">Collect contact details</button>
+          <button class="goal" type="button" data-goal="quote_requests" aria-pressed="false">Handle quote requests</button>
+          <button class="goal" type="button" data-goal="booking_requests" aria-pressed="false">Handle booking requests</button>
+          <button class="goal" type="button" data-goal="product_guidance" aria-pressed="false">Guide product choices</button>
+        </div>
+        <div class="fields"><label class="field">Agent name<input id="agentName" maxlength="80" autocomplete="off"></label><label class="field">First message<textarea id="greeting" maxlength="600"></textarea></label></div>
+        <div class="subhead">Voice and tone</div>
+        <div class="tone-row" role="group" aria-label="Agent tone"><button class="tone" type="button" data-tone="friendly" aria-pressed="true">Friendly</button><button class="tone" type="button" data-tone="professional" aria-pressed="false">Professional</button><button class="tone" type="button" data-tone="concise" aria-pressed="false">Concise</button></div>
+        <div class="subhead">Brand color</div>
+        <div class="colors" role="group" aria-label="Agent accent color"><button class="color" type="button" data-color="#f15a29" style="--choice:#f15a29" aria-label="Orange" aria-pressed="true"><i></i></button><button class="color" type="button" data-color="#287d68" style="--choice:#287d68" aria-label="Green" aria-pressed="false"><i></i></button><button class="color" type="button" data-color="#355d9d" style="--choice:#355d9d" aria-label="Blue" aria-pressed="false"><i></i></button><button class="color" type="button" data-color="#7b4e9b" style="--choice:#7b4e9b" aria-label="Purple" aria-pressed="false"><i></i></button></div>
+        <button class="back try-preview" type="button" id="tryPreview">Try Rose ↓</button>
+        <p id="agentError" class="error" role="alert"></p>
+        <div class="actions"><button class="back" type="button" data-back="1">← Business</button><button class="primary" type="button" id="toCheckout">Review plans <span aria-hidden="true">→</span></button></div>
+      </section>
+      <section class="panel step" id="checkoutStep" aria-labelledby="checkoutHeading" hidden>
+        <div class="section-kicker">03 / Checkout</div>
+        <h2 class="step-title" id="checkoutHeading">Choose your plan</h2>
+        <p class="step-note">Your choices and website scan will become a Workground draft when you continue through checkout.</p>
+        <div class="plans" role="group" aria-label="Rose plan">
+          <button class="plan" type="button" data-plan="Rose Basic — CA$39/mo" aria-pressed="false"><span class="plan-top"><strong>Basic</strong><span class="plan-check" aria-hidden="true">✓</span></span><b>CA$39 <small>/ month</small></b><small>75 voice minutes each month</small></button>
+          <button class="plan" type="button" data-plan="Rose Pro — CA$129/mo" aria-pressed="true"><span class="plan-top"><strong>Pro</strong><span class="plan-check" aria-hidden="true">✓</span></span><b>CA$129 <small>/ month</small></b><small>275 voice minutes each month</small></button>
+        </div>
+        <p class="plan-note">Both plans include Rose chat and voice. Extra voice minutes are CA$0.29 each. Custom integrations are quoted separately. Review the final amount on Square before paying.</p>
+        <div class="summary"><span class="summary-label">YOUR AGENT</span><b id="summaryName">Rose</b><span id="summaryGoals"></span></div>
+        <form id="checkoutForm">
+          <label class="field">Workground email<input id="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@yourbusiness.com"><small>Use the address you want to sign in with.</small></label>
+          <label class="field promo-field">Promo code <small>(optional)</small><input id="promoCode" autocomplete="off" autocapitalize="characters"></label>
+          <p id="checkoutError" class="error" role="alert"></p>
+          <div class="actions"><button class="back" type="button" data-back="2">← Your agent</button><button class="primary" type="submit" id="payButton">Continue <span aria-hidden="true">→</span></button></div>
+          <p class="fine">Checkout opens on Square. Rose stays a draft until you review and publish it in Workground. Wildrose helps with installation. Read our <a href="https://wildroseautomations.ca/terms.html">terms</a> and <a href="https://wildroseautomations.ca/privacy.html">privacy policy</a>.</p>
+        </form>
+      </section>
+    </div>
+    <aside class="preview" aria-label="Try Rose">
+      <div class="preview-head"><div class="preview-mark" aria-hidden="true">✦</div><div><b>Rose preview</b><small id="previewSite">Scan a website to start</small></div><span class="preview-live" id="previewLive" hidden>READY</span></div>
+      <p class="live-note" id="previewStatus" role="status">Rose will appear here after the website scan.</p>
+      <button class="text-button" type="button" id="retryPreview" hidden>Retry preview</button>
+      <div id="rose-workground-widget"></div>
+      <p class="preview-foot" id="previewFoot" hidden>Chat and voice preview. Test requests are not delivered to the business.</p>
+    </aside>
+  </main>
+  <footer class="site-footer"><span>Rose by Wildrose Automations</span><div><a href="https://wildroseautomations.ca/privacy.html">Privacy</a><a href="https://wildroseautomations.ca/terms.html">Terms</a><a href="mailto:jack@wildroseautomations.ca?subject=Rose%20setup%20help">Support</a></div></footer>
+</body>
+</html>
