@@ -12,12 +12,17 @@
     }
   } catch { sessionId = crypto.randomUUID().replaceAll('-', ''); }
   const rawSource = (params.get('utm_source') || '').toLowerCase();
-  const source = rawSource === 'facebook' || rawSource === 'instagram' ? rawSource : 'direct';
+  const source = params.get('utm_medium') === 'reachr' ? 'facebook' :
+    rawSource === 'facebook' || rawSource === 'instagram' ? rawSource : 'direct';
   const rawContent = params.get('utm_content') || '';
   const content = /^[a-zA-Z0-9_-]{1,60}$/.test(rawContent) ? rawContent : '';
+  const rawCampaign = params.get('reachr_campaign') || params.get('utm_campaign') || '';
+  const campaign = /^[a-zA-Z0-9_-]{1,80}$/.test(rawCampaign) ? rawCampaign : '';
+  const rawGroup = params.get('reachr_group') || params.get('utm_term') || '';
+  const group = /^[a-zA-Z0-9_-]{1,100}$/.test(rawGroup) ? rawGroup : '';
   window.wrFunnel = function (event) {
-    if (!['landing','preview_attempt','preview_ready','preview_error','widget_open','chat_send','voice_attempt','purchase_view','meeting_view'].includes(event)) return;
-    const body = { event, sessionId, source, content, page: location.pathname };
+    if (!['landing','preview_attempt','preview_ready','preview_error','widget_open','chat_send','voice_attempt','purchase_view','meeting_view','lead_saved'].includes(event)) return;
+    const body = { event, sessionId, source, content, campaign, group, page: location.pathname };
     fetch(api + '/api/rose-funnel-event', { method:'POST', mode:'cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body), keepalive:true }).catch(() => {});
   };
 })();

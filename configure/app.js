@@ -2,6 +2,7 @@ const API = 'https://wildrose-widget.wildeautomations.com';
 const WIDGET = 'https://wildroseautomations.ca/wildrose-widget-sandbox.js?v=voice-universal-3';
 const params = new URLSearchParams(location.search);
 const fromDemo = params.get('from') === 'demo';
+window.wrFunnel?.('landing');
 const form = document.getElementById('businessForm');
 const steps = {1: document.getElementById('businessStep'), 2: document.getElementById('agentStep'), 3: document.getElementById('checkoutStep')};
 const goalLabels = {answer_questions:'answer questions',capture_leads:'collect contact details',quote_requests:'help with quote requests',booking_requests:'help with booking requests',product_guidance:'guide visitors to products'};
@@ -359,6 +360,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async event =
     const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const result=await response.json().catch(()=>({}));
     if(!response.ok||result.ok===false)throw new Error(result.error||'Could not prepare checkout');
+    window.wrFunnel?.('lead_saved');
     if(payload.promoCode&&!result.promoApplied)throw new Error('That promo code is not valid. Check it or leave it blank.');
     const target=result.nextUrl||result.checkoutUrl;
     if(!target||!/^https:\/\//i.test(target))throw new Error('Secure checkout is temporarily unavailable');
