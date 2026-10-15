@@ -677,7 +677,7 @@
   }
   let actionInFlight = false;
   async function executeRequestedAction(message, view = "chat") {
-    const actionable = cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
+    const actionable = window.RoseDemoActions?.canHandle(message) || cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
     if (!actionable) return { handled: false };
     if (actionInFlight) {
       addMsg("bot", "I'm finishing the previous action. Please try again in a moment.");
@@ -685,6 +685,14 @@
     }
     actionInFlight = true;
     try {
+      if (window.RoseDemoActions?.canHandle(message)) {
+        const handled = await window.RoseDemoActions.handle(message, {
+          view,
+          announce(text) { addMsg("bot", text); shoppingHistory.push({ role: "bot", text }); saveSiteSession(); if (view === "voice") $(".wr-note").textContent = text; },
+          navigate(url, title) { navigateTo({ url, title }, view); }
+        });
+        if (handled) return { handled: true, type: "demo" };
+      }
       if (await handleCartRequest(message, view)) return { handled: true, type: "cart" };
       if (await handleSiteControlRequest(message, view)) return { handled: true, type: "control" };
       const prior = priorNavigationChoice(message);
@@ -892,7 +900,7 @@
     await settingsReady;
     const normalized = String(text || "").trim().toLowerCase();
     const wantsNavigation = widgetOptions.voiceNavigation && navigationRequested(normalized);
-    if (((!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) || normalized === lastVoiceShoppingText) return;
+    if (((!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !window.RoseDemoActions?.canHandle(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) || normalized === lastVoiceShoppingText) return;
     lastVoiceShoppingText = normalized;
     try {
       if ((await executeRequestedAction(text, "voice")).handled) return;
@@ -1085,6 +1093,13 @@
     }
   });
   $(".wr-end-voice").addEventListener("click", () => { try { retellClient?.stopCall(); } catch {} voiceBusy = false; $(".wr-start-voice").disabled = false; });
+  const resumeDemoActions = () => window.RoseDemoActions?.resume({
+    view: root.querySelector('.wr-tab.active')?.dataset.view || 'chat',
+    announce(text) { addMsg("bot", text); shoppingHistory.push({ role: "bot", text }); saveSiteSession(); if (root.querySelector('.wr-tab.active')?.dataset.view === 'voice') $(".wr-note").textContent = text; },
+    navigate(url, title) { navigateTo({ url, title }, root.querySelector('.wr-tab.active')?.dataset.view || 'chat'); }
+  });
+  if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', resumeDemoActions, { once: true });
+  else resumeDemoActions();
   const observePageCapabilities = () => { if (discoverSiteControls().length) reportCapabilityOutcome(); };
   if (document.readyState === "complete") observePageCapabilities();
   else window.addEventListener("load", observePageCapabilities, { once: true });

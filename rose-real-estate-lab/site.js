@@ -47,7 +47,18 @@ window.addEventListener('DOMContentLoaded',()=>{
  const updateSaved=()=>{
   const ids=saved();document.querySelectorAll('[data-saved-count]').forEach(node=>node.textContent=ids.length);
   document.querySelectorAll('[data-save]').forEach(b=>{const on=ids.includes(b.dataset.save);b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',`${on?'Remove':'Save'} ${harbourHomes.find(p=>p.id===b.dataset.save)?.name||'home'}`);b.textContent=b.classList.contains('save-detail')?(on?'♥ Saved home':'♡ Save this home'):(on?'♥':'♡')});
-  const grid=document.querySelector('[data-saved-grid]');if(grid){grid.replaceChildren();for(const p of harbourHomes.filter(p=>ids.includes(p.id))){const fragment=document.createElement('template');fragment.innerHTML=cardHtml(p);grid.append(fragment.content)}document.querySelector('[data-saved-empty]').hidden=ids.length>0;}
+  const grid=document.querySelector('[data-saved-grid]');if(grid){grid.replaceChildren();for(const p of harbourHomes.filter(p=>ids.includes(p.id))){const fragment=document.createElement('template');fragment.innerHTML=cardHtml(p);grid.append(fragment.content)}document.querySelector('[data-saved-empty]').hidden=ids.length>0;
+   const compare=document.querySelector('[data-compare]'),compareGrid=document.querySelector('[data-compare-grid]');
+   if(compare&&compareGrid){
+    const pair=ids.slice(0,2).map(id=>harbourHomes.find(p=>p.id===id)).filter(Boolean);
+    compare.hidden=pair.length<2;compareGrid.replaceChildren();
+    for(const p of pair){const column=document.createElement('article');column.className='compare-home';
+      const name=document.createElement('h3');name.textContent=p.name;
+      const image=document.createElement('img');image.src=new URL(p.image.slice(1),harbourBase).href;image.alt=`Illustrative exterior for ${p.name}`;
+      const facts=document.createElement('dl');for(const [label,value] of [['Price',money(p.price)],['Area',p.area],['Bedrooms',p.beds],['Bathrooms',p.baths],['Living space',`${p.sqft.toLocaleString()} sq ft`],['Type',p.type]]){const dt=document.createElement('dt');dt.textContent=label;const dd=document.createElement('dd');dd.textContent=value;facts.append(dt,dd)}
+      const link=document.createElement('a');link.href=propertyUrl(p);link.textContent='View home ↗';column.append(image,name,facts,link);compareGrid.append(column)
+    }
+   }}
  };
  document.addEventListener('click',event=>{const b=event.target.closest('[data-save]');if(!b)return;const ids=saved();setSaved(ids.includes(b.dataset.save)?ids.filter(x=>x!==b.dataset.save):[...ids,b.dataset.save]);});
  window.addEventListener('harbourline:saved',updateSaved);updateSaved();

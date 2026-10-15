@@ -43,6 +43,21 @@ window.fetch = async (input, options = {}) => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
+  const filterForm=document.querySelector('[data-shop-filters]');
+  if(filterForm){
+    const cards=[...document.querySelectorAll('[data-shop-grid] [data-product-card]')];
+    const render=()=>{
+      const values=Object.fromEntries(new FormData(filterForm));
+      const matches=cards.filter(card=>(!values.category||card.dataset.category===values.category)&&(!values.max||Number(card.dataset.price)<Number(values.max))&&(!values.color||card.dataset.colors.split('|').includes(values.color))&&(!values.size||card.dataset.sizes.split('|').includes(values.size)));
+      cards.forEach(card=>card.hidden=!matches.includes(card));
+      document.querySelector('[data-shop-results]').textContent=`${matches.length} ${matches.length===1?'product':'products'}`;
+      document.querySelector('[data-shop-empty]').hidden=matches.length>0;
+    };
+    filterForm.addEventListener('input',render);
+    filterForm.addEventListener('change',render);
+    filterForm.addEventListener('reset',()=>setTimeout(render,0));
+    render();
+  }
   const status = document.querySelector("#lab-status");
   const commerce = window.RoseCommerce;
   const money = value => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(value);
