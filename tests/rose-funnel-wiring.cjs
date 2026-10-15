@@ -6,8 +6,9 @@ test('landing and widget milestones are wired to first-party funnel',()=>{
  const widget=fs.readFileSync(new URL('../wildrose-widget-sandbox.js',`file://${__filename}`),'utf8');
  assert.match(html,/rose-funnel-client\.js/);
  const home=fs.readFileSync(new URL('../index.html',`file://${__filename}`),'utf8');
- assert.match(home,/rose-funnel-client\.js\?v=2/);
+ assert.match(home,/rose-funnel-client\.js\?v=4/);
  assert.match(home,/wrFunnel\?\.\('landing'\)/);
+ assert.match(home,/wrFunnel\?\.\('preview_attempt'\)/);
  assert.match(home,/wildrose-widget-sandbox\.js\?v=voice-universal-3/);
  assert.match(widget,/cfg\.inline.*wrFunnel\?\.\('widget_open'\)/);
  assert.match(html,/wildrose-widget-sandbox\.js\?v=front-desk-3/);

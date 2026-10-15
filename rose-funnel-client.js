@@ -21,8 +21,37 @@
   const rawGroup = params.get('reachr_group') || params.get('utm_term') || '';
   const group = /^[a-zA-Z0-9_-]{1,100}$/.test(rawGroup) ? rawGroup : '';
   window.wrFunnel = function (event) {
-    if (!['landing','preview_attempt','preview_ready','preview_error','widget_open','chat_send','voice_attempt','purchase_view','meeting_view','lead_saved'].includes(event)) return;
+    if (!['landing','engaged_visit','preview_attempt','preview_ready','preview_error','widget_open','chat_send','voice_attempt','purchase_view','meeting_view','lead_saved'].includes(event)) return;
     const body = { event, sessionId, source, content, campaign, group, page: location.pathname };
     fetch(api + '/api/rose-funnel-event', { method:'POST', mode:'cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body), keepalive:true }).catch(() => {});
   };
+  // A page load alone includes link scanners. This stronger signal requires a
+  // visible page for eight seconds and a trusted pointer/touch/key action.
+  // It is still a likelihood signal; browser automation can mimic interaction.
+  if (source === 'facebook' && campaign && group && document.addEventListener) {
+    let visibleMs = 0;
+    let interacted = false;
+    let sent = false;
+    let lastTick = Date.now();
+    const maybeSend = () => {
+      if (!sent && interacted && visibleMs >= 8000) {
+        sent = true;
+        window.wrFunnel('engaged_visit');
+        clearInterval(timer);
+      }
+    };
+    for (const type of ['pointerdown', 'touchstart', 'keydown']) {
+      document.addEventListener(type, event => {
+        if (event.isTrusted !== true) return;
+        interacted = true;
+        maybeSend();
+      }, { passive: true, once: false });
+    }
+    const timer = setInterval(() => {
+      const now = Date.now();
+      if (document.visibilityState === 'visible') visibleMs += Math.min(now - lastTick, 1250);
+      lastTick = now;
+      maybeSend();
+    }, 1000);
+  }
 })();
