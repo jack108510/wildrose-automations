@@ -28,6 +28,13 @@
  };
  window.RoseCommerce={
   searchProducts:async query=>relevant(query).map(p=>({id:p.id,title:p.name,url:new URL(`properties/${p.slug}.html`,base).href,image:new URL(p.image.slice(1),base).href,price:p.price,currency:'CAD',available:true})),
+  groundedReply:(message,results)=>{
+   if(!/\b(?:find|show|search|recommend)\b/i.test(message)||!/\b(?:home|homes|house|houses|property|properties|listing|listings|bed|bedroom|condo|cottage|townhome)\b/i.test(message))return null;
+   const matches=results.map(item=>homes.find(p=>p.id===item.id)).filter(Boolean);
+   if(!matches.length)return "I couldn't find a demo home that fits all of those details. Try a higher budget, fewer bedrooms, or a nearby area, and I'll look again.";
+   const lines=matches.map(p=>`${p.name} in ${p.area} — ${p.beds} ${p.beds===1?'bed':'beds'}, ${p.baths} ${p.baths===1?'bath':'baths'}, CAD ${p.price.toLocaleString('en-CA')}.`);
+   return `${matches.length===1?'I found one matching home:':'Here are the matching homes:'}\n${lines.join('\n')}\nWant to explore one, or adjust the search?`;
+  },
   addItem:async()=>{throw new Error('Homes can be saved with the heart button on each listing.');}
  };
 })();

@@ -991,7 +991,7 @@
         id = await ensureChat();
         data = await sendMessage(id);
       }
-      pending.textContent = data.reply || "I can help with that.";
+      pending.textContent = window.RoseCommerce?.groundedReply?.(content, products) || data.reply || "I can help with that.";
       shoppingHistory.push({ role: "bot", text: pending.textContent }); saveSiteSession();
       renderProducts(products);
       lastProducts = products; saveSiteSession();
