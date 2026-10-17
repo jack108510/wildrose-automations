@@ -132,7 +132,7 @@
       const index = text.indexOf(label.toLowerCase());
       if (index < 0) return false;
       const prefix = text.slice(Math.max(0, index - 70), index);
-      const directive = /\b(?:click|tap|press|select|choose|use|open|hit)\s+(?:(?:the|on|button|link|labeled|marked|called)\s+){0,4}["“']?$/.exec(prefix);
+      const directive = /\b(?:click(?:ing)?|tap(?:ping)?|press(?:ing)?|select(?:ing)?|choos(?:e|ing)|us(?:e|ing)|open(?:ing)?|hit(?:ting)?)\s+(?:(?:the|on|button|link|labeled|marked|called)\s+){0,4}["“']?$/.exec(prefix);
       return directive && !/\b(?:don't|do not|never|avoid)\s+$/.test(prefix.slice(0, directive.index));
     });
     if (!action) return;
