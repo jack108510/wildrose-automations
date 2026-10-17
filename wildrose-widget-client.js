@@ -56,8 +56,8 @@
     .wrc-view[data-view="chat"]:before{content:"Chat with Rose";display:block;padding:2px 0 10px 40px;color:#745f53;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
     .wrc-view[data-view="chat"]{background:linear-gradient(180deg,rgba(255,249,244,.68),rgba(255,255,255,.14))}.wrc-chat-log{gap:14px;padding-top:8px}.wrc-row{align-items:flex-end}.wrc-avatar{width:32px;height:32px;border-radius:12px;box-shadow:0 5px 14px rgba(95,37,14,.19)}.wrc-msg{line-height:1.5;padding:12px 15px;box-shadow:0 8px 22px rgba(38,24,16,.10)}.wrc-msg.bot{background:rgba(255,255,255,.94);border:1px solid rgba(77,48,33,.14);border-radius:18px 18px 18px 6px;color:#211915}.wrc-msg.user{background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 75%,#5d1e0d));border:1px solid rgba(112,35,12,.16);border-radius:18px 18px 6px 18px;box-shadow:0 9px 22px color-mix(in srgb,var(--accent) 25%,transparent)}.wrc-compose{background:rgba(255,255,255,.86);border-color:rgba(67,42,29,.12);box-shadow:0 8px 24px rgba(40,24,13,.09)}.wrc-input::placeholder{color:#75655d}.wrc-input:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent);border-radius:12px}.wrc-send{background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 78%,#5d1e0d));box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 28%,transparent)}.wrc-send:hover{filter:brightness(.94)}.wrc-send:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     @media (max-width:520px){.wrc-ai:not(.inline) .wrc-panel{width:min(340px,calc(100vw - 24px));height:min(500px,calc(100dvh - 32px));border-radius:26px}.wrc-ai.inline .wrc-panel{height:min(480px,70dvh)}.wrc-head{padding:12px 14px 8px}.wrc-tabs{margin:0 14px 8px}.wrc-view{padding:0 14px 10px}.wrc-compose{margin:0 14px 12px}.wrc-voice{min-height:0;padding:10px 8px 16px}.wrc-orb{width:110px;height:110px;margin-bottom:12px}}
-    .rose-guided-action{outline:3px solid var(--rose-guide-accent,#ff5722)!important;outline-offset:4px!important;box-shadow:0 0 0 8px color-mix(in srgb,var(--rose-guide-accent,#ff5722) 23%,transparent),0 0 30px color-mix(in srgb,var(--rose-guide-accent,#ff5722) 65%,transparent)!important;animation:roseGuidePulse 1.3s ease-in-out infinite!important}
-    @keyframes roseGuidePulse{50%{outline-offset:8px;box-shadow:0 0 0 13px color-mix(in srgb,var(--rose-guide-accent,#ff5722) 12%,transparent),0 0 40px color-mix(in srgb,var(--rose-guide-accent,#ff5722) 80%,transparent)}}
+    .rose-guided-action{position:relative!important;z-index:2147483001!important;outline:4px solid #008cff!important;outline-offset:5px!important;box-shadow:0 0 0 10px rgba(0,156,255,.42),0 0 0 18px rgba(0,156,255,.18),0 0 44px 18px rgba(0,156,255,.78)!important;animation:roseGuidePulse 1.1s ease-in-out infinite!important}
+    @keyframes roseGuidePulse{50%{outline-color:#39caff;outline-offset:9px;box-shadow:0 0 0 15px rgba(0,156,255,.32),0 0 0 25px rgba(0,156,255,.13),0 0 62px 25px rgba(0,156,255,.95)}}
     @media (prefers-reduced-motion:reduce){.rose-guided-action{animation:none!important}}
   `;
 
@@ -171,7 +171,6 @@
     removeGuideGlow();
     guidedElement = action.element;
     guidedLabels.add(action.label.toLowerCase());
-    guidedElement.style.setProperty('--rose-guide-accent', cfg.accent);
     guidedElement.classList.add('rose-guided-action');
     guidedElement.addEventListener('click', advanceGuide);
     guidedElement.scrollIntoView?.({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
