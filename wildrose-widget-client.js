@@ -101,6 +101,9 @@
   let chatBusy = false;
   let guidedElement = null;
   let guideTimer = null;
+  let guideSteps = [];
+  let guideQuestion = '';
+  const guidedLabels = new Set();
   const guideSelector = 'button,a[href],input[type="button"],input[type="submit"],[role="button"]';
   function pageActions() {
     const candidates = Array.from(document.querySelectorAll(guideSelector)).filter(element => {
@@ -119,30 +122,89 @@
       .sort((a, b) => Number(b.marked) - Number(a.marked) || Number(b.element.matches('button,input,[role="button"]')) - Number(a.element.matches('button,input,[role="button"]')))
       .slice(0, 32);
   }
-  function clearGuide() {
+  function removeGuideGlow() {
     if (guideTimer) clearTimeout(guideTimer);
     guideTimer = null;
-    guidedElement?.removeEventListener('click', clearGuide);
+    guidedElement?.removeEventListener('click', advanceGuide);
     guidedElement?.classList.remove('rose-guided-action');
     guidedElement = null;
   }
-  function guideFromReply(reply) {
-    const text = String(reply || '').replace(/\s+/g, ' ').toLowerCase();
-    const action = pageActions().find(({ label }) => {
-      const index = text.indexOf(label.toLowerCase());
-      if (index < 0) return false;
-      const prefix = text.slice(Math.max(0, index - 70), index);
-      const directive = /\b(?:click(?:ing)?|tap(?:ping)?|press(?:ing)?|select(?:ing)?|choos(?:e|ing)|us(?:e|ing)|open(?:ing)?|hit(?:ting)?)\s+(?:(?:the|on|button|link|labeled|marked|called)\s+){0,4}["“']?$/.exec(prefix);
-      return directive && !/\b(?:don't|do not|never|avoid)\s+$/.test(prefix.slice(0, directive.index));
-    });
-    if (!action) return;
-    clearGuide();
+  function clearGuide() {
+    removeGuideGlow();
+    guideSteps = [];
+    guideQuestion = '';
+    guidedLabels.clear();
+  }
+  function navigationQuestion(question) {
+    return /\b(?:how (?:do|can) i (?:find|get to|reach)|where (?:can|do) i find|where is|show me (?:where|how)|find (?:the|my)|navigate to|looking for)\b/i.test(question || '');
+  }
+  function bestGuideAction(question) {
+    const stop = new Set(['what', 'where', 'which', 'how', 'find', 'the', 'this', 'that', 'page', 'site', 'website', 'can', 'could', 'please', 'would', 'want', 'need', 'get', 'and', 'for', 'with', 'from', 'rose', ...cfg.businessName.toLowerCase().split(/\W+/)]);
+    const words = new Set((question.toLowerCase().match(/[a-z]{3,}/g) || []).filter(word => !stop.has(word)));
+    const synonyms = [
+      ['price', 'pricing', 'plan', 'plans', 'cost', 'costs', 'rates', 'fees'],
+      ['contact', 'email', 'message', 'reach'],
+      ['service', 'services', 'offerings'],
+      ['book', 'booking', 'schedule', 'appointment'],
+      ['setup', 'start', 'install', 'onboard'],
+    ];
+    let best = null, bestScore = 0;
+    for (const action of pageActions()) {
+      if (guidedLabels.has(action.label.toLowerCase())) continue;
+      const labelWords = new Set(action.label.toLowerCase().match(/[a-z]{3,}/g) || []);
+      let score = 0;
+      for (const word of labelWords) {
+        if (words.has(word)) score += 3;
+        else if (synonyms.some(group => group.includes(word) && group.some(term => words.has(term)))) score += 2;
+      }
+      if (score > bestScore) { best = action; bestScore = score; }
+    }
+    return bestScore >= 2 ? best : null;
+  }
+  function glowGuideAction(action) {
+    removeGuideGlow();
     guidedElement = action.element;
+    guidedLabels.add(action.label.toLowerCase());
     guidedElement.style.setProperty('--rose-guide-accent', cfg.accent);
     guidedElement.classList.add('rose-guided-action');
-    guidedElement.addEventListener('click', clearGuide);
+    guidedElement.addEventListener('click', advanceGuide);
     guidedElement.scrollIntoView?.({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
     guideTimer = setTimeout(clearGuide, 15000);
+  }
+  function showNextGuide() {
+    const actions = pageActions();
+    while (guideSteps.length) {
+      const label = guideSteps.shift();
+      const action = actions.find(item => item.label.toLowerCase() === label && !guidedLabels.has(label));
+      if (action) { glowGuideAction(action); return { label: action.label, inferred: false }; }
+    }
+    const inferred = navigationQuestion(guideQuestion) ? bestGuideAction(guideQuestion) : null;
+    if (inferred) { glowGuideAction(inferred); return { label: inferred.label, inferred: true }; }
+    return null;
+  }
+  function advanceGuide() {
+    removeGuideGlow();
+    setTimeout(() => {
+      const next = showNextGuide();
+      if (!next) clearGuide();
+      else if (next.inferred && navigationQuestion(guideQuestion)) addMsg('bot', `Next, click "${next.label}".`);
+    }, 180);
+  }
+  function guideFromReply(reply, question = '') {
+    clearGuide();
+    guideQuestion = question;
+    const text = String(reply || '').replace(/\s+/g, ' ').toLowerCase();
+    guideSteps = pageActions().map(({ label }) => {
+      const index = text.indexOf(label.toLowerCase());
+      if (index < 0) return null;
+      const prefix = text.slice(Math.max(0, index - 70), index);
+      const directive = /\b(?:click(?:ing)?|tap(?:ping)?|press(?:ing)?|select(?:ing)?|choos(?:e|ing)|us(?:e|ing)|open(?:ing)?|hit(?:ting)?)\s+(?:(?:the|on|button|link|labeled|marked|called)\s+){0,4}["“']?$/.exec(prefix);
+      if (!directive || /\b(?:don't|do not|never|avoid)\s+$/.test(prefix.slice(0, directive.index))) return null;
+      return { label: label.toLowerCase(), index };
+    }).filter(Boolean).sort((a, b) => a.index - b.index).map(step => step.label);
+    const next = showNextGuide();
+    if (!next) clearGuide();
+    return next;
   }
   function actionCatalog() { return pageActions().map(({ id, label }) => ({ id, label })); }
 
@@ -188,6 +250,7 @@
   function voiceSpeaker(role) {
     return /agent|assistant|bot|rose/i.test(role || "") ? "bot" : "user";
   }
+  let lastVoiceQuestion = '';
   function clearVoiceTranscriptBubbles() {
     log?.querySelectorAll('[data-voice-transcript="true"]').forEach(el => {
       const row = el.closest('.wrc-row');
@@ -215,15 +278,17 @@
     }
     clearVoiceTranscriptBubbles();
     groups.forEach(g => addVoiceParagraph(g.speaker, g.parts.join("\n\n")));
-    if (groups.at(-1)?.speaker === 'bot') guideFromReply(groups.at(-1).parts.join(' '));
+    const lastUser = groups.slice().reverse().find(group => group.speaker === 'user');
+    if (lastUser) lastVoiceQuestion = lastUser.parts.join(' ');
+    if (groups.at(-1)?.speaker === 'bot') guideFromReply(groups.at(-1).parts.join(' '), lastVoiceQuestion);
     else if (groups.at(-1)?.speaker === 'user') clearGuide();
   }
   function appendVoiceTranscript(role, text, partial = false) {
     const clean = String(text || "").trim();
     if (!clean || partial) return;
     addVoiceParagraph(voiceSpeaker(role), clean);
-    if (voiceSpeaker(role) === 'bot') guideFromReply(clean);
-    else clearGuide();
+    if (voiceSpeaker(role) === 'bot') guideFromReply(clean, lastVoiceQuestion);
+    else { lastVoiceQuestion = clean; clearGuide(); }
   }
   function handleTranscriptUpdate(payload) {
     const items = Array.isArray(payload?.transcript) ? payload.transcript
@@ -267,7 +332,8 @@
       const id = await ensureChat();
       const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageActions: actionCatalog() });
       showReply(pending, data.reply || "I can help with that.");
-      guideFromReply(data.reply);
+      const guide = guideFromReply(data.reply, content);
+      if (guide?.inferred && navigationQuestion(content)) showReply(pending, `To find it here, click "${guide.label}". I'll highlight the next step as you go.`);
     } catch (e) {
       showReply(pending, "I hit a connection issue. Please try again shortly.");
       console.error(e);
