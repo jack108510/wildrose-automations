@@ -17,6 +17,8 @@
     subtitle: script?.dataset.subtitle || "AI intake assistant",
     greeting: script?.dataset.greeting || "Hi! How can I help you today?",
     placeholder: script?.dataset.placeholder || "Ask Rose…",
+    defaultView: script?.dataset.defaultView === "chat" ? "chat" : "voice",
+    openOnLoad: script?.dataset.openOnLoad === "true",
     website: script?.dataset.website || location.origin,
     businessContext: script?.dataset.businessContext || "",
     services: script?.dataset.services || "",
@@ -50,6 +52,7 @@
     .wrc-voice{height:100%;min-height:330px;display:grid;place-items:center;text-align:center;padding:18px 12px 26px}.wrc-orb{width:164px;height:164px;margin:0 auto 22px;border-radius:50%;background:radial-gradient(circle at 35% 27%,rgba(255,255,255,.95),rgba(255,245,236,.52) 22%,rgba(255,120,66,.36) 48%,rgba(255,87,34,.62) 78%);box-shadow:inset 0 2px 8px rgba(255,255,255,.9),inset 0 -18px 32px rgba(129,44,17,.15),0 24px 74px rgba(255,87,34,.26),0 0 0 1px rgba(255,255,255,.72);position:relative;overflow:hidden;transform-origin:50% 58%}.wrc-orb:before{content:"";position:absolute;inset:18px;border-radius:50%;background:radial-gradient(circle at 35% 20%,rgba(255,255,255,.86),transparent 34%);filter:blur(2px)}.wrc-orb:after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent,rgba(255,255,255,.45),transparent,rgba(255,87,34,.25),transparent);animation:wrSpin 6s linear infinite;opacity:.72}@keyframes wrSpin{to{transform:rotate(1turn)}}.wrc-orb.live{animation:wrPulse 1.8s ease-in-out infinite}.wrc-orb.speaking{animation:wrSpeak 1.05s cubic-bezier(.35,0,.25,1) infinite;box-shadow:inset 0 2px 8px rgba(255,255,255,.9),0 28px 94px rgba(255,87,34,.42),0 0 0 12px rgba(255,87,34,.08)}@keyframes wrPulse{50%{transform:scale(1.035);filter:saturate(1.12)}}@keyframes wrSpeak{0%,100%{transform:translateY(0) scale(1);border-radius:50%}22%{transform:translateY(-5px) scale(1.035,.965);border-radius:48% 52% 47% 53%}48%{transform:translateY(3px) scale(.982,1.026);border-radius:54% 46% 52% 48%}72%{transform:translateY(-2px) scale(1.018,.99);border-radius:49% 51% 55% 45%}}.wrc-panel.speaking .wrc-status{animation:wrTextBreathe 1.05s ease-in-out infinite}@keyframes wrTextBreathe{50%{opacity:.72;transform:translateY(-1px)}}.wrc-status{font-size:23px;font-weight:860;letter-spacing:-.05em;margin-bottom:7px}.wrc-note{font-size:13px;color:var(--muted);line-height:1.45;margin-bottom:18px}.wrc-primary,.wrc-secondary{height:48px;border:0;border-radius:999px;padding:0 22px;font-weight:860;cursor:pointer}.wrc-primary{color:white;background:linear-gradient(145deg,var(--accent),#ff7b4e);box-shadow:0 16px 34px rgba(255,87,34,.25),inset 0 1px 0 rgba(255,255,255,.28)}.wrc-secondary{background:rgba(255,255,255,.44);border:1px solid rgba(255,255,255,.56);color:#211612}.wrc-live-transcript{display:none;margin:18px auto 0;width:min(292px,100%);border-radius:22px;padding:12px;background:rgba(255,255,255,.30);border:1px solid rgba(255,255,255,.48);box-shadow:inset 0 1px 0 rgba(255,255,255,.55);text-align:left}.wrc-live-transcript.has-lines{display:block}.wrc-live-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:900;color:rgba(24,18,15,.46);margin-bottom:8px}.wrc-live-lines{display:flex;flex-direction:column;gap:6px;max-height:96px;overflow:auto}.wrc-live-line{font-size:12px;line-height:1.35;color:rgba(24,18,15,.78);padding:7px 9px;border-radius:13px;background:rgba(255,255,255,.34)}.wrc-live-line.user{background:rgba(255,87,34,.14);color:#442014}.wrc-compose{display:none;align-items:center;gap:8px;margin:0 17px 17px;padding:8px;border-radius:22px;background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.52);box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}.wrc-input{flex:1;height:38px;border:0;background:transparent;outline:0;color:var(--ink);font-size:14px;padding:0 8px}.wrc-input::placeholder{color:rgba(24,18,15,.44)}.wrc-send{width:38px;height:38px;border:0;border-radius:15px;background:linear-gradient(145deg,var(--accent),#ff7b4e);color:white;display:grid;place-items:center;cursor:pointer}.wrc-send svg{width:18px;height:18px}.wrc-toast{position:absolute;left:17px;right:17px;bottom:78px;padding:10px 12px;border-radius:16px;background:rgba(24,18,15,.78);color:white;font-size:12px;text-align:center;opacity:0;transform:translateY(6px);pointer-events:none;transition:.16s ease}.wrc-toast.show{opacity:1;transform:none}
     @media (max-width:520px){.wrc-ai{right:12px;bottom:12px}.wrc-panel{width:calc(100vw - 24px);height:min(620px,calc(100vh - 24px));border-radius:34px}.wrc-fab{width:70px;height:70px;border-radius:25px}.wrc-orb{width:146px;height:146px}}
     .wrc-msg{overflow-wrap:anywhere}.wrc-msg p{margin:0 0 9px}.wrc-msg p:last-child{margin-bottom:0}
+    .wrc-msg.wrc-thinking{display:flex;align-items:center;gap:8px;min-height:42px;color:var(--muted);font-size:12px;font-weight:700}.wrc-typing-dots{display:inline-flex;align-items:center;gap:4px}.wrc-typing-dots i{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.35;animation:wrcTyping 1.1s ease-in-out infinite}.wrc-typing-dots i:nth-child(2){animation-delay:.16s}.wrc-typing-dots i:nth-child(3){animation-delay:.32s}@keyframes wrcTyping{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-4px);opacity:1}}.wrc-msg.wrc-writing:after{content:"";display:inline-block;width:5px;height:13px;margin-left:3px;vertical-align:-2px;border-radius:2px;background:var(--accent);animation:wrcCaret .8s step-end infinite}@keyframes wrcCaret{50%{opacity:0}}@media (prefers-reduced-motion:reduce){.wrc-typing-dots i,.wrc-msg.wrc-writing:after{animation:none}}
     .wrc-view[data-view="chat"]:before{content:"Chat with Rose";display:block;padding:2px 0 10px 40px;color:#745f53;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
     .wrc-view[data-view="chat"]{background:linear-gradient(180deg,rgba(255,249,244,.68),rgba(255,255,255,.14))}.wrc-chat-log{gap:14px;padding-top:8px}.wrc-row{align-items:flex-end}.wrc-avatar{width:32px;height:32px;border-radius:12px;box-shadow:0 5px 14px rgba(95,37,14,.19)}.wrc-msg{line-height:1.5;padding:12px 15px;box-shadow:0 8px 22px rgba(38,24,16,.10)}.wrc-msg.bot{background:rgba(255,255,255,.94);border:1px solid rgba(77,48,33,.14);border-radius:18px 18px 18px 6px;color:#211915}.wrc-msg.user{background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 75%,#5d1e0d));border:1px solid rgba(112,35,12,.16);border-radius:18px 18px 6px 18px;box-shadow:0 9px 22px color-mix(in srgb,var(--accent) 25%,transparent)}.wrc-compose{background:rgba(255,255,255,.86);border-color:rgba(67,42,29,.12);box-shadow:0 8px 24px rgba(40,24,13,.09)}.wrc-input::placeholder{color:#75655d}.wrc-input:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent);border-radius:12px}.wrc-send{background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 78%,#5d1e0d));box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 28%,transparent)}.wrc-send:hover{filter:brightness(.94)}.wrc-send:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     @media (max-width:520px){.wrc-ai:not(.inline) .wrc-panel{width:min(340px,calc(100vw - 24px));height:min(500px,calc(100dvh - 32px));border-radius:26px}.wrc-ai.inline .wrc-panel{height:min(480px,70dvh)}.wrc-head{padding:12px 14px 8px}.wrc-tabs{margin:0 14px 8px}.wrc-view{padding:0 14px 10px}.wrc-compose{margin:0 14px 12px}.wrc-voice{min-height:0;padding:10px 8px 16px}.wrc-orb{width:110px;height:110px;margin-bottom:12px}}
@@ -116,11 +119,14 @@
       label: (element.getAttribute('data-rose-guide-label') || element.getAttribute('aria-label') || element.innerText || element.value || element.getAttribute('title') || '').replace(/\s+/g, ' ').trim(),
       marked: element.hasAttribute('data-rose-guide'),
     })).filter(action => /^[a-z][a-z0-9_-]{1,39}$/i.test(action.id) && action.label.length >= 3 && action.label.length <= 60);
-    const counts = new Map();
-    for (const action of candidates) counts.set(action.label.toLowerCase(), (counts.get(action.label.toLowerCase()) || 0) + 1);
-    return candidates.filter(action => counts.get(action.label.toLowerCase()) === 1)
-      .sort((a, b) => Number(b.marked) - Number(a.marked) || Number(b.element.matches('button,input,[role="button"]')) - Number(a.element.matches('button,input,[role="button"]')))
-      .slice(0, 32);
+    const sorted = candidates.sort((a, b) => Number(b.marked) - Number(a.marked) || Number(b.element.matches('button,input,[role="button"]')) - Number(a.element.matches('button,input,[role="button"]')));
+    const seen = new Set();
+    return sorted.filter(action => {
+      const key = action.label.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 32);
   }
   function removeGuideGlow() {
     if (guideTimer) clearTimeout(guideTimer);
@@ -136,14 +142,14 @@
     guidedLabels.clear();
   }
   function navigationQuestion(question) {
-    return /\b(?:how (?:do|can) i (?:find|get to|reach)|where (?:can|do) i find|where is|show me (?:where|how)|find (?:the|my)|navigate to|looking for)\b/i.test(question || '');
+    return /\b(?:how (?:do|can) i|where (?:can|do) i|where is|show me|find\b|navigate to|looking for|i (?:want|need) to (?:find|see|get to|request))\b/i.test(question || '');
   }
   function bestGuideAction(question) {
     const stop = new Set(['what', 'where', 'which', 'how', 'find', 'the', 'this', 'that', 'page', 'site', 'website', 'can', 'could', 'please', 'would', 'want', 'need', 'get', 'and', 'for', 'with', 'from', 'rose', ...cfg.businessName.toLowerCase().split(/\W+/)]);
     const words = new Set((question.toLowerCase().match(/[a-z]{3,}/g) || []).filter(word => !stop.has(word)));
     const synonyms = [
-      ['price', 'pricing', 'plan', 'plans', 'cost', 'costs', 'rates', 'fees'],
-      ['contact', 'email', 'message', 'reach'],
+      ['price', 'prices', 'pricing', 'plan', 'plans', 'cost', 'costs', 'rates', 'fees'],
+      ['contact', 'email', 'message', 'reach', 'quote', 'inquiry'],
       ['service', 'services', 'offerings'],
       ['book', 'booking', 'schedule', 'appointment'],
       ['setup', 'start', 'install', 'onboard'],
@@ -169,7 +175,7 @@
     guidedElement.classList.add('rose-guided-action');
     guidedElement.addEventListener('click', advanceGuide);
     guidedElement.scrollIntoView?.({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
-    guideTimer = setTimeout(clearGuide, 15000);
+    guideTimer = setTimeout(clearGuide, 90000);
   }
   function showNextGuide() {
     const actions = pageActions();
@@ -208,7 +214,7 @@
   }
   function actionCatalog() { return pageActions().map(({ id, label }) => ({ id, label })); }
 
-  fab.addEventListener("click", () => { setView("voice"); panel.classList.add("open"); fab.style.display = "none"; });
+  fab.addEventListener("click", () => { setView(cfg.defaultView); panel.classList.add("open"); fab.style.display = "none"; });
   $(".wrc-close").addEventListener("click", () => { clearGuide(); try { retellClient?.stopCall(); } catch {} voiceBusy = false; $(".wrc-start-voice").disabled = false; panel.classList.remove("open"); fab.style.display = "grid"; });
   $$(".wrc-tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
 
@@ -216,6 +222,11 @@
     $$(".wrc-tab").forEach(t => t.classList.toggle("active", t.dataset.view === view));
     $$(".wrc-view").forEach(v => v.classList.toggle("active", v.dataset.view === view));
     $(".wrc-compose").style.display = view === "chat" ? "flex" : "none";
+  }
+  if (cfg.openOnLoad) {
+    setView(cfg.defaultView);
+    panel.classList.add('open');
+    fab.style.display = 'none';
   }
   function addMsg(role, text) {
     if (role === "bot") {
@@ -246,6 +257,46 @@
       bubble.appendChild(paragraph);
     }
     log.parentElement.scrollTop = log.parentElement.scrollHeight;
+  }
+  function showThinking(bubble) {
+    bubble.classList.add('wrc-thinking');
+    bubble.setAttribute('role', 'status');
+    bubble.setAttribute('aria-label', 'Rose is thinking');
+    bubble.innerHTML = '<span aria-hidden="true" class="wrc-typing-dots"><i></i><i></i><i></i></span><span aria-hidden="true">Rose is thinking</span>';
+  }
+  function animateReply(bubble, text) {
+    const reply = String(text || '').trim();
+    bubble.classList.remove('wrc-thinking');
+    bubble.removeAttribute('role');
+    bubble.removeAttribute('aria-label');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.hidden) {
+      showReply(bubble, reply);
+      return Promise.resolve();
+    }
+    const words = reply.match(/\S+\s*/g) || [];
+    if (!words.length) {
+      showReply(bubble, reply);
+      return Promise.resolve();
+    }
+    bubble.classList.add('wrc-writing');
+    bubble.setAttribute('aria-busy', 'true');
+    showReply(bubble, '');
+    return new Promise(resolve => {
+      let index = 0;
+      const finish = () => {
+        bubble.classList.remove('wrc-writing');
+        bubble.removeAttribute('aria-busy');
+        showReply(bubble, reply);
+        resolve();
+      };
+      const tick = () => {
+        index = Math.min(words.length, index + Math.max(1, Math.ceil(words.length / 45)));
+        showReply(bubble, words.slice(0, index).join(''));
+        if (index === words.length) finish();
+        else setTimeout(tick, 42);
+      };
+      tick();
+    });
   }
   function voiceSpeaker(role) {
     return /agent|assistant|bot|rose/i.test(role || "") ? "bot" : "user";
@@ -327,15 +378,23 @@
     $(".wrc-send").disabled = true;
     input.value = "";
     addMsg("user", content);
-    const pending = addMsg("bot", "Thinking…");
+    const pending = addMsg("bot", "");
+    showThinking(pending);
     try {
       const id = await ensureChat();
       const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageActions: actionCatalog() });
-      showReply(pending, data.reply || "I can help with that.");
       const guide = guideFromReply(data.reply, content);
-      if (guide?.inferred && navigationQuestion(content)) showReply(pending, `To find it here, click "${guide.label}". I'll highlight the next step as you go.`);
+      const reply = guide?.inferred && navigationQuestion(content)
+        ? `To find it here, click "${guide.label}". I'll highlight the next step as you go.`
+        : data.reply || "I can help with that.";
+      await animateReply(pending, reply);
     } catch (e) {
-      showReply(pending, "I hit a connection issue. Please try again shortly.");
+      pending.classList.remove('wrc-thinking', 'wrc-writing');
+      pending.removeAttribute('role');
+      pending.removeAttribute('aria-label');
+      const guide = navigationQuestion(content) ? guideFromReply('', content) : null;
+      if (guide) showReply(pending, `To find it here, click "${guide.label}". I'll highlight the next step as you go.`);
+      else showReply(pending, "I hit a connection issue. Please try again shortly.");
       console.error(e);
     } finally {
       chatBusy = false;
