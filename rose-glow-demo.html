@@ -34,10 +34,10 @@
         <div class="grid">
           <article class="card"><div class="icon" aria-hidden="true">✦</div><h3>Explore services</h3><p>See what Wildrose can build and automate for a business.</p><a href="/automations.html">See Services</a></article>
           <article class="card"><div class="icon" aria-hidden="true">◇</div><h3>Set up Rose</h3><p>See the setup path for a website front desk.</p><a href="/rose-onboarding.html">Set Up Rose</a></article>
-          <article class="card"><div class="icon" aria-hidden="true">↗</div><h3>Talk with the team</h3><p>Send a message about your website or automation needs.</p><a href="mailto:jack@wildroseautomations.ca?subject=Wildrose%20demo%20question">Contact Us</a></article>
+          <article class="card"><div class="icon" aria-hidden="true">↗</div><h3>Talk with the team</h3><p>Send a message about your website or automation needs.</p><a href="mailto:jack@wildroseautomations.ca?subject=Wildrose%20demo%20question">Email Us</a></article>
         </div>
       </section>
-      <aside class="note"><div><strong>Prefer to ask yourself?</strong><p>Open Rose in the lower corner, switch to Chat, and ask “Which Contact Us button should I click?”</p></div><code>Rose highlights the action. You decide whether to click.</code></aside>
+      <aside class="note"><div><strong>Prefer to ask yourself?</strong><p>Open Rose in the lower corner, switch to Chat, and ask “Which Email Us button should I click?”</p></div><code>Rose highlights the action. You decide whether to click.</code></aside>
     </main>
   </div>
   <script src="/wildrose-widget-client.js?v=rose-glow-demo-1" data-api-base="https://wildrose-widget.wildeautomations.com" data-business-id="wildrose-automations" data-owner-email="jack@wildroseautomations.ca" data-title="Rose" data-business-name="Wildrose Automations" data-accent="#f15a29" data-subtitle="Wildrose's AI front desk" async></script>
@@ -45,8 +45,8 @@
     const contactAction = document.querySelector('a[href^="mailto:"]');
     const demoStatus = document.getElementById('demo-status');
     new MutationObserver(() => {
-      if (contactAction.classList.contains('rose-guided-action')) demoStatus.textContent = 'The Contact Us button is glowing below.';
-      else if (demoStatus.textContent === 'The Contact Us button is glowing below.') demoStatus.textContent = 'The glow has cleared. Try it again whenever you like.';
+      if (contactAction.classList.contains('rose-guided-action')) demoStatus.textContent = 'The Email Us button is glowing below.';
+      else if (demoStatus.textContent === 'The Email Us button is glowing below.') demoStatus.textContent = 'The glow has cleared. Try it again whenever you like.';
     }).observe(contactAction, { attributes: true, attributeFilter: ['class'] });
     document.getElementById('try-glow').addEventListener('click', () => {
       const status = demoStatus;
@@ -57,7 +57,7 @@
       if (!fab || !chat || !input || !send) { status.textContent = 'Rose is still loading. Please try again in a moment.'; return; }
       if (!document.querySelector('.wrc-panel.open')) fab.click();
       chat.click();
-      input.value = 'Please show me where to contact Wildrose on this page. Tell me to click the Contact Us button.';
+      input.value = 'I want to email Wildrose. Please tell me to click the Email Us button on this page.';
       status.textContent = 'Rose is answering in the chat window.';
       send.click();
     });
