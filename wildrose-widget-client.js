@@ -167,6 +167,11 @@
     }
     return bestScore >= 2 ? best : null;
   }
+  function routeGuideAction(question) {
+    const words = new Set((question.toLowerCase().match(/[a-z]+/g) || []));
+    return pageActions().find(action => (action.element.dataset.roseGuideRoute || '')
+      .toLowerCase().split(/[^a-z]+/).some(term => term && words.has(term))) || null;
+  }
   function glowGuideAction(action) {
     removeGuideGlow();
     guidedElement = action.element;
@@ -188,8 +193,16 @@
     return null;
   }
   function advanceGuide() {
+    const nextId = guidedElement?.getAttribute('data-rose-guide-next');
     removeGuideGlow();
     setTimeout(() => {
+      const nextElement = nextId ? document.getElementById(nextId) : null;
+      const nextAction = nextElement ? pageActions().find(action => action.element === nextElement) : null;
+      if (nextAction) {
+        glowGuideAction(nextAction);
+        addMsg('bot', nextElement.dataset.roseGuideInstruction || `Next, click "${nextAction.label}".`);
+        return;
+      }
       const next = showNextGuide();
       if (!next) clearGuide();
       else if (next.inferred && navigationQuestion(guideQuestion)) addMsg('bot', `Next, click "${next.label}".`);
@@ -198,6 +211,11 @@
   function guideFromReply(reply, question = '') {
     clearGuide();
     guideQuestion = question;
+    const route = navigationQuestion(question) ? routeGuideAction(question) : null;
+    if (route) {
+      glowGuideAction(route);
+      return { label: route.label, inferred: true };
+    }
     const text = String(reply || '').replace(/\s+/g, ' ').toLowerCase();
     guideSteps = pageActions().map(({ label }) => {
       const index = text.indexOf(label.toLowerCase());
