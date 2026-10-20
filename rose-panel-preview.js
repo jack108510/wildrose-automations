@@ -2030,13 +2030,13 @@
     const match = /^(?:(?:how|where) (?:do|can) i|where (?:are|is) (?:my|the)|can you (?:help me|show me|find|open)|i (?:need|want|would like) to|i can'?t find|help me|show me|take me to|check|find|open|view|see|track|change|reset|update|manage|get)\s+(.+?)[?.!]*$/i.exec(text);
     return match?.[1]?.trim().slice(0, 120) || null;
   }
-  function visitorTaskWords(value) {
-    const ignored = new Set(["a add an and ask can could do for how i is me my of on please the this to want where you your show find check view see open get go take help need past previous recent pas about page site website change reset update manage track status detail".split(" "), controlWords(location.hostname.replace(/^www\./, "").split(".")[0]).split(" ")].flat());
+  function visitorTaskWords(value, includeHelp = false) {
+    const ignored = new Set(["a add an and ask can could do experienced expert for how i is me my of on please the this to want where you your show find check view see open get go take help need past previous recent pas about page site website change reset update manage track status detail".split(" "), [location.hostname.split(".").slice(-2)[0]]].flat());
     const normalize = word => {
       const aliases = { writing: "write", wrote: "write", editing: "edit", editors: "editor", uploading: "upload", images: "image", pictures: "image", citations: "cite", citation: "cite", citing: "cite", sources: "source", searching: "search", referencing: "cite", practicing: "sandbox", practice: "sandbox", cleanup: "clean", cleaning: "clean", experienced: "expert", assistance: "help", questions: "question", readers: "reader" };
       return aliases[word] || (word.length > 4 && word.endsWith("s") && !/(?:ss|us)$/.test(word) ? word.slice(0, -1) : word);
     };
-    return [...new Set(controlWords(value).split(" ").map(normalize).filter(word => word.length > 2 && !ignored.has(word)))];
+    return [...new Set(controlWords(value).split(" ").map(normalize).filter(word => word.length > 2 && (!ignored.has(word) || (includeHelp && word === "help"))))];
   }
   function visitorTaskLinks() {
     const links = new Map();
@@ -2048,7 +2048,8 @@
       if (!title) continue;
       const context = (anchor.getAttribute("title") || "") + " " + (anchor.closest("li, p")?.textContent.replace(/\s+/g, " ").trim().slice(0, 180) || "");
       const item = { key: url.href, kind: "link", title, url: url.href, detail: "Page link", context, redirect: anchor.classList.contains("mw-redirect"), inNavigation: !!anchor.closest("nav, header, [role='navigation']"), score: 0 };
-      if (!links.has(url.href) || title.length > links.get(url.href).title.length) links.set(url.href, item);
+      const previous = links.get(url.href);
+      if (!previous || title.length > previous.title.length || (title.length === previous.title.length && context.length < previous.context.length)) links.set(url.href, item);
     }
     return [...links.values()];
   }
@@ -2059,6 +2060,8 @@
     renderToolSuggestions();
     const words = visitorTaskWords(goal);
     if (!words.length) return false;
+    const supportRequest = /\b(?:help|support|advice|assistance)\b/i.test(goal);
+    const contextGoalWords = supportRequest ? visitorTaskWords(goal, true) : [];
     const configured = cfg.toolsReview ? reviewTools : publishedTools;
     const candidates = [...suggestedTools, ...configured.filter(item => item.enabled !== false && toolUrl(item.url)), ...visitorTaskLinks()]
       .filter((item, index, all) => all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url)) === index);
@@ -2077,8 +2080,11 @@
       const introductoryDetour = /^how (?:do|can) i\b/i.test(message) && /\bintroduction\b/i.test(item.title) ? -3 : 0;
       const knownRedirect = item.redirect ? -6 : 0;
       const mainContent = item.inNavigation === true ? -1 : item.inNavigation === false ? 2 : 0;
-      return { item, score: titleMatches * 5 + pathMatches * 2 + contextMatches + orderedMatch + isHowToGuide + anchorDetour + introductoryDetour + knownRedirect + mainContent + (item.target ? 2 : 0), titleMatches, matched: titleMatches + pathMatches + contextMatches };
-    }).filter(match => match.titleMatches && match.matched >= (words.length === 1 ? 1 : Math.min(2, words.length)) && match.matched / words.length >= 0.6)
+      const supportContext = supportRequest ? visitorTaskWords(item.context || "", true) : [];
+      const supportMatches = contextGoalWords.filter(word => supportContext.includes(word)).length;
+      const contextOnly = !titleMatches && supportMatches >= 2 && supportContext.length <= 15 && supportMatches / contextGoalWords.length >= 0.6;
+      return { item, score: titleMatches * 5 + pathMatches * 2 + contextMatches + (contextOnly ? supportMatches * 3 : 0) + orderedMatch + isHowToGuide + anchorDetour + introductoryDetour + knownRedirect + mainContent + (item.target ? 2 : 0), titleMatches, matched: titleMatches + pathMatches + contextMatches, contextOnly };
+    }).filter(match => (match.titleMatches || match.contextOnly) && (match.contextOnly || (match.matched >= (words.length === 1 ? 1 : Math.min(2, words.length)) && match.matched / words.length >= 0.6)))
       .sort((a, b) => b.score - a.score || toolRank(b.item) - toolRank(a.item));
     if (!ranked.length) return false;
     if (ranked[1] && ranked[0].score === ranked[1].score) {
