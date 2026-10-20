@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "tools": [
+    {
+      "id": "password-help",
+      "title": "Change my password",
+      "url": "rose-panel-preview-security.html",
+      "target": "#password-change",
+      "enabled": true,
+      "pinned": true
+    }
+  ]
+}
