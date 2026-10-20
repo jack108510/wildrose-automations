@@ -211,6 +211,7 @@
   const toolDraftKey = `rose-tool-draft:${cfg.businessId || location.hostname}`;
   const toolMetricsKey = `rose-tool-metrics:${cfg.businessId || location.hostname}`;
   let publishedTools = [];
+  let suggestedTools = [];
   let reviewTools = [];
   let hasToolDraft = false;
   let toolsConfigLoaded = false;
@@ -747,6 +748,7 @@
       .filter((item, index, all) => all.findIndex(other => toolTitleKey(other.title) === toolTitleKey(item.title)) === index)
       .sort((a, b) => (toolRank(b) + Math.min(3, b.seenOn?.length || 0) * 4) - (toolRank(a) + Math.min(3, a.seenOn?.length || 0) * 4) || a.title.localeCompare(b.title))
       .slice(0, 5);
+    suggestedTools = suggestions;
     list.replaceChildren();
     $(".wr-scan-summary").textContent = suggestions.length ? "Shortcuts found on this site." : "No shortcuts found on this site yet.";
     for (const item of suggestions) {
@@ -1578,7 +1580,7 @@
       }
       if (task.routeAttempted || destination.href === location.href) {
         pendingTaskGuide = null;
-        guideStatus("Opened the page. Choose the next step here, or ask Rose for guidance. Task completion is not confirmed.");
+        guideStatus(`Opened ${task.goal}. Tell me what you need to do here next.`);
         saveSiteSession(); return true;
       }
     }
@@ -2020,8 +2022,52 @@
     return true;
   }
   let actionInFlight = false;
+  function visitorTaskGoal(message) {
+    if (!cfg.desktopSidePanel || !widgetOptions.navigation) return null;
+    const text = String(message || "").trim();
+    const match = /^(?:(?:how|where) (?:do|can) i|where (?:are|is) (?:my|the)|can you (?:help me|show me|find|open)|i (?:need|want|would like) to|i can'?t find|help me|show me|take me to|check|find|open|view|see|track|change|reset|update|manage|get)\s+(.+?)[?.!]*$/i.exec(text);
+    return match?.[1]?.trim().slice(0, 120) || null;
+  }
+  function visitorTaskWords(value) {
+    const ignored = new Set("a an and can could do for how i is me my of on please the this to want where you your show find check view see open get go take help need past previous recent pas about page site website change reset update manage track status detail".split(" "));
+    const singular = word => word.length > 4 && word.endsWith("s") && !/(?:ss|us)$/.test(word) ? word.slice(0, -1) : word;
+    return [...new Set(controlWords(value).split(" ").map(singular).filter(word => word.length > 2 && !ignored.has(word)))];
+  }
+  async function handleVisitorTaskRequest(message, view = "chat") {
+    const goal = visitorTaskGoal(message);
+    if (!goal || view !== "chat") return false;
+    await toolsReady;
+    renderToolSuggestions();
+    const words = visitorTaskWords(goal);
+    if (!words.length) return false;
+    const configured = cfg.toolsReview ? reviewTools : publishedTools;
+    const candidates = [...suggestedTools, ...configured.filter(item => item.enabled !== false && toolUrl(item.url))]
+      .filter((item, index, all) => all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url)) === index);
+    const ranked = candidates.map(item => {
+      const titleWords = visitorTaskWords(item.title);
+      const pathWords = visitorTaskWords(item.url ? `${new URL(item.url).pathname} ${new URL(item.url).hash}` : "");
+      const titleMatches = words.filter(word => titleWords.includes(word)).length;
+      const pathMatches = words.filter(word => !titleWords.includes(word) && pathWords.includes(word)).length;
+      return { item, score: titleMatches * 5 + pathMatches + (item.target ? 2 : 0), titleMatches };
+    }).filter(match => match.titleMatches && match.titleMatches / words.length >= 2 / 3)
+      .sort((a, b) => b.score - a.score || toolRank(b.item) - toolRank(a.item));
+    if (!ranked.length) return false;
+    if (ranked[1] && ranked[0].score === ranked[1].score) {
+      addMsg("bot", "I found a few places that could help. Which one do you mean?");
+      const actions = document.createElement("div"); actions.className = "wr-chat-recovery";
+      for (const { item } of ranked.slice(0, 3)) {
+        const button = document.createElement("button"); button.type = "button"; button.textContent = item.title;
+        button.addEventListener("click", () => { actions.remove(); launchSuggestedTool(item); });
+        actions.append(button);
+      }
+      log.append(actions);
+      return true;
+    }
+    launchSuggestedTool(ranked[0].item);
+    return true;
+  }
   async function executeRequestedAction(message, view = "chat") {
-    const actionable = (pendingTaskGuide && /^(?:resume|continue|pause|stop)(?: the)?(?: guide| guidance)?[.!]?$/i.test(String(message).trim())) || guidanceIntent(message) || taskGuideIntent(message) || cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
+    const actionable = (pendingTaskGuide && /^(?:resume|continue|pause|stop)(?: the)?(?: guide| guidance)?[.!]?$/i.test(String(message).trim())) || guidanceIntent(message) || taskGuideIntent(message) || visitorTaskGoal(message) || cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
     if (!actionable) return { handled: false };
     if (actionInFlight) {
       addMsg("bot", "I'm finishing the previous action. Please try again in a moment.");
@@ -2029,6 +2075,7 @@
     }
     actionInFlight = true;
     try {
+      if (await handleVisitorTaskRequest(message, view)) return { handled: true, type: "site-task" };
       if (handleTaskGuideRequest(message, view)) return { handled: true, type: "task-guidance" };
       if (handleGuidanceRequest(message, view)) return { handled: true, type: "guidance" };
       if (await handleCartRequest(message, view)) return { handled: true, type: "cart" };
