@@ -1506,7 +1506,7 @@
   }
   function renderGuideActivity() {
     let status = log.querySelector(".wr-guide-status");
-    if (!guideActivity || !Array.isArray(guideActivity.steps)) { status?.remove(); return; }
+    if (!guideActivity || !Array.isArray(guideActivity.steps)) { status?.remove(); root.querySelector('.wr-guide-actions')?.remove(); return; }
     if (!status) {
       status = document.createElement("div");
       status.className = "wr-guide-status";
@@ -1580,8 +1580,10 @@
       }
       if (task.routeAttempted || destination.href === location.href) {
         pendingTaskGuide = null;
-        guideStatus(`Opened ${task.goal}. Tell me what you need to do here next.`);
-        saveSiteSession(); return true;
+        guideActivity = null;
+        renderGuideActivity();
+        taskGuideSay(`Opened ${task.goal}.`, task.view);
+        return true;
       }
     }
     if (task.phase === 'awaiting') {
