@@ -125,9 +125,6 @@
     .wr-tools-section{padding:22px 0;border-bottom:1px solid #efedea}
     .wr-tools-section:first-child{padding-top:4px}
     .wr-tools-section:last-child{border-bottom:0}
-    .wr-tools-intro{padding:18px!important;border:1px solid #efe4dc!important;border-radius:17px;background:#fbf7f4}
-    .wr-tools-intro h4{font-size:18px}
-    .wr-tools-eyebrow{display:block;margin-bottom:9px;color:#ad603f;font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
     .wr-tools-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
     .wr-rescan{border:0;background:transparent;color:#8e6a5b;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;padding:6px}
     .wr-rescan:hover,.wr-rescan:focus-visible{text-decoration:underline;outline-offset:3px}
@@ -145,12 +142,6 @@
     .wr-suggested-tool small{margin-top:4px;color:#827a74;font-size:11px;font-weight:500;line-height:1.35}
     .wr-suggested-arrow{flex:none;color:#a98270;font-size:19px}
     .wr-tools-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:#85817d;margin-bottom:11px}
-    .wr-tool-task{display:flex;gap:8px;margin-top:15px}
-    .wr-tool-task input{min-width:0;flex:1;height:46px;padding:0 13px;border:1px solid #e1d8d2;border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:12px;outline:0}
-    .wr-tool-task input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
-    .wr-tool-task button{border:0;border-radius:11px;padding:0 17px;background:var(--accent);color:#fff;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
-    .wr-tool-task button:hover,.wr-tool-task button:focus-visible{filter:brightness(.94);outline-offset:2px}
-    .wr-tool-example{margin-top:10px!important;font-size:11px!important;color:#928880!important}
     .wr-tool-options{font-size:12px;color:#77716c}
     .wr-tool-options summary{cursor:pointer;list-style:none;font-weight:650}
     .wr-tool-options summary::-webkit-details-marker{display:none}
@@ -200,7 +191,7 @@
       <div class="wr-tabs" role="tablist"><button class="wr-tab" data-view="chat">Chat</button><button class="wr-tab active" data-view="voice">Voice</button>${cfg.desktopSidePanel ? '<button class="wr-tab" data-view="tools">Tools</button>' : ''}</div>
       <div class="wr-view" role="tabpanel" aria-label="Chat" data-view="chat"><div class="wr-chat-context" aria-label="Site context">Looking at this page</div><div class="wr-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="wr-row"><div class="wr-avatar"><img src="${cfg.logo}" alt=""></div><div class="wr-msg bot">${cfg.greeting}</div></div></div><div class="wr-chat-starters" aria-label="Suggested tasks"></div></div>
       <div class="wr-view active" role="tabpanel" aria-label="Voice" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Tap start and speak naturally.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></div>
-      ${cfg.desktopSidePanel ? '<div class="wr-view" role="tabpanel" aria-label="Tools" data-view="tools"><div class="wr-tools"><div class="wr-tools-section wr-tools-intro"><span class="wr-tools-eyebrow">Rose tools</span><h4>What do you need to do?</h4><p>Tell Rose the outcome you want. It can find the page and show you where to start.</p><form class="wr-tool-task"><input class="wr-tool-goal" aria-label="Task for Rose" placeholder="e.g. change my password" required><button type="submit">Find it</button></form><p class="wr-tool-example">You can ask in your own words.</p></div><div class="wr-tools-section"><div class="wr-tools-heading"><h4>Ready on this site</h4><button type="button" class="wr-rescan" aria-label="Refresh site tools">Refresh</button></div><p class="wr-scan-summary" aria-live="polite">Finding useful paths…</p><div class="wr-suggestions"></div></div><div class="wr-tools-section"><details class="wr-tool-options"><summary>Navigation settings</summary><label class="wr-tool-setting"><input type="checkbox" class="wr-auto-open" checked><span><strong>Open a clear match automatically</strong>When Rose finds one matching page, go there for me.</span></label></details></div></div></div>' : ''}
+      ${cfg.desktopSidePanel ? '<div class="wr-view" role="tabpanel" aria-label="Tools" data-view="tools"><div class="wr-tools"><div class="wr-tools-section"><div class="wr-tools-heading"><h4>Ready on this site</h4><button type="button" class="wr-rescan" aria-label="Refresh site tools">Refresh</button></div><p class="wr-scan-summary" aria-live="polite">Finding useful paths…</p><div class="wr-suggestions"></div></div><div class="wr-tools-section"><details class="wr-tool-options"><summary>Navigation settings</summary><label class="wr-tool-setting"><input type="checkbox" class="wr-auto-open" checked><span><strong>Open a clear match automatically</strong>When Rose finds one matching page, go there for me.</span></label></details></div></div></div>' : ''}
       <div class="wr-compose"><input class="wr-input" placeholder="${cfg.placeholder}"><button class="wr-send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 7l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="wr-toast"></div>
     </div>`;
   const mount = cfg.mount ? document.querySelector(cfg.mount) : null;
@@ -280,15 +271,6 @@
     $(".wr-auto-open").checked = visitorAllowsAutoOpen();
     $(".wr-auto-open").addEventListener("change", event => {
       try { localStorage.setItem(autoOpenKey, String(event.target.checked)); } catch {}
-    });
-    $(".wr-tool-task").addEventListener("submit", event => {
-      event.preventDefault();
-      const goal = $(".wr-tool-goal").value.trim();
-      if (!goal) return;
-      setView("chat");
-      input.value = /^find\s+/i.test(goal) ? goal.replace(/^find\s+/i, "Take me to ") : /^(?:how|where|take me|open|visit|go to|help me)/i.test(goal) ? goal : `How do I ${goal.charAt(0).toLowerCase()}${goal.slice(1)}?`;
-      $(".wr-tool-goal").value = "";
-      submitChat();
     });
     addEventListener("resize", () => {
       if (!matchMedia("(min-width:760px)").matches && $(".wr-view[data-view='tools']")?.classList.contains("active")) setView("chat");
@@ -766,7 +748,7 @@
       .sort((a, b) => (toolRank(b) + Math.min(3, b.seenOn?.length || 0) * 4) - (toolRank(a) + Math.min(3, a.seenOn?.length || 0) * 4) || a.title.localeCompare(b.title))
       .slice(0, 5);
     list.replaceChildren();
-    $(".wr-scan-summary").textContent = suggestions.length ? "Shortcuts found on this site." : "No shortcuts found yet. Tell Rose what you need above.";
+    $(".wr-scan-summary").textContent = suggestions.length ? "Shortcuts found on this site." : "No shortcuts found on this site yet.";
     for (const item of suggestions) {
       const row = document.createElement("button");
       const guided = !!item.target || item.kind === "guide";
