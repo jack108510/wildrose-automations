@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Security settings · Rose preview</title>
+  <style>:root{font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#29231f;background:#f6f4f0}body{margin:0}header,main{max-width:850px;margin:auto;padding:28px}h1{font-size:clamp(36px,6vw,58px);letter-spacing:-.06em;margin:18px 0 8px}p{color:#6d6660;line-height:1.6}a{color:#a74924}.card{background:#fff;border:1px solid #e9e4df;border-radius:18px;padding:26px;margin-top:30px}button{font:700 14px system-ui;border:0;border-radius:10px;background:#dc5d2d;color:#fff;padding:13px 18px;cursor:pointer}dialog{border:1px solid #e9e4df;border-radius:16px;padding:25px;box-shadow:0 18px 70px #2b1c1533}dialog::backdrop{background:#21191466}</style>
+</head>
+<body>
+  <header><a href="rose-panel-preview.html">← Member workspace</a></header>
+  <main><h1>Security settings</h1><p>This is a demonstration page. No account or password is connected.</p><section class="card"><h2>Password</h2><p>Choose the control below to see how Rose guides a visitor to the right action.</p><button type="button" id="password-change" onclick="document.querySelector('#example-dialog').showModal()">Change password</button></section></main>
+  <dialog id="example-dialog" aria-label="Change password demo"><h2>Change password</h2><p>Rose reached the control and opened this example dialog. No account change was made.</p><form method="dialog"><button>Close demo</button></form></dialog>
+  <script src="rose-panel-preview.js?v=20261020b" data-desktop-side-panel="true" data-default-view="chat" data-tools-config-url="rose-panel-preview-tools.json" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" data-greeting="What are you trying to do on this site?" data-shopping="false"></script>
+</body>
+</html>
