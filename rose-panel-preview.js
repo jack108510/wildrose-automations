@@ -119,28 +119,44 @@
     .wr-guide-compact-text{flex:1;min-width:0;line-height:1.35}
     .wr-guide-compact-bar button{flex:none;border:0;background:transparent;color:#91451f;font:600 12px system-ui;padding:8px 2px;cursor:pointer}
     .wr-ai.desktop-side-panel .wr-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .wr-tools{display:grid;align-content:start;gap:0;padding:2px 0 24px;text-align:left}
-    .wr-tools h4{margin:0;font-size:16px;letter-spacing:-.025em}
-    .wr-tools p{margin:7px 0 0;color:#6c6863;font-size:13px;line-height:1.5}
-    .wr-tools-section{padding:20px 0;border-bottom:1px solid #eeece8}
-    .wr-tools-section:first-child{padding-top:9px}
+    .wr-tools{display:grid;align-content:start;gap:0;padding:0 0 24px;text-align:left}
+    .wr-tools h4{margin:0;font-size:17px;letter-spacing:-.035em;line-height:1.25}
+    .wr-tools p{margin:6px 0 0;color:#77716c;font-size:12px;line-height:1.5}
+    .wr-tools-section{padding:22px 0;border-bottom:1px solid #efedea}
+    .wr-tools-section:first-child{padding-top:4px}
     .wr-tools-section:last-child{border-bottom:0}
+    .wr-tools-intro{padding:18px!important;border:1px solid #efe4dc!important;border-radius:17px;background:#fbf7f4}
+    .wr-tools-intro h4{font-size:18px}
+    .wr-tools-eyebrow{display:block;margin-bottom:9px;color:#ad603f;font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
     .wr-tools-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .wr-rescan{border:0;background:transparent;color:#a64b2e;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;padding:6px}
+    .wr-rescan{border:0;background:transparent;color:#8e6a5b;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;padding:6px}
     .wr-rescan:hover,.wr-rescan:focus-visible{text-decoration:underline;outline-offset:3px}
-    .wr-scan-summary{margin-bottom:15px!important}
-    .wr-suggestions{display:grid;gap:7px;margin-top:16px}
-    .wr-suggested-tool{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:61px;padding:11px 13px;border:1px solid #eceae7;border-radius:12px;background:#fff;color:#27221e;text-align:left;text-decoration:none;font:inherit;cursor:pointer}
-    .wr-suggested-tool:hover,.wr-suggested-tool:focus-visible{border-color:#d8c5b9;background:#fcfaf8;outline:none}
+    .wr-scan-summary{margin-bottom:16px!important}
+    .wr-suggestions{display:grid;gap:8px;margin-top:13px}
+    .wr-suggested-tool{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 13px;border:1px solid #ebe7e3;border-radius:13px;background:#fff;color:#27221e;text-align:left;text-decoration:none;font:inherit;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+    .wr-suggested-tool:hover,.wr-suggested-tool:focus-visible{border-color:#d9aa91;background:#fffaf7;outline:2px solid transparent;transform:translateY(-1px)}
+    .wr-suggested-tool.wr-tool-featured{min-height:86px;border-color:#ead0c0;background:#fff9f5}
+    .wr-tool-icon{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:11px;background:#f5f1ed;color:#8b6958;font-size:17px;font-weight:600}
+    .wr-tool-featured .wr-tool-icon{background:#ffebe0;color:#d96136}
+    .wr-tool-copy{flex:1;min-width:0}
+    .wr-tool-kicker{display:block;margin-bottom:4px;color:#a55b3c;font-size:10px;font-weight:800;letter-spacing:.075em;text-transform:uppercase}
     .wr-suggested-tool strong,.wr-suggested-tool small{display:block}
     .wr-suggested-tool strong{font-size:13px;font-weight:750;line-height:1.3}
-    .wr-suggested-tool small{margin-top:4px;color:#89837d;font-size:11px;font-weight:500}
-    .wr-suggested-arrow{color:#a9a29c;font-size:16px}
+    .wr-suggested-tool small{margin-top:4px;color:#827a74;font-size:11px;font-weight:500;line-height:1.35}
+    .wr-suggested-arrow{flex:none;color:#a98270;font-size:19px}
     .wr-tools-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:#85817d;margin-bottom:11px}
-    .wr-tool-task{display:flex;gap:8px;margin-top:17px}
-    .wr-tool-task input{min-width:0;flex:1;height:42px;padding:0 12px;border:1px solid #dad8d4;border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:13px;outline:0}
+    .wr-tool-task{display:flex;gap:8px;margin-top:15px}
+    .wr-tool-task input{min-width:0;flex:1;height:46px;padding:0 13px;border:1px solid #e1d8d2;border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:12px;outline:0}
     .wr-tool-task input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
-    .wr-tool-task button{border:0;border-radius:11px;padding:0 15px;background:var(--accent);color:#fff;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+    .wr-tool-task button{border:0;border-radius:11px;padding:0 17px;background:var(--accent);color:#fff;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+    .wr-tool-task button:hover,.wr-tool-task button:focus-visible{filter:brightness(.94);outline-offset:2px}
+    .wr-tool-example{margin-top:10px!important;font-size:11px!important;color:#928880!important}
+    .wr-tool-options{font-size:12px;color:#77716c}
+    .wr-tool-options summary{cursor:pointer;list-style:none;font-weight:650}
+    .wr-tool-options summary::-webkit-details-marker{display:none}
+    .wr-tool-options summary:after{content:"⌄";float:right;font-size:15px;line-height:1}
+    .wr-tool-options[open] summary:after{transform:rotate(180deg)}
+    .wr-tool-options .wr-tool-setting{margin-top:17px}
     .wr-tool-setting{display:flex;align-items:flex-start;gap:10px;cursor:pointer;line-height:1.45;font-size:12px;color:#77716c}
     .wr-tool-setting strong{display:block;margin-bottom:3px;color:var(--ink);font-size:13px}
     .wr-tool-review{display:grid;gap:10px}.wr-tool-review-row{display:grid;gap:7px;padding:12px;border:1px solid #e5dfda;border-radius:12px;background:#fff}.wr-tool-review-row label{font-size:12px;font-weight:700}.wr-tool-review-row input[type="text"],.wr-tool-review-row input[type="url"]{box-sizing:border-box;width:100%;padding:8px;border:1px solid #d9d3cd;border-radius:8px}.wr-tool-review-actions{display:flex;gap:8px;flex-wrap:wrap}.wr-tool-review-actions button{padding:7px 10px;border:1px solid #d9d3cd;border-radius:8px;background:white;color:#342921;cursor:pointer}.wr-tool-review-actions button:hover,.wr-tool-review-actions button:focus-visible{border-color:#a64b2e}.wr-tool-note{font-size:11px!important}.wr-tool-health{font-size:11px;color:#6c6863}.wr-tool-health[data-state="error"]{color:#ad3427}.wr-tool-health[data-state="ok"]{color:#247a52}.wr-tool-review-count{font-size:12px!important;font-weight:700;color:#443930!important}.wr-tool-review-empty{padding:15px;border:1px dashed #d9d3cd;border-radius:10px;color:#6c6863;font-size:12px}
@@ -184,7 +200,7 @@
       <div class="wr-tabs" role="tablist"><button class="wr-tab" data-view="chat">Chat</button><button class="wr-tab active" data-view="voice">Voice</button>${cfg.desktopSidePanel ? '<button class="wr-tab" data-view="tools">Tools</button>' : ''}</div>
       <div class="wr-view" role="tabpanel" aria-label="Chat" data-view="chat"><div class="wr-chat-context" aria-label="Site context">Looking at this page</div><div class="wr-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="wr-row"><div class="wr-avatar"><img src="${cfg.logo}" alt=""></div><div class="wr-msg bot">${cfg.greeting}</div></div></div><div class="wr-chat-starters" aria-label="Suggested tasks"></div></div>
       <div class="wr-view active" role="tabpanel" aria-label="Voice" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Tap start and speak naturally.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></div>
-      ${cfg.desktopSidePanel ? '<div class="wr-view" role="tabpanel" aria-label="Tools" data-view="tools"><div class="wr-tools"><div class="wr-tools-section"><div class="wr-tools-heading"><h4>Suggested for this site</h4><button type="button" class="wr-rescan" aria-label="Rescan site tools">Rescan</button></div><p class="wr-scan-summary" aria-live="polite">Scanning this page…</p><div class="wr-suggestions"></div></div><div class="wr-tools-section"><div class="wr-tools-label">Need something else?</div><form class="wr-tool-task"><input class="wr-tool-goal" aria-label="Task for Rose" placeholder="Describe what you want to do" required><button type="submit">Guide me</button></form></div><div class="wr-tools-section"><div class="wr-tools-label">Preference</div><label class="wr-tool-setting"><input type="checkbox" class="wr-auto-open" checked><span><strong>Open a clear match automatically</strong>When Rose finds one matching page, go there for me.</span></label></div></div></div>' : ''}
+      ${cfg.desktopSidePanel ? '<div class="wr-view" role="tabpanel" aria-label="Tools" data-view="tools"><div class="wr-tools"><div class="wr-tools-section wr-tools-intro"><span class="wr-tools-eyebrow">Rose tools</span><h4>What do you need to do?</h4><p>Tell Rose the outcome you want. It can find the page and show you where to start.</p><form class="wr-tool-task"><input class="wr-tool-goal" aria-label="Task for Rose" placeholder="e.g. change my password" required><button type="submit">Find it</button></form><p class="wr-tool-example">You can ask in your own words.</p></div><div class="wr-tools-section"><div class="wr-tools-heading"><h4>Ready on this site</h4><button type="button" class="wr-rescan" aria-label="Refresh site tools">Refresh</button></div><p class="wr-scan-summary" aria-live="polite">Finding useful paths…</p><div class="wr-suggestions"></div></div><div class="wr-tools-section"><details class="wr-tool-options"><summary>Navigation settings</summary><label class="wr-tool-setting"><input type="checkbox" class="wr-auto-open" checked><span><strong>Open a clear match automatically</strong>When Rose finds one matching page, go there for me.</span></label></details></div></div></div>' : ''}
       <div class="wr-compose"><input class="wr-input" placeholder="${cfg.placeholder}"><button class="wr-send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 7l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="wr-toast"></div>
     </div>`;
   const mount = cfg.mount ? document.querySelector(cfg.mount) : null;
@@ -750,23 +766,44 @@
       .sort((a, b) => (toolRank(b) + Math.min(3, b.seenOn?.length || 0) * 4) - (toolRank(a) + Math.min(3, a.seenOn?.length || 0) * 4) || a.title.localeCompare(b.title))
       .slice(0, 5);
     list.replaceChildren();
-    $(".wr-scan-summary").textContent = suggestions.length ? "Based on links and controls Rose found while browsing this site." : "Rose has not found a suggested tool on this page yet. You can still describe a task below.";
+    $(".wr-scan-summary").textContent = suggestions.length ? "Shortcuts found on this site." : "No shortcuts found yet. Tell Rose what you need above.";
     for (const item of suggestions) {
       const row = document.createElement("button");
-      row.className = "wr-suggested-tool";
+      const guided = !!item.target || item.kind === "guide";
+      row.className = `wr-suggested-tool${guided ? " wr-tool-featured" : ""}`;
       row.type = "button";
       row.addEventListener("click", () => launchSuggestedTool(item));
+      const icon = document.createElement("span");
+      icon.className = "wr-tool-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.textContent = guided ? "✦" : item.kind === "control" ? "◎" : "↗";
       const copy = document.createElement("span");
+      copy.className = "wr-tool-copy";
+      if (guided) {
+        const kicker = document.createElement("span");
+        kicker.className = "wr-tool-kicker";
+        kicker.textContent = "Guided by Rose";
+        copy.append(kicker);
+      }
       const title = document.createElement("strong");
-      title.textContent = item.title;
+      title.textContent = guided || /^(?:open|view|find|check|manage|change|track|search|update|browse|go to)\b/i.test(item.title)
+        ? item.title
+        : /^orders?$/i.test(item.title) ? "View orders"
+        : /^(?:help|help center|support)$/i.test(item.title) ? "Find help"
+        : /^account settings$/i.test(item.title) ? "Manage account settings"
+        : `Open ${item.title}`;
       const detail = document.createElement("small");
-      detail.textContent = item.detail;
+      const destination = item.url ? toolUrl(item.url) : null;
+      detail.textContent = guided ? "Rose opens the page and points to the next step"
+        : item.kind === "control" ? "Rose highlights it on this page"
+        : destination?.pathname === location.pathname && destination.hash ? "Jump to this section"
+        : "Open this page";
       copy.append(title, detail);
       const arrow = document.createElement("span");
       arrow.className = "wr-suggested-arrow";
       arrow.setAttribute("aria-hidden", "true");
-      arrow.textContent = "↗";
-      row.append(copy, arrow);
+      arrow.textContent = "›";
+      row.append(icon, copy, arrow);
       list.appendChild(row);
     }
     if (chatContext) chatContext.textContent = `Looking at ${document.title.replace(/\s+/g, " ").trim().slice(0, 55) || location.hostname}`;
