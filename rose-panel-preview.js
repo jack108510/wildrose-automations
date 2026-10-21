@@ -2028,22 +2028,28 @@
     if (!cfg.desktopSidePanel || !widgetOptions.navigation) return null;
     const text = String(message || "").trim();
     const match = /^(?:(?:how|where) (?:do|can) i|where (?:are|is) (?:my|the)|can you (?:help me|show me|find|open)|i (?:need|want|would like) to|i can'?t find|help me|show me|take me to|check|find|open|view|see|track|change|reset|update|manage|get)\s+(.+?)[?.!]*$/i.exec(text);
-    return match?.[1]?.trim().slice(0, 120) || null;
+    if (match?.[1]) return match[1].trim().slice(0, 160);
+    const followup = /[.!]\s+(?:where|how) (?:do|can|should) i\s+([^?.!]+)/i.exec(text);
+    if (followup && !/\b(?:it|them|that|this)\b/i.test(followup[1])) return followup[1].trim().slice(0, 160);
+    if (/^(?:hi|hello|thanks|thank you|yes|no|okay)[.!?]*$/i.test(text)) return null;
+    if (/^(?:what|which|who|can i|i(?:'m|'ve| have| found)|someone)\b/i.test(text) || /\b(?:how|where) (?:do|can|should) i\b/i.test(text)) return text.slice(0, 160);
+    return null;
   }
   function visitorTaskWords(value, includeHelp = false) {
-    const ignored = new Set(["a add an and ask can could do experienced expert for how i is me my of on please the this to want where you your show find check view see open get go take help need past previous recent pas about page site website change reset update manage track status detail".split(" "), [location.hostname.split(".").slice(-2)[0]]].flat());
+    const ignored = new Set(["a add an and are ask before can could do does ever experienced expert for found from have here how i if in into is it me my never of on or our own please should someone the their this those to took want what when where which who will with without would you your show find check view see open get go take help need past previous recent pas about site website change reset update manage track status detail affecting other".split(" "), [location.hostname.split(".").slice(-2)[0]]].flat());
     const normalize = word => {
-      const aliases = { writing: "write", wrote: "write", editing: "edit", editors: "editor", uploading: "upload", images: "image", pictures: "image", citations: "cite", citation: "cite", citing: "cite", sources: "source", searching: "search", referencing: "cite", practicing: "sandbox", practice: "sandbox", cleanup: "clean", cleaning: "clean", experienced: "expert", assistance: "help", questions: "question", readers: "reader" };
+      const aliases = { beginning: "start", begin: "start", started: "start", starting: "start", getting: "start", beginners: "start", beginner: "start", new: "first", create: "write", creating: "write", contribution: "contribute", contributing: "contribute", contributions: "contribute", docs: "document", documentation: "document", documents: "document", writing: "write", wrote: "write", editing: "edit", edited: "edit", edits: "edit", editors: "editor", uploaded: "upload", uploading: "upload", images: "image", photo: "image", photos: "image", picture: "image", pictures: "image", citations: "cite", citation: "cite", citing: "cite", sources: "source", searching: "search", translated: "translate", translating: "translate", translation: "translate", licensing: "license", licenses: "license", reuse: "license", copyright: "license", guidelines: "guideline", rules: "guideline", referencing: "cite", practicing: "sandbox", practice: "sandbox", vandalized: "vandalism", undo: "revert", reverting: "revert", cleanup: "clean", cleaning: "clean", experienced: "expert", assistance: "help", advice: "help", questions: "question", readers: "reader", recording: "trace", recordings: "trace", gpx: "trace", gps: "trace", pages: "article", page: "article" };
       return aliases[word] || (word.length > 4 && word.endsWith("s") && !/(?:ss|us)$/.test(word) ? word.slice(0, -1) : word);
     };
     return [...new Set(controlWords(value).split(" ").map(normalize).filter(word => word.length > 2 && (!ignored.has(word) || (includeHelp && word === "help"))))];
   }
-  function visitorTaskLinks() {
+  function visitorTaskLinks(doc = document, base = location.href) {
     const links = new Map();
-    for (const anchor of document.querySelectorAll("main a[href], article a[href], [role='main'] a[href], #mw-content-text a[href]")) {
-      if (root.contains(anchor) || !visibleSiteControl(anchor)) continue;
-      const url = toolUrl(anchor.href);
-      if (!url || url.href === location.href || url.searchParams.has("action") || url.searchParams.has("veaction")) continue;
+    for (const anchor of doc.querySelectorAll("main a[href], article a[href], [role='main'] a[href], #mw-content-text a[href]")) {
+      if (doc === document && (root.contains(anchor) || !visibleSiteControl(anchor))) continue;
+      let url;
+      try { url = toolUrl(new URL(anchor.getAttribute("href"), base).href); } catch { continue; }
+      if (!url || url.href === location.href || url.searchParams.has("action") || url.searchParams.has("veaction") || url.searchParams.has("oldid") || /\.(?:txt|pdf|xml|json|csv|jpe?g|png|gif|svg|webp|zip)$/i.test(url.pathname) || (doc !== document && /\/wiki\/(?:[a-z]{2,3}|[A-Z]{2}|[A-Z][a-z]):/.test(url.pathname))) continue;
       const title = (anchor.textContent || controlLabel(anchor)).replace(/\s+/g, " ").trim().slice(0, 60);
       if (!title) continue;
       const context = (anchor.getAttribute("title") || "") + " " + (anchor.closest("li, p")?.textContent.replace(/\s+/g, " ").trim().slice(0, 180) || "");
@@ -2052,6 +2058,47 @@
       if (!previous || title.length > previous.title.length || (title.length === previous.title.length && context.length < previous.context.length)) links.set(url.href, item);
     }
     return [...links.values()];
+  }
+  async function discoverVisitorTaskLinks(goal, startingLinks) {
+    const publicHub = item => {
+      const url = toolUrl(item?.url);
+      if (!url || url.search || /\/wiki\/(?:[a-z]{2,3}|[A-Z]{2}|[A-Z][a-z]):/.test(url.pathname) || /\.(?:pdf|xml|json|jpe?g|png|svg|zip)$/i.test(url.pathname) || /\b(?:account|profile|security|password|login|sign.?in|member|private|checkout|cart)\b/i.test(url.pathname)) return null;
+      if (url.pathname === location.pathname) return null;
+      url.hash = "";
+      return url;
+    };
+    const words = visitorTaskWords(goal);
+    const hubScore = item => {
+      const url = publicHub(item);
+      if (!url) return -1;
+      const label = item.title + " " + url.pathname;
+      const terms = visitorTaskWords(label);
+      const overlap = words.filter(word => terms.includes(word)).length;
+      return overlap * 5 + (/\b(?:help|guide|using|feature|docs|documentation|issues?|community|writing|learn|start|browse|map)\b|contribut/i.test(label) ? 2 : 0);
+    };
+    const seen = new Set([location.href]);
+    const fetchPage = async item => {
+      const url = publicHub(item);
+      if (!url || seen.has(url.href)) return [];
+      seen.add(url.href);
+      try {
+        const response = await fetch(url.href, { credentials: "omit", signal: AbortSignal.timeout(2200) });
+        if (!response.ok || !/text\/html/i.test(response.headers.get("content-type") || "") || Number(response.headers.get("content-length") || 0) > 1200000 || !toolUrl(response.url)) return [];
+        const html = await response.text();
+        if (html.length > 1200000) return [];
+        return visitorTaskLinks(new DOMParser().parseFromString(html, "text/html"), response.url).slice(0, 350);
+      } catch { return []; }
+    };
+    const uniqueHubs = items => items.filter((item, index, all) => {
+      const url = publicHub(item);
+      return url && all.findIndex(other => publicHub(other)?.href === url.href) === index;
+    });
+    const hubs = uniqueHubs(startingLinks).sort((a, b) => hubScore(b) - hubScore(a)).slice(0, 4);
+    const first = (await Promise.all(hubs.map(fetchPage))).flat();
+    const secondHubs = uniqueHubs(first).filter(item => !seen.has(publicHub(item).href))
+      .sort((a, b) => hubScore(b) - hubScore(a)).slice(0, 2);
+    const second = (await Promise.all(secondHubs.map(fetchPage))).flat();
+    return [...first, ...second].filter((item, index, all) => all.findIndex(other => other.url === item.url) === index);
   }
   async function handleVisitorTaskRequest(message, view = "chat") {
     const goal = visitorTaskGoal(message);
@@ -2063,29 +2110,41 @@
     const supportRequest = /\b(?:help|support|advice|assistance)\b/i.test(goal);
     const contextGoalWords = supportRequest ? visitorTaskWords(goal, true) : [];
     const configured = cfg.toolsReview ? reviewTools : publishedTools;
-    const candidates = [...suggestedTools, ...configured.filter(item => item.enabled !== false && toolUrl(item.url)), ...visitorTaskLinks()]
+    const currentLinks = visitorTaskLinks();
+    const candidates = [...configured.filter(item => item.enabled !== false && toolUrl(item.url)), ...currentLinks, ...suggestedTools]
       .filter((item, index, all) => all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url)) === index);
-    const ranked = candidates.map(item => {
+    const rank = items => items.map(item => {
       const titleWords = visitorTaskWords(item.title);
       const contextWords = visitorTaskWords(item.context || "");
       const pathWords = visitorTaskWords(item.url ? `${new URL(item.url).pathname} ${new URL(item.url).hash}` : "");
       const titleMatches = words.filter(word => titleWords.includes(word)).length;
+      const titleMatchScore = words.reduce((score, word) => score + (titleWords.includes(word) ? word === "article" ? 1 : word === "sandbox" ? 9 : 5 : 0), 0);
       const pathMatches = words.filter(word => !titleWords.includes(word) && pathWords.includes(word)).length;
       const contextMatches = words.filter(word => !titleWords.includes(word) && !pathWords.includes(word) && contextWords.includes(word)).length;
+      const primaryIntent = words.includes("first") ? "first" : words[0];
+      const intentMatch = titleWords.includes(primaryIntent) ? 8 : pathWords.includes(primaryIntent) ? 3 : 0;
       const titlePhrase = titleWords.join(" ");
       const goalPhrase = words.join(" ");
       const orderedMatch = titleWords.length > 1 && goalPhrase.includes(titlePhrase) ? 4 : 0;
       const isHowToGuide = /^how (?:do|can) i\b/i.test(message) && /(?:help|guide|tutorial)/i.test(new URL(item.url || location.href).pathname) ? 2 : 0;
       const anchorDetour = item.url && new URL(item.url).hash ? -2 : 0;
       const introductoryDetour = /^how (?:do|can) i\b/i.test(message) && /\bintroduction\b/i.test(item.title) ? -3 : 0;
-      const knownRedirect = item.redirect ? -6 : 0;
+      const knownRedirect = item.redirect ? -8 : 0;
       const mainContent = item.inNavigation === true ? -1 : item.inNavigation === false ? 2 : 0;
       const supportContext = supportRequest ? visitorTaskWords(item.context || "", true) : [];
       const supportMatches = contextGoalWords.filter(word => supportContext.includes(word)).length;
       const contextOnly = !titleMatches && supportMatches >= 2 && supportContext.length <= 15 && supportMatches / contextGoalWords.length >= 0.6;
-      return { item, score: titleMatches * 5 + pathMatches * 2 + contextMatches + (contextOnly ? supportMatches * 3 : 0) + orderedMatch + isHowToGuide + anchorDetour + introductoryDetour + knownRedirect + mainContent + (item.target ? 2 : 0), titleMatches, matched: titleMatches + pathMatches + contextMatches, contextOnly };
+      return { item, score: titleMatchScore + pathMatches * 2 + contextMatches + intentMatch + (contextOnly ? supportMatches * 3 : 0) + orderedMatch + isHowToGuide + anchorDetour + introductoryDetour + knownRedirect + mainContent + (item.target ? 2 : 0), titleMatches, matched: titleMatches + pathMatches + contextMatches, contextOnly };
     }).filter(match => (match.titleMatches || match.contextOnly) && (match.contextOnly || (match.matched >= (words.length === 1 ? 1 : Math.min(2, words.length)) && match.matched / words.length >= 0.6)))
       .sort((a, b) => b.score - a.score || toolRank(b.item) - toolRank(a.item));
+    let ranked = rank(candidates);
+    if (!ranked.length) {
+      const status = addMsg("bot", "Checking this site's public help pages…");
+      const discovered = await discoverVisitorTaskLinks(goal, currentLinks);
+      status?.closest(".wr-row")?.remove();
+      ranked = rank([...candidates, ...discovered].filter((item, index, all) =>
+        all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url)) === index));
+    }
     if (!ranked.length) return false;
     if (ranked[1] && ranked[0].score === ranked[1].score) {
       addMsg("bot", "I found a few places that could help. Which one do you mean?");
