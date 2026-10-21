@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { tryAcquireCdpLock, releaseCdpLock } from './cdp-lock.mjs';
+
+const root = fs.mkdtempSync(path.join(os.tmpdir(), 'reachr-cdp-lock-'));
+const lock = path.join(root, 'lock');
+const first = tryAcquireCdpLock(lock, { now: 1000 });
+assert.equal(first.acquired, true);
+assert.equal(tryAcquireCdpLock(lock, { now: 1001 }).acquired, false);
+assert.equal(releaseCdpLock(lock), true);
+assert.equal(tryAcquireCdpLock(lock, { now: 1002 }).acquired, true);
+assert.equal(releaseCdpLock(lock), true);
+fs.mkdirSync(lock);
+fs.writeFileSync(path.join(lock, 'owner.json'), JSON.stringify({ pid: 99999999, acquiredAt: new Date(0).toISOString() }));
+assert.equal(tryAcquireCdpLock(lock, { staleMs: 10, now: 100 }).acquired, true);
+assert.equal(releaseCdpLock(lock), true);
+fs.rmSync(root, { recursive: true, force: true });
+console.log('CDP lock tests passed: acquire, contention, release, stale-dead-owner recovery');

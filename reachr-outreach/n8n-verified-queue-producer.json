@@ -1,0 +1,49 @@
+{
+  "id": "f55ee65c-9e4b-4007-8250-b5086f580ea9",
+  "name": "Reachr — Verified Queue Producer",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "2,11,20,29,38,47,56 0-23/3 * * *" },
+            { "field": "cronExpression", "expression": "5,14,23,32,41,50,59 1-23/3 * * *" },
+            { "field": "cronExpression", "expression": "8,17,26,35,44,53 2-23/3 * * *" }
+          ]
+        }
+      },
+      "id": "52ef3ae9-8b71-4ee9-bdcf-e1d86fad168b",
+      "name": "Producer two minutes after sender",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [260, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /Users/jackserver/wildrose-automations/reachr-outreach && REACHR_ENABLE_MESSENGER=1 node one-prospect-cycle.mjs --confirm-live --queue-only --source-groups=2 --source-additions=4 --verify-limit=3 --cycle-deadline-ms=150000 --child-timeout-ms=70000 --max-batches=1"
+      },
+      "id": "8735dc63-5625-42d9-b118-b0c5b9bb1bbd",
+      "name": "Build verified queue without sending",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [520, 300]
+    }
+  ],
+  "connections": {
+    "Producer two minutes after sender": {
+      "main": [[{
+        "node": "Build verified queue without sending",
+        "type": "main",
+        "index": 0
+      }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Edmonton",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "pinData": {}
+}

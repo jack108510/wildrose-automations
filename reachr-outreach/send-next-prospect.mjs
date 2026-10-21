@@ -52,6 +52,22 @@ export function allowUnverifiedComposerActor(value = process.env.REACHR_ALLOW_UN
   return value === '1';
 }
 
+export function classifyMessengerBlockingDialog({ visibleDialogText = '' } = {}) {
+  const text = normalize(visibleDialogText);
+  if (/enter your pin to restore your chats|use a one-time code instead/.test(text)) {
+    return 'chat_restore_pin_required';
+  }
+  return '';
+}
+
+export function messengerExplicitFailure(statusItems = []) {
+  const statusText = (statusItems || [])
+    .flatMap(item => [item?.aria, item?.title, item?.text])
+    .filter(Boolean)
+    .join(' ');
+  return /couldn(?:'|’)t send/i.test(statusText) ? 'couldnt_send' : '';
+}
+
 // Identity is valid only when it comes from the actual message-composer region.
 // Page timelines, account menus, and URL context can prove Page access but cannot
 // prove which actor Messenger will use for this specific outgoing message.
@@ -97,6 +113,15 @@ export function composeMessage(input) {
 // Counting whole document text alone is unsafe because it includes unsent drafts.
 export function deliveryConfirmedByComposerState({ beforeCount = 0, afterCount = 0, composerText = '' } = {}) {
   return Number(afterCount) > Number(beforeCount) && String(composerText).trim() === '';
+}
+
+// Same-target Messenger UI can be optimistic. A send is final only when the
+// exact message survives a newly created browser target for the same recipient.
+export function deliveryConfirmedAfterFreshReopen({ expectedRecipient = '', observedRecipient = '', exactMessageCount = 0, composerText = '' } = {}) {
+  return normalize(expectedRecipient) !== '' &&
+    normalize(observedRecipient) === normalize(expectedRecipient) &&
+    Number(exactMessageCount) > 0 &&
+    String(composerText).trim() === '';
 }
 
 export function selectSendButtonLabel(labels = []) {
@@ -181,6 +206,17 @@ async function connect(wsUrl) {
   return { socket, call };
 }
 
+async function dispatchTrustedComposerText(call, text) {
+  for (const character of String(text)) {
+    if (character === '\n') {
+      await call('Input.dispatchKeyEvent', { type: 'rawKeyDown', key: 'Enter', code: 'Enter', modifiers: 8, windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+      await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', modifiers: 8, windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+      continue;
+    }
+    await call('Input.dispatchKeyEvent', { type: 'char', text: character, unmodifiedText: character });
+  }
+}
+
 export async function sendViaMessenger(prospect) {
   // Do not switch into the managed Page. The conversation-specific composer actor
   // gate below must prove the personal Jack Sereda sender before any typing.
@@ -190,7 +226,7 @@ export async function sendViaMessenger(prospect) {
   if (!controllerUrl) throw new Error('Managed Chrome controller is unavailable.');
   const seedConnection = await connect(controllerUrl);
   const created = await seedConnection.call('Target.createTarget', { url: prospect.messengerUrl, background: true });
-  const targetId = created.result?.targetId;
+  let targetId = created.result?.targetId;
   await new Promise(resolve => setTimeout(resolve, 4000));
   const refreshed = await getJson(DEBUG_ENDPOINT);
   const tab = refreshed.find(item => item.id === targetId);
@@ -201,10 +237,28 @@ export async function sendViaMessenger(prospect) {
   }
   const { socket, call } = await connect(tab.webSocketDebuggerUrl);
   try {
+    // CDP input sent to a background Messenger target can update the local DOM without
+    // committing the action to Messenger. Foreground this tab inside managed Chrome;
+    // this does not raise the Chrome window or steal the operator's macOS focus.
+    await call('Page.bringToFront');
     const resolvedRoute = await call('Runtime.evaluate', { expression: 'location.href', returnByValue: true });
     const routeEvidence = getPageMessageRouteEvidence(resolvedRoute.result?.result?.value || tab.url);
     if (!routeEvidence.allowed) {
       throw new Error(`Personal Messenger route verification failed: expected a resolved Messenger conversation, got "${routeEvidence.url}".`);
+    }
+    const blockingDialogResult = await call('Runtime.evaluate', {
+      expression: `(() => {
+        const visible = el => { const style = getComputedStyle(el), rect = el.getBoundingClientRect(); return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden'; };
+        return [...document.querySelectorAll('[role="dialog"]')]
+          .filter(visible)
+          .map(el => el.innerText || el.textContent || '')
+          .join(' ');
+      })()`,
+      returnByValue: true
+    });
+    const blockingDialog = classifyMessengerBlockingDialog({ visibleDialogText: blockingDialogResult.result?.result?.value || '' });
+    if (blockingDialog === 'chat_restore_pin_required') {
+      throw new Error('Messenger is blocked by the visible chat-restore PIN dialog. Restore the Messenger chats manually before outbound sending can resume.');
     }
     let identity;
     for (let attempt = 0; attempt < 30; attempt++) {
@@ -269,20 +323,26 @@ export async function sendViaMessenger(prospect) {
     const beforeCount = await countExactMessage();
     if (beforeCount > 0) throw new Error('Exact outreach message is already present in the Messenger thread.');
     await call('Runtime.evaluate', { expression: `(() => { const el = [...document.querySelectorAll('[contenteditable="true"]')].find(e => e.getAttribute('aria-label') === ${safeLabel}); el?.focus(); })()` });
-    await call('Input.insertText', { text });
+    await dispatchTrustedComposerText(call, text);
     const draft = await call('Runtime.evaluate', { expression: `(() => [...document.querySelectorAll('[contenteditable="true"]')].find(e => e.getAttribute('aria-label') === ${safeLabel})?.innerText || '')()`, returnByValue: true });
     if (draft.result?.result?.value?.trim() !== text.trim()) throw new Error('Messenger draft verification failed.');
-    const clicked = await call('Runtime.evaluate', {
+    const sendControl = await call('Runtime.evaluate', {
       expression: `(() => {
         const visible = el => { const style = getComputedStyle(el), rect = el.getBoundingClientRect(); return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden'; };
         const button = [...document.querySelectorAll('button,[role="button"]')].filter(visible).find(el => ['Send', 'Press enter to send'].includes((el.getAttribute('aria-label') || el.getAttribute('title') || el.innerText || '').trim()));
-        if (!button) return false;
-        button.click();
-        return true;
+        if (!button) return null;
+        const rect = button.getBoundingClientRect();
+        return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, label: (button.getAttribute('aria-label') || button.getAttribute('title') || button.innerText || '').trim() };
       })()`,
       returnByValue: true
     });
-    if (!clicked.result?.result?.value) throw new Error('Messenger send button did not accept the verified draft.');
+    const sendPoint = sendControl.result?.result?.value;
+    if (!sendPoint || !Number.isFinite(sendPoint.x) || !Number.isFinite(sendPoint.y)) {
+      throw new Error('Messenger send control was not available for the verified draft.');
+    }
+    await call('Runtime.evaluate', { expression: `(() => { const el = [...document.querySelectorAll('[contenteditable="true"]')].find(e => e.getAttribute('aria-label') === ${safeLabel}); el?.focus(); return document.activeElement === el; })()`, returnByValue: true });
+    await call('Input.dispatchKeyEvent', { type: 'rawKeyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+    await call('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
     const sendInitiatedAt = new Date().toISOString();
     await waitForNewMessageOccurrence(beforeCount, countExactMessage, { attempts: 30, intervalMs: 1000, stableChecks: 20 });
     const afterCount = await countExactMessage();
@@ -295,6 +355,78 @@ export async function sendViaMessenger(prospect) {
       afterCount,
       composerText: composerAfterSend.result?.result?.value || ''
     })) throw new Error('Messenger delivery verification failed: no new rendered message with a cleared composer.');
+    const sameTargetStatusResult = await call('Runtime.evaluate', {
+      expression: `(() => {
+        const needle = ${safeText};
+        return [...document.querySelectorAll('[aria-label],[title]')]
+          .map(el => ({ aria: el.getAttribute('aria-label') || '', title: el.getAttribute('title') || '', text: el.innerText || el.textContent || '' }))
+          .filter(item => [item.aria, item.title, item.text].some(value => String(value).includes(needle)) || /message (?:sent|sending|failed)|couldn(?:'|’)t send|retry/i.test([item.aria, item.title].join(' ')))
+          .slice(0, 20);
+      })()`,
+      returnByValue: true
+    });
+    const sameTargetStatus = sameTargetStatusResult.result?.result?.value || [];
+    if (messengerExplicitFailure(sameTargetStatus) === 'couldnt_send') {
+      throw new Error(`Messenger explicitly rejected the outgoing message for "${expectedRecipient}": Couldn't send.`);
+    }
+
+    // The current React tree may show an optimistic outgoing bubble even when the
+    // server never persisted it. Destroy that target, reopen the exact route in a
+    // fresh target, and re-read the recipient, composer, and message from scratch.
+    socket.close();
+    await seedConnection.call('Target.closeTarget', { targetId });
+    targetId = undefined;
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const reopened = await seedConnection.call('Target.createTarget', { url: routeEvidence.url, background: true });
+    targetId = reopened.result?.targetId;
+    if (!targetId) throw new Error('Messenger fresh-readback target did not open.');
+    await new Promise(resolve => setTimeout(resolve, 4000));
+    const reopenedTargets = await getJson(DEBUG_ENDPOINT);
+    const reopenedTab = reopenedTargets.find(item => item.id === targetId);
+    if (!reopenedTab) throw new Error('Messenger fresh-readback target disappeared before verification.');
+    const freshConnection = await connect(reopenedTab.webSocketDebuggerUrl);
+    let freshReadback;
+    try {
+      await freshConnection.call('Page.bringToFront');
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const result = await freshConnection.call('Runtime.evaluate', {
+          expression: `(() => {
+            const norm = value => String(value || '').replace(/\\s+/g, ' ').trim();
+            const composer = [...document.querySelectorAll('[contenteditable="true"]')]
+              .find(el => /^Write to\\s+\\S/i.test(el.getAttribute('aria-label') || ''));
+            if (!composer) return { ready: false };
+            const clone = document.body.cloneNode(true);
+            clone.querySelectorAll('[contenteditable="true"]').forEach(node => node.remove());
+            const expected = norm(${safeText});
+            const threadText = norm(clone.innerText || clone.textContent || '');
+            const label = composer.getAttribute('aria-label') || '';
+            return {
+              ready: true,
+              observedRecipient: label.replace(/^Write to\\s*/i, ''),
+              exactMessageCount: expected ? threadText.split(expected).length - 1 : 0,
+              composerText: composer.innerText || composer.textContent || '',
+              url: location.href
+            };
+          })()`,
+          returnByValue: true
+        });
+        freshReadback = result.result?.result?.value;
+        if (freshReadback?.ready && freshReadback?.exactMessageCount > 0) break;
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    } finally {
+      freshConnection.socket.close();
+    }
+    if (!freshReadback?.ready || !deliveryConfirmedAfterFreshReopen({
+      expectedRecipient,
+      observedRecipient: freshReadback.observedRecipient,
+      exactMessageCount: freshReadback.exactMessageCount,
+      composerText: freshReadback.composerText
+    })) {
+      const statusSummary = JSON.stringify(sameTargetStatus).slice(0, 2000);
+      throw new Error(`Messenger fresh-readback verification failed: the exact outgoing message did not persist for "${expectedRecipient}" after reopening the conversation. Same-target status: ${statusSummary}`);
+    }
     return {
       messengerUrl: routeEvidence.url,
       message: text,
@@ -305,7 +437,7 @@ export async function sendViaMessenger(prospect) {
       messagingSource: routeEvidence.messagingSource,
       sourceId: routeEvidence.sourceId,
       sendInitiatedAt,
-      deliveryEvidence: 'exact_message_persisted_for_20_seconds'
+      deliveryEvidence: 'exact_message_confirmed_after_fresh_target_reopen'
     };
   } finally {
     socket.close();

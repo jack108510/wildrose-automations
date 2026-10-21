@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+import http from 'node:http';
+import { waitForNewMessageOccurrence } from './messenger-route-verification.mjs';
+const [,,url,expected,message]=process.argv;if(!url||!expected||!message)throw Error('Usage: node send-direct-verified-followup.mjs <url> <expected> <message>');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function get(u){return new Promise((resolve,reject)=>http.get(u,r=>{let b='';r.on('data',c=>b+=c);r.on('end',()=>{try{resolve(JSON.parse(b))}catch(e){reject(e)}})}).on('error',reject));}
+function connect(u){return new Promise((resolve,reject)=>{const ws=new WebSocket(u);ws.onopen=()=>{let id=0,pending=new Map();ws.onmessage=e=>{const m=JSON.parse(e.data),p=pending.get(m.id);if(!p)return;pending.delete(m.id);clearTimeout(p.t);m.error?p.j(Error(m.error.message)):p.r(m.result)};resolve({ws,call:(method,params={})=>new Promise((r,j)=>{const n=++id,t=setTimeout(()=>{pending.delete(n);j(Error(`${method} timeout`))},20000);pending.set(n,{r,j,t});ws.send(JSON.stringify({id:n,method,params}))})})};ws.onerror=reject;});}
+let controller,page,targetId;
+try{
+ const tabs=await get('http://127.0.0.1:9223/json/list'),base=tabs.find(t=>t.type==='page'),version=base?null:await get('http://127.0.0.1:9223/json/version'),controllerUrl=base?.webSocketDebuggerUrl||version?.webSocketDebuggerUrl;if(!controllerUrl)throw Error('managed Chrome unavailable');
+ controller=await connect(controllerUrl);const made=await controller.call('Target.createTarget',{url,background:true});targetId=made.targetId;await sleep(6500);
+ const live=await get('http://127.0.0.1:9223/json/list'),tab=live.find(t=>t.id===targetId);if(!tab)throw Error('thread target unavailable');page=await connect(tab.webSocketDebuggerUrl);
+ let label='';for(let i=0;i<15;i++){const x=await page.call('Runtime.evaluate',{expression:`[...document.querySelectorAll('[contenteditable="true"]')].map(e=>e.getAttribute('aria-label')||'').find(x=>x.startsWith('Write to ')&&x.length>9)||''`,returnByValue:true});label=x.result.value||'';if(label)break;await sleep(1000)}
+ if(label!==`Write to ${expected}`)throw Error(`recipient mismatch: ${label||'no composer'}`);
+ const focus=await page.call('Runtime.evaluate',{expression:`(()=>{const e=[...document.querySelectorAll('[contenteditable="true"]')].find(e=>e.getAttribute('aria-label')===${JSON.stringify(`Write to ${expected}`)});if(!e)return false;e.focus();return true})()`,returnByValue:true});if(!focus.result.value)throw Error('composer missing');
+ const safeMessage=JSON.stringify(message);const countExactMessage=async()=>{const x=await page.call('Runtime.evaluate',{expression:`(()=>{const text=document.body.innerText||'';const needle=${safeMessage};return text.split(needle).length-1})()`,returnByValue:true});return Number(x.result.value||0)};const beforeCount=await countExactMessage();if(beforeCount>0)throw Error('exact follow-up already exists in thread');
+ await page.call('Input.insertText',{text:message});const draft=await page.call('Runtime.evaluate',{expression:`(()=>[...document.querySelectorAll('[contenteditable="true"]')].find(e=>e.getAttribute('aria-label')===${JSON.stringify(`Write to ${expected}`)})?.innerText||'')()`,returnByValue:true});if(draft.result.value!==message)throw Error('draft mismatch');
+ const sendControl=await page.call('Runtime.evaluate',{expression:`(()=>{const buttons=[...document.querySelectorAll('[role="button"],[aria-label]')];const e=buttons.find(e=>{const a=(e.getAttribute('aria-label')||'').toLowerCase();return a==='send'||a.includes('press enter to send')});if(!e)return {found:false,labels:buttons.map(e=>e.getAttribute('aria-label')).filter(Boolean).filter(a=>/send/i.test(a)).slice(0,20)};e.click();return {found:true,label:e.getAttribute('aria-label'),clicked:true}})()`,returnByValue:true});
+ if(!sendControl.result.value.found){await page.call('Input.dispatchKeyEvent',{type:'rawKeyDown',windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,code:'Enter',key:'Enter'});await page.call('Input.dispatchKeyEvent',{type:'keyUp',windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,code:'Enter',key:'Enter'});}
+ await waitForNewMessageOccurrence(beforeCount,countExactMessage,{attempts:30,intervalMs:1000,stableChecks:20});
+ console.log(`SENT:${expected}`);
+} catch(e){console.error(`NOT_SENT:${e.message}`);process.exitCode=1;} finally {if(targetId&&controller)try{await controller.call('Target.closeTarget',{targetId})}catch{};page?.ws.close();controller?.ws.close();}
