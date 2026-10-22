@@ -129,7 +129,7 @@
     const a = config.appearance || {};
     const copy = a.widgetCopy || {};
     cfg.title = a.assistantName || config.settings?.assistantName || cfg.title;
-    cfg.subtitle = copy.subtitle ?? a.greetingMessage ?? cfg.subtitle;
+    cfg.subtitle = copy.subtitle ?? (cfg.businessId === "rose-checkout-muyn52us-ksmk51" ? "AI assistant" : cfg.subtitle);
     cfg.greeting = copy.greeting || config.greeting || a.greetingMessage || cfg.greeting;
     cfg.accent = a.brandPrimary || cfg.accent;
     cfg.businessContext = (config.context || []).map(n => n.text).filter(Boolean).join("\n").slice(0, 3600) || cfg.businessContext;
