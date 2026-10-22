@@ -1,5 +1,6 @@
 (() => {
   const script = document.currentScript;
+  const requestedSubtitle = script?.dataset.subtitle?.trim();
   const cfg = {
     apiBase: script?.dataset.apiBase || "",
     title: script?.dataset.title || "Rose",
@@ -13,7 +14,7 @@
     mount: script?.dataset.mount || "",
     inline: script?.dataset.inline === "true",
     contained: script?.dataset.contained === "true",
-    subtitle: "AI assistant",
+    subtitle: requestedSubtitle && requestedSubtitle !== "AI intake assistant" ? requestedSubtitle : "AI assistant",
     greeting: script?.dataset.greeting || "Tell me what you want automated and I’ll turn it into a clear next step.",
     placeholder: script?.dataset.placeholder || "Ask Rose…",
     website: script?.dataset.website || "",
@@ -129,7 +130,7 @@
     const a = config.appearance || {};
     const copy = a.widgetCopy || {};
     cfg.title = a.assistantName || config.settings?.assistantName || cfg.title;
-    cfg.subtitle = "AI assistant";
+    if (copy.subtitle !== undefined && copy.subtitle !== null) cfg.subtitle = String(copy.subtitle).trim();
     cfg.greeting = copy.greeting || config.greeting || a.greetingMessage || cfg.greeting;
     cfg.accent = a.brandPrimary || cfg.accent;
     cfg.businessContext = (config.context || []).map(n => n.text).filter(Boolean).join("\n").slice(0, 3600) || cfg.businessContext;
