@@ -13,7 +13,7 @@
     mount: script?.dataset.mount || "",
     inline: script?.dataset.inline === "true",
     contained: script?.dataset.contained === "true",
-    subtitle: script?.dataset.subtitle || "AI intake assistant",
+    subtitle: "AI assistant",
     greeting: script?.dataset.greeting || "Tell me what you want automated and I’ll turn it into a clear next step.",
     placeholder: script?.dataset.placeholder || "Ask Rose…",
     website: script?.dataset.website || "",
@@ -129,7 +129,7 @@
     const a = config.appearance || {};
     const copy = a.widgetCopy || {};
     cfg.title = a.assistantName || config.settings?.assistantName || cfg.title;
-    cfg.subtitle = copy.subtitle ?? (cfg.businessId === "rose-checkout-muyn52us-ksmk51" ? "AI assistant" : cfg.subtitle);
+    cfg.subtitle = "AI assistant";
     cfg.greeting = copy.greeting || config.greeting || a.greetingMessage || cfg.greeting;
     cfg.accent = a.brandPrimary || cfg.accent;
     cfg.businessContext = (config.context || []).map(n => n.text).filter(Boolean).join("\n").slice(0, 3600) || cfg.businessContext;
