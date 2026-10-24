@@ -350,6 +350,17 @@ document.getElementById('toCheckout').addEventListener('click', () => {
   rememberDraft();
   showStep(3);
 });
+async function checkoutRetryKey(payload) {
+  const details = JSON.stringify({businessName:payload.businessName,website:payload.website,email:payload.email.toLowerCase(),plan:payload.plan,promoCode:payload.promoCode,source:payload.source,siteScanId:payload.siteScanId,agentSetup:payload.agentSetup});
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(details));
+  const fingerprint = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+  let saved;
+  try { saved = JSON.parse(sessionStorage.getItem('roseCheckoutRetry') || 'null'); } catch {}
+  if (saved?.fingerprint === fingerprint && Date.now() - saved.savedAt < 24 * 60 * 60 * 1000) return saved.key;
+  const key = crypto.randomUUID();
+  try { sessionStorage.setItem('roseCheckoutRetry', JSON.stringify({fingerprint,key,savedAt:Date.now()})); } catch {}
+  return key;
+}
 document.getElementById('checkoutForm').addEventListener('submit', async event => {
   event.preventDefault();
   const button = document.getElementById('payButton'), error = document.getElementById('checkoutError');
@@ -357,6 +368,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async event =
   try {
     if (!scanReady()) throw new Error('The website scan is not ready. Return to Business and retry.');
     const payload={businessName:businessName(),website:websiteUrl(siteInput.value),email:document.getElementById('email').value.trim(),plan:selectedPlan,promoCode:document.getElementById('promoCode').value.trim(),source:fromDemo?'rose-configurator-demo':'rose-configurator',sourcePage:location.href,siteScanId,agentSetup:currentSetup()};
+    payload.idempotencyKey = await checkoutRetryKey(payload);
     const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const result=await response.json().catch(()=>({}));
     if(!response.ok||result.ok===false)throw new Error(result.error||'Could not prepare checkout');

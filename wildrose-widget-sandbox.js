@@ -162,14 +162,14 @@
       const response = await fetch(`${cfg.apiBase}/api/rose-public-config?${qs}`, { cache: "no-store" });
       const data = await response.json().catch(() => ({}));
       if (siteVisibilityCheck) {
-        if (response.ok && data.widgetActive === false) root.style.setProperty("display", "none", "important");
-        else root.style.removeProperty("display");
+        if (response.ok && data.widgetActive === true) root.style.removeProperty("display");
+        else root.style.setProperty("display", "none", "important");
       }
       if (!response.ok || !data?.config) return null;
       applyPublishedConfig(data.config);
       return data.config;
     } catch (err) {
-      if (siteVisibilityCheck) root.style.removeProperty("display");
+      if (siteVisibilityCheck) root.style.setProperty("display", "none", "important");
       console.warn("Rose published config unavailable", err);
       return null;
     }
