@@ -77,6 +77,8 @@
     : `<div class="wr-mark"><img src="${cfg.logo}" alt=""></div><div class="wr-title"><h3>${cfg.title}</h3><small>${cfg.subtitle}</small></div>`;
   const root = document.createElement("div");
   root.className = cfg.inline ? "wr-ai inline" : (cfg.contained ? "wr-ai contained" : "wr-ai");
+  const siteVisibilityCheck = !cfg.previewMode && !cfg.inline && cfg.mount !== "#rose-workground-widget" && cfg.apiBase && cfg.loadPublished && (cfg.businessId || cfg.website);
+  if (siteVisibilityCheck) root.style.setProperty("display", "none", "important");
   root.innerHTML = `
     <button class="wr-fab" aria-label="Open Rose assistant"><span class="wr-dot"><img src="${cfg.logo}" alt=""></span></button>
     <section class="wr-panel" aria-label="${cfg.previewMode ? 'Ai Front Desk' : cfg.title}">
@@ -159,10 +161,15 @@
     try {
       const response = await fetch(`${cfg.apiBase}/api/rose-public-config?${qs}`, { cache: "no-store" });
       const data = await response.json().catch(() => ({}));
+      if (siteVisibilityCheck) {
+        if (response.ok && data.widgetActive === false) root.style.setProperty("display", "none", "important");
+        else root.style.removeProperty("display");
+      }
       if (!response.ok || !data?.config) return null;
       applyPublishedConfig(data.config);
       return data.config;
     } catch (err) {
+      if (siteVisibilityCheck) root.style.removeProperty("display");
       console.warn("Rose published config unavailable", err);
       return null;
     }
