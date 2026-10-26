@@ -105,6 +105,8 @@
     .wr-result-nav button:disabled{opacity:.38;cursor:default}.wr-result-nav button:focus-visible,.wr-result-track:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .wr-result-track.wr-products{display:flex;gap:12px;margin:0;padding:4px 4px 12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:4px;overscroll-behavior-inline:contain;scrollbar-width:thin}
     .wr-result-track>.wr-product{flex:0 0 min(85%,320px);min-width:0;scroll-snap-align:start}
+    .wr-page-product .wr-product-actions{grid-template-columns:1fr}
+    .wr-page-product .wr-product-media img{object-fit:contain}
     .wr-ai .wr-chat-recovery{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity}.wr-ai .wr-chat-recovery>button{flex-shrink:0;scroll-snap-align:start}
     .wr-guide-status{margin:2px 12px 8px 36px;padding:0;color:#757575;font-size:11px;line-height:1.6;font-weight:400;background:none;border:0;box-shadow:none}
 
@@ -541,6 +543,23 @@
         panel.classList.add("open");
         fab.style.display = "none";
         reportCapabilityOutcome({ id: "navigation:page", kind: "navigation", label: "Open requested page", status: "verified" });
+        if (pendingNavigation.guideBuy) {
+          const productTitle = String(pendingNavigation.title || "this product").slice(0, 100);
+          let attempts = 0;
+          const focusBuy = () => {
+            const buy = [...document.querySelectorAll('main a[href],main button,main [role="button"],a[href],button,[role="button"]')]
+              .filter(element => !root.contains(element) && visibleSiteControl(element))
+              .map(element => ({ element, label: controlLabel(element).trim() }))
+              .filter(item => /^(?:buy(?: now)?|purchase|shop now|add to (?:bag|cart))\b/i.test(item.label))
+              .sort((a, b) => Number(!!b.element.closest("main")) - Number(!!a.element.closest("main")))[0];
+            if (buy) {
+              showSpotlight(buy.element, buy.label);
+              addMsg("bot", `I highlighted ${buy.label} for ${productTitle}. Choose your options on the site before buying.`);
+            } else if (++attempts < 12) setTimeout(focusBuy, 350);
+            else addMsg("bot", `I opened ${productTitle}, but couldn't find a visible Buy control. You can ask me to find it after the page finishes loading.`);
+          };
+          setTimeout(focusBuy, 350);
+        }
       }
     }
     pendingNavigation = null;
@@ -592,7 +611,7 @@
     if (!widgetOptions.navigation) return false;
     const destination = safePageUrl(page?.url);
     if (!destination) return false;
-    pendingNavigation = { url: destination.href, title: page.title || "the page", view, at: Date.now() };
+    pendingNavigation = { url: destination.href, title: page.title || "the page", view, guideBuy: page.guideBuy === true, at: Date.now() };
     saveSiteSession();
     location.assign(destination.href);
     return true;
@@ -2231,6 +2250,41 @@
       image: p.image || p.featured_image?.url || "", price: Number(p.price), currency: window.Shopify?.currency?.active || "USD", available: p.available === true,
     }));
   }
+  function visibleProductChoices(message) {
+    if (!/\b(?:buy|shop|shopping|recommend|compare|show me|looking for|want|need|choose)\b/i.test(message) || /\b(?:cart|basket|bag|checkout)\b/i.test(message)) return [];
+    const words = shoppingQuery(message).toLowerCase().split(/\s+/).filter(word => word && !["new", "newest", "latest"].includes(word));
+    if (!words.length) return [];
+    const newOnly = /\b(?:new|newest|latest)\b/i.test(message);
+    const seen = new Set(), choices = [];
+    for (const card of document.querySelectorAll('article,li,[class*="product-card"],[class*="product-tile"],[data-product-id]')) {
+      if (root.contains(card) || !visibleSiteControl(card) || card.innerText?.length > 2400) continue;
+      const heading = card.querySelector('h2,h3,h4,[itemprop="name"],[class*="product-title"],[class*="product-headline"]');
+      if (!heading) continue;
+      const title = String(heading.querySelector('[class*="headline"][aria-hidden="true"]')?.textContent || heading.getAttribute('aria-label') || heading.innerText || "").replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
+      if (!title || !words.every(word => title.toLowerCase().includes(word))) continue;
+      if (newOnly && !/\bnew\b/i.test(card.querySelector('[class*="badge"],[class*="label"],[data-badge]')?.textContent || heading.innerText.slice(0, 30))) continue;
+      const links = [...card.querySelectorAll('a[href]')].filter(link => safePageUrl(link.href) && visibleSiteControl(link));
+      const purchase = links.find(link => /^(?:buy(?: now)?|shop now|purchase)\b/i.test(controlLabel(link)));
+      const detail = links.find(link => link.querySelector('img,picture') && link !== purchase)
+        || links.find(link => /learn more|view (?:product|details)|details/i.test(controlLabel(link)) && link !== purchase)
+        || links.find(link => link !== purchase) || purchase;
+      const destination = safePageUrl(detail?.href);
+      if (!purchase || !destination || destination.href === location.href || seen.has(destination.href)) continue;
+      const image = card.querySelector('img:not([aria-hidden="true"])');
+      let imageUrl = "";
+      for (const source of [image?.getAttribute("src"), image?.getAttribute("data-src"), image?.currentSrc]) {
+        if (!source) continue;
+        try {
+          const url = new URL(source, location.href);
+          if (/^https?:$/.test(url.protocol)) { imageUrl = url.href; break; }
+        } catch {}
+      }
+      seen.add(destination.href);
+      choices.push({ provider: "page", title, url: destination.href, image: imageUrl, price: null, guideBuy: true });
+      if (choices.length >= 6) break;
+    }
+    return choices;
+  }
   function appendResultCarousel(list, label) {
     list.classList.add('wr-result-track');
     list.tabIndex = 0;
@@ -2321,7 +2375,7 @@
         navigateTo(product, root.querySelector('.wr-tab.active')?.dataset.view);
       });
       actions.appendChild(link);
-      if (widgetOptions.cartActions) {
+      if (widgetOptions.cartActions && product.provider !== "page") {
         const add = document.createElement("button");
         add.type = "button";
         add.textContent = "Add to cart";
@@ -2332,9 +2386,27 @@
       }
       card.appendChild(info);
       card.appendChild(actions);
+      if (product.provider === "page") card.classList.add("wr-page-product");
       list.appendChild(card);
     }
     return appendResultCarousel(list, 'Suggested products');
+  }
+  function handleVisibleShoppingChoices(message, view = "chat") {
+    if (!host?.preferLiveGuidance) return false;
+    const products = visibleProductChoices(message);
+    if (!products.length) return false;
+    lastProducts = products;
+    lastNavigationChoices = products;
+    const reply = products.length === 1 ? `I found ${products[0].title} on this page. Open its card to see the Buy button.` : `I found ${products.length} matching products on this page. Scroll through them and open the one you want; I'll highlight Buy on its page.`;
+    addMsg("bot", reply);
+    shoppingHistory.push({ role: "bot", text: reply });
+    renderProducts(products);
+    saveSiteSession();
+    if (view === "voice") {
+      setView("chat");
+      panel.classList.add("open");
+    }
+    return true;
   }
   function cartRequested(message) {
     return /\b(?:add|put|place)\b[\s\S]{0,90}\b(?:cart|basket|bag)\b/i.test(message);
@@ -2785,6 +2857,7 @@
     if (((!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !taskGuideIntent(normalized) && !guidanceIntent(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) || normalized === lastVoiceShoppingText) return;
     lastVoiceShoppingText = normalized;
     try {
+      if (handleVisibleShoppingChoices(text, "voice")) return;
       if ((await executeRequestedAction(text, "voice")).handled) return;
       const products = cfg.shopping ? await findProducts(text).catch(() => []) : [];
       if (products.length) {
@@ -2922,6 +2995,7 @@
       return;
     }
     if (await handleCheapestProduct(content)) return;
+    if (handleVisibleShoppingChoices(content)) return;
     if (host?.getWorkflows) installedWorkflows = await host.getWorkflows();
     const request = host?.normalizeRequest ? host.normalizeRequest(content) : content;
     if ((await executeRequestedAction(request)).handled) return;
