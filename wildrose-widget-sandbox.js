@@ -105,8 +105,14 @@
     .wr-result-nav button:disabled{opacity:.38;cursor:default}.wr-result-nav button:focus-visible,.wr-result-track:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .wr-result-track.wr-products{display:flex;gap:12px;margin:0;padding:4px 4px 12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:4px;overscroll-behavior-inline:contain;scrollbar-width:thin}
     .wr-result-track>.wr-product{flex:0 0 min(85%,320px);min-width:0;scroll-snap-align:start}
-    .wr-page-product .wr-product-actions{grid-template-columns:1fr}
+    .wr-page-product{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:12px;background:#fff;box-shadow:0 8px 24px rgba(35,20,12,.08)}
+    .wr-page-product .wr-product-media{width:100%;height:148px;border-radius:12px;background:#f7f5f3}
     .wr-page-product .wr-product-media img{object-fit:contain}
+    .wr-page-product .wr-product-info{min-height:68px;justify-content:flex-start;padding:10px 2px 8px}
+    .wr-page-product .wr-product-title{font-size:16px;line-height:1.25}
+    .wr-product-badge{align-self:flex-start;margin-bottom:4px;border-radius:5px;background:#fff0e8;color:#a13c17;padding:2px 6px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
+    .wr-page-product .wr-product-actions{display:block;margin-top:auto}
+    .wr-page-product .wr-product-actions a{width:100%;min-height:43px;background:var(--accent);color:#fff;font-size:13px}
     .wr-ai .wr-chat-recovery{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity}.wr-ai .wr-chat-recovery>button{flex-shrink:0;scroll-snap-align:start}
     .wr-guide-status{margin:2px 12px 8px 36px;padding:0;color:#757575;font-size:11px;line-height:1.6;font-weight:400;background:none;border:0;box-shadow:none}
 
@@ -2262,7 +2268,8 @@
       if (!heading) continue;
       const title = String(heading.querySelector('[class*="headline"][aria-hidden="true"]')?.textContent || heading.getAttribute('aria-label') || heading.innerText || "").replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
       if (!title || !words.every(word => title.toLowerCase().includes(word))) continue;
-      if (newOnly && !/\bnew\b/i.test(card.querySelector('[class*="badge"],[class*="label"],[data-badge]')?.textContent || heading.innerText.slice(0, 30))) continue;
+      const isNew = /\bnew\b/i.test(card.querySelector('[class*="badge"],[class*="label"],[data-badge]')?.textContent || heading.innerText.slice(0, 30));
+      if (newOnly && !isNew) continue;
       const links = [...card.querySelectorAll('a[href]')].filter(link => safePageUrl(link.href) && visibleSiteControl(link));
       const purchase = links.find(link => /^(?:buy(?: now)?|shop now|purchase)\b/i.test(controlLabel(link)));
       const detail = links.find(link => link.querySelector('img,picture') && link !== purchase)
@@ -2280,7 +2287,7 @@
         } catch {}
       }
       seen.add(destination.href);
-      choices.push({ provider: "page", title, url: destination.href, image: imageUrl, price: null, guideBuy: true });
+      choices.push({ provider: "page", title, url: destination.href, image: imageUrl, price: null, guideBuy: true, badge: isNew ? "New" : "" });
       if (choices.length >= 6) break;
     }
     return choices;
@@ -2353,6 +2360,12 @@
       card.appendChild(media);
       const info = document.createElement("div");
       info.className = "wr-product-info";
+      if (product.badge) {
+        const badge = document.createElement("span");
+        badge.className = "wr-product-badge";
+        badge.textContent = product.badge;
+        info.appendChild(badge);
+      }
       const title = document.createElement("div");
       title.className = "wr-product-title";
       title.textContent = product.title;
