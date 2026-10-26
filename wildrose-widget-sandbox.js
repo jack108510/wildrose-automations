@@ -60,7 +60,7 @@
         } catch {}
       }
       if (!widgetOptions.cartActions) root.querySelectorAll(".wr-product-actions button").forEach(button => button.remove());
-      if (!widgetOptions.navigation) root.querySelectorAll('[data-rose-page-results="true"]').forEach(list => list.remove());
+      if (!widgetOptions.navigation) root.querySelectorAll('[data-rose-page-results="true"]').forEach(list => (list.closest('.wr-result-carousel') || list).remove());
     }).catch(() => { root.style.removeProperty("display"); }) : Promise.resolve();
   const fallbackHref = /^https:\/\//i.test(cfg.fallbackUrl) || /^mailto:[^\s@]+@[^\s@]+$/i.test(cfg.fallbackUrl)
     ? cfg.fallbackUrl
@@ -98,6 +98,22 @@
 
   const style = document.createElement("style");
   style.textContent = css + `
+    .wr-result-carousel{min-width:0;margin:3px 0 8px 36px}
+    .wr-result-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 6px;color:var(--ink);font-size:12px;font-weight:850}
+    .wr-result-nav{display:flex;align-items:center;gap:6px}.wr-result-position{min-width:38px;text-align:center;color:var(--muted);font-size:11px;font-weight:700}
+    .wr-result-nav button{width:30px;height:30px;border:1px solid rgba(71,43,30,.18);border-radius:10px;background:#fff8f2;color:#823916;font:800 17px/1 system-ui;cursor:pointer}
+    .wr-result-nav button:disabled{opacity:.38;cursor:default}.wr-result-nav button:focus-visible,.wr-result-track:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .wr-result-track.wr-products{display:flex;gap:12px;margin:0;padding:4px 4px 12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:4px;overscroll-behavior-inline:contain;scrollbar-width:thin}
+    .wr-result-track>.wr-product{flex:0 0 min(85%,320px);min-width:0;scroll-snap-align:start}
+    .wr-page-product{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:12px;background:#fff;box-shadow:0 8px 24px rgba(35,20,12,.08)}
+    .wr-page-product .wr-product-media{width:100%;height:148px;border-radius:12px;background:#f7f5f3}
+    .wr-page-product .wr-product-media img{object-fit:contain}
+    .wr-page-product .wr-product-info{min-height:68px;justify-content:flex-start;padding:10px 2px 8px}
+    .wr-page-product .wr-product-title{font-size:16px;line-height:1.25}
+    .wr-product-badge{align-self:flex-start;margin-bottom:4px;border-radius:5px;background:#fff0e8;color:#a13c17;padding:2px 6px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
+    .wr-page-product .wr-product-actions{display:block;margin-top:auto}
+    .wr-page-product .wr-product-actions a{width:100%;min-height:43px;background:var(--accent);color:#fff;font-size:13px}
+    .wr-ai .wr-chat-recovery{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity}.wr-ai .wr-chat-recovery>button{flex-shrink:0;scroll-snap-align:start}
     .wr-guide-status{margin:2px 12px 8px 36px;padding:0;color:#757575;font-size:11px;line-height:1.6;font-weight:400;background:none;border:0;box-shadow:none}
 
     .wr-guide-plan{width:100%;max-width:100%;padding:15px 16px!important}
@@ -533,6 +549,23 @@
         panel.classList.add("open");
         fab.style.display = "none";
         reportCapabilityOutcome({ id: "navigation:page", kind: "navigation", label: "Open requested page", status: "verified" });
+        if (pendingNavigation.guideBuy) {
+          const productTitle = String(pendingNavigation.title || "this product").slice(0, 100);
+          let attempts = 0;
+          const focusBuy = () => {
+            const buy = [...document.querySelectorAll('main a[href],main button,main [role="button"],a[href],button,[role="button"]')]
+              .filter(element => !root.contains(element) && visibleSiteControl(element))
+              .map(element => ({ element, label: controlLabel(element).trim() }))
+              .filter(item => /^(?:buy(?: now)?|purchase|shop now|add to (?:bag|cart))\b/i.test(item.label))
+              .sort((a, b) => Number(!!b.element.closest("main")) - Number(!!a.element.closest("main")))[0];
+            if (buy) {
+              showSpotlight(buy.element, buy.label);
+              addMsg("bot", `I highlighted ${buy.label} for ${productTitle}. Choose your options on the site before buying.`);
+            } else if (++attempts < 12) setTimeout(focusBuy, 350);
+            else addMsg("bot", `I opened ${productTitle}, but couldn't find a visible Buy control. You can ask me to find it after the page finishes loading.`);
+          };
+          setTimeout(focusBuy, 350);
+        }
       }
     }
     pendingNavigation = null;
@@ -584,7 +617,7 @@
     if (!widgetOptions.navigation) return false;
     const destination = safePageUrl(page?.url);
     if (!destination) return false;
-    pendingNavigation = { url: destination.href, title: page.title || "the page", view, at: Date.now() };
+    pendingNavigation = { url: destination.href, title: page.title || "the page", view, guideBuy: page.guideBuy === true, at: Date.now() };
     saveSiteSession();
     location.assign(destination.href);
     return true;
@@ -1048,6 +1081,7 @@
     cancelAnimationFrame(activeSpotlight.frame);
     document.removeEventListener("keydown", activeSpotlight.onKeydown);
     activeSpotlight.element.removeEventListener("click", activeSpotlight.onClick, true);
+    activeSpotlight.element.removeAttribute('data-rose-guided-control');
     if (activeSpotlight.temporaryTabIndex) activeSpotlight.element.removeAttribute("tabindex");
     activeSpotlight.layer.remove();
     activeSpotlight.style.remove();
@@ -1557,7 +1591,8 @@
         if (seenLinks.has(key)) return [];
         seenLinks.add(key);
       }
-      const score = label === words.join(" ") ? 100 : 20 + words.length * 10 - label.split(" ").length;
+      const score = (label === words.join(" ") ? 100 : 20 + words.length * 10 - label.split(" ").length)
+        - (element.matches('h1,h2,h3') ? 5 : 0);
       return [{ element, label: controlLabel(element), score }];
     }).sort((a, b) => b.score - a.score);
   }
@@ -1586,8 +1621,9 @@
   }
   function showQuickAnswerStatus(message) {
     const note = document.createElement('div'); note.textContent = String(message).slice(0, 130);
-    Object.assign(note.style, { position:'fixed', zIndex:'2147483001', right:'18px', bottom:'106px', maxWidth:'280px', padding:'10px 13px', borderRadius:'12px', background:'#fff8f0', color:'#a9401c', boxShadow:'0 12px 30px rgba(70,32,13,.16)', font:'750 12px/1.4 system-ui', pointerEvents:'none' });
-    document.body.append(note); setTimeout(() => note.remove(), 2800);
+    note.setAttribute('role', 'alert');
+    Object.assign(note.style, { position:'fixed', zIndex:'2147483001', right:'18px', bottom:'106px', maxWidth:'min(360px, calc(100vw - 36px))', padding:'14px 16px', border:'2px solid #c34c1d', borderRadius:'12px', background:'#fff8f0', color:'#8c3417', boxShadow:'0 12px 30px rgba(70,32,13,.22)', font:'750 14px/1.4 system-ui', pointerEvents:'none' });
+    document.body.append(note); setTimeout(() => note.remove(), 5000);
   }
   function showAnswerHint(target, answer, anchor = target, options = {}) {
     clearAnswerHint();
@@ -1633,8 +1669,10 @@
       .rose-spotlight::before,.rose-spotlight::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;background:conic-gradient(from var(--rose-orbit-angle),rgba(255,106,53,.12) 0deg,rgba(255,125,68,.3) 65deg,#ff934f 110deg,#ffe4b8 142deg,#ffb66e 160deg,rgba(255,111,57,.2) 205deg,rgba(255,111,57,.12) 245deg,#ffad77 290deg,rgba(255,120,61,.45) 315deg,rgba(255,106,53,.12) 360deg);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;pointer-events:none}
       .rose-spotlight::before{inset:-4px;padding:6px;filter:blur(5px);opacity:.85}
       .rose-spotlight.ready{opacity:1;animation:rose-guidance-orbit 3.6s linear infinite}
+      [data-rose-guided-control="true"]{outline:3px solid #ff6b2b!important;outline-offset:4px!important;box-shadow:0 0 0 8px rgba(255,107,43,.24),0 0 30px 12px rgba(255,107,43,.44)!important;animation:rose-control-glow 1.5s ease-in-out infinite!important}
       @keyframes rose-guidance-orbit{to{--rose-orbit-angle:360deg}}
-      @media(prefers-reduced-motion:reduce){.rose-spotlight,.rose-spotlight.ready{animation:none;transition:none;--rose-orbit-angle:135deg}}
+      @keyframes rose-control-glow{50%{box-shadow:0 0 0 11px rgba(255,107,43,.15),0 0 42px 17px rgba(255,107,43,.6)}}
+      @media(prefers-reduced-motion:reduce){.rose-spotlight,.rose-spotlight.ready{animation:none;transition:none;--rose-orbit-angle:135deg}[data-rose-guided-control="true"]{animation:none!important}}
     `;
     const layer = document.createElement("div");
     layer.className = "rose-spotlight";
@@ -1651,6 +1689,7 @@
     element.addEventListener("click", onClick, true);
     const state = { layer, style, element, frame: 0, onKeydown, onClick };
     activeSpotlight = state;
+    if (element.matches('button,[role="button"],a[href],input[type="button"],input[type="submit"]')) element.setAttribute('data-rose-guided-control', 'true');
     let lastRect = null;
     let stableSince = performance.now();
     let scrollStarted = false;
@@ -2217,6 +2256,85 @@
       image: p.image || p.featured_image?.url || "", price: Number(p.price), currency: window.Shopify?.currency?.active || "USD", available: p.available === true,
     }));
   }
+  function visibleProductChoices(message) {
+    if (!/\b(?:buy|shop|shopping|recommend|compare|show me|looking for|want|need|choose)\b/i.test(message) || /\b(?:cart|basket|bag|checkout)\b/i.test(message)) return [];
+    const words = shoppingQuery(message).toLowerCase().split(/\s+/).filter(word => word && !["new", "newest", "latest"].includes(word));
+    if (!words.length) return [];
+    const newOnly = /\b(?:new|newest|latest)\b/i.test(message);
+    const seen = new Set(), choices = [];
+    for (const card of document.querySelectorAll('article,li,[class*="product-card"],[class*="product-tile"],[data-product-id]')) {
+      if (root.contains(card) || !visibleSiteControl(card) || card.innerText?.length > 2400) continue;
+      const heading = card.querySelector('h2,h3,h4,[itemprop="name"],[class*="product-title"],[class*="product-headline"]');
+      if (!heading) continue;
+      const title = String(heading.querySelector('[class*="headline"][aria-hidden="true"]')?.textContent || heading.getAttribute('aria-label') || heading.innerText || "").replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
+      if (!title || !words.every(word => title.toLowerCase().includes(word))) continue;
+      const isNew = /\bnew\b/i.test(card.querySelector('[class*="badge"],[class*="label"],[data-badge]')?.textContent || heading.innerText.slice(0, 30));
+      if (newOnly && !isNew) continue;
+      const links = [...card.querySelectorAll('a[href]')].filter(link => safePageUrl(link.href) && visibleSiteControl(link));
+      const purchase = links.find(link => /^(?:buy(?: now)?|shop now|purchase)\b/i.test(controlLabel(link)));
+      const detail = links.find(link => link.querySelector('img,picture') && link !== purchase)
+        || links.find(link => /learn more|view (?:product|details)|details/i.test(controlLabel(link)) && link !== purchase)
+        || links.find(link => link !== purchase) || purchase;
+      const destination = safePageUrl(detail?.href);
+      if (!purchase || !destination || destination.href === location.href || seen.has(destination.href)) continue;
+      const image = card.querySelector('img:not([aria-hidden="true"])');
+      let imageUrl = "";
+      for (const source of [image?.getAttribute("src"), image?.getAttribute("data-src"), image?.currentSrc]) {
+        if (!source) continue;
+        try {
+          const url = new URL(source, location.href);
+          if (/^https?:$/.test(url.protocol)) { imageUrl = url.href; break; }
+        } catch {}
+      }
+      seen.add(destination.href);
+      choices.push({ provider: "page", title, url: destination.href, image: imageUrl, price: null, guideBuy: true, badge: isNew ? "New" : "" });
+      if (choices.length >= 6) break;
+    }
+    return choices;
+  }
+  function appendResultCarousel(list, label) {
+    list.classList.add('wr-result-track');
+    list.tabIndex = 0;
+    list.setAttribute('aria-label', `Scroll through ${label.toLowerCase()}`);
+    const shell = document.createElement('section');
+    shell.className = 'wr-result-carousel';
+    shell.setAttribute('aria-label', label);
+    const heading = document.createElement('div'); heading.className = 'wr-result-heading';
+    const title = document.createElement('span'); title.textContent = label;
+    const nav = document.createElement('div'); nav.className = 'wr-result-nav';
+    const previous = document.createElement('button'); previous.type = 'button'; previous.textContent = '‹'; previous.setAttribute('aria-label', `Previous ${label.toLowerCase()}`);
+    const position = document.createElement('span'); position.className = 'wr-result-position'; position.setAttribute('aria-live', 'polite');
+    const next = document.createElement('button'); next.type = 'button'; next.textContent = '›'; next.setAttribute('aria-label', `Next ${label.toLowerCase()}`);
+    const currentIndex = () => {
+      const left = list.getBoundingClientRect().left;
+      return Math.max(0, [...list.children].reduce((best, card, index, cards) =>
+        Math.abs(card.getBoundingClientRect().left - left) < Math.abs(cards[best].getBoundingClientRect().left - left) ? index : best, 0));
+    };
+    const update = () => {
+      const cards = [...list.children];
+      const index = currentIndex();
+      position.textContent = `${index + 1} of ${cards.length}`;
+      previous.disabled = list.scrollLeft < 4;
+      next.disabled = list.scrollLeft + list.clientWidth >= list.scrollWidth - 4;
+    };
+    const move = delta => {
+      const cards = [...list.children];
+      const index = Math.max(0, Math.min(cards.length - 1, currentIndex() + delta));
+      list.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
+    };
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    list.addEventListener('scroll', update, { passive: true });
+    list.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      move(event.key === 'ArrowRight' ? 1 : -1);
+    });
+    nav.append(previous, position, next); heading.append(title, nav); shell.append(heading, list); log.append(shell);
+    requestAnimationFrame(update);
+    log.parentElement.scrollTop = log.parentElement.scrollHeight;
+    return list;
+  }
   function renderProducts(products) {
     if (!products.length) return;
     const list = document.createElement("div");
@@ -2242,6 +2360,12 @@
       card.appendChild(media);
       const info = document.createElement("div");
       info.className = "wr-product-info";
+      if (product.badge) {
+        const badge = document.createElement("span");
+        badge.className = "wr-product-badge";
+        badge.textContent = product.badge;
+        info.appendChild(badge);
+      }
       const title = document.createElement("div");
       title.className = "wr-product-title";
       title.textContent = product.title;
@@ -2264,7 +2388,7 @@
         navigateTo(product, root.querySelector('.wr-tab.active')?.dataset.view);
       });
       actions.appendChild(link);
-      if (widgetOptions.cartActions) {
+      if (widgetOptions.cartActions && product.provider !== "page") {
         const add = document.createElement("button");
         add.type = "button";
         add.textContent = "Add to cart";
@@ -2275,11 +2399,27 @@
       }
       card.appendChild(info);
       card.appendChild(actions);
+      if (product.provider === "page") card.classList.add("wr-page-product");
       list.appendChild(card);
     }
-    log.appendChild(list);
-    log.parentElement.scrollTop = log.parentElement.scrollHeight;
-    return list;
+    return appendResultCarousel(list, 'Suggested products');
+  }
+  function handleVisibleShoppingChoices(message, view = "chat") {
+    if (!host?.preferLiveGuidance) return false;
+    const products = visibleProductChoices(message);
+    if (!products.length) return false;
+    lastProducts = products;
+    lastNavigationChoices = products;
+    const reply = products.length === 1 ? `I found ${products[0].title} on this page. Open its card to see the Buy button.` : `I found ${products.length} matching products on this page. Scroll through them and open the one you want; I'll highlight Buy on its page.`;
+    addMsg("bot", reply);
+    shoppingHistory.push({ role: "bot", text: reply });
+    renderProducts(products);
+    saveSiteSession();
+    if (view === "voice") {
+      setView("chat");
+      panel.classList.add("open");
+    }
+    return true;
   }
   function cartRequested(message) {
     return /\b(?:add|put|place)\b[\s\S]{0,90}\b(?:cart|basket|bag)\b/i.test(message);
@@ -2478,13 +2618,10 @@
           launchSuggestedTool(first);
         } else {
           addMsg("bot", mapped.length === 1 ? "I found a page that may help:" : "These pages may help. Which one do you want?");
-          const actions = document.createElement("div"); actions.className = "wr-chat-recovery";
-          for (const item of mapped) {
-            const button = document.createElement("button"); button.type = "button"; button.textContent = item.title;
-            button.addEventListener("click", () => { actions.remove(); launchSuggestedTool(item); });
-            actions.append(button);
-          }
-          log.append(actions);
+          lastSitePages = mapped;
+          lastNavigationChoices = mapped;
+          renderSitePages(mapped, launchSuggestedTool);
+          saveSiteSession();
         }
         return true;
       }
@@ -2531,7 +2668,7 @@
       return { handled: false };
     } finally { actionInFlight = false; }
   }
-  function renderSitePages(pages) {
+  function renderSitePages(pages, openPage = page => navigateTo(page, root.querySelector('.wr-tab.active')?.dataset.view)) {
     if (!widgetOptions.navigation) return;
     const valid = (pages || []).filter(page => safePageUrl(page?.url)).slice(0, 4);
     if (!valid.length) return;
@@ -2561,15 +2698,14 @@
       link.addEventListener("click", event => {
         if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
-        navigateTo(page, root.querySelector('.wr-tab.active')?.dataset.view);
+        openPage(page);
       });
       actions.appendChild(link);
       info.appendChild(actions);
       card.appendChild(info);
       list.appendChild(card);
     }
-    log.appendChild(list);
-    log.parentElement.scrollTop = log.parentElement.scrollHeight;
+    appendResultCarousel(list, 'Suggested pages');
   }
   function showCartLink(button, url) {
     const destination = new URL(url || "/cart", location.origin);
@@ -2734,6 +2870,7 @@
     if (((!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !taskGuideIntent(normalized) && !guidanceIntent(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) || normalized === lastVoiceShoppingText) return;
     lastVoiceShoppingText = normalized;
     try {
+      if (handleVisibleShoppingChoices(text, "voice")) return;
       if ((await executeRequestedAction(text, "voice")).handled) return;
       const products = cfg.shopping ? await findProducts(text).catch(() => []) : [];
       if (products.length) {
@@ -2871,6 +3008,7 @@
       return;
     }
     if (await handleCheapestProduct(content)) return;
+    if (handleVisibleShoppingChoices(content)) return;
     if (host?.getWorkflows) installedWorkflows = await host.getWorkflows();
     const request = host?.normalizeRequest ? host.normalizeRequest(content) : content;
     if ((await executeRequestedAction(request)).handled) return;
