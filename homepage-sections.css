@@ -1,0 +1,69 @@
+/* How it works, pricing, FAQ and footer: same black canvas, orange accent and tight display type as the hero. */
+.rose-reveal{margin-bottom:150px}
+@media(max-width:760px){.rose-reveal{margin-bottom:110px}}
+
+.wr-section{max-width:1120px;margin:0 auto;padding:130px 24px 0;color:#fff2e9;scroll-margin-top:24px}
+.wr-section__head{max-width:720px;margin:0 auto 56px;text-align:center}
+.wr-eyebrow{margin:0;color:#e9ae88;font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+.wr-section h2{margin:12px 0 0;font-size:clamp(32px,4vw,56px);font-weight:620;letter-spacing:-.065em;line-height:1.1}
+.wr-section__lead{margin:18px auto 0;max-width:600px;color:#ffffffa3;font-size:clamp(17px,1.6vw,20px);line-height:1.45;letter-spacing:-.015em}
+
+.wr-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:0;padding:0;list-style:none;counter-reset:step}
+.wr-step{position:relative;padding:30px 28px 32px;border:1px solid #ffffff14;border-radius:20px;background:linear-gradient(160deg,#16100e,#0a0a0a 60%);counter-increment:step}
+.wr-step:before{content:counter(step,decimal-leading-zero);display:inline-grid;place-items:center;width:42px;height:42px;margin-bottom:26px;border:1px solid #ff57226b;border-radius:13px;background:#ff57221a;color:#ffb199;font-size:13px;font-weight:800;letter-spacing:.02em}
+.wr-step h3{margin:0 0 10px;font-size:21px;font-weight:680;letter-spacing:-.035em}
+.wr-step p{margin:0;color:#ffffff9e;font-size:15px;line-height:1.55}
+
+.wr-plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:860px;margin:0 auto}
+.wr-plan{display:flex;flex-direction:column;padding:34px 32px 32px;border:1px solid #ffffff17;border-radius:22px;background:#0b0b0b}
+.wr-plan--pro{position:relative;border-color:#ff57228c;background:radial-gradient(circle at 80% 0%,#ff572229,transparent 55%),linear-gradient(160deg,#1a110d,#0b0b0b 65%);box-shadow:0 24px 70px #ff57221a}
+.wr-plan__badge{position:absolute;top:30px;right:28px;padding:5px 11px;border-radius:99px;background:#ff5722;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em}
+.wr-plan h3{margin:0;font-size:15px;font-weight:750;letter-spacing:.01em;color:#ffffffc7}
+.wr-plan__price{display:flex;align-items:baseline;gap:6px;margin:16px 0 4px}
+.wr-plan__price strong{font-size:clamp(46px,5vw,60px);font-weight:650;letter-spacing:-.06em;line-height:1}
+.wr-plan__price span{color:#ffffff8a;font-size:15px}
+.wr-plan ul{display:grid;gap:12px;margin:26px 0 32px;padding:0;list-style:none;color:#ffffffc2;font-size:15px;line-height:1.4}
+.wr-plan li{display:flex;gap:11px}
+.wr-plan li:before{content:"";flex:none;width:16px;height:16px;margin-top:2px;border-radius:50%;background:#ff572233 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-5' fill='none' stroke='%23ff8a5c' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.wr-plan a{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;min-height:50px;border-radius:14px;border:1px solid #ff5722c7;color:#ffb199;text-decoration:none;font-size:15px;font-weight:750;transition:background .18s ease,color .18s ease}
+.wr-plan a:hover{background:#ff57221a;color:#fff}
+.wr-plan--pro a{border-color:transparent;background:#ff5722;color:#fff;box-shadow:0 8px 20px #ff57222e}
+.wr-plan--pro a:hover{background:#e94b1b}
+.wr-plan a:focus-visible,.wr-faq summary:focus-visible,.wr-footer a:focus-visible,.wr-final a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.wr-plans__note{max-width:640px;margin:24px auto 0;text-align:center;color:#ffffff80;font-size:13px;line-height:1.55}
+
+.wr-faq{max-width:780px;margin:0 auto;border-top:1px solid #ffffff17}
+.wr-faq details{border-bottom:1px solid #ffffff17}
+.wr-faq summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 4px;cursor:pointer;list-style:none;font-size:18px;font-weight:650;letter-spacing:-.025em}
+.wr-faq summary::-webkit-details-marker{display:none}
+.wr-faq summary:after{content:"+";flex:none;display:grid;place-items:center;width:30px;height:30px;border:1px solid #ffffff26;border-radius:50%;color:#ffb199;font-size:18px;font-weight:500;transition:transform .2s ease}
+.wr-faq details[open] summary:after{transform:rotate(45deg)}
+.wr-faq summary:hover{color:#fff}
+.wr-faq p{margin:-6px 4px 24px;max-width:660px;color:#ffffffa3;font-size:16px;line-height:1.6}
+
+.wr-final{position:relative;max-width:1120px;margin:140px auto 0;padding:84px 24px;text-align:center;color:#fff;overflow:hidden;border-radius:28px}
+.wr-final:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 110%,#ff57224d,transparent 62%);pointer-events:none}
+.wr-final h2{margin:0 auto;max-width:760px;font-size:clamp(38px,5.4vw,72px);font-weight:650;letter-spacing:-.07em;line-height:1}
+.wr-final h2 em{display:block;font-style:normal;color:#ffffff9e;font-weight:500}
+.wr-final .wr-site-hero-actions{margin-top:36px}
+
+.wr-footer{margin-top:60px;border-top:1px solid #ffffff1a;color:#ffffff80;font-size:14px}
+.wr-footer .wr-site-wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 32px;padding-top:34px;padding-bottom:40px}
+.wr-footer__brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;letter-spacing:-.3px;text-decoration:none}
+.wr-footer__brand img{width:28px;height:28px;object-fit:contain}
+.wr-footer nav{display:flex;flex-wrap:wrap;gap:8px 26px}
+.wr-footer a{color:#ffffffa8;text-decoration:none}
+.wr-footer a:hover{color:#fff}
+
+@media(max-width:860px){.wr-steps{grid-template-columns:1fr;max-width:520px;margin:0 auto}}
+@media(max-width:760px){
+  .wr-section{padding:96px 18px 0}
+  .wr-section__head{margin-bottom:40px}
+  .wr-plans{grid-template-columns:1fr;max-width:460px}
+  .wr-plan{padding:30px 24px 26px}
+  .wr-plan__badge{top:26px;right:22px}
+  .wr-faq summary{font-size:17px;padding:20px 2px}
+  .wr-final{margin-top:100px;padding:64px 18px}
+  .wr-footer .wr-site-wrap{flex-direction:column;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){.wr-faq summary:after,.wr-plan a{transition:none}}
