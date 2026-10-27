@@ -98,22 +98,25 @@
 
   const style = document.createElement("style");
   style.textContent = css + `
-    .wr-result-carousel{min-width:0;margin:3px 0 8px 36px}
+    .wr-result-carousel{min-width:0;margin:3px 0 8px}
     .wr-result-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 6px;color:var(--ink);font-size:12px;font-weight:850}
     .wr-result-nav{display:flex;align-items:center;gap:6px}.wr-result-position{min-width:38px;text-align:center;color:var(--muted);font-size:11px;font-weight:700}
-    .wr-result-nav button{width:30px;height:30px;border:1px solid rgba(71,43,30,.18);border-radius:10px;background:#fff8f2;color:#823916;font:800 17px/1 system-ui;cursor:pointer}
+    .wr-result-nav button{width:38px;height:38px;border:1px solid rgba(71,43,30,.18);border-radius:12px;background:#fff8f2;color:#823916;font:800 21px/1 system-ui;cursor:pointer}
     .wr-result-nav button:disabled{opacity:.38;cursor:default}.wr-result-nav button:focus-visible,.wr-result-track:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-    .wr-result-track.wr-products{display:flex;gap:12px;margin:0;padding:4px 4px 12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:4px;overscroll-behavior-inline:contain;scrollbar-width:thin}
-    .wr-result-track>.wr-product{flex:0 0 min(85%,320px);min-width:0;scroll-snap-align:start}
+    .wr-result-track.wr-products{display:block;margin:0;padding:4px 1px 8px;overflow:visible;scroll-snap-type:none}
+    .wr-result-track>.wr-product{width:100%;min-width:0}
+    .wr-result-track>.wr-product[hidden]{display:none!important}
+    .wr-result-track .wr-commerce-card{grid-template-columns:minmax(0,1fr)}
     .wr-page-product{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:12px;background:#fff;box-shadow:0 8px 24px rgba(35,20,12,.08)}
-    .wr-page-product .wr-product-media{width:100%;height:148px;border-radius:12px;background:#f7f5f3}
+    .wr-result-track .wr-product-media{width:100%;height:190px;border-radius:12px;background:#f7f5f3}
     .wr-page-product .wr-product-media img{object-fit:contain}
+    .wr-page-product .wr-product-media.wr-editorial-media img{object-fit:cover;object-position:center bottom}
     .wr-page-product .wr-product-info{min-height:68px;justify-content:flex-start;padding:10px 2px 8px}
     .wr-page-product .wr-product-title{font-size:16px;line-height:1.25}
     .wr-product-badge{align-self:flex-start;margin-bottom:4px;border-radius:5px;background:#fff0e8;color:#a13c17;padding:2px 6px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
     .wr-page-product .wr-product-actions{display:block;margin-top:auto}
     .wr-page-product .wr-product-actions a{width:100%;min-height:43px;background:var(--accent);color:#fff;font-size:13px}
-    .wr-ai .wr-chat-recovery{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity}.wr-ai .wr-chat-recovery>button{flex-shrink:0;scroll-snap-align:start}
+    .wr-ai .wr-chat-recovery{flex-wrap:wrap;overflow:visible;scroll-snap-type:none}.wr-ai .wr-chat-recovery>button{max-width:100%;white-space:normal;overflow-wrap:anywhere;text-align:left}
     .wr-guide-status{margin:2px 12px 8px 36px;padding:0;color:#757575;font-size:11px;line-height:1.6;font-weight:400;background:none;border:0;box-shadow:none}
 
     .wr-guide-plan{width:100%;max-width:100%;padding:15px 16px!important}
@@ -2256,36 +2259,56 @@
       image: p.image || p.featured_image?.url || "", price: Number(p.price), currency: window.Shopify?.currency?.active || "USD", available: p.available === true,
     }));
   }
+  function visibleProductImage(card) {
+    const media = [...card.querySelectorAll('img,video[poster]')]
+      .filter(element => card.matches('.rf-ccard') ? element.getClientRects().length > 0 && getComputedStyle(element).display !== 'none' : visibleSiteControl(element))
+      .sort((a, b) => {
+        const area = element => { const rect = element.getBoundingClientRect(); return rect.width * rect.height; };
+        return area(b) - area(a);
+      });
+    for (const element of media) {
+      const sources = element.matches('video') ? [element.getAttribute('poster')] : [
+        element.complete && element.naturalWidth > 40 ? element.currentSrc : '',
+        element.getAttribute('data-src'), element.getAttribute('data-lazy-src'), element.getAttribute('data-original'),
+        ...[element.getAttribute('srcset'), element.getAttribute('data-srcset')].filter(Boolean)
+          .flatMap(value => value.split(',').map(part => part.trim().split(/\s+/)[0]).reverse()),
+        element.getAttribute('src'),
+      ];
+      for (const source of sources) {
+        if (!source) continue;
+        try {
+          const url = new URL(source, location.href);
+          if (/^https?:$/.test(url.protocol)) return url.href;
+        } catch {}
+      }
+    }
+    return '';
+  }
   function visibleProductChoices(message) {
     if (!/\b(?:buy|shop|shopping|recommend|compare|show me|looking for|want|need|choose)\b/i.test(message) || /\b(?:cart|basket|bag|checkout)\b/i.test(message)) return [];
     const words = shoppingQuery(message).toLowerCase().split(/\s+/).filter(word => word && !["new", "newest", "latest"].includes(word));
     if (!words.length) return [];
     const newOnly = /\b(?:new|newest|latest)\b/i.test(message);
     const seen = new Set(), choices = [];
-    for (const card of document.querySelectorAll('article,li,[class*="product-card"],[class*="product-tile"],[data-product-id]')) {
-      if (root.contains(card) || !visibleSiteControl(card) || card.innerText?.length > 2400) continue;
-      const heading = card.querySelector('h2,h3,h4,[itemprop="name"],[class*="product-title"],[class*="product-headline"]');
+    for (const card of document.querySelectorAll('article,li,[class*="product-card"],[class*="product-tile"],[data-product-id],.rf-ccard')) {
+      const carouselCard = card.matches('.rf-ccard');
+      if (root.contains(card) || (carouselCard ? card.getClientRects().length === 0 || getComputedStyle(card).display === 'none' : !visibleSiteControl(card)) || card.innerText?.length > 2400) continue;
+      const heading = carouselCard ? card.querySelector('.rf-ccard-content-headerlink') : card.querySelector('h2,h3,h4,[itemprop="name"],[class*="product-title"],[class*="product-headline"]');
       if (!heading) continue;
-      const title = String(heading.querySelector('[class*="headline"][aria-hidden="true"]')?.textContent || heading.getAttribute('aria-label') || heading.innerText || "").replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
+      const title = String(heading.textContent || heading.innerText || heading.getAttribute('aria-label') || "").replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
       if (!title || !words.every(word => title.toLowerCase().includes(word))) continue;
-      const isNew = /\bnew\b/i.test(card.querySelector('[class*="badge"],[class*="label"],[data-badge]')?.textContent || heading.innerText.slice(0, 30));
+      if (/\b(?:cases?|covers?|folios?|screen protectors?|chargers?|accessor(?:y|ies))\b/i.test(title) && !/\b(?:cases?|covers?|folios?|screen protectors?|chargers?|accessor(?:y|ies))\b/i.test(message)) continue;
+      const markers = [...card.querySelectorAll('[class*="badge"],[class*="label"],[class*="eyebrow"],[data-badge]')].map(marker => marker.textContent).join(' ');
+      const isNew = /\bnew\b/i.test(markers || card.innerText.slice(0, 40));
       if (newOnly && !isNew) continue;
-      const links = [...card.querySelectorAll('a[href]')].filter(link => safePageUrl(link.href) && visibleSiteControl(link));
+      const links = [...card.querySelectorAll('a[href]')].filter(link => safePageUrl(link.href) && (carouselCard ? link.getClientRects().length > 0 : visibleSiteControl(link)));
       const purchase = links.find(link => /^(?:buy(?: now)?|shop now|purchase)\b/i.test(controlLabel(link)));
       const detail = links.find(link => link.querySelector('img,picture') && link !== purchase)
         || links.find(link => /learn more|view (?:product|details)|details/i.test(controlLabel(link)) && link !== purchase)
-        || links.find(link => link !== purchase) || purchase;
+        || links.find(link => link === heading || link !== purchase) || purchase;
       const destination = safePageUrl(detail?.href);
-      if (!purchase || !destination || destination.href === location.href || seen.has(destination.href)) continue;
-      const image = card.querySelector('img:not([aria-hidden="true"])');
-      let imageUrl = "";
-      for (const source of [image?.getAttribute("src"), image?.getAttribute("data-src"), image?.currentSrc]) {
-        if (!source) continue;
-        try {
-          const url = new URL(source, location.href);
-          if (/^https?:$/.test(url.protocol)) { imageUrl = url.href; break; }
-        } catch {}
-      }
+      if (!destination || destination.href === location.href || seen.has(destination.href)) continue;
+      const imageUrl = visibleProductImage(card);
       seen.add(destination.href);
       choices.push({ provider: "page", title, url: destination.href, image: imageUrl, price: null, guideBuy: true, badge: isNew ? "New" : "" });
       if (choices.length >= 6) break;
@@ -2295,7 +2318,7 @@
   function appendResultCarousel(list, label) {
     list.classList.add('wr-result-track');
     list.tabIndex = 0;
-    list.setAttribute('aria-label', `Scroll through ${label.toLowerCase()}`);
+    list.setAttribute('aria-label', `Browse ${label.toLowerCase()}`);
     const shell = document.createElement('section');
     shell.className = 'wr-result-carousel';
     shell.setAttribute('aria-label', label);
@@ -2305,26 +2328,20 @@
     const previous = document.createElement('button'); previous.type = 'button'; previous.textContent = '‹'; previous.setAttribute('aria-label', `Previous ${label.toLowerCase()}`);
     const position = document.createElement('span'); position.className = 'wr-result-position'; position.setAttribute('aria-live', 'polite');
     const next = document.createElement('button'); next.type = 'button'; next.textContent = '›'; next.setAttribute('aria-label', `Next ${label.toLowerCase()}`);
-    const currentIndex = () => {
-      const left = list.getBoundingClientRect().left;
-      return Math.max(0, [...list.children].reduce((best, card, index, cards) =>
-        Math.abs(card.getBoundingClientRect().left - left) < Math.abs(cards[best].getBoundingClientRect().left - left) ? index : best, 0));
-    };
+    const cards = [...list.children];
+    let index = 0;
     const update = () => {
-      const cards = [...list.children];
-      const index = currentIndex();
+      cards.forEach((card, cardIndex) => { card.hidden = cardIndex !== index; });
       position.textContent = `${index + 1} of ${cards.length}`;
-      previous.disabled = list.scrollLeft < 4;
-      next.disabled = list.scrollLeft + list.clientWidth >= list.scrollWidth - 4;
+      previous.disabled = index === 0;
+      next.disabled = index === cards.length - 1;
     };
     const move = delta => {
-      const cards = [...list.children];
-      const index = Math.max(0, Math.min(cards.length - 1, currentIndex() + delta));
-      list.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
+      index = Math.max(0, Math.min(cards.length - 1, index + delta));
+      update();
     };
     previous.addEventListener('click', () => move(-1));
     next.addEventListener('click', () => move(1));
-    list.addEventListener('scroll', update, { passive: true });
     list.addEventListener('keydown', event => {
       if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
       event.preventDefault();
@@ -2344,11 +2361,12 @@
       card.className = "wr-product wr-commerce-card";
       const media = document.createElement("div");
       media.className = "wr-product-media";
+      if (product.provider === 'page' && /store-card-40/i.test(product.image || '')) media.classList.add('wr-editorial-media');
       if (product.image) {
         const img = document.createElement("img");
         img.src = product.image;
-        img.alt = "";
-        img.loading = "lazy";
+        img.alt = product.title;
+        img.loading = "eager";
         img.addEventListener("error", () => {
           img.remove();
           media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
@@ -2410,7 +2428,7 @@
     if (!products.length) return false;
     lastProducts = products;
     lastNavigationChoices = products;
-    const reply = products.length === 1 ? `I found ${products[0].title} on this page. Open its card to see the Buy button.` : `I found ${products.length} matching products on this page. Scroll through them and open the one you want; I'll highlight Buy on its page.`;
+    const reply = products.length === 1 ? `I found ${products[0].title} on this page. Open its card to see the Buy button.` : `I found ${products.length} matching products on this page. Browse them and open the one you want; I'll highlight Buy on its page.`;
     addMsg("bot", reply);
     shoppingHistory.push({ role: "bot", text: reply });
     renderProducts(products);
