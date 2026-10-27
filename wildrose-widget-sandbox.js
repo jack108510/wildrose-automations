@@ -99,23 +99,24 @@
   const style = document.createElement("style");
   style.textContent = css + `
     .wr-result-carousel{min-width:0;margin:3px 0 8px}
-    .wr-result-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 6px;color:var(--ink);font-size:12px;font-weight:850}
+    .wr-result-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 6px;padding:4px 2px 7px;background:linear-gradient(90deg,#fff8f3,#ffede5);border-radius:12px;color:var(--ink);font-size:12px;font-weight:850}
     .wr-result-nav{display:flex;align-items:center;gap:6px}.wr-result-position{min-width:38px;text-align:center;color:var(--muted);font-size:11px;font-weight:700}
-    .wr-result-nav button{width:38px;height:38px;border:1px solid rgba(71,43,30,.18);border-radius:12px;background:#fff8f2;color:#823916;font:800 21px/1 system-ui;cursor:pointer}
+    .wr-result-nav button{width:42px;height:42px;border:1px solid rgba(71,43,30,.18);border-radius:12px;background:#fff8f2;color:#823916;font:800 23px/1 system-ui;cursor:pointer}
     .wr-result-nav button:disabled{opacity:.38;cursor:default}.wr-result-nav button:focus-visible,.wr-result-track:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .wr-result-track.wr-products{display:block;margin:0;padding:4px 1px 8px;overflow:visible;scroll-snap-type:none}
     .wr-result-track>.wr-product{width:100%;min-width:0}
     .wr-result-track>.wr-product[hidden]{display:none!important}
     .wr-result-track .wr-commerce-card{grid-template-columns:minmax(0,1fr)}
-    .wr-page-product{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:12px;background:#fff;box-shadow:0 8px 24px rgba(35,20,12,.08)}
-    .wr-result-track .wr-product-media{width:100%;height:190px;border-radius:12px;background:#f7f5f3}
+    .wr-page-product{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:9px;background:#fff;box-shadow:0 8px 24px rgba(35,20,12,.08)}
+    .wr-result-track .wr-product-media{width:100%;height:clamp(112px,16dvh,150px);border-radius:12px;background:#f7f5f3}
     .wr-page-product .wr-product-media img{object-fit:contain}
     .wr-page-product .wr-product-media.wr-editorial-media img{object-fit:cover;object-position:center bottom}
-    .wr-page-product .wr-product-info{min-height:68px;justify-content:flex-start;padding:10px 2px 8px}
+    .wr-page-product .wr-product-info{min-height:48px;justify-content:flex-start;padding:7px 2px 6px}
     .wr-page-product .wr-product-title{font-size:16px;line-height:1.25}
     .wr-product-badge{align-self:flex-start;margin-bottom:4px;border-radius:5px;background:#fff0e8;color:#a13c17;padding:2px 6px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
     .wr-page-product .wr-product-actions{display:block;margin-top:auto}
     .wr-page-product .wr-product-actions a{width:100%;min-height:43px;background:var(--accent);color:#fff;font-size:13px}
+    .wr-ai .wr-view[data-view="chat"]{scrollbar-width:thin;scrollbar-color:#e6b7a1 transparent;overscroll-behavior:contain}
     .wr-ai .wr-chat-recovery{flex-wrap:wrap;overflow:visible;scroll-snap-type:none}.wr-ai .wr-chat-recovery>button{max-width:100%;white-space:normal;overflow-wrap:anywhere;text-align:left}
     .wr-guide-status{margin:2px 12px 8px 36px;padding:0;color:#757575;font-size:11px;line-height:1.6;font-weight:400;background:none;border:0;box-shadow:none}
 
@@ -2352,7 +2353,8 @@
       if (!destination || destination.href === location.href || seen.has(destination.href)) continue;
       const imageUrl = visibleProductImage(card);
       seen.add(destination.href);
-      choices.push({ provider: "page", title, url: destination.href, image: imageUrl, imageFromVideoPoster: carouselCard && !!card.querySelector('video[poster]'), price: null, guideBuy: true, badge: isNew ? "New" : "" });
+      const preferProductPreview = (carouselCard && !!card.querySelector('video[poster]')) || carouselCard || (/\bapple\.com$/i.test(location.hostname) && card.matches('.product-tile'));
+      choices.push({ provider: "page", title, url: destination.href, previewUrl: safePageUrl(purchase?.href)?.href || destination.href, image: imageUrl, preferProductPreview, price: null, guideBuy: true, badge: isNew ? "New" : "" });
       if (choices.length >= 6) break;
     }
     return choices;
@@ -2360,7 +2362,7 @@
   function appendResultCarousel(list, label) {
     list.classList.add('wr-result-track');
     list.tabIndex = 0;
-    list.setAttribute('aria-label', `Browse ${label.toLowerCase()}`);
+    list.setAttribute('aria-label', `Browse ${label.toLowerCase()} with the arrow keys or a horizontal swipe`);
     const shell = document.createElement('section');
     shell.className = 'wr-result-carousel';
     shell.setAttribute('aria-label', label);
@@ -2384,14 +2386,36 @@
     };
     previous.addEventListener('click', () => move(-1));
     next.addEventListener('click', () => move(1));
+    let lastSwipe = 0, touchStart = null;
+    list.addEventListener('wheel', event => {
+      if (Math.abs(event.deltaX) <= Math.max(14, Math.abs(event.deltaY) * 1.3)) return;
+      event.preventDefault();
+      if (Date.now() - lastSwipe < 450) return;
+      lastSwipe = Date.now();
+      move(Math.sign(event.deltaX));
+    }, { passive: false });
+    list.addEventListener('touchstart', event => {
+      const touch = event.touches[0];
+      touchStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+    }, { passive: true });
+    list.addEventListener('touchend', event => {
+      if (!touchStart || !event.changedTouches[0]) return;
+      const deltaX = touchStart.x - event.changedTouches[0].clientX;
+      const deltaY = touchStart.y - event.changedTouches[0].clientY;
+      touchStart = null;
+      if (Math.abs(deltaX) > Math.max(45, Math.abs(deltaY) * 1.3)) move(Math.sign(deltaX));
+    }, { passive: true });
     list.addEventListener('keydown', event => {
       if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
       event.preventDefault();
       move(event.key === 'ArrowRight' ? 1 : -1);
     });
     nav.append(previous, position, next); heading.append(title, nav); shell.append(heading, list); log.append(shell);
-    requestAnimationFrame(update);
-    log.parentElement.scrollTop = log.parentElement.scrollHeight;
+    requestAnimationFrame(() => {
+      update();
+      const viewport = shell.closest('.wr-view');
+      if (viewport) viewport.scrollTop += shell.getBoundingClientRect().top - viewport.getBoundingClientRect().top - 8;
+    });
     return list;
   }
   function renderProducts(products) {
@@ -2414,16 +2438,27 @@
           media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
         }, { once: true });
         media.appendChild(img);
-        if (product.imageFromVideoPoster) {
-          fetch(product.url, { credentials: 'same-origin' }).then(response => response.ok ? response.text() : '').then(html => {
-            const previewSource = new DOMParser().parseFromString(html, 'text/html').querySelector('meta[property="og:image"]')?.content;
-            if (!previewSource) return;
-            const previewUrl = new URL(previewSource, product.url);
-            if (!/^https?:$/.test(previewUrl.protocol)) return;
-            const preview = new Image();
-            preview.onload = () => { if (img.isConnected) img.src = preview.src; };
-            preview.src = previewUrl.href;
-          }).catch(() => {});
+        if (product.preferProductPreview || product.imageFromVideoPoster) {
+          (async () => {
+            for (const pageUrl of new Set([product.previewUrl || product.url, product.url])) {
+              try {
+                const response = await fetch(pageUrl, { credentials: 'same-origin', signal: AbortSignal.timeout(5000) });
+                if (!response.ok) continue;
+                const html = await response.text();
+                const previewSource = new DOMParser().parseFromString(html, 'text/html').querySelector('meta[property="og:image"]')?.content;
+                if (!previewSource) continue;
+                const previewUrl = new URL(previewSource, response.url || pageUrl);
+                if (!/^https?:$/.test(previewUrl.protocol)) continue;
+                const preview = new Image();
+                const loaded = await new Promise(resolve => {
+                  preview.onload = () => resolve(true);
+                  preview.onerror = () => resolve(false);
+                  preview.src = previewUrl.href;
+                });
+                if (loaded && img.isConnected) { img.src = preview.src; break; }
+              } catch {}
+            }
+          })();
         }
       } else {
         media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
