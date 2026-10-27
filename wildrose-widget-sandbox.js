@@ -552,6 +552,16 @@
         panel.classList.add("open");
         fab.style.display = "none";
         reportCapabilityOutcome({ id: "navigation:page", kind: "navigation", label: "Open requested page", status: "verified" });
+        if (pendingNavigation.shopMessage) {
+          const shoppingMessage = pendingNavigation.shopMessage;
+          let attempts = 0;
+          const showShoppingChoices = () => {
+            if (handleVisibleShoppingChoices(shoppingMessage)) return;
+            if (++attempts < 10) setTimeout(showShoppingChoices, 400);
+            else addMsg('bot', 'You’re in the right section. Ask me which product you want to compare.');
+          };
+          setTimeout(showShoppingChoices, 400);
+        }
         if (pendingNavigation.guideBuy) {
           const productTitle = String(pendingNavigation.title || "this product").slice(0, 100);
           let attempts = 0;
@@ -620,7 +630,7 @@
     if (!widgetOptions.navigation) return false;
     const destination = safePageUrl(page?.url);
     if (!destination) return false;
-    pendingNavigation = { url: destination.href, title: page.title || "the page", view, guideBuy: page.guideBuy === true, at: Date.now() };
+    pendingNavigation = { url: destination.href, title: page.title || "the page", view, guideBuy: page.guideBuy === true, shopMessage: page.shopMessage || '', at: Date.now() };
     saveSiteSession();
     location.assign(destination.href);
     return true;
@@ -1573,8 +1583,10 @@
     if (['PageDown', 'PageUp', 'Home', 'End', 'ArrowDown', 'ArrowUp', ' '].includes(event.key) || (event.key.length === 1 && event.target.matches?.('input,textarea,[contenteditable="true"]'))) pauseGuide();
   }, true);
   function guidanceIntent(message) {
-    const match = /^(?:please\s+)?(show me where|highlight|point me to|point to|where is)\s+(.+?)[?.!]*$/i.exec(String(message).trim());
-    return match ? { command: match[1].toLowerCase(), target: match[2].replace(/^(?:the|a|an)\s+/i, "").trim() } : null;
+    const match = /^(?:please\s+)?(show me where|highlight|point me to|point to|where is|where's|wheres)\s+(.+?)[?.!]*$/i.exec(String(message).trim());
+    if (!match) return null;
+    const target = match[2].replace(/^(?:the|a|an)\s+/i, '').replace(/\badd to bad\b/i, 'add to bag').trim();
+    return { command: /^where/i.test(match[1]) ? 'where is' : match[1].toLowerCase(), target };
   }
   function guidanceCandidates(query) {
     if (/^\/(?:account|admin|cart|checkout|checkouts|orders|password)(?:\/|$)/i.test(location.pathname)) return [];
@@ -2173,8 +2185,37 @@
   }
   function shoppingQuery(message) {
     const words = String(message).toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, " ").split(/\s+/);
-    const skip = new Set("i im need want looking for find show open go visit take me a an the some best good fit please can you do does have under below less than dollars dollar with to my your something and or in on of that is are what which would like buy get shop shopping product products recommend recommendation add put place cart basket bag into price prices cost costs stock availability available much".split(" "));
+    const skip = new Set("i im need want looking for find show open go visit take me help a an the some best good fit please can you do does have under below less than dollars dollar with to my your something and or in on of that is are what which would like buy get shop shopping product products recommend recommendation add put place cart basket bag into price prices cost costs stock availability available much".split(" "));
     return words.filter(word => word.length > 2 && !skip.has(word) && !/^\d+$/.test(word)).slice(0, 5).join(" ");
+  }
+  function shoppingCategoryIntent(message) {
+    if (!widgetOptions.navigation || !/\b(?:buy|shop|want|need|looking for)\b/i.test(message) || /\b(?:cases?|covers?|folios?|screen protectors?|chargers?|accessor(?:y|ies))\b/i.test(message)) return null;
+    const device = ['iphone', 'ipad', 'macbook', 'laptop', 'tablet', 'phone'].find(word => new RegExp(`\\b${word}\\b`, 'i').test(message));
+    return device || null;
+  }
+  function handleShoppingCategoryNavigation(message, view = 'chat') {
+    const device = shoppingCategoryIntent(message);
+    if (!device) return false;
+    const links = [...document.querySelectorAll('header a[href],nav a[href],[role="navigation"] a[href]')]
+      .filter(link => !root.contains(link) && visibleSiteControl(link))
+      .map(link => ({ link, destination: safePageUrl(link.href), label: controlWords(controlLabel(link)) }))
+      .filter(item => item.destination && item.destination.href !== location.href && !/\b(?:accessor(?:y|ies)|cases?|covers?|chargers?)\b/i.test(item.destination.pathname) && [device, `${device}s`, `shop ${device}`, `shop ${device}s`, `${device} models`].includes(item.label))
+      .sort((a, b) => {
+        const score = item => Number(new RegExp(`/${device}/?$`, 'i').test(item.destination.pathname)) * 10 + Number(item.link.hasAttribute('data-globalnav-item-name')) * 5 + Number(item.label === device) * 2;
+        return score(b) - score(a);
+      });
+    const choice = links[0];
+    if (!choice) {
+      addMsg('bot', `I couldn’t find a clear link to ${device} models from this page. Open the site’s ${device} section, then ask me again.`);
+      return true;
+    }
+    cancelGuideWork();
+    clearSpotlight();
+    pendingTaskGuide = null;
+    guideActivity = null;
+    renderGuideActivity();
+    addMsg('bot', `Opening ${controlLabel(choice.link)} models…`);
+    return navigateTo({ url: choice.destination.href, title: controlLabel(choice.link), shopMessage: message }, view);
   }
   function wantsProducts(message) {
     if (navigationRequested(message) && /\b(?:shipping|delivery|returns?|refunds?|privacy|terms|contact|faq|about|size guide|sizing)\b/i.test(message)) return false;
@@ -2295,7 +2336,8 @@
       if (root.contains(card) || (carouselCard ? card.getClientRects().length === 0 || getComputedStyle(card).display === 'none' : !visibleSiteControl(card)) || card.innerText?.length > 2400) continue;
       const heading = carouselCard ? card.querySelector('.rf-ccard-content-headerlink') : card.querySelector('h2,h3,h4,[itemprop="name"],[class*="product-title"],[class*="product-headline"]');
       if (!heading) continue;
-      const title = String(heading.textContent || heading.innerText || heading.getAttribute('aria-label') || "").replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
+      const titleSource = (!carouselCard && heading.querySelector('[class*="headline"][aria-hidden="true"]')?.textContent) || heading.textContent || heading.innerText || heading.getAttribute('aria-label') || '';
+      const title = String(titleSource).replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
       if (!title || !words.every(word => title.toLowerCase().includes(word))) continue;
       if (/\b(?:cases?|covers?|folios?|screen protectors?|chargers?|accessor(?:y|ies))\b/i.test(title) && !/\b(?:cases?|covers?|folios?|screen protectors?|chargers?|accessor(?:y|ies))\b/i.test(message)) continue;
       const markers = [...card.querySelectorAll('[class*="badge"],[class*="label"],[class*="eyebrow"],[data-badge]')].map(marker => marker.textContent).join(' ');
@@ -2678,7 +2720,7 @@
     return true;
   }
   async function executeRequestedAction(message, view = "chat") {
-    const actionable = (pendingTaskGuide && /^(?:resume|continue|pause|stop)(?: the)?(?: guide| guidance)?[.!]?$/i.test(String(message).trim())) || guidanceIntent(message) || taskGuideIntent(message) || visitorTaskGoal(message) || cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
+    const actionable = (pendingTaskGuide && /^(?:resume|continue|pause|stop)(?: the)?(?: guide| guidance)?[.!]?$/i.test(String(message).trim())) || guidanceIntent(message) || shoppingCategoryIntent(message) || taskGuideIntent(message) || visitorTaskGoal(message) || cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
     if (!actionable) return { handled: false };
     if (actionInFlight) {
       addMsg("bot", "I'm finishing the previous action. Please try again in a moment.");
@@ -2686,6 +2728,7 @@
     }
     actionInFlight = true;
     try {
+      if (handleShoppingCategoryNavigation(message, view)) return { handled: true, type: 'shopping-category' };
       if (host?.preferLiveGuidance && (taskGuideIntent(message) && (taskGuideTargets(taskGuideIntent(message)).length || taskGuideRoutes(taskGuideIntent(message), []).length)) && handleTaskGuideRequest(message, view)) return { handled: true, type: 'task-guidance' };
       if (await handleVisitorTaskRequest(message, view)) return { handled: true, type: "site-task" };
       if (handleTaskGuideRequest(message, view)) return { handled: true, type: "task-guidance" };
