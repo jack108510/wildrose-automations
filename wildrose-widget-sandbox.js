@@ -1677,6 +1677,8 @@
   }
   function showSpotlight(element, label) {
     clearSpotlight();
+    const originalHref = element.matches('a[href]') ? element.href : '';
+    const originalControlLabel = controlLabel(element);
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const style = document.createElement("style");
     style.textContent = `
@@ -1716,7 +1718,9 @@
         layer.classList.remove('ready');
         if (!missingSince) missingSince = performance.now();
         if (performance.now() - missingSince > 450) {
-          const replacements = [...document.querySelectorAll('a[href],button,select,input:not([type="password"]),[role="button"],[role="tab"],summary,h1,h2,h3')].filter(candidate => visibleSiteControl(candidate) && controlLabel(candidate) === label);
+          const candidates = [...document.querySelectorAll('a[href],button,select,input:not([type="password"]),[role="button"],[role="tab"],summary,h1,h2,h3')].filter(visibleSiteControl);
+          const sameLink = originalHref ? candidates.filter(candidate => candidate.matches('a[href]') && candidate.href === originalHref && controlLabel(candidate) === originalControlLabel) : [];
+          const replacements = sameLink.length === 1 ? sameLink : candidates.filter(candidate => controlLabel(candidate) === label);
           if (replacements.length === 1) showSpotlight(replacements[0], label);
           else recoverGuide('That control is no longer visible. Try again or choose another section.', taskGuideRoutes(pendingTaskGuide?.goal || '', pendingTaskGuide?.visited || []));
           return;
@@ -2428,16 +2432,18 @@
       const media = document.createElement("div");
       media.className = "wr-product-media";
       if (product.provider === 'page' && /store-card-40/i.test(product.image || '')) media.classList.add('wr-editorial-media');
-      if (product.image) {
+      if (product.image || product.provider === 'page' && product.preferProductPreview) {
         const img = document.createElement("img");
-        img.src = product.image;
         img.alt = product.title;
         img.loading = "eager";
+        if (product.image) {
+          img.src = product.image;
+          media.appendChild(img);
+        } else media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
         img.addEventListener("error", () => {
           img.remove();
-          media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
-        }, { once: true });
-        media.appendChild(img);
+          if (!media.querySelector('.wr-product-media-fallback')) media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
+        });
         if (product.preferProductPreview || product.imageFromVideoPoster) {
           (async () => {
             for (const pageUrl of new Set([product.previewUrl || product.url, product.url])) {
@@ -2455,7 +2461,12 @@
                   preview.onerror = () => resolve(false);
                   preview.src = previewUrl.href;
                 });
-                if (loaded && img.isConnected) { img.src = preview.src; break; }
+                if (loaded && card.isConnected) {
+                  if (!img.isConnected) media.replaceChildren(img);
+                  img.src = preview.src;
+                  media.querySelector('.wr-product-media-fallback')?.remove();
+                  break;
+                }
               } catch {}
             }
           })();

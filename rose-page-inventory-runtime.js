@@ -93,7 +93,7 @@ globalThis.__roseInspect = function inspectRenderedPage({ maxControls = 1200 } =
     if (semantic || readButton) explorable.push({selector,kind:'click',label:label(el),...(/^(load more|show more|more results|next page)\b/i.test(label(el)) ? {repeatable:true} : {})});
   }
   // Live offers only. Never infer checkout totals, currencies, or a price from a crossed-out offer.
-  const productCards = all('[data-component-type="s-search-result"], [data-asin]:not([data-asin=""]), .product-card, .product-item, .product_pod, [data-product-id], [itemtype$="/Product"]')
+  const productCards = all('[data-component-type="s-search-result"], [data-asin]:not([data-asin=""]), .product-card, .product-item, .product_pod, [data-product-id], [itemtype$="/Product"], .plp-mastercard')
     .filter(el => visible(el) && !el.closest('.wr-ai'));
   const products = [];
   let unreadableProducts = 0;
@@ -101,7 +101,9 @@ globalThis.__roseInspect = function inspectRenderedPage({ maxControls = 1200 } =
     const heading = card.querySelector('h2,h3,[itemprop="name"],.product-title,.product_title');
     const link = heading?.closest('a[href]') || heading?.querySelector('a[href]') || card.querySelector('a.a-link-normal[href*="/dp/"],a[href*="/dp/"],a[href*="/product"],a[href*="/products/"],h2 a,h3 a');
     const title = short(heading?.textContent || link?.getAttribute('title') || link?.textContent);
-    const priceNode = card.querySelector('.a-price:not(.a-text-price) .a-offscreen, [itemprop="price"], .price_color, [data-price], .price');
+    // IKEA renders the same price twice for sighted and screen-reader visitors.
+    // Read its single accessible current-price string, not the containing module.
+    const priceNode = card.querySelector('.a-price:not(.a-text-price) .a-offscreen, [itemprop="price"], .price_color, [data-price], .price, .plp-price-module__current-price .plp-price__sr-text');
     const displayPrice = short(priceNode?.getAttribute('content') || priceNode?.getAttribute('data-price') || priceNode?.textContent);
     const currency = short(card.querySelector('[itemprop="priceCurrency"]')?.getAttribute('content') || displayPrice.match(/(?:USD|CAD|AUD|EUR|GBP|JPY|CA\$|US\$|A\$|[$€£¥])/i)?.[0]);
     const numbers = displayPrice.match(/\d[\d.,\s]*\d|\d/g) || [];
@@ -111,7 +113,7 @@ globalThis.__roseInspect = function inspectRenderedPage({ maxControls = 1200 } =
     else if (/^\d+,\d{2}$/.test(numeric)) numeric = numeric.replace(',', '.');
     const price = Number(numeric);
     let url; try { url = new URL(link?.href); } catch {}
-    if (!title || !url || url.origin !== location.origin || !/^https?:$/.test(url.protocol) || !uniqueSelector(link) || !currency || !numeric || !Number.isFinite(price) || price < 0 || numbers.length !== 1 || priceNode.closest('del,s,strike,.a-text-price') || /(?:from|starting|per |\/|subscribe|subscription|monthly|used)/i.test(displayPrice)) { unreadableProducts++; continue; }
+    if (!title || !url || url.origin !== location.origin || !/^https?:$/.test(url.protocol) || !uniqueSelector(link) || !currency || !numeric || !Number.isFinite(price) || price < 0 || numbers.length !== 1 || priceNode?.closest('del,s,strike,.a-text-price') || /(?:from|starting|per |\/|subscribe|subscription|monthly|used)/i.test(displayPrice)) { unreadableProducts++; continue; }
     const ratingText = short(card.querySelector('.a-icon-alt,[itemprop="ratingValue"],[data-rating]')?.getAttribute('content') || card.querySelector('[data-rating]')?.getAttribute('data-rating') || card.querySelector('.a-icon-alt,[itemprop="ratingValue"]')?.textContent);
     const rating = Number(ratingText.match(/\d(?:[.,]\d+)?/)?.[0]?.replace(',', '.'));
     url.username = ''; url.password = ''; url.search = ''; url.hash = '';
