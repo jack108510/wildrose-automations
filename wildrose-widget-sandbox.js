@@ -2310,7 +2310,7 @@
       if (!destination || destination.href === location.href || seen.has(destination.href)) continue;
       const imageUrl = visibleProductImage(card);
       seen.add(destination.href);
-      choices.push({ provider: "page", title, url: destination.href, image: imageUrl, price: null, guideBuy: true, badge: isNew ? "New" : "" });
+      choices.push({ provider: "page", title, url: destination.href, image: imageUrl, imageFromVideoPoster: carouselCard && !!card.querySelector('video[poster]'), price: null, guideBuy: true, badge: isNew ? "New" : "" });
       if (choices.length >= 6) break;
     }
     return choices;
@@ -2372,6 +2372,17 @@
           media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
         }, { once: true });
         media.appendChild(img);
+        if (product.imageFromVideoPoster) {
+          fetch(product.url, { credentials: 'same-origin' }).then(response => response.ok ? response.text() : '').then(html => {
+            const previewSource = new DOMParser().parseFromString(html, 'text/html').querySelector('meta[property="og:image"]')?.content;
+            if (!previewSource) return;
+            const previewUrl = new URL(previewSource, product.url);
+            if (!/^https?:$/.test(previewUrl.protocol)) return;
+            const preview = new Image();
+            preview.onload = () => { if (img.isConnected) img.src = preview.src; };
+            preview.src = previewUrl.href;
+          }).catch(() => {});
+        }
       } else {
         media.innerHTML = '<div class="wr-product-media-fallback" aria-hidden="true"><span>◈</span><small>Product</small></div>';
       }
