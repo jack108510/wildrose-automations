@@ -387,6 +387,7 @@
   let lastSitePages = [];
   let lastNavigationChoices = [];
   let pendingNavigation = null;
+  let appleBuyGuide = 0;
   let pendingTaskGuide = null;
   let guideActivity = null;
   let activeSpotlight = null;
@@ -406,7 +407,7 @@
     img.parentElement?.setAttribute("data-logo-fallback", "true");
   }));
   fab.addEventListener("click", () => { setView(cfg.desktopSidePanel && matchMedia("(min-width:760px)").matches ? "chat" : cfg.defaultView); panel.classList.add("open"); fab.style.display = "none"; host?.onOpen?.(); });
-  $(".wr-close").addEventListener("click", () => { if (pendingTaskGuide?.toolId && !pendingTaskGuide.metricFinished) toolMetric(pendingTaskGuide.toolId, "abandoned"); cancelGuideWork(); pendingTaskGuide = null; clearSpotlight(); clearAnswerHint(); if (guideActivity) updateGuideActivity({ current: "Guidance stopped", footer: "" }); saveSiteSession(); clearSpotlight(); try { retellClient?.stopCall(); } catch {} extensionVoiceEpoch++; extensionVoiceSession?.stop(); host?.voice?.stop?.(); finishExtensionVoice(); panel.classList.remove("open"); fab.style.display = host?.hideLauncherOnClose ? "none" : "grid"; if (!host?.hideLauncherOnClose) fab.focus(); });
+  $(".wr-close").addEventListener("click", () => { if (pendingTaskGuide?.toolId && !pendingTaskGuide.metricFinished) toolMetric(pendingTaskGuide.toolId, "abandoned"); cancelGuideWork(); pendingTaskGuide = null; appleBuyGuide = 0; clearSpotlight(); clearAnswerHint(); if (guideActivity) updateGuideActivity({ current: "Guidance stopped", footer: "" }); saveSiteSession(); clearSpotlight(); try { retellClient?.stopCall(); } catch {} extensionVoiceEpoch++; extensionVoiceSession?.stop(); host?.voice?.stop?.(); finishExtensionVoice(); panel.classList.remove("open"); fab.style.display = host?.hideLauncherOnClose ? "none" : "grid"; if (!host?.hideLauncherOnClose) fab.focus(); });
   if (host?.voice) document.addEventListener('visibilitychange', () => {
     if (!document.hidden || !voiceBusy) return;
     extensionVoiceEpoch++;
@@ -515,6 +516,7 @@
   try {
     const saved = JSON.parse(sessionStorage.getItem(siteSessionKey) || "{}");
     chatId = typeof saved.chatId === "string" ? saved.chatId : null;
+    appleBuyGuide = /\/shop\/buy-iphone\//i.test(location.pathname) && Date.now() - Number(saved.appleBuyGuide) < 30 * 60 * 1000 ? Number(saved.appleBuyGuide) : 0;
     shoppingHistory = Array.isArray(saved.messages) ? saved.messages.slice(-12) : [];
     shoppingHistory.forEach(message => addMsg(message.role === "user" ? "user" : "bot", String(message.text || "").slice(0, 1600)));
     lastProducts = Array.isArray(saved.products) ? saved.products.filter(product => product.provider === commerceProvider() && (product.provider !== "native" || product.url === location.href)).slice(0, 4) : [];
@@ -539,6 +541,7 @@
     }
     renderGuideActivity();
     pendingNavigation = saved.pendingNavigation || null;
+    const arrivingBuyGuide = !!pendingNavigation?.guideBuy;
     if (pendingNavigation && Date.now() - Number(pendingNavigation.at) < 120000) {
       const destination = safePageUrl(pendingNavigation.url);
       if (destination && destination.pathname === location.pathname && destination.search === location.search) {
@@ -588,6 +591,12 @@
     }
     pendingNavigation = null;
     saveSiteSession();
+    if (appleBuyGuide && !arrivingBuyGuide) {
+      setView('chat'); panel.classList.add('open'); fab.style.display = 'none';
+      let attempts = 0;
+      const resumeBuyGuide = () => { if (!focusAppleBuyingStep() && ++attempts < 15) setTimeout(resumeBuyGuide, 350); };
+      setTimeout(resumeBuyGuide, 500);
+    }
     if (pendingTaskGuide) {
       setView(pendingTaskGuide.view);
       panel.classList.add("open");
@@ -597,7 +606,7 @@
     }
   } catch { /* Storage can be disabled. */ }
   function saveSiteSession() {
-    try { sessionStorage.setItem(siteSessionKey, JSON.stringify({ chatId, messages: shoppingHistory.slice(-12), products: lastProducts, sitePages: lastSitePages, navigationChoices: lastNavigationChoices, pendingNavigation, pendingTaskGuide, guideActivity })); } catch { /* Storage can be disabled. */ }
+    try { sessionStorage.setItem(siteSessionKey, JSON.stringify({ chatId, messages: shoppingHistory.slice(-12), products: lastProducts, sitePages: lastSitePages, navigationChoices: lastNavigationChoices, pendingNavigation, pendingTaskGuide, guideActivity, appleBuyGuide })); } catch { /* Storage can be disabled. */ }
   }
   function showContactFallback(target, message) {
     target.textContent = message;
@@ -637,7 +646,10 @@
     if (!destination) return false;
     pendingNavigation = { url: destination.href, title: page.title || "the page", view, guideBuy: page.guideBuy === true, shopMessage: page.shopMessage || '', at: Date.now() };
     saveSiteSession();
-    location.assign(destination.href);
+    if (typeof sessionStorage.flush === 'function') {
+      Promise.race([sessionStorage.flush().catch(() => {}), new Promise(resolve => setTimeout(resolve, 1500))])
+        .then(() => location.assign(destination.href));
+    } else location.assign(destination.href);
     return true;
   }
   function priorNavigationChoice(message) {
@@ -2378,13 +2390,53 @@
     return choices;
   }
   function focusAppleBuyingStep() {
-    const model = [...document.querySelectorAll('input[name="dimensionScreensize"]')]
-      .find(input => visibleSiteControl(input) && input.labels?.length);
-    if (!model) return false;
-    showSpotlight(model.labels[0], 'Choose your iPhone model');
-    addMsg('bot', 'Start by choosing your iPhone model. Then choose a finish and storage size; Apple shows the Continue button after those choices.');
-    return true;
+    if (!/\/shop\/buy-iphone\//i.test(location.pathname)) return false;
+    const focus = (element, label, message) => {
+      appleBuyGuide = Date.now(); saveSiteSession();
+      showSpotlight(element, label);
+      addMsg('bot', message);
+      return true;
+    };
+    const stages = [
+      { name: 'dimensionScreensize', label: 'Choose your iPhone model', message: 'Choose your iPhone model.' },
+      { name: 'dimensionColor', label: 'Choose a finish', message: 'Choose the finish you want.' },
+      { name: 'dimensionCapacity', label: 'Choose storage', message: 'Choose how much storage you need.' },
+      { name: 'tradeupinline', label: 'Choose a trade-in option', message: 'Choose whether to trade in a device.' },
+      { name: 'applecare-options', label: 'Choose AppleCare coverage', message: 'Choose whether you want AppleCare coverage.' },
+      { name: 'dimensionPaymentType', label: 'Choose AppleCare payment', message: 'Choose how you want to pay for AppleCare.', optional: true },
+    ];
+    for (const stage of stages) {
+      if (stage.name === 'applecare-options') {
+        const serial = document.querySelector('input[data-autom="serialNumber"]');
+        if (serial && visibleSiteControl(serial)) {
+          if (!serial.value.trim()) return focus(serial, 'Enter trade-in serial number', 'Enter the trade-in device serial number, then verify it with Apple.');
+          const verify = serial.closest('.form-textbox')?.querySelector('button[data-autom="Verify"]');
+          if (verify && visibleSiteControl(verify)) return focus(verify, 'Verify trade-in serial number', 'Use Verify to check the trade-in serial number with Apple.');
+          if (verify?.disabled && !document.getElementById('sno-success')?.textContent?.trim()) return focus(serial, 'Check trade-in serial number', 'Check the serial number. Apple will enable Verify when it is ready.');
+        }
+      }
+      const inputs = [...document.querySelectorAll(`input[name="${stage.name}"]`)].filter(input => visibleSiteControl(input) && input.labels?.length);
+      if (stage.optional && !inputs.length) continue;
+      if (!inputs.length) return false;
+      if (inputs.some(input => input.checked)) continue;
+      return focus(inputs[0].labels[0], stage.label, stage.message);
+    }
+    const bag = [...document.querySelectorAll('button')].find(button => visibleSiteControl(button) && /^add to bag$/i.test(controlLabel(button)));
+    if (!bag) return false;
+    return focus(bag, 'Add to Bag', 'Your choices are set. Review them, then use Add to Bag when you are ready.');
   }
+  document.addEventListener('change', event => {
+    if (!appleBuyGuide || !panel.classList.contains('open') || !event.target.matches?.('input[name="dimensionScreensize"],input[name="dimensionColor"],input[name="dimensionCapacity"],input[name="tradeupinline"],input[name="applecare-options"],input[name="dimensionPaymentType"],input[data-autom="serialNumber"]')) return;
+    setTimeout(() => {
+      if (!appleBuyGuide || !panel.classList.contains('open')) return;
+      let attempts = 0;
+      const advance = () => { if (!focusAppleBuyingStep() && ++attempts < 12) setTimeout(advance, 350); };
+      advance();
+    }, 800);
+  }, true);
+  document.addEventListener('click', event => {
+    if (appleBuyGuide && event.target.closest?.('button[data-autom="Verify"]')) setTimeout(() => { if (appleBuyGuide && panel.classList.contains('open')) focusAppleBuyingStep(); }, 900);
+  }, true);
   function appendResultCarousel(list, label) {
     list.classList.add('wr-result-track');
     list.tabIndex = 0;
