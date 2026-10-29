@@ -647,16 +647,17 @@
     const skip = new Set("a an and can could for from go i is me my navigate of on open page please show take the to visit want where you your".split(" "));
     const words = [...new Set(String(message).toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(word => word.length > 2 && !skip.has(word)))].slice(0, 8);
     if (!words.length) return [];
+    const matchesWord = (part, word) => part === word || word.length > 3 && (part === `${word}s` || word.endsWith('s') && part === word.slice(0, -1));
     const links = new Map();
     for (const anchor of document.querySelectorAll("a[href]")) {
-      if (root.contains(anchor)) continue;
+      if (!visibleSiteControl(anchor) || !safeControl(anchor)) continue;
       const url = safePageUrl(anchor.href);
       if (!url || url.href === location.href) continue;
-      const title = (anchor.textContent || anchor.getAttribute("aria-label") || anchor.getAttribute("title") || "").replace(/\s+/g, " ").trim().slice(0, 120);
+      const title = controlLabel(anchor).slice(0, 120);
       if (!title) continue;
-      const label = title.toLowerCase();
-      const path = url.pathname.toLowerCase();
-      const score = words.reduce((n, word) => n + (label.includes(word) ? 3 : 0) + (path.includes(word) ? 1 : 0), 0);
+      const label = controlWords(title).split(' ');
+      const path = controlWords(url.pathname).split(' ');
+      const score = words.reduce((n, word) => n + (label.some(part => matchesWord(part, word)) ? 3 : 0) + (path.some(part => matchesWord(part, word)) ? 1 : 0), 0);
       if (score && (!links.has(url.href) || links.get(url.href).score < score)) links.set(url.href, { url: url.href, title, score });
     }
     return [...links.values()].sort((a, b) => b.score - a.score || a.title.localeCompare(b.title)).slice(0, 4).map(({ url, title, score }) => ({ url, title, score }));
@@ -1591,7 +1592,7 @@
   }
   function guidanceCandidates(query) {
     if (/^\/(?:account|admin|cart|checkout|checkouts|orders|password)(?:\/|$)/i.test(location.pathname)) return [];
-    const ignored = new Set(["the", "a", "an", "button", "link", "field", "section", "selector", "option", "on", "this", "page", "please", "to", "my", "choose", "change", "set", "find"]);
+    const ignored = new Set(["the", "a", "an", "button", "link", "field", "box", "input", "section", "selector", "option", "on", "this", "page", "please", "to", "my", "choose", "change", "set", "find"]);
     const words = controlWords(query).split(" ").filter(word => word.length > 1 && !ignored.has(word));
     if (!words.length) return [];
     const selector = 'a[href], button, select, input:not([type="hidden"]):not([type="password"]):not([type="email"]):not([type="tel"]):not([type="submit"]), [role="button"], [role="tab"], summary, h1, h2, h3';
@@ -1816,11 +1817,15 @@
   }
   function taskGuideHints(goal) {
     const text = controlWords(goal);
+    if (/\b(return|returns|refund|exchange)\b/.test(text)) return ["returns", "return", "exchange", "refund", "help"];
+    if (/\b(track|tracking|delivery|shipping|shipment)\b/.test(text)) return ["track", "orders", "delivery", "shipping", "help"];
+    if (/\b(pricing|price|plan|plans)\b/.test(text)) return ["pricing", "plans", "plan", "subscription"];
     if (/\b(password|passcode|two factor|2fa|security)\b/.test(text)) return ["security", "settings", "account", "profile"];
     if (/\b(email|username|profile|name)\b/.test(text)) return ["profile", "account", "settings"];
     if (/\b(notification|alert|preference)\b/.test(text)) return ["notifications", "preferences", "settings", "account"];
     if (/\b(billing|payment|invoice|subscription)\b/.test(text)) return ["billing", "subscription", "settings", "account"];
-    return [];
+    const generic = new Set(["find", "open", "visit", "view", "read", "show", "use", "change", "update", "manage", "item", "items", "thing", "things", "something", "button", "field", "page", "section"]);
+    return taskGuideWords(goal).filter(word => word.length > 3 && !generic.has(word)).slice(0, 4);
   }
   function taskGuideTargets(goal) {
     const wordsFromGoal = taskGuideWords(goal);
@@ -1850,13 +1855,17 @@
   function taskGuideRoutes(goal, visited) {
     const hints = taskGuideHints(goal);
     if (!hints.length) return [];
+    const hintScore = (label, path = '') => hints.reduce((score, hint, index) => {
+      const weight = [30, 10, 7, 4][index] || 2;
+      return score + (label.includes(hint) ? weight : path.includes(hint) ? Math.max(1, Math.round(weight / 4)) : 0);
+    }, 0);
     const routes = new Map();
     for (const element of document.querySelectorAll('button[aria-controls],button[aria-expanded],button[aria-haspopup],summary,[role="tab"]')) {
       if (!visibleSiteControl(element) || element.getAttribute('aria-expanded') === 'true' || element.getAttribute('aria-selected') === 'true' || (element.matches('summary') && element.parentElement?.open)) continue;
       const label = controlLabel(element), key = `control:${label}`;
       if (visited.includes(key)) continue;
       const parts = controlWords(label).split(' ');
-      const score = hints.reduce((best, hint, index) => Math.max(best, parts.includes(hint) ? 20 - index * 3 : 0), 0);
+      const score = hintScore(parts);
       if (score) routes.set(key, { element, label, score, key });
     }
     for (const element of document.querySelectorAll("a[href]")) {
@@ -1865,7 +1874,7 @@
       if (!url || visited.includes(url.href) || url.href === location.href) continue;
       const label = controlWords(controlLabel(element));
       const path = controlWords(url.pathname);
-      const score = hints.reduce((best, hint, index) => Math.max(best, label.split(" ").includes(hint) ? 20 - index * 3 : path.split(" ").includes(hint) ? 5 - index : 0), 0);
+      const score = hintScore(label.split(" "), path.split(" "));
       if (!score) continue;
       const existing = routes.get(url.href);
       if (!existing || score > existing.score) routes.set(url.href, { url: url.href, label: controlLabel(element) || url.pathname, score });
