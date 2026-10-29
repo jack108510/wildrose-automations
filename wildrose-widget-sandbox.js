@@ -575,6 +575,10 @@
             if (buy) {
               showSpotlight(buy.element, buy.label);
               addMsg("bot", `I highlighted ${buy.label} for ${productTitle}. Choose your options on the site before buying.`);
+            } else if (/\/shop\/buy-iphone\//i.test(location.pathname)) {
+              if (focusAppleBuyingStep()) return;
+              if (++attempts < 12) setTimeout(focusBuy, 350);
+              else addMsg('bot', `I opened ${productTitle}, but couldn't find the first buying step. You can ask me again after the page finishes loading.`);
             } else if (++attempts < 12) setTimeout(focusBuy, 350);
             else addMsg("bot", `I opened ${productTitle}, but couldn't find a visible Buy control. You can ask me to find it after the page finishes loading.`);
           };
@@ -1084,7 +1088,7 @@
   function controlLabel(element) {
     const labels = [...(element.labels || [])].map(label => label.textContent).join(" ");
     const explicit = element.getAttribute("aria-label") || labels || element.textContent || element.getAttribute("title") || element.closest("fieldset")?.querySelector("legend")?.textContent || element.getAttribute("placeholder") || "";
-    return String(explicit || element.textContent || "").replace(/\s+/g, " ").trim().slice(0, 100);
+    return String(explicit || element.textContent || "").replace(/\s*\(Opens in a new window\)/gi, " (opens in a new window)").replace(/\s+/g, " ").trim().slice(0, 100);
   }
   function safeControl(element) {
     const context = `${controlLabel(element)} ${element.name || ""} ${element.id || ""} ${element.closest("form")?.action || ""}`;
@@ -2353,6 +2357,7 @@
       const titleSource = (!carouselCard && heading.querySelector('[class*="headline"][aria-hidden="true"]')?.textContent) || heading.textContent || heading.innerText || heading.getAttribute('aria-label') || '';
       const title = String(titleSource).replace(/^new\s+/i, "").replace(/\s+/g, " ").trim().slice(0, 120);
       if (!title || !words.every(word => title.toLowerCase().includes(word))) continue;
+      if (/^(?:how|what|when|where|why|can|which)\b/i.test(title) || (!carouselCard && !card.matches('[class*="product-card"],[class*="product-tile"],[data-product-id]') && !card.querySelector('img,picture,video[poster]'))) continue;
       if (/\b(?:cases?|covers?|folios?|screen protectors?|chargers?|accessor(?:y|ies))\b/i.test(title) && !/\b(?:cases?|covers?|folios?|screen protectors?|chargers?|accessor(?:y|ies))\b/i.test(message)) continue;
       const markers = [...card.querySelectorAll('[class*="badge"],[class*="label"],[class*="eyebrow"],[data-badge]')].map(marker => marker.textContent).join(' ');
       const isNew = /\bnew\b/i.test(markers || card.innerText.slice(0, 40));
@@ -2371,6 +2376,14 @@
       if (choices.length >= 6) break;
     }
     return choices;
+  }
+  function focusAppleBuyingStep() {
+    const model = [...document.querySelectorAll('input[name="dimensionScreensize"]')]
+      .find(input => visibleSiteControl(input) && input.labels?.length);
+    if (!model) return false;
+    showSpotlight(model.labels[0], 'Choose your iPhone model');
+    addMsg('bot', 'Start by choosing your iPhone model. Then choose a finish and storage size; Apple shows the Continue button after those choices.');
+    return true;
   }
   function appendResultCarousel(list, label) {
     list.classList.add('wr-result-track');
@@ -2532,6 +2545,7 @@
   }
   function handleVisibleShoppingChoices(message, view = "chat") {
     if (!host?.preferLiveGuidance) return false;
+    if (/\/shop\/buy-iphone\//i.test(location.pathname) && /\b(?:buy|purchase|order)\b/i.test(message) && focusAppleBuyingStep()) return true;
     const products = visibleProductChoices(message);
     if (!products.length) return false;
     lastProducts = products;
