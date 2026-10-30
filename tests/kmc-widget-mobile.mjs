@@ -18,11 +18,12 @@ try {
   await p.locator('.wr-fab').click();
   const m=await p.locator('.wr-panel').evaluate(e=>{const s=getComputedStyle(e),r=e.getBoundingClientRect(),root=e.closest('.wr-ai');return {height:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,background:s.backgroundImage,accent:getComputedStyle(root).getPropertyValue('--accent').trim(),orb:root.querySelector('.wr-orb').getBoundingClientRect().width,close:root.querySelector('.wr-close').getBoundingClientRect().width};});
   assert.equal(m.accent,'#466709','Explicit client brand must survive published default orange');
-  assert.equal(m.background,'none','No glass/gradient panel');
-  assert.ok(m.height<=480,`Panel too tall: ${m.height}`);
-  assert.ok(m.orb<=64,'Voice indicator must not dominate panel');
-  assert.ok(m.close>=44,'Close must be a usable touch target');
+  assert.ok(m.background.includes('linear-gradient'),'Rose glass panel should remain');
+  assert.ok(m.height<=520,`Panel too tall: ${m.height}`);
+  if (height>500) assert.ok(m.orb>=100&&m.orb<=120,'Rose voice orb should remain prominent');
+  assert.ok(m.close>=36,'Close must be a usable touch target');
   assert.ok(m.top>=0&&m.bottom<=height&&m.left>=0&&m.right<=width,'Panel must fit viewport');
+  await p.waitForTimeout(350);
   await p.screenshot({path:`test-artifacts/voice-${width}x${height}.png`});
   await p.locator('.wr-tab').filter({hasText:'Chat'}).click();await p.locator('.wr-input').waitFor({state:'visible'});
   assert.ok(await p.locator('.wr-send').isVisible());

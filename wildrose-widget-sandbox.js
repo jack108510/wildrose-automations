@@ -1,6 +1,7 @@
 (() => {
   const script = document.currentScript;
   const requestedSubtitle = script?.dataset.subtitle?.trim();
+  const embedAccent = script?.dataset.accent?.trim() || "";
   const cfg = {
     apiBase: script?.dataset.apiBase || "",
     title: script?.dataset.title || "Rose",
@@ -68,18 +69,28 @@
     @media (max-width:520px){.wr-ai{right:12px;bottom:12px}.wr-panel{width:calc(100vw - 24px);height:min(620px,calc(100vh - 24px));border-radius:34px}.wr-fab{width:70px;height:70px;border-radius:25px}.wr-orb{width:146px;height:146px}}
   `;
 
-  /* BEGIN KMC THEME: generated, edit rose-kmc-spark-theme.css */
-  const kmcTheme = "/* KMC Spark only. Generated into the hosted widget by scripts/build-kmc-widget-theme.mjs. */\n.wr-ai[data-client-theme=\"kmc-spark\"] { --accent:#466709!important; --accent-soft:#edf3e3!important; --sphere-a:#466709!important; --sphere-b:#edf3e3!important; --ink:#192014; --muted:#596151; right:16px; bottom:max(16px,env(safe-area-inset-bottom)); }\n.wr-ai[data-client-theme=\"kmc-spark\"]::before,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-panel::before,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-panel::after,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-fab::before,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-fab::after { display:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-fab { width:56px;height:56px;border-radius:16px;background:#fff;box-shadow:0 4px 20px #19201426;backdrop-filter:none;-webkit-backdrop-filter:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-dot { width:40px;height:40px;border-radius:10px;background:#fff;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-panel { width:min(360px,calc(100vw - 32px));height:min(440px,calc(100dvh - 32px));border-radius:18px;background:#fff;border:1px solid #e1e6dc;box-shadow:0 12px 40px #19201429;backdrop-filter:none;-webkit-backdrop-filter:none;animation:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-head { padding:16px 16px 12px;background:#fff; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-brand { min-width:0;gap:10px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-mark { flex:0 0 36px;width:36px;height:36px;border-radius:8px;background:#fff;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-mark img,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-dot img { filter:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-title h3 { color:#192014;font-size:15px;font-weight:650;letter-spacing:-.015em;line-height:1.3; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-title small { color:#596151;font-size:12px;font-weight:400; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-close { flex:0 0 44px;width:44px;height:44px;border:0;border-radius:10px;background:#f3f5ef;color:#192014;backdrop-filter:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-tabs { margin:0 16px 8px;padding:3px;background:#f1f4ec;border:0;border-radius:10px;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-tab { height:44px;border-radius:8px;font-weight:600;color:#596151; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-tab.active { background:#fff;color:#324b0b;box-shadow:0 1px 3px #19201412; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-view { padding:0 16px 16px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-voice { min-height:0;padding:16px 8px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb { width:56px;height:56px;margin:0 auto 18px;border-radius:16px;background:#edf3e3;box-shadow:none;animation:none;transform:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb::before { inset:16px;border-radius:0;background:#466709;filter:none;mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='9' y='2' width='6' height='12' rx='3' fill='black'/%3E%3Cpath d='M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E\") center/contain no-repeat; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb::after { display:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb.live { background:#dce9c8; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-status { font-size:20px;font-weight:600;letter-spacing:-.025em;color:#192014; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-note { margin:8px 0 20px;font-size:13px;color:#596151; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-primary,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-send { background:#466709;color:#fff;box-shadow:none;border-radius:10px;font-weight:600; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-primary { min-width:160px;height:46px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-secondary { height:46px;background:#f1f4ec;box-shadow:none;border-radius:10px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-msg { box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-msg.bot { background:#f1f4ec;border:0; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-msg.user { background:#466709;color:#fff; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-compose { margin:0 16px 16px;background:#f6f7f3;border:1px solid #e1e6dc;border-radius:12px;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-input { min-width:0;font-size:16px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-send { flex:0 0 44px;width:44px;height:44px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] button:focus-visible { outline:2px solid #466709;outline-offset:2px; }\n@media(max-height:500px) { .wr-ai[data-client-theme=\"kmc-spark\"] .wr-voice { padding:6px; } .wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb { display:none; } }\n@media(max-width:520px) { .wr-ai[data-client-theme=\"kmc-spark\"].kmc-cta-visible .wr-fab { visibility:hidden; pointer-events:none; } }\n";
-  /* END KMC THEME */
+  const floatingCss = `
+    .wr-ai:not(.inline):not(.contained) .wr-close{flex:0 0 44px;width:44px;height:44px}
+    .wr-ai:not(.inline):not(.contained) .wr-panel{height:min(520px,calc(100dvh - 24px));border-radius:28px}
+    .wr-ai:not(.inline):not(.contained) .wr-voice{min-height:0}
+    .wr-ai:not(.inline):not(.contained) .wr-orb{width:118px;height:118px;margin-bottom:18px}
+    @media(max-width:520px){
+      .wr-ai:not(.inline):not(.contained) .wr-panel{width:calc(100vw - 24px);height:min(500px,calc(100dvh - 24px));border-radius:24px}
+      .wr-ai:not(.inline):not(.contained) .wr-fab{width:62px;height:62px;border-radius:22px}
+      .wr-ai:not(.inline):not(.contained) .wr-dot{width:46px;height:46px;border-radius:16px}
+      .wr-ai:not(.inline):not(.contained) .wr-orb{width:106px;height:106px}
+      .wr-ai.kmc-cta-visible .wr-fab{visibility:hidden;pointer-events:none}
+    }
+    @media(max-height:500px){.wr-ai:not(.inline):not(.contained) .wr-orb{display:none}}
+  `;
   const style = document.createElement("style");
-  style.textContent = css + kmcTheme;
+  style.textContent = css + floatingCss;
   document.head.appendChild(style);
 
   const headerIdentity = cfg.previewMode
     ? '<div class="wr-title"><h3>Ai Front Desk</h3></div>'
     : `<div class="wr-mark"><img src="${cfg.logo}" alt=""></div><div class="wr-title"><h3>${cfg.title}</h3><small>${cfg.subtitle}</small></div>`;
   const root = document.createElement("div");
-  if (cfg.businessId === "rose-checkout-muyn52us-ksmk51") root.dataset.clientTheme = "kmc-spark";
   root.className = cfg.inline ? "wr-ai inline" : (cfg.contained ? "wr-ai contained" : "wr-ai");
   const siteVisibilityCheck = !cfg.previewMode && !cfg.inline && cfg.mount !== "#rose-workground-widget" && cfg.apiBase && cfg.loadPublished && (cfg.businessId || cfg.website);
   if (siteVisibilityCheck) root.style.setProperty("display", "none", "important");
@@ -95,7 +106,7 @@
   const mount = cfg.mount ? document.querySelector(cfg.mount) : null;
   (mount || document.body).appendChild(root);
 
-  if (root.dataset.clientTheme === "kmc-spark" && !cfg.inline) {
+  if (cfg.businessId === "rose-checkout-muyn52us-ksmk51" && !cfg.inline) {
     const heroActions = document.querySelector(".home-actions");
     if (heroActions && typeof IntersectionObserver !== "undefined") {
       const observer = new IntersectionObserver(([entry]) => {
@@ -148,21 +159,22 @@
     cfg.title = a.assistantName || config.settings?.assistantName || cfg.title;
     if (copy.subtitle !== undefined && copy.subtitle !== null) cfg.subtitle = String(copy.subtitle).trim();
     cfg.greeting = copy.greeting || config.greeting || a.greetingMessage || cfg.greeting;
-    cfg.accent = a.brandPrimary || cfg.accent;
+    const useEmbedAccent = Boolean(embedAccent) && /^#ff5722$/i.test(a.brandPrimary || "#ff5722");
+    cfg.accent = useEmbedAccent ? embedAccent : (a.brandPrimary || cfg.accent);
     cfg.businessContext = (config.context || []).map(n => n.text).filter(Boolean).join("\n").slice(0, 3600) || cfg.businessContext;
     cfg.businessName = config.settings?.businessName || cfg.businessName;
     cfg.website = config.settings?.website || cfg.website;
     cfg.ownerEmail = config.settings?.ownerEmail || cfg.ownerEmail;
     cfg.logo = a.avatarUrl || cfg.logo;
     if (a.avatarUrl) root.querySelectorAll(".wr-mark img,.wr-dot img,.wr-avatar img").forEach(img => img.src = a.avatarUrl);
-    root.style.setProperty("--accent", a.brandPrimary || cfg.accent);
-    root.style.setProperty("--accent-soft", a.brandAccent || a.brandPrimary || cfg.accent);
+    root.style.setProperty("--accent", cfg.accent);
+    root.style.setProperty("--accent-soft", useEmbedAccent ? "color-mix(in srgb,var(--accent) 32%,white)" : (a.brandAccent || a.brandPrimary || cfg.accent));
     root.style.setProperty("--rose-bg", a.backgroundColor || "#fffaf3");
     root.style.setProperty("--rose-text", a.textColor || "#18120f");
     root.style.setProperty("--rose-bubble", a.bubbleColor || "rgba(255,255,255,.54)");
-    root.style.setProperty("--rose-button", a.buttonColor || a.brandPrimary || cfg.accent);
-    root.style.setProperty("--sphere-a", a.brandPrimary || cfg.accent);
-    root.style.setProperty("--sphere-b", a.brandAccent || a.brandPrimary || cfg.accent);
+    root.style.setProperty("--rose-button", useEmbedAccent ? cfg.accent : (a.buttonColor || a.brandPrimary || cfg.accent));
+    root.style.setProperty("--sphere-a", cfg.accent);
+    root.style.setProperty("--sphere-b", useEmbedAccent ? "color-mix(in srgb,var(--accent) 32%,white)" : (a.brandAccent || a.brandPrimary || cfg.accent));
     $$(".wr-title h3").forEach(el => el.textContent = cfg.title);
     $$(".wr-title small").forEach(el => { el.textContent = cfg.subtitle; el.hidden = !String(cfg.subtitle || "").trim(); });
     const greet = $(".wr-msg.bot"); if (greet) greet.textContent = cfg.greeting;
