@@ -388,6 +388,7 @@
   let lastNavigationChoices = [];
   let pendingNavigation = null;
   let appleBuyGuide = 0;
+  let appleBuyAdvanceTimer = 0;
   let pendingTaskGuide = null;
   let guideActivity = null;
   let activeSpotlight = null;
@@ -1572,8 +1573,16 @@
   document.addEventListener('rose:guide-complete', event => {
     if (guideForm && event.target === guideForm.scope && pendingTaskGuide?.phase === 'submitted') finishGuideStep('All steps complete.');
   });
+  function spotlightOwnsTarget(target) {
+    const element = activeSpotlight?.element;
+    if (!element) return false;
+    const control = element.matches('label') ? element.control : element;
+    const selected = target.closest?.('input') || target.closest?.('label')?.control;
+    return element.contains(target) || [...(element.labels || [])].some(label => label.contains(target)) ||
+      !!(control?.name && selected?.name && control.name === selected.name);
+  }
   document.addEventListener('pointerdown', event => {
-    if (root.contains(event.target) || activeSpotlight?.element.contains(event.target) || (guideForm && guideForm.scope.contains(event.target))) return;
+    if (root.contains(event.target) || spotlightOwnsTarget(event.target) || (guideForm && guideForm.scope.contains(event.target))) return;
     // Let the visitor finish in a dialog after activating the target.
     if (pendingTaskGuide?.phase === 'awaiting') return;
     pauseGuide();
@@ -1584,10 +1593,11 @@
       if (index >= 0 && pendingTaskGuide?.phase === 'form' && !pendingTaskGuide.paused && index !== pendingTaskGuide.formIndex) showFormStep(index);
       return;
     }
-    if (activeSpotlight && !root.contains(event.target) && event.target !== activeSpotlight.element && pendingTaskGuide?.phase !== 'awaiting') pauseGuide();
+    if (appleBuyGuide && /\/shop\/buy-iphone\//i.test(location.pathname)) return;
+    if (activeSpotlight && !root.contains(event.target) && !spotlightOwnsTarget(event.target) && pendingTaskGuide?.phase !== 'awaiting') pauseGuide();
   }, true);
   document.addEventListener('input', event => {
-    if (guideForm?.scope.contains(event.target)) return;
+    if (guideForm?.scope.contains(event.target) || spotlightOwnsTarget(event.target)) return;
     if (pendingTaskGuide?.phase === 'awaiting' && !root.contains(event.target)) return;
     pauseGuide();
   }, true);
@@ -1719,7 +1729,10 @@
     document.head.appendChild(style);
     (element.closest("dialog[open]") || document.body).appendChild(layer);
     const onKeydown = event => { if (event.key === "Escape") clearSpotlight(); };
-    const onClick = () => watchGuideActivation(element);
+    const onClick = () => {
+      if (appleBuyGuide && /\/shop\/buy-iphone\//i.test(location.pathname) && element.matches('label,input:not([type="submit"])')) return;
+      watchGuideActivation(element);
+    };
     document.addEventListener("keydown", onKeydown);
     element.addEventListener("click", onClick, true);
     const state = { layer, style, element, frame: 0, onKeydown, onClick };
@@ -1734,10 +1747,11 @@
       if (!element.isConnected || !visibleSiteControl(element)) {
         layer.classList.remove('ready');
         if (!missingSince) missingSince = performance.now();
-        if (performance.now() - missingSince > 450) {
-          const candidates = [...document.querySelectorAll('a[href],button,select,input:not([type="password"]),[role="button"],[role="tab"],summary,h1,h2,h3')].filter(visibleSiteControl);
+        if (performance.now() - missingSince > (appleBuyGuide ? 3000 : 450)) {
+          const candidates = [...document.querySelectorAll('a[href],button,select,input:not([type="password"]),label,[role="button"],[role="tab"],summary,h1,h2,h3')].filter(visibleSiteControl);
           const sameLink = originalHref ? candidates.filter(candidate => candidate.matches('a[href]') && candidate.href === originalHref && controlLabel(candidate) === originalControlLabel) : [];
-          const replacements = sameLink.length === 1 ? sameLink : candidates.filter(candidate => controlLabel(candidate) === label);
+          const sameControl = candidates.filter(candidate => candidate.tagName === element.tagName && controlLabel(candidate) === originalControlLabel);
+          const replacements = sameLink.length === 1 ? sameLink : sameControl.length === 1 ? sameControl : candidates.filter(candidate => controlLabel(candidate) === label);
           if (replacements.length === 1) showSpotlight(replacements[0], label);
           else recoverGuide('That control is no longer visible. Try again or choose another section.', taskGuideRoutes(pendingTaskGuide?.goal || '', pendingTaskGuide?.visited || []));
           return;
@@ -2389,7 +2403,7 @@
     }
     return choices;
   }
-  function focusAppleBuyingStep() {
+  function focusAppleBuyingStep(attemptedStage = '') {
     if (!/\/shop\/buy-iphone\//i.test(location.pathname)) return false;
     const focus = (element, label, message) => {
       appleBuyGuide = Date.now(); saveSiteSession();
@@ -2397,6 +2411,13 @@
       addMsg('bot', message);
       return true;
     };
+    const careDialog = [...document.querySelectorAll('[role="dialog"][aria-modal="true"]')]
+      .find(dialog => visibleSiteControl(dialog) && dialog.querySelector('.rf-applecare-overlay-content'));
+    if (careDialog) {
+      const add = [...careDialog.querySelectorAll('button')].find(button => visibleSiteControl(button) && /^add$/i.test(controlLabel(button)));
+      if (add) return focus(add, 'Add AppleCare', 'Apple opened the AppleCare details. Review them, then select Add if you want this coverage.');
+      return false;
+    }
     const stages = [
       { name: 'dimensionScreensize', label: 'Choose your iPhone model', message: 'Choose your iPhone model.' },
       { name: 'dimensionColor', label: 'Choose a finish', message: 'Choose the finish you want.' },
@@ -2415,27 +2436,44 @@
           if (verify?.disabled && !document.getElementById('sno-success')?.textContent?.trim()) return focus(serial, 'Check trade-in serial number', 'Check the serial number. Apple will enable Verify when it is ready.');
         }
       }
-      const inputs = [...document.querySelectorAll(`input[name="${stage.name}"]`)].filter(input => visibleSiteControl(input) && input.labels?.length);
+      const allInputs = [...document.querySelectorAll(`input[name="${stage.name}"]`)];
+      if (stage.optional && !allInputs.length) continue;
+      if (allInputs.some(input => input.checked)) continue;
+      const inputs = allInputs.filter(input => visibleSiteControl(input) && input.labels?.length);
       if (stage.optional && !inputs.length) continue;
       if (!inputs.length) return false;
-      if (inputs.some(input => input.checked)) continue;
-      return focus(inputs[0].labels[0], stage.label, stage.message);
+      const message = attemptedStage === stage.name ? `Apple did not keep that choice. Try another option or check for a message on the page.` : stage.message;
+      return focus(inputs[0].labels[0], stage.label, message);
     }
     const bag = [...document.querySelectorAll('button')].find(button => visibleSiteControl(button) && /^add to bag$/i.test(controlLabel(button)));
     if (!bag) return false;
     return focus(bag, 'Add to Bag', 'Your choices are set. Review them, then use Add to Bag when you are ready.');
   }
-  document.addEventListener('change', event => {
-    if (!appleBuyGuide || !panel.classList.contains('open') || !event.target.matches?.('input[name="dimensionScreensize"],input[name="dimensionColor"],input[name="dimensionCapacity"],input[name="tradeupinline"],input[name="applecare-options"],input[name="dimensionPaymentType"],input[data-autom="serialNumber"]')) return;
-    setTimeout(() => {
+  const appleChoiceSelector = 'input[name="dimensionScreensize"],input[name="dimensionColor"],input[name="dimensionCapacity"],input[name="tradeupinline"],input[name="applecare-options"],input[name="dimensionPaymentType"],input[data-autom="serialNumber"]';
+  function scheduleAppleBuyAdvance(attemptedStage = '', delay = 1200) {
+    clearTimeout(appleBuyAdvanceTimer);
+    appleBuyAdvanceTimer = setTimeout(() => {
       if (!appleBuyGuide || !panel.classList.contains('open')) return;
       let attempts = 0;
-      const advance = () => { if (!focusAppleBuyingStep() && ++attempts < 12) setTimeout(advance, 350); };
+      const advance = () => { if (!focusAppleBuyingStep(attemptedStage) && ++attempts < 12) setTimeout(advance, 350); };
       advance();
-    }, 800);
+    }, delay);
+  }
+  document.addEventListener('change', event => {
+    if (!appleBuyGuide || !panel.classList.contains('open') || !event.target.matches?.(appleChoiceSelector)) return;
+    scheduleAppleBuyAdvance(event.target.name, 1200);
+  }, true);
+  document.addEventListener('input', event => {
+    if (appleBuyGuide && panel.classList.contains('open') && event.target.matches?.('input[data-autom="serialNumber"]')) scheduleAppleBuyAdvance('', 800);
   }, true);
   document.addEventListener('click', event => {
-    if (appleBuyGuide && event.target.closest?.('button[data-autom="Verify"]')) setTimeout(() => { if (appleBuyGuide && panel.classList.contains('open')) focusAppleBuyingStep(); }, 900);
+    if (!appleBuyGuide || !panel.classList.contains('open')) return;
+    const choice = event.target.closest?.(appleChoiceSelector) || event.target.closest?.('label')?.control;
+    if (choice?.matches?.(appleChoiceSelector)) scheduleAppleBuyAdvance(choice.name, 1200);
+    else {
+      const button = event.target.closest?.('button');
+      if (button?.matches('[data-autom="Verify"]') || button?.closest('.rf-applecare-overlay-content') && /^add$/i.test(controlLabel(button))) scheduleAppleBuyAdvance('', 1200);
+    }
   }, true);
   function appendResultCarousel(list, label) {
     list.classList.add('wr-result-track');
