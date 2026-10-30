@@ -68,14 +68,18 @@
     @media (max-width:520px){.wr-ai{right:12px;bottom:12px}.wr-panel{width:calc(100vw - 24px);height:min(620px,calc(100vh - 24px));border-radius:34px}.wr-fab{width:70px;height:70px;border-radius:25px}.wr-orb{width:146px;height:146px}}
   `;
 
+  /* BEGIN KMC THEME: generated, edit rose-kmc-spark-theme.css */
+  const kmcTheme = "/* KMC Spark only. Generated into the hosted widget by scripts/build-kmc-widget-theme.mjs. */\n.wr-ai[data-client-theme=\"kmc-spark\"] { --accent:#466709!important; --accent-soft:#edf3e3!important; --sphere-a:#466709!important; --sphere-b:#edf3e3!important; --ink:#192014; --muted:#596151; right:16px; bottom:max(16px,env(safe-area-inset-bottom)); }\n.wr-ai[data-client-theme=\"kmc-spark\"]::before,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-panel::before,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-panel::after,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-fab::before,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-fab::after { display:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-fab { width:56px;height:56px;border-radius:16px;background:#fff;box-shadow:0 4px 20px #19201426;backdrop-filter:none;-webkit-backdrop-filter:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-dot { width:40px;height:40px;border-radius:10px;background:#fff;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-panel { width:min(360px,calc(100vw - 32px));height:min(440px,calc(100dvh - 32px));border-radius:18px;background:#fff;border:1px solid #e1e6dc;box-shadow:0 12px 40px #19201429;backdrop-filter:none;-webkit-backdrop-filter:none;animation:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-head { padding:16px 16px 12px;background:#fff; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-brand { min-width:0;gap:10px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-mark { flex:0 0 36px;width:36px;height:36px;border-radius:8px;background:#fff;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-mark img,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-dot img { filter:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-title h3 { color:#192014;font-size:15px;font-weight:650;letter-spacing:-.015em;line-height:1.3; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-title small { color:#596151;font-size:12px;font-weight:400; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-close { flex:0 0 44px;width:44px;height:44px;border:0;border-radius:10px;background:#f3f5ef;color:#192014;backdrop-filter:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-tabs { margin:0 16px 8px;padding:3px;background:#f1f4ec;border:0;border-radius:10px;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-tab { height:44px;border-radius:8px;font-weight:600;color:#596151; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-tab.active { background:#fff;color:#324b0b;box-shadow:0 1px 3px #19201412; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-view { padding:0 16px 16px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-voice { min-height:0;padding:16px 8px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb { width:56px;height:56px;margin:0 auto 18px;border-radius:16px;background:#edf3e3;box-shadow:none;animation:none;transform:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb::before { inset:16px;border-radius:0;background:#466709;filter:none;mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='9' y='2' width='6' height='12' rx='3' fill='black'/%3E%3Cpath d='M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E\") center/contain no-repeat; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb::after { display:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb.live { background:#dce9c8; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-status { font-size:20px;font-weight:600;letter-spacing:-.025em;color:#192014; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-note { margin:8px 0 20px;font-size:13px;color:#596151; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-primary,\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-send { background:#466709;color:#fff;box-shadow:none;border-radius:10px;font-weight:600; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-primary { min-width:160px;height:46px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-secondary { height:46px;background:#f1f4ec;box-shadow:none;border-radius:10px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-msg { box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-msg.bot { background:#f1f4ec;border:0; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-msg.user { background:#466709;color:#fff; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-compose { margin:0 16px 16px;background:#f6f7f3;border:1px solid #e1e6dc;border-radius:12px;box-shadow:none; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-input { min-width:0;font-size:16px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] .wr-send { flex:0 0 44px;width:44px;height:44px; }\n.wr-ai[data-client-theme=\"kmc-spark\"] button:focus-visible { outline:2px solid #466709;outline-offset:2px; }\n@media(max-height:500px) { .wr-ai[data-client-theme=\"kmc-spark\"] .wr-voice { padding:6px; } .wr-ai[data-client-theme=\"kmc-spark\"] .wr-orb { display:none; } }\n@media(max-width:520px) { .wr-ai[data-client-theme=\"kmc-spark\"].kmc-cta-visible .wr-fab { visibility:hidden; pointer-events:none; } }\n";
+  /* END KMC THEME */
   const style = document.createElement("style");
-  style.textContent = css;
+  style.textContent = css + kmcTheme;
   document.head.appendChild(style);
 
   const headerIdentity = cfg.previewMode
     ? '<div class="wr-title"><h3>Ai Front Desk</h3></div>'
     : `<div class="wr-mark"><img src="${cfg.logo}" alt=""></div><div class="wr-title"><h3>${cfg.title}</h3><small>${cfg.subtitle}</small></div>`;
   const root = document.createElement("div");
+  if (cfg.businessId === "rose-checkout-muyn52us-ksmk51") root.dataset.clientTheme = "kmc-spark";
   root.className = cfg.inline ? "wr-ai inline" : (cfg.contained ? "wr-ai contained" : "wr-ai");
   const siteVisibilityCheck = !cfg.previewMode && !cfg.inline && cfg.mount !== "#rose-workground-widget" && cfg.apiBase && cfg.loadPublished && (cfg.businessId || cfg.website);
   if (siteVisibilityCheck) root.style.setProperty("display", "none", "important");
@@ -90,6 +94,16 @@
     </section>`;
   const mount = cfg.mount ? document.querySelector(cfg.mount) : null;
   (mount || document.body).appendChild(root);
+
+  if (root.dataset.clientTheme === "kmc-spark" && !cfg.inline) {
+    const heroActions = document.querySelector(".home-actions");
+    if (heroActions && typeof IntersectionObserver !== "undefined") {
+      const observer = new IntersectionObserver(([entry]) => {
+        root.classList.toggle("kmc-cta-visible", Boolean(entry?.isIntersecting));
+      });
+      observer.observe(heroActions);
+    }
+  }
 
   const $ = sel => root.querySelector(sel);
   const $$ = sel => Array.from(root.querySelectorAll(sel));
