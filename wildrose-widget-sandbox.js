@@ -1842,7 +1842,7 @@
     } catch { return null; }
   }
   function taskGuideWords(goal) {
-    const ignored = new Set(["i", "my", "me", "the", "a", "an", "to", "do", "can", "how", "where", "please", "on", "this", "site", "website"]);
+    const ignored = new Set(["i", "my", "me", "the", "a", "an", "to", "do", "can", "how", "where", "please", "on", "this", "site", "website", "find", "open", "show"]);
     return controlWords(goal).split(" ").filter(word => word.length > 1 && !ignored.has(word));
   }
   function taskGuideHints(goal) {
@@ -1854,11 +1854,11 @@
     if (/\b(email|username|profile|name)\b/.test(text)) return ["profile", "account", "settings"];
     if (/\b(notification|alert|preference)\b/.test(text)) return ["notifications", "preferences", "settings", "account"];
     if (/\b(billing|payment|invoice|subscription)\b/.test(text)) return ["billing", "subscription", "settings", "account"];
-    const generic = new Set(["find", "open", "visit", "view", "read", "show", "use", "change", "update", "manage", "item", "items", "thing", "things", "something", "button", "field", "page", "section"]);
-    return taskGuideWords(goal).filter(word => word.length > 3 && !generic.has(word)).slice(0, 4);
+    const generic = new Set(["find", "open", "visit", "view", "read", "show", "use", "change", "update", "manage", "item", "items", "thing", "things", "something", "button", "field", "page", "section", "guide", "article"]);
+    return taskGuideWords(goal).filter(word => word.length > 3 && !generic.has(word)).sort((a, b) => b.length - a.length).slice(0, 4);
   }
   function taskGuideTargets(goal) {
-    const wordsFromGoal = taskGuideWords(goal).filter(word => !/^(?:article|documentation|docs|guide)$/.test(word));
+    const wordsFromGoal = taskGuideWords(goal).filter(word => !/^(?:article|documentation|guide)$/.test(word));
     const phoneRequest = /\b(?:iphone|phone)\b/i.test(goal) && !/\b(?:case|cover|folio|screen protector|charger|cable|accessor(?:y|ies))\b/i.test(goal);
     const matchesRequestedItem = label => !phoneRequest || !/\b(?:case|cover|folio|screen protector|charger|cable|accessor(?:y|ies))\b/i.test(label);
     const mapped = installedWorkflows.flatMap(workflow => {
@@ -1889,7 +1889,9 @@
   function taskGuideRoutes(goal, visited) {
     const hints = taskGuideHints(goal);
     if (!hints.length) return [];
-    const hintScore = (label, path = '') => hints.reduce((score, hint, index) => {
+    const goalWords = taskGuideWords(goal);
+    const distinctive = hints.filter(hint => hint.length >= 5 && goalWords.includes(hint)).sort((a, b) => b.length - a.length)[0];
+    const hintScore = (label, path = '') => distinctive && ![...label, ...path].some(word => word.startsWith(distinctive)) ? 0 : hints.reduce((score, hint, index) => {
       const weight = [30, 10, 7, 4][index] || 2;
       return score + (label.includes(hint) ? weight : path.includes(hint) ? Math.max(1, Math.round(weight / 4)) : 0);
     }, 0);
@@ -2837,7 +2839,7 @@
         const searchUrl = safePageUrl(rawUrl);
         if (!searchUrl) return false;
         const ignoredSearchWords = new Set(["how", "what", "where", "find", "page", "documentation", "docs", "site", "website", "new", "from", "with", "into", "your", "this", "that"]);
-        const meaningful = value => controlWords(value).split(" ").filter(word => word.length > 3 && !ignoredSearchWords.has(word)).map(word => word.slice(0, 5));
+        const meaningful = value => controlWords(value).split(" ").filter(word => (word.length > 3 || ["css", "api", "dom", "url"].includes(word)) && !ignoredSearchWords.has(word)).map(word => word.slice(0, 5));
         const terms = meaningful(query);
         const variants = [searchUrl];
         if (/\bcreate\b/i.test(query)) {
@@ -2852,10 +2854,14 @@
             const html = await response.text();
             if (html.length > 1200000) continue;
             const parsed = new DOMParser().parseFromString(html, "text/html");
-            const ranked = [...parsed.querySelectorAll('main a[href], [role="main"] a[href]')].map(link => {
+            const ranked = [...parsed.querySelectorAll('a[href]')].map(link => {
               const url = safePageUrl(new URL(link.getAttribute("href"), candidateUrl).href);
               const title = String(link.textContent || "").trim();
-              return { url, title, exact: meaningful(title).join(" ") === terms.join(" ") };
+              const titleTerms = meaningful(title);
+              const pathTerms = meaningful(url?.pathname || "");
+              const exact = titleTerms.join(" ") === terms.join(" ");
+              const distinctive = terms.length >= 2 && titleTerms.length === 1 && titleTerms[0] === terms.at(-1) && terms.every(term => [...titleTerms, ...pathTerms].includes(term));
+              return { url, title, exact: exact || distinctive };
             }).filter(item => item.url && item.url.pathname !== candidateUrl.pathname && terms.length >= 2 && item.exact)
               .filter((item, index, all) => all.findIndex(other => other.url.href === item.url.href) === index);
             if (ranked.length === 1) {
