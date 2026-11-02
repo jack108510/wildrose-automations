@@ -1858,9 +1858,9 @@
     return taskGuideWords(goal).filter(word => word.length > 3 && !generic.has(word)).slice(0, 4);
   }
   function taskGuideTargets(goal) {
-    const wordsFromGoal = taskGuideWords(goal);
-    const phoneRequest = /\b(?:iphone|phone)\b/i.test(goal) && !/\b(?:case|cover|charger|cable|accessor(?:y|ies))\b/i.test(goal);
-    const matchesRequestedItem = label => !phoneRequest || !/\b(?:case|cover|charger|cable|accessor(?:y|ies))\b/i.test(label);
+    const wordsFromGoal = taskGuideWords(goal).filter(word => !/^(?:article|documentation|docs|guide)$/.test(word));
+    const phoneRequest = /\b(?:iphone|phone)\b/i.test(goal) && !/\b(?:case|cover|folio|screen protector|charger|cable|accessor(?:y|ies))\b/i.test(goal);
+    const matchesRequestedItem = label => !phoneRequest || !/\b(?:case|cover|folio|screen protector|charger|cable|accessor(?:y|ies))\b/i.test(label);
     const mapped = installedWorkflows.flatMap(workflow => {
       if (!wordsFromGoal.length || !wordsFromGoal.every(word => controlWords(workflow.title).includes(word))) return [];
       if (!matchesRequestedItem(workflow.title)) return [];
@@ -1872,7 +1872,7 @@
     });
     if (mapped.length) return mapped;
 
-    const words = taskGuideWords(goal);
+    const words = wordsFromGoal;
     if (!words.length) return [];
     return [...document.querySelectorAll('a[href], button, [role="button"], [role="tab"], summary')].flatMap(element => {
       if (!visibleSiteControl(element) || element.matches('[type="submit"], [disabled]')) return [];
@@ -2757,7 +2757,7 @@
       url.hash = "";
       return url;
     };
-    const words = visitorTaskWords(goal);
+    const words = visitorTaskWords(goal).filter(word => !/^(?:article|document|guide)$/.test(word));
     const hubScore = item => {
       const url = publicHub(item);
       if (!url) return -1;
@@ -2795,7 +2795,7 @@
     if (!goal || view !== "chat") return false;
     await toolsReady;
     renderToolSuggestions();
-    const words = visitorTaskWords(goal);
+    const words = visitorTaskWords(goal).filter(word => !/^(?:article|document|guide)$/.test(word));
     if (!words.length) return false;
     const supportRequest = /\b(?:help|support|advice|assistance)\b/i.test(goal);
     const contextGoalWords = supportRequest ? visitorTaskWords(goal, true) : [];
@@ -2831,7 +2831,7 @@
     const trySiteSearch = async () => {
       if (!/\b(?:find|search|look(?:ing)? for)\b/i.test(message)) return false;
       const searches = discoverSiteControls().filter(control => control.kind === "search");
-      const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").trim().slice(0, 120);
+      const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").replace(/\b(?:article|documentation|docs|guide)\b\s*$/i, "").trim().slice(0, 120);
       if (!query) return false;
       const openSearchResults = async rawUrl => {
         const searchUrl = safePageUrl(rawUrl);
@@ -3359,6 +3359,12 @@
     if (await handleCheapestProduct(content)) return;
     if (handleVisibleShoppingChoices(content)) return;
     if (host?.getWorkflows) installedWorkflows = await host.getWorkflows();
+    if (/^(?:find|show|open)\s+(?:the\s+)?new\s+(?:iphone|phone)[?.!]?$/i.test(content)) {
+      cancelGuideWork();
+      clearSpotlight();
+      addMsg("bot", "Which phone model do you mean? Tell me the model name and I’ll find its buying page.");
+      return;
+    }
     const request = host?.normalizeRequest ? host.normalizeRequest(content) : content;
     if ((await executeRequestedAction(request)).handled) return;
     if (cfg.desktopSidePanel && navigationRequested(content)) {
