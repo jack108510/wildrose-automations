@@ -1859,8 +1859,11 @@
   }
   function taskGuideTargets(goal) {
     const wordsFromGoal = taskGuideWords(goal);
+    const phoneRequest = /\b(?:iphone|phone)\b/i.test(goal) && !/\b(?:case|cover|charger|cable|accessor(?:y|ies))\b/i.test(goal);
+    const matchesRequestedItem = label => !phoneRequest || !/\b(?:case|cover|charger|cable|accessor(?:y|ies))\b/i.test(label);
     const mapped = installedWorkflows.flatMap(workflow => {
       if (!wordsFromGoal.length || !wordsFromGoal.every(word => controlWords(workflow.title).includes(word))) return [];
+      if (!matchesRequestedItem(workflow.title)) return [];
       try {
         const matches = document.querySelectorAll(workflow.target);
         if (matches.length !== 1 || !visibleSiteControl(matches[0])) return [];
@@ -1876,6 +1879,7 @@
       if (element.matches("a[href]") && !taskGuideUrl(element.href)) return [];
       const label = controlWords(controlLabel(element));
       if (!label || /\b(?:delete|remove|purchase|checkout|pay now|confirm order)\b/.test(label)) return [];
+      if (!matchesRequestedItem(label)) return [];
       const parts = label.split(" ");
       if (!words.every(word => parts.some(part => part === word || part.startsWith(word)))) return [];
       const score = label === words.join(" ") ? 100 : 30 + words.length * 10 - parts.length;
@@ -2824,6 +2828,117 @@
     }).filter(match => (match.titleMatches || match.contextOnly) && (match.contextOnly || (match.matched >= (words.length === 1 ? 1 : Math.min(2, words.length)) && match.matched / words.length >= 0.6)))
       .sort((a, b) => b.score - a.score || toolRank(b.item) - toolRank(a.item));
     let ranked = rank(candidates);
+    const trySiteSearch = async () => {
+      if (!/\b(?:find|search|look(?:ing)? for)\b/i.test(message)) return false;
+      const searches = discoverSiteControls().filter(control => control.kind === "search");
+      const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").trim().slice(0, 120);
+      if (!query) return false;
+      const openSearchResults = async rawUrl => {
+        const searchUrl = safePageUrl(rawUrl);
+        if (!searchUrl) return false;
+        const ignoredSearchWords = new Set(["how", "what", "where", "find", "page", "documentation", "docs", "site", "website", "new", "from", "with", "into", "your", "this", "that"]);
+        const meaningful = value => controlWords(value).split(" ").filter(word => word.length > 3 && !ignoredSearchWords.has(word)).map(word => word.slice(0, 5));
+        const terms = meaningful(query);
+        const variants = [searchUrl];
+        if (/\bcreate\b/i.test(query)) {
+          const alternate = new URL(searchUrl.href);
+          for (const [key, value] of alternate.searchParams) if (value.includes(query)) alternate.searchParams.set(key, value.replace(/\bcreate\b/ig, "creating"));
+          if (alternate.href !== searchUrl.href) variants.push(alternate);
+        }
+        for (const candidateUrl of variants) {
+          try {
+            const response = await fetch(candidateUrl.href, { credentials: "omit", signal: AbortSignal.timeout(2500) });
+            if (!response.ok || !/text\/html/i.test(response.headers.get("content-type") || "") || Number(response.headers.get("content-length") || 0) > 1200000) continue;
+            const html = await response.text();
+            if (html.length > 1200000) continue;
+            const parsed = new DOMParser().parseFromString(html, "text/html");
+            const ranked = [...parsed.querySelectorAll('main a[href], [role="main"] a[href]')].map(link => {
+              const url = safePageUrl(new URL(link.getAttribute("href"), candidateUrl).href);
+              const title = String(link.textContent || "").trim();
+              return { url, title, exact: meaningful(title).join(" ") === terms.join(" ") };
+            }).filter(item => item.url && item.url.pathname !== candidateUrl.pathname && terms.length >= 2 && item.exact)
+              .filter((item, index, all) => all.findIndex(other => other.url.href === item.url.href) === index);
+            if (ranked.length === 1) {
+              addMsg("bot", `Opened ${ranked[0].title}.`);
+              location.assign(ranked[0].url.href);
+              return true;
+            }
+          } catch { /* Fall back to the site's own results page. */ }
+        }
+        addMsg("bot", `Opening this site's search results for “${query}”.`);
+        location.assign(searchUrl.href);
+        return true;
+      };
+      if (searches.length === 1) {
+        const { element, label } = searches[0];
+        const form = element.form || element.closest("form");
+        let action;
+        try { action = form && new URL(form.action || location.href, location.href); } catch { /* Guide the visible field instead. */ }
+        if (form && action?.origin === location.origin && form.method.toLowerCase() === "get" && !form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) {
+          return handleSiteControlRequest(`search this site for ${query}`, view);
+        }
+        showSpotlight(element, label || "Search");
+        addMsg("bot", `Use this site's search for “${query}”. I highlighted the search field.`);
+        return true;
+      }
+      // Some sites keep a public GET search form inside an open shadow root.
+      for (const hostElement of [...document.querySelectorAll("*")].filter(element => element.shadowRoot).slice(0, 30)) {
+        const input = hostElement.shadowRoot.querySelector('input[type="search"][name], input[role="searchbox"][name]');
+        const form = input?.form || input?.closest("form");
+        if (!form || form.method.toLowerCase() !== "get" || form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) continue;
+        let action;
+        try { action = new URL(form.action || location.href, location.href); } catch { continue; }
+        if (action.origin !== location.origin) continue;
+        const searchDialog = hostElement.shadowRoot.querySelector("dialog");
+        if (searchDialog) {
+          try {
+            if (!searchDialog.open) searchDialog.showModal();
+            input.focus();
+            const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+            const searchWords = controlWords(query).split(" ").filter(word => word.length > 2 && !["documentation", "docs", "guide", "article", "how", "the", "for"].includes(word));
+            const shortQuery = searchWords.slice(-2).join(" ");
+            for (const searchQuery of [...new Set([query, shortQuery].filter(Boolean))]) {
+              setter?.call(input, searchQuery);
+              input.dispatchEvent(new InputEvent("input", { bubbles: true, composed: true, inputType: "insertText", data: searchQuery }));
+              for (let attempt = 0; attempt < 8; attempt++) {
+                await new Promise(resolve => setTimeout(resolve, 250));
+                const targetWords = searchWords.slice(-2).map(word => word.slice(0, 4));
+                const matching = [...hostElement.shadowRoot.querySelectorAll('a[href]')].map(link => safePageUrl(link.href)).filter(url => url && url.pathname !== action.pathname && targetWords.every(word => controlWords(url.pathname).split(" ").some(part => part.startsWith(word))));
+                if (matching[0]) {
+                  addMsg("bot", `Opened a matching page from this site's search.`);
+                  location.assign(matching[0].href);
+                  return true;
+                }
+              }
+            }
+          } catch { /* Use the site's public search form below. */ }
+        }
+        action.searchParams.set(input.name, query);
+        return openSearchResults(action.href);
+      }
+      // Search dialogs expose a button first, then an input and a results link.
+      const triggers = [...document.querySelectorAll('button[aria-label], [role="button"][aria-label]')].filter(element => !root.contains(element) && visibleSiteControl(element) && /search/i.test(element.getAttribute("aria-label") || ""));
+      if (!triggers.length) return false;
+      (triggers.find(element => element.getAttribute("aria-haspopup") === "dialog") || triggers[0]).click();
+      await new Promise(resolve => setTimeout(resolve, 150));
+      const inputs = [...document.querySelectorAll('input[role="combobox"], input[role="searchbox"], input[type="search"]')].filter(element => visibleSiteControl(element) && /search/i.test(`${controlLabel(element)} ${element.placeholder || ""}`));
+      if (inputs.length !== 1) return false;
+      const input = inputs[0];
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+      if (!setter) return false;
+      setter.call(input, query);
+      input.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: query }));
+      for (let attempt = 0; attempt < 12; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, 250));
+        const result = [...document.querySelectorAll('a[href]')].find(link => visibleSiteControl(link) && /view all .*results/i.test(link.textContent || "") && safePageUrl(link.href));
+        if (result) {
+          return openSearchResults(result.href);
+        }
+      }
+      showSpotlight(input, controlLabel(input) || "Search");
+      addMsg("bot", `I opened this site's search for “${query}”. Review the results in its search panel.`);
+      return true;
+    };
     if (!ranked.length && (host?.mapping || cfg.apiBase && cfg.businessId)) {
       const status = addMsg("bot", "Looking through this site's map…");
       let mapped = [];
@@ -2833,12 +2948,14 @@
         });
         if (host?.mapping && !result.pages?.length && result.job?.status === 'running') {
           status.textContent = 'Rose is still mapping this site. Try again shortly; you can already ask about visible controls and products on this page.';
+          if (await trySiteSearch()) status.closest(".wr-row")?.remove();
           return true;
         }
         mapped = (result.pages || []).filter(item => safePageUrl(item.url) && item.title)
           .map(item => ({ ...item, kind: "mapped-page", goal: message })).slice(0, 3);
       } catch {}
       status.closest(".wr-row")?.remove();
+      if (mapped.length && visitorTaskWords(goal).filter(word => visitorTaskWords(mapped[0].title).includes(word)).length < 2 && await trySiteSearch()) return true;
       if (mapped.length) {
         const first = mapped[0], second = mapped[1];
         const clearMatch = first.autoOpenEligible !== false && first.matchScore >= 12 && first.matchedTerms >= 2 &&
@@ -2856,6 +2973,7 @@
         return true;
       }
     }
+    if (!ranked.length && await trySiteSearch()) return true;
     if (!ranked.length) {
       const status = addMsg("bot", "Checking this site's public help pages…");
       const discovered = await discoverVisitorTaskLinks(goal, currentLinks);
