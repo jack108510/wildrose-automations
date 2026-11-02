@@ -387,6 +387,7 @@
   let lastSitePages = [];
   let lastNavigationChoices = [];
   let pendingNavigation = null;
+  let pendingSiteSearch = null;
   let appleBuyGuide = 0;
   let appleBuyAdvanceTimer = 0;
   let pendingTaskGuide = null;
@@ -542,6 +543,7 @@
     }
     renderGuideActivity();
     pendingNavigation = saved.pendingNavigation || null;
+    pendingSiteSearch = saved.pendingSiteSearch && Date.now() - Number(saved.pendingSiteSearch.at) < 30000 ? saved.pendingSiteSearch : null;
     const arrivingBuyGuide = !!pendingNavigation?.guideBuy;
     if (pendingNavigation && Date.now() - Number(pendingNavigation.at) < 120000) {
       const destination = safePageUrl(pendingNavigation.url);
@@ -592,6 +594,7 @@
     }
     pendingNavigation = null;
     saveSiteSession();
+    if (pendingSiteSearch) setTimeout(resumeSiteSearch, 300);
     if (appleBuyGuide && !arrivingBuyGuide) {
       setView('chat'); panel.classList.add('open'); fab.style.display = 'none';
       let attempts = 0;
@@ -607,7 +610,27 @@
     }
   } catch { /* Storage can be disabled. */ }
   function saveSiteSession() {
-    try { sessionStorage.setItem(siteSessionKey, JSON.stringify({ chatId, messages: shoppingHistory.slice(-12), products: lastProducts, sitePages: lastSitePages, navigationChoices: lastNavigationChoices, pendingNavigation, pendingTaskGuide, guideActivity, appleBuyGuide })); } catch { /* Storage can be disabled. */ }
+    try { sessionStorage.setItem(siteSessionKey, JSON.stringify({ chatId, messages: shoppingHistory.slice(-12), products: lastProducts, sitePages: lastSitePages, navigationChoices: lastNavigationChoices, pendingNavigation, pendingSiteSearch, pendingTaskGuide, guideActivity, appleBuyGuide })); } catch { /* Storage can be disabled. */ }
+  }
+  async function resumeSiteSearch() {
+    const search = pendingSiteSearch;
+    if (!search || search.url !== location.href || Date.now() - search.at > 30000) return;
+    const wanted = controlWords(search.query);
+    for (let attempt = 0; attempt < 16; attempt++) {
+      const matches = [...document.querySelectorAll('a[href]')].filter(link => !root.contains(link) && visibleSiteControl(link) && controlWords(link.textContent || '') === wanted)
+        .map(link => safePageUrl(link.href)).filter(url => url && url.pathname !== location.pathname);
+      const distinct = [...new Map(matches.map(url => [url.pathname, url])).values()];
+      if (distinct.length === 1) {
+        pendingSiteSearch = null;
+        addMsg('bot', `Found ${search.query} in this site's results.`);
+        navigateTo({ url: distinct[0].href, title: search.query }, search.view || 'chat');
+        return;
+      }
+      if (distinct.length > 1) break;
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    pendingSiteSearch = null;
+    saveSiteSession();
   }
   function showContactFallback(target, message) {
     target.textContent = message;
@@ -1854,8 +1877,8 @@
     if (/\b(email|username|profile|name)\b/.test(text)) return ["profile", "account", "settings"];
     if (/\b(notification|alert|preference)\b/.test(text)) return ["notifications", "preferences", "settings", "account"];
     if (/\b(billing|payment|invoice|subscription)\b/.test(text)) return ["billing", "subscription", "settings", "account"];
-    const generic = new Set(["find", "open", "visit", "view", "read", "show", "use", "change", "update", "manage", "item", "items", "thing", "things", "something", "button", "field", "page", "section", "guide", "article"]);
-    return taskGuideWords(goal).filter(word => word.length > 3 && !generic.has(word)).sort((a, b) => b.length - a.length).slice(0, 4);
+    const generic = new Set(["find", "open", "visit", "view", "read", "show", "use", "change", "update", "manage", "item", "items", "thing", "things", "something", "button", "field", "page", "section", "guide", "article", "documentation", "docs"]);
+    return taskGuideWords(goal).filter(word => (word.length > 3 || ["dns", "css", "api"].includes(word)) && !generic.has(word)).sort((a, b) => b.length - a.length).slice(0, 4);
   }
   function taskGuideTargets(goal) {
     const wordsFromGoal = taskGuideWords(goal).filter(word => !/^(?:article|documentation|guide)$/.test(word));
@@ -1877,6 +1900,8 @@
     return [...document.querySelectorAll('a[href], button, [role="button"], [role="tab"], summary')].flatMap(element => {
       if (!visibleSiteControl(element) || element.matches('[type="submit"], [disabled]')) return [];
       if (element.matches("a[href]") && !taskGuideUrl(element.href)) return [];
+      const controlled = document.getElementById(element.getAttribute('aria-controls') || '');
+      if (element.matches('button[aria-expanded]') && controlled?.querySelector('a[href]')) return [];
       const label = controlWords(controlLabel(element));
       if (!label || /\b(?:delete|remove|purchase|checkout|pay now|confirm order)\b/.test(label)) return [];
       if (!matchesRequestedItem(label)) return [];
@@ -2792,7 +2817,7 @@
     const second = (await Promise.all(secondHubs.map(fetchPage))).flat();
     return [...first, ...second].filter((item, index, all) => all.findIndex(other => other.url === item.url) === index);
   }
-  async function handleVisitorTaskRequest(message, view = "chat") {
+  async function handleVisitorTaskRequest(message, view = "chat", originalMessage = message) {
     const goal = visitorTaskGoal(message);
     if (!goal || view !== "chat") return false;
     await toolsReady;
@@ -2831,7 +2856,7 @@
       .sort((a, b) => b.score - a.score || toolRank(b.item) - toolRank(a.item));
     let ranked = rank(candidates);
     const trySiteSearch = async () => {
-      if (!/\b(?:find|search|look(?:ing)? for)\b/i.test(message)) return false;
+      if (!/\b(?:find|search|look(?:ing)? for)\b/i.test(originalMessage)) return false;
       const searches = discoverSiteControls().filter(control => control.kind === "search");
       const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").replace(/\b(?:article|documentation|docs|guide)\b\s*$/i, "").trim().slice(0, 120);
       if (!query) return false;
@@ -2854,6 +2879,12 @@
             const html = await response.text();
             if (html.length > 1200000) continue;
             const parsed = new DOMParser().parseFromString(html, "text/html");
+            const arrived = safePageUrl(response.url);
+            const heading = String(parsed.querySelector('h1')?.textContent || '').trim();
+            if (arrived && arrived.pathname !== candidateUrl.pathname && meaningful(heading).join(' ') === terms.join(' ')) {
+              const canonical = safePageUrl(parsed.querySelector('link[rel="canonical"]')?.getAttribute('href')) || arrived;
+              if (navigateTo({ url: canonical.href, title: heading }, view)) return true;
+            }
             const ranked = [...parsed.querySelectorAll('a[href]')].map(link => {
               const url = safePageUrl(new URL(link.getAttribute("href"), candidateUrl).href);
               const title = String(link.textContent || "").trim();
@@ -2862,7 +2893,7 @@
               const exact = titleTerms.join(" ") === terms.join(" ");
               const distinctive = terms.length >= 2 && titleTerms.length === 1 && titleTerms[0] === terms.at(-1) && terms.every(term => [...titleTerms, ...pathTerms].includes(term));
               return { url, title, exact: exact || distinctive };
-            }).filter(item => item.url && item.url.pathname !== candidateUrl.pathname && terms.length >= 2 && item.exact)
+            }).filter(item => item.url && item.url.pathname !== candidateUrl.pathname && !/\/wiki\/(?:Category|Talk|File|Template|Help|Portal|Special):/i.test(item.url.pathname) && terms.length >= 2 && item.exact)
               .filter((item, index, all) => all.findIndex(other => other.url.href === item.url.href) === index);
             if (ranked.length === 1) {
               addMsg("bot", `Opened ${ranked[0].title}.`);
@@ -2872,16 +2903,35 @@
           } catch { /* Fall back to the site's own results page. */ }
         }
         addMsg("bot", `Opening this site's search results for “${query}”.`);
+        pendingSiteSearch = { query, url: searchUrl.href, view, at: Date.now() };
+        saveSiteSession();
+        if (typeof sessionStorage.flush === 'function') await Promise.race([sessionStorage.flush().catch(() => {}), new Promise(resolve => setTimeout(resolve, 1500))]);
         location.assign(searchUrl.href);
         return true;
       };
+      if (searches.length > 1) {
+        const publicForms = searches.map(({ element }) => {
+          const form = element.form || element.closest('form');
+          let action;
+          try { action = form && new URL(form.action || location.href, location.href); } catch { return null; }
+          if (!form || action?.origin !== location.origin || form.method.toLowerCase() !== 'get' || !element.name || form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) return null;
+          return { action, name: element.name };
+        });
+        if (publicForms.every(Boolean) && publicForms.every(item => item.action.href === publicForms[0].action.href && item.name === publicForms[0].name)) {
+          const action = new URL(publicForms[0].action.href);
+          action.searchParams.set(publicForms[0].name, query);
+          return openSearchResults(action.href);
+        }
+      }
       if (searches.length === 1) {
         const { element, label } = searches[0];
         const form = element.form || element.closest("form");
         let action;
         try { action = form && new URL(form.action || location.href, location.href); } catch { /* Guide the visible field instead. */ }
         if (form && action?.origin === location.origin && form.method.toLowerCase() === "get" && !form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) {
-          return handleSiteControlRequest(`search this site for ${query}`, view);
+          for (const hidden of form.querySelectorAll('input[type="hidden"][name]')) if (hidden.value) action.searchParams.set(hidden.name, hidden.value);
+          action.searchParams.set(element.name, query);
+          return openSearchResults(action.href);
         }
         showSpotlight(element, label || "Search");
         addMsg("bot", `Use this site's search for “${query}”. I highlighted the search field.`);
@@ -3002,7 +3052,7 @@
     launchSuggestedTool(ranked[0].item);
     return true;
   }
-  async function executeRequestedAction(message, view = "chat") {
+  async function executeRequestedAction(message, view = "chat", originalMessage = message) {
     const actionable = (pendingTaskGuide && /^(?:resume|continue|pause|stop)(?: the)?(?: guide| guidance)?[.!]?$/i.test(String(message).trim())) || guidanceIntent(message) || shoppingCategoryIntent(message) || taskGuideIntent(message) || visitorTaskGoal(message) || cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
     if (!actionable) return { handled: false };
     if (actionInFlight) {
@@ -3013,7 +3063,7 @@
     try {
       if (handleShoppingCategoryNavigation(message, view)) return { handled: true, type: 'shopping-category' };
       if (host?.preferLiveGuidance && (taskGuideIntent(message) && (taskGuideTargets(taskGuideIntent(message)).length || taskGuideRoutes(taskGuideIntent(message), []).length)) && handleTaskGuideRequest(message, view)) return { handled: true, type: 'task-guidance' };
-      if (await handleVisitorTaskRequest(message, view)) return { handled: true, type: "site-task" };
+      if (await handleVisitorTaskRequest(message, view, originalMessage)) return { handled: true, type: "site-task" };
       if (handleTaskGuideRequest(message, view)) return { handled: true, type: "task-guidance" };
       if (handleGuidanceRequest(message, view)) return { handled: true, type: "guidance" };
       if (await handleCartRequest(message, view)) return { handled: true, type: "cart" };
@@ -3336,7 +3386,11 @@
     const actions = document.createElement('div'); actions.className = 'wr-chat-recovery';
     for (const product of lowest.slice(0, 5)) {
       const button = document.createElement('button'); button.type = 'button'; button.textContent = `Open ${product.title}`;
-      button.addEventListener('click', () => navigateTo(product)); actions.append(button);
+      button.addEventListener('click', () => {
+        clearSpotlight();
+        if (!navigateTo(product)) addMsg('bot', 'I could not open that product page. Use the highlighted result on this site.');
+      });
+      actions.append(button);
     }
     log.append(actions);
     const target = document.querySelector(lowest[0].selector);
@@ -3372,7 +3426,7 @@
       return;
     }
     const request = host?.normalizeRequest ? host.normalizeRequest(content) : content;
-    if ((await executeRequestedAction(request)).handled) return;
+    if ((await executeRequestedAction(request, 'chat', content)).handled) return;
     if (cfg.desktopSidePanel && navigationRequested(content)) {
       const localPages = currentPageLinks(content);
       if (localPages.length) {
