@@ -614,20 +614,46 @@
   }
   async function resumeSiteSearch() {
     const search = pendingSiteSearch;
-    if (!search || search.url !== location.href || Date.now() - search.at > 30000) return;
-    const wanted = controlWords(search.query);
-    for (let attempt = 0; attempt < 16; attempt++) {
-      const matches = [...document.querySelectorAll('a[href]')].filter(link => !root.contains(link) && visibleSiteControl(link) && controlWords(link.textContent || '') === wanted)
-        .map(link => safePageUrl(link.href)).filter(url => url && url.pathname !== location.pathname);
-      const distinct = [...new Map(matches.map(url => [url.pathname, url])).values()];
-      if (distinct.length === 1) {
+    if (!search || Date.now() - search.at > 30000) return;
+    const requestedUrl = safePageUrl(search.url);
+    if (!requestedUrl || requestedUrl.pathname !== location.pathname || [...requestedUrl.searchParams].some(([key, value]) => new URL(location.href).searchParams.get(key) !== value)) return;
+    const wanted = controlWords(search.query).replace(/^(?:how to|how do i|how can i|the)\s+/, '');
+    const words = wanted.split(' ').filter(Boolean);
+    const originParts = String(search.fromPath || '').split('/').filter(Boolean);
+    for (let attempt = 0; attempt < 12; attempt++) {
+      const matches = [...document.querySelectorAll('a[href]')].filter(link => !root.contains(link) && visibleSiteControl(link)).map(link => {
+        const url = safePageUrl(link.href);
+        const title = controlWords(String(link.textContent || '').split(/\s+[—|–-]\s+/)[0]);
+        if (!url || url.pathname === location.pathname || (title !== wanted && title !== words.at(-1))) return null;
+        const pathWords = controlWords(url.pathname).split(' ');
+        if (!words.every(word => title.split(' ').includes(word) || pathWords.some(part => part.startsWith(word)))) return null;
+        const pathParts = url.pathname.split('/').filter(Boolean);
+        let shared = 0;
+        while (shared < originParts.length && originParts[shared] === pathParts[shared]) shared++;
+        return { url, score: shared };
+      }).filter(Boolean);
+      const distinct = [...new Map(matches.map(item => [item.url.pathname, item])).values()].sort((a, b) => b.score - a.score);
+      if (distinct.length === 1 || (distinct[0] && distinct[0].score > (distinct[1]?.score || 0))) {
         pendingSiteSearch = null;
         addMsg('bot', `Found ${search.query} in this site's results.`);
-        navigateTo({ url: distinct[0].href, title: search.query }, search.view || 'chat');
+        navigateTo({ url: distinct[0].url.href, title: search.query }, search.view || 'chat');
         return;
       }
       if (distinct.length > 1) break;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      if (attempt > 0 && words.length > 1 && [...document.querySelectorAll('[class*="results"] a[href], [id*="results"] a[href]')]
+        .some(link => !root.contains(link) && visibleSiteControl(link) && controlWords(link.textContent || '').includes(words.at(-1)))) break;
+      await new Promise(resolve => setTimeout(resolve, 350));
+    }
+    if (!search.refined && words.length > 1) {
+      const shorter = new URL(search.url);
+      for (const [key, value] of shorter.searchParams) if (value === search.query) shorter.searchParams.set(key, words.at(-1));
+      if (shorter.href !== search.url) {
+        pendingSiteSearch = { ...search, url: shorter.href, refined: true, at: Date.now() };
+        saveSiteSession();
+        if (typeof sessionStorage.flush === 'function') await Promise.race([sessionStorage.flush().catch(() => {}), new Promise(resolve => setTimeout(resolve, 1500))]);
+        location.assign(shorter.href);
+        return;
+      }
     }
     pendingSiteSearch = null;
     saveSiteSession();
@@ -1727,6 +1753,7 @@
   }
   function showSpotlight(element, label) {
     clearSpotlight();
+    for (const stale of document.querySelectorAll('[data-rose-guided-control="true"]')) stale.removeAttribute('data-rose-guided-control');
     const originalHref = element.matches('a[href]') ? element.href : '';
     const originalControlLabel = controlLabel(element);
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1878,7 +1905,16 @@
     if (/\b(notification|alert|preference)\b/.test(text)) return ["notifications", "preferences", "settings", "account"];
     if (/\b(billing|payment|invoice|subscription)\b/.test(text)) return ["billing", "subscription", "settings", "account"];
     const generic = new Set(["find", "open", "visit", "view", "read", "show", "use", "change", "update", "manage", "item", "items", "thing", "things", "something", "button", "field", "page", "section", "guide", "article", "documentation", "docs"]);
-    return taskGuideWords(goal).filter(word => (word.length > 3 || ["dns", "css", "api"].includes(word)) && !generic.has(word)).sort((a, b) => b.length - a.length).slice(0, 4);
+    return taskGuideWords(goal).filter(word => (word.length > 3 || ["dns", "css", "api", "map"].includes(word)) && !generic.has(word)).sort((a, b) => b.length - a.length).slice(0, 4);
+  }
+  function exactArticleRoute(goal, label, url) {
+    if (!/\barticle\b/i.test(goal)) return true;
+    const topic = taskGuideWords(goal).filter(word => word !== 'article').join(' ');
+    const title = taskGuideWords(label).filter(word => word !== 'article').join(' ');
+    let slugText = url.pathname.split('/').pop() || '';
+    try { slugText = decodeURIComponent(slugText); } catch {}
+    const slug = taskGuideWords(slugText).join(' ');
+    return !!topic && (title === topic || slug === topic);
   }
   function taskGuideTargets(goal) {
     const wordsFromGoal = taskGuideWords(goal).filter(word => !/^(?:article|documentation|guide)$/.test(word));
@@ -1900,6 +1936,7 @@
     return [...document.querySelectorAll('a[href], button, [role="button"], [role="tab"], summary')].flatMap(element => {
       if (!visibleSiteControl(element) || element.matches('[type="submit"], [disabled]')) return [];
       if (element.matches("a[href]") && !taskGuideUrl(element.href)) return [];
+      if (element.matches('a[href]') && !exactArticleRoute(goal, controlLabel(element), new URL(element.href))) return [];
       const controlled = document.getElementById(element.getAttribute('aria-controls') || '');
       if (element.matches('button[aria-expanded]') && controlled?.querySelector('a[href]')) return [];
       const label = controlWords(controlLabel(element));
@@ -1914,9 +1951,12 @@
   function taskGuideRoutes(goal, visited) {
     const hints = taskGuideHints(goal);
     if (!hints.length) return [];
+    const currentPathWords = taskGuideWords(location.pathname);
+    const remaining = hints.filter(hint => !currentPathWords.includes(hint));
+    const activeHints = remaining.length ? remaining : hints;
     const goalWords = taskGuideWords(goal);
-    const distinctive = hints.filter(hint => hint.length >= 5 && goalWords.includes(hint)).sort((a, b) => b.length - a.length)[0];
-    const hintScore = (label, path = '') => distinctive && ![...label, ...path].some(word => word.startsWith(distinctive)) ? 0 : hints.reduce((score, hint, index) => {
+    const distinctive = activeHints.filter(hint => hint.length >= 5 && goalWords.includes(hint)).sort((a, b) => b.length - a.length)[0];
+    const hintScore = (label, path = '') => distinctive && ![...label, ...path].some(word => word.startsWith(distinctive)) ? 0 : activeHints.reduce((score, hint, index) => {
       const weight = [30, 10, 7, 4][index] || 2;
       return score + (label.includes(hint) ? weight : path.includes(hint) ? Math.max(1, Math.round(weight / 4)) : 0);
     }, 0);
@@ -1933,10 +1973,15 @@
       if (!visibleSiteControl(element)) continue;
       const url = taskGuideUrl(element.href);
       if (!url || visited.includes(url.href) || url.href === location.href) continue;
+      if (!exactArticleRoute(goal, controlLabel(element), url)) continue;
       const label = controlWords(controlLabel(element));
       const path = controlWords(url.pathname);
-      const score = hintScore(label.split(" "), path.split(" "));
-      if (!score) continue;
+      const labelParts = label.split(' ');
+      const pathParts = path.split(' ');
+      const lastPathPart = controlWords(url.pathname.split('/').pop() || '');
+      const relevance = hintScore(labelParts, pathParts);
+      if (!relevance) continue;
+      const score = relevance + (activeHints.includes(label) ? 15 : 0) + (activeHints.includes(lastPathPart) ? 35 : 0) - Math.min(8, Math.max(0, labelParts.length - activeHints.length));
       const existing = routes.get(url.href);
       if (!existing || score > existing.score) routes.set(url.href, { url: url.href, label: controlLabel(element) || url.pathname, score });
     }
@@ -2026,6 +2071,19 @@
         guideActivity = null;
         renderGuideActivity();
         taskGuideSay(`Opened ${task.destinationTitle || task.goal}.`, task.view);
+        return true;
+      }
+    }
+    if (!task.expectedUrl && task.visited?.length) {
+      const hints = taskGuideHints(task.goal).filter(word => !['help', 'settings', 'account'].includes(word));
+      const pathWords = controlWords(location.pathname).split(' ');
+      const heading = String(document.querySelector('h1')?.textContent || '').trim();
+      const headingWords = controlWords(heading).split(' ');
+      if (hints.length && hints.every(word => pathWords.includes(word)) && headingWords.includes(hints.at(-1))) {
+        pendingTaskGuide = null;
+        guideActivity = null;
+        renderGuideActivity();
+        taskGuideSay(`You're on ${heading}.`, task.view);
         return true;
       }
     }
@@ -2860,6 +2918,7 @@
       const searches = discoverSiteControls().filter(control => control.kind === "search");
       const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").replace(/\b(?:article|documentation|docs|guide)\b\s*$/i, "").trim().slice(0, 120);
       if (!query) return false;
+      const siteQuery = /^(?:javascript|typescript|python|html|css)\s+([\w-]+)$/i.exec(query)?.[1] || query;
       const openSearchResults = async rawUrl => {
         const searchUrl = safePageUrl(rawUrl);
         if (!searchUrl) return false;
@@ -2867,6 +2926,11 @@
         const meaningful = value => controlWords(value).split(" ").filter(word => (word.length > 3 || ["css", "api", "dom", "url"].includes(word)) && !ignoredSearchWords.has(word)).map(word => word.slice(0, 5));
         const terms = meaningful(query);
         const variants = [searchUrl];
+        if (terms.length > 1) {
+          const shorter = new URL(searchUrl.href);
+          for (const [key, value] of shorter.searchParams) if (value.includes(query)) shorter.searchParams.set(key, query.split(/\s+/).at(-1));
+          if (shorter.href !== searchUrl.href) variants.push(shorter);
+        }
         if (/\bcreate\b/i.test(query)) {
           const alternate = new URL(searchUrl.href);
           for (const [key, value] of alternate.searchParams) if (value.includes(query)) alternate.searchParams.set(key, value.replace(/\bcreate\b/ig, "creating"));
@@ -2903,7 +2967,7 @@
           } catch { /* Fall back to the site's own results page. */ }
         }
         addMsg("bot", `Opening this site's search results for “${query}”.`);
-        pendingSiteSearch = { query, url: searchUrl.href, view, at: Date.now() };
+        pendingSiteSearch = { query, url: searchUrl.href, fromPath: location.pathname, view, at: Date.now() };
         saveSiteSession();
         if (typeof sessionStorage.flush === 'function') await Promise.race([sessionStorage.flush().catch(() => {}), new Promise(resolve => setTimeout(resolve, 1500))]);
         location.assign(searchUrl.href);
@@ -2919,7 +2983,7 @@
         });
         if (publicForms.every(Boolean) && publicForms.every(item => item.action.href === publicForms[0].action.href && item.name === publicForms[0].name)) {
           const action = new URL(publicForms[0].action.href);
-          action.searchParams.set(publicForms[0].name, query);
+          action.searchParams.set(publicForms[0].name, siteQuery);
           return openSearchResults(action.href);
         }
       }
@@ -2930,7 +2994,7 @@
         try { action = form && new URL(form.action || location.href, location.href); } catch { /* Guide the visible field instead. */ }
         if (form && action?.origin === location.origin && form.method.toLowerCase() === "get" && !form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) {
           for (const hidden of form.querySelectorAll('input[type="hidden"][name]')) if (hidden.value) action.searchParams.set(hidden.name, hidden.value);
-          action.searchParams.set(element.name, query);
+          action.searchParams.set(element.name, siteQuery);
           return openSearchResults(action.href);
         }
         showSpotlight(element, label || "Search");
@@ -2953,7 +3017,7 @@
             const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
             const searchWords = controlWords(query).split(" ").filter(word => word.length > 2 && !["documentation", "docs", "guide", "article", "how", "the", "for"].includes(word));
             const shortQuery = searchWords.slice(-2).join(" ");
-            for (const searchQuery of [...new Set([query, shortQuery].filter(Boolean))]) {
+            for (const searchQuery of [...new Set([siteQuery, shortQuery].filter(Boolean))]) {
               setter?.call(input, searchQuery);
               input.dispatchEvent(new InputEvent("input", { bubbles: true, composed: true, inputType: "insertText", data: searchQuery }));
               for (let attempt = 0; attempt < 8; attempt++) {
@@ -2969,7 +3033,7 @@
             }
           } catch { /* Use the site's public search form below. */ }
         }
-        action.searchParams.set(input.name, query);
+        action.searchParams.set(input.name, siteQuery);
         return openSearchResults(action.href);
       }
       // Search dialogs expose a button first, then an input and a results link.
@@ -2982,9 +3046,9 @@
       const input = inputs[0];
       const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
       if (!setter) return false;
-      setter.call(input, query);
-      input.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: query }));
-      for (let attempt = 0; attempt < 12; attempt++) {
+      setter.call(input, siteQuery);
+      input.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: siteQuery }));
+      for (let attempt = 0; attempt < 20; attempt++) {
         await new Promise(resolve => setTimeout(resolve, 250));
         const result = [...document.querySelectorAll('a[href]')].find(link => visibleSiteControl(link) && /view all .*results/i.test(link.textContent || "") && safePageUrl(link.href));
         if (result) {
@@ -3009,6 +3073,7 @@
         }
         mapped = (result.pages || []).filter(item => safePageUrl(item.url) && item.title)
           .map(item => ({ ...item, kind: "mapped-page", goal: message })).slice(0, 3);
+        if (/\barticle\b/i.test(goal)) mapped = mapped.filter(item => exactArticleRoute(goal, item.title, new URL(item.url)));
       } catch {}
       status.closest(".wr-row")?.remove();
       if (mapped.length && visitorTaskWords(goal).filter(word => visitorTaskWords(mapped[0].title).includes(word)).length < 2 && await trySiteSearch()) return true;
@@ -3394,7 +3459,10 @@
     }
     log.append(actions);
     const target = document.querySelector(lowest[0].selector);
-    if (target) showSpotlight(target, lowest[0].title);
+    const box = target?.getBoundingClientRect();
+    const panelBox = panel.getBoundingClientRect();
+    if (box && box.top >= 0 && box.left >= 0 && box.bottom <= innerHeight && box.right <= innerWidth &&
+      (box.right <= panelBox.left || box.left >= panelBox.right || box.bottom <= panelBox.top || box.top >= panelBox.bottom)) showSpotlight(target, lowest[0].title);
     lastNavigationChoices = lowest; saveSiteSession();
     return true;
   }
