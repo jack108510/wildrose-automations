@@ -318,11 +318,11 @@
     try { retellClient?.stopCall(); } catch {}
     try {
       status.textContent = "Connecting…";
-      const [{ RetellWebClient }, call] = await Promise.all([
-        import("https://esm.sh/retell-client-js-sdk@2.0.7"),
-        api("/api/voice/start", { page: location.href, voiceVisitorId: voiceVisitorId(), businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, previewMode: cfg.previewMode })
+      const [{ RetellClient }, { RoseV3VoiceClient }, call] = await Promise.all([
+        import("https://esm.sh/retell-client-js-sdk@3.0.4"), import(`${String(cfg.apiBase || "").replace(/\/+$/, "")}/api/voice/start?module=voice`),
+        api("/api/voice/start", { retellClientVersion: 3,  page: location.href, voiceVisitorId: voiceVisitorId(), businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, previewMode: cfg.previewMode })
       ]);
-      retellClient = new RetellWebClient();
+      retellClient = new RoseV3VoiceClient(RetellClient, cfg.apiBase);
       let speechReleaseTimer = null;
       const SPEECH_RELEASE_DELAY = 1150;
       const clearSpeechRelease = () => {
@@ -375,7 +375,7 @@
       });
       retellClient.on("call_ended", () => { voiceBusy = false; startBtn.disabled = false; clearSpeechRelease(); resetSpeechMotion(); panel.classList.remove("speaking"); status.textContent = "Call ended"; note.textContent = "Start another conversation anytime."; orb.classList.remove("live", "listening", "thinking", "speaking"); startBtn.style.display = "inline-block"; endBtn.style.display = "none"; });
       retellClient.on("error", err => { voiceBusy = false; startBtn.disabled = false; clearSpeechRelease(); resetSpeechMotion(); panel.classList.remove("speaking"); console.error(err); status.textContent = "Voice connection failed"; showContactFallback(note, "Rose could not start a voice call."); orb.classList.remove("live", "listening", "thinking", "speaking"); startBtn.style.display = "inline-block"; endBtn.style.display = "none"; });
-      await retellClient.startCall({ accessToken: call.accessToken, emitRawAudioSamples: true });
+      await retellClient.startCall({ accessToken: call.accessToken, callId: call.callId, transport: call.transport, iceServers: call.ice_servers, monitorToken: call.monitorToken, emitRawAudioSamples: true });
     } catch (err) {
       voiceBusy = false;
       startBtn.disabled = false;
