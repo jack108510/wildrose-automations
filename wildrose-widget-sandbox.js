@@ -623,7 +623,7 @@
     for (let attempt = 0; attempt < 12; attempt++) {
       const matches = [...document.querySelectorAll('a[href]')].filter(link => !root.contains(link) && visibleSiteControl(link)).map(link => {
         const url = safePageUrl(link.href);
-        const title = controlWords(String(link.textContent || '').split(/\s+[—|–-]\s+/)[0]);
+        const title = controlWords(String(link.textContent || '').split(/\s+[—|–-]\s+/)[0].split(/\s*:\s*/).at(-1));
         if (!url || url.pathname === location.pathname || (title !== wanted && title !== words.at(-1))) return null;
         const pathWords = controlWords(url.pathname).split(' ');
         if (!words.every(word => title.split(' ').includes(word) || pathWords.some(part => part.startsWith(word)))) return null;
@@ -1956,6 +1956,7 @@
     const activeHints = remaining.length ? remaining : hints;
     const goalWords = taskGuideWords(goal);
     const distinctive = activeHints.filter(hint => hint.length >= 5 && goalWords.includes(hint)).sort((a, b) => b.length - a.length)[0];
+    const routeWords = value => controlWords(value).split(' ').map(word => word === 'env' ? 'environment' : word);
     const hintScore = (label, path = '') => distinctive && ![...label, ...path].some(word => word.startsWith(distinctive)) ? 0 : activeHints.reduce((score, hint, index) => {
       const weight = [30, 10, 7, 4][index] || 2;
       return score + (label.includes(hint) ? weight : path.includes(hint) ? Math.max(1, Math.round(weight / 4)) : 0);
@@ -1965,7 +1966,7 @@
       if (!visibleSiteControl(element) || element.getAttribute('aria-expanded') === 'true' || element.getAttribute('aria-selected') === 'true' || (element.matches('summary') && element.parentElement?.open)) continue;
       const label = controlLabel(element), key = `control:${label}`;
       if (visited.includes(key)) continue;
-      const parts = controlWords(label).split(' ');
+      const parts = routeWords(label);
       const score = hintScore(parts);
       if (score) routes.set(key, { element, label, score, key });
     }
@@ -1976,8 +1977,8 @@
       if (!exactArticleRoute(goal, controlLabel(element), url)) continue;
       const label = controlWords(controlLabel(element));
       const path = controlWords(url.pathname);
-      const labelParts = label.split(' ');
-      const pathParts = path.split(' ');
+      const labelParts = routeWords(label);
+      const pathParts = routeWords(path);
       const lastPathPart = controlWords(url.pathname.split('/').pop() || '');
       const relevance = hintScore(labelParts, pathParts);
       if (!relevance) continue;
@@ -2916,7 +2917,7 @@
     const trySiteSearch = async () => {
       if (!/\b(?:find|search|look(?:ing)? for)\b/i.test(originalMessage)) return false;
       const searches = discoverSiteControls().filter(control => control.kind === "search");
-      const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").replace(/\b(?:article|documentation|docs|guide)\b\s*$/i, "").trim().slice(0, 120);
+      const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").replace(/\b(?:(?:command|article|documentation|docs|guide)\s*)+$/i, "").trim().slice(0, 120);
       if (!query) return false;
       const siteQuery = /^(?:javascript|typescript|python|html|css)\s+([\w-]+)$/i.exec(query)?.[1] || query;
       const openSearchResults = async rawUrl => {
@@ -3129,8 +3130,9 @@
       if (handleShoppingCategoryNavigation(message, view)) return { handled: true, type: 'shopping-category' };
       const exactDoc = /^find\s+(?:the\s+)?(.+?)\s+(?:(?:command\s+)?documentation|reference)[?.!]*$/i.exec(String(originalMessage).trim());
       if (exactDoc) {
-        const wanted = controlWords(exactDoc[1]);
-        const matches = [...document.querySelectorAll('a[href]')].filter(link => !root.contains(link) && controlWords(link.textContent || '') === wanted)
+        const titleWords = value => controlWords(value).split(' ').map(word => word === 'env' ? 'environment' : word).join(' ');
+        const wanted = titleWords(exactDoc[1]);
+        const matches = [...document.querySelectorAll('a[href]')].filter(link => !root.contains(link) && titleWords(link.textContent || '') === wanted)
           .map(link => taskGuideUrl(link.href)).filter(url => url && url.href !== location.href);
         const distinct = [...new Map(matches.map(url => [url.href, url])).values()];
         if (distinct.length === 1 && navigateTo({ url: distinct[0].href, title: exactDoc[1] }, view)) return { handled: true, type: 'exact-documentation-link' };
