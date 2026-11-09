@@ -2992,7 +2992,7 @@
         const form = element.form || element.closest("form");
         let action;
         try { action = form && new URL(form.action || location.href, location.href); } catch { /* Guide the visible field instead. */ }
-        if (form && action?.origin === location.origin && form.method.toLowerCase() === "get" && !form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) {
+        if (form && element.name && action?.origin === location.origin && form.method.toLowerCase() === "get" && !form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) {
           for (const hidden of form.querySelectorAll('input[type="hidden"][name]')) if (hidden.value) action.searchParams.set(hidden.name, hidden.value);
           action.searchParams.set(element.name, siteQuery);
           return openSearchResults(action.href);
@@ -3067,9 +3067,9 @@
           query: message, businessId: cfg.businessId, pageUrl: location.origin + location.pathname
         });
         if (host?.mapping && !result.pages?.length && result.job?.status === 'running') {
-          status.textContent = 'Rose is still mapping this site. Try again shortly; you can already ask about visible controls and products on this page.';
-          if (await trySiteSearch()) status.closest(".wr-row")?.remove();
-          return true;
+          // The public map can take longer than this turn. Continue with visible
+          // controls and public links instead of making the visitor ask again.
+          if (await trySiteSearch()) { status.closest(".wr-row")?.remove(); return true; }
         }
         mapped = (result.pages || []).filter(item => safePageUrl(item.url) && item.title)
           .map(item => ({ ...item, kind: "mapped-page", goal: message })).slice(0, 3);
@@ -3127,6 +3127,14 @@
     actionInFlight = true;
     try {
       if (handleShoppingCategoryNavigation(message, view)) return { handled: true, type: 'shopping-category' };
+      const exactDoc = /^find\s+(?:the\s+)?(.+?)\s+(?:(?:command\s+)?documentation|reference)[?.!]*$/i.exec(String(originalMessage).trim());
+      if (exactDoc) {
+        const wanted = controlWords(exactDoc[1]);
+        const matches = [...document.querySelectorAll('a[href]')].filter(link => !root.contains(link) && controlWords(link.textContent || '') === wanted)
+          .map(link => taskGuideUrl(link.href)).filter(url => url && url.href !== location.href);
+        const distinct = [...new Map(matches.map(url => [url.href, url])).values()];
+        if (distinct.length === 1 && navigateTo({ url: distinct[0].href, title: exactDoc[1] }, view)) return { handled: true, type: 'exact-documentation-link' };
+      }
       if (host?.preferLiveGuidance && (taskGuideIntent(message) && (taskGuideTargets(taskGuideIntent(message)).length || taskGuideRoutes(taskGuideIntent(message), []).length)) && handleTaskGuideRequest(message, view)) return { handled: true, type: 'task-guidance' };
       if (await handleVisitorTaskRequest(message, view, originalMessage)) return { handled: true, type: "site-task" };
       if (handleTaskGuideRequest(message, view)) return { handled: true, type: "task-guidance" };
