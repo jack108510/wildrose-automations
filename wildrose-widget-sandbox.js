@@ -1,3 +1,4 @@
+// Rose's v3 voice bridge keeps call authorization and transcript relay on the server.
 (() => {
   const script = document.currentScript;
   const requestedSubtitle = script?.dataset.subtitle?.trim();
