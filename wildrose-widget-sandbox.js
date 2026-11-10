@@ -1952,6 +1952,8 @@
   }
   function taskGuideTargets(goal) {
     const wordsFromGoal = taskGuideWords(goal).filter(word => !/^(?:article|documentation|guide)$/.test(word));
+    const passwordAction = /\b(?:change|update|reset)\b.*\b(?:password|passcode)\b/i.test(goal);
+    const directPasswordControl = element => /^(?:change|update|reset)(?: my| your| the)? (?:account )?(?:password|passcode)(?: now)?$/i.test(controlWords(controlLabel(element)));
     const phoneRequest = /\b(?:iphone|phone)\b/i.test(goal) && !/\b(?:case|cover|folio|screen protector|charger|cable|accessor(?:y|ies))\b/i.test(goal);
     const matchesRequestedItem = label => !phoneRequest || !/\b(?:case|cover|folio|screen protector|charger|cable|accessor(?:y|ies))\b/i.test(label);
     const mapped = installedWorkflows.flatMap(workflow => {
@@ -1960,6 +1962,7 @@
       try {
         const matches = document.querySelectorAll(workflow.target);
         if (matches.length !== 1 || !visibleSiteControl(matches[0])) return [];
+        if (passwordAction && !directPasswordControl(matches[0])) return [];
         return [{ element: matches[0], label: workflow.title, score: 200, workflow }];
       } catch { return []; }
     });
@@ -1969,6 +1972,7 @@
     if (!words.length) return [];
     return [...document.querySelectorAll('a[href], button, [role="button"], [role="tab"], summary')].flatMap(element => {
       if (!visibleSiteControl(element) || element.matches('[type="submit"], [disabled]')) return [];
+      if (passwordAction && !directPasswordControl(element)) return [];
       if (element.matches("a[href]") && !taskGuideUrl(element.href)) return [];
       if (element.matches('a[href]') && !exactArticleRoute(goal, controlLabel(element), new URL(element.href))) return [];
       const controlled = document.getElementById(element.getAttribute('aria-controls') || '');
@@ -1985,6 +1989,7 @@
   function taskGuideRoutes(goal, visited) {
     const hints = taskGuideHints(goal);
     if (!hints.length) return [];
+    const passwordAction = /\b(?:change|update|reset)\b.*\b(?:password|passcode)\b/i.test(goal);
     const currentPathWords = taskGuideWords(location.pathname);
     const remaining = hints.filter(hint => !currentPathWords.includes(hint));
     const activeHints = remaining.length ? remaining : hints;
@@ -1996,11 +2001,12 @@
       return score + (label.includes(hint) ? weight : path.includes(hint) ? Math.max(1, Math.round(weight / 4)) : 0);
     }, 0);
     const routes = new Map();
-    for (const element of document.querySelectorAll('button[aria-controls],button[aria-expanded],button[aria-haspopup],summary,[role="tab"]')) {
+    for (const element of document.querySelectorAll(passwordAction ? 'button,summary,[role="tab"]' : 'button[aria-controls],button[aria-expanded],button[aria-haspopup],summary,[role="tab"]')) {
       if (!visibleSiteControl(element) || element.getAttribute('aria-expanded') === 'true' || element.getAttribute('aria-selected') === 'true' || (element.matches('summary') && element.parentElement?.open)) continue;
       const label = controlLabel(element), key = `control:${label}`;
       if (visited.includes(key)) continue;
       const parts = routeWords(label);
+      if (passwordAction && (parts.length > 3 || !activeHints.some(hint => parts.includes(hint)))) continue;
       const score = hintScore(parts);
       if (score) routes.set(key, { element, label, score, key });
     }
@@ -2013,6 +2019,7 @@
       const path = controlWords(url.pathname);
       const labelParts = routeWords(label);
       const pathParts = routeWords(path);
+      if (passwordAction && !element.closest('nav,header,aside,[role="navigation"]') && !/\/(?:settings|account|profile|security)(?:\/|$)/i.test(url.pathname)) continue;
       const lastPathPart = controlWords(url.pathname.split('/').pop() || '');
       const relevance = hintScore(labelParts, pathParts);
       if (!relevance) continue;
@@ -2123,7 +2130,13 @@
       }
     }
     if (task.phase === 'awaiting') {
-      if (task.fromUrl !== location.href && (!task.targetUrl || taskGuideUrl(task.targetUrl)?.href === location.href)) finishGuideStep(`${task.targetLabel} opened.`);
+      if (task.fromUrl !== location.href && (!task.targetUrl || taskGuideUrl(task.targetUrl)?.href === location.href)) {
+        if (task.nextRoute?.key) {
+          task.visited = [...new Set([...(task.visited || []), task.nextRoute.key])];
+          task.nextRoute = null; task.phase = 'seeking'; task.scanWaited = false;
+          saveSiteSession(); guideAfterLayout(advanceTaskGuide);
+        } else finishGuideStep(`${task.targetLabel} opened.`);
+      }
       else recoverGuide("The page changed before I could confirm the action. Check it, or resume the guide.");
       return true;
     }
