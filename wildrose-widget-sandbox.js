@@ -102,10 +102,11 @@
     .wr-ai .wr-ghost-toggle svg{width:19px;height:19px}
     .wr-ai .wr-ghost-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .wr-ai.wr-ghost-mode:before{opacity:0}
-    .wr-ai .wr-panel.wr-ghost{background:rgba(255,248,243,.015)!important;border:1px solid rgba(255,87,34,.32)!important;box-shadow:0 0 0 1px rgba(255,87,34,.08)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;pointer-events:none}
+    .wr-ai .wr-panel.wr-ghost{background:rgba(255,248,243,.015)!important;border:1px solid rgba(255,87,34,.24)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;pointer-events:none}
     .wr-ai .wr-panel.wr-ghost:before,.wr-ai .wr-panel.wr-ghost:after{opacity:0}
-    .wr-ai .wr-panel.wr-ghost>:not(.wr-ghost-toggle){opacity:.025;pointer-events:none}
+    .wr-ai .wr-panel.wr-ghost>:not(.wr-ghost-toggle){opacity:0!important;visibility:hidden!important;pointer-events:none}
     .wr-ai .wr-panel.wr-ghost>.wr-ghost-toggle{top:12px;right:12px;opacity:.65;background:rgba(255,248,243,.5);border-color:rgba(255,87,34,.3);color:#ad4d26;pointer-events:auto}
+    .wr-ai.wr-website-skin .wr-title small{display:none}
     .wr-result-carousel{min-width:0;margin:3px 0 8px}
     .wr-result-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 6px;padding:4px 2px 7px;background:linear-gradient(90deg,#fff8f3,#ffede5);border-radius:12px;color:var(--ink);font-size:12px;font-weight:850}
     .wr-result-nav{display:flex;align-items:center;gap:6px}.wr-result-position{min-width:38px;text-align:center;color:var(--muted);font-size:11px;font-weight:700}
@@ -286,10 +287,10 @@
   root.innerHTML = `
     <button class="wr-fab" aria-label="Open Rose assistant"><span class="wr-dot"><img src="${cfg.logo}" alt=""></span></button>
     <div class="wr-panel" role="region" aria-label="${cfg.title}">
-      ${host?.websiteSkin ? '<button class="wr-ghost-toggle" type="button" aria-label="Make Rose see-through; double-click" aria-pressed="false" title="Double-click to see through Rose"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 12s3.5-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.5 5.5-9.5 5.5S2.5 12 2.5 12Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg></button>' : ''}
+      ${host?.websiteSkin ? '<button class="wr-ghost-toggle" type="button" aria-label="See through Rose" aria-pressed="false" title="See through Rose"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 12s3.5-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.5 5.5-9.5 5.5S2.5 12 2.5 12Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg></button>' : ''}
       <div class="wr-head"><div class="wr-top"><div class="wr-brand"><div class="wr-mark"><img src="${cfg.logo}" alt=""></div><div class="wr-title"><h3>${cfg.title}</h3><small>${cfg.subtitle}</small></div></div>${cfg.desktopSidePanel ? '<div class="wr-panel-size" aria-label="Panel size"><button type="button" data-size="compact" aria-label="Compact panel">Compact</button><button type="button" data-size="half" aria-label="Half-width panel">Half</button><button type="button" data-size="full" aria-label="Full-width panel">Full</button></div>' : ''}<button class="wr-close" aria-label="Close">×</button></div></div>
       <div class="wr-tabs" role="tablist"><button class="wr-tab" data-view="chat">Chat</button><button class="wr-tab active" data-view="voice">Voice</button>${cfg.desktopSidePanel ? '<button class="wr-tab" data-view="tools">Tools</button>' : ''}</div>
-      <div class="wr-view" role="tabpanel" aria-label="Chat" data-view="chat"><div class="wr-chat-context" aria-label="Site context">Looking at this page</div><div class="wr-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="wr-row"><div class="wr-avatar"><img src="${cfg.logo}" alt=""></div><div class="wr-msg bot">${cfg.greeting}</div></div></div><div class="wr-chat-starters" aria-label="Suggested tasks"></div></div>
+      <div class="wr-view" role="tabpanel" aria-label="Chat" data-view="chat"><div class="wr-chat-context" aria-label="Site context">Looking at this page</div><div class="wr-chat-log" role="log" aria-live="polite" aria-relevant="additions"><div class="wr-row" data-rose-greeting><div class="wr-avatar"><img src="${cfg.logo}" alt=""></div><div class="wr-msg bot">${cfg.greeting}</div></div></div><div class="wr-chat-starters" aria-label="Suggested tasks"></div></div>
       <div class="wr-view active" role="tabpanel" aria-label="Voice" data-view="voice"><div class="wr-voice"><div><div class="wr-orb"></div><div class="wr-status">Ready when you are</div><div class="wr-note">Tap start and speak naturally.</div><button class="wr-primary wr-start-voice">Start talking</button><button class="wr-secondary wr-end-voice" style="display:none">End</button></div></div></div>
       ${cfg.desktopSidePanel ? '<div class="wr-view" role="tabpanel" aria-label="Tools" data-view="tools"><div class="wr-tools"><div class="wr-tools-section"><div class="wr-tools-heading"><h4>Ready on this site</h4><button type="button" class="wr-rescan" aria-label="Refresh site tools">Refresh</button></div><p class="wr-scan-summary" aria-live="polite">Finding useful paths…</p><div class="wr-suggestions"></div></div><div class="wr-tools-section"><details class="wr-tool-options"><summary>Navigation settings</summary><label class="wr-tool-setting"><input type="checkbox" class="wr-auto-open" checked><span><strong>Open a clear match automatically</strong>When Rose finds one matching page, go there for me.</span></label></details></div></div></div>' : ''}
       <div class="wr-compose"><input class="wr-input" placeholder="${cfg.placeholder}"><button class="wr-send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M12 7l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="wr-toast"></div>
@@ -307,13 +308,13 @@
   const chatContext = $(".wr-chat-context");
   const chatStarters = $(".wr-chat-starters");
   const ghostToggle = $(".wr-ghost-toggle");
-  ghostToggle?.addEventListener("dblclick", event => {
+  ghostToggle?.addEventListener("click", event => {
     event.preventDefault();
     const ghost = panel.classList.toggle("wr-ghost");
     root.classList.toggle("wr-ghost-mode", ghost);
     ghostToggle.setAttribute("aria-pressed", String(ghost));
-    ghostToggle.setAttribute("aria-label", ghost ? "Restore Rose; double-click" : "Make Rose see-through; double-click");
-    ghostToggle.title = ghost ? "Double-click to restore Rose" : "Double-click to see through Rose";
+    ghostToggle.setAttribute("aria-label", ghost ? "Restore Rose" : "See through Rose");
+    ghostToggle.title = ghost ? "Restore Rose" : "See through Rose";
   });
   if (host?.minimalUI) {
     const options = document.createElement('button'); options.type = 'button'; options.className = 'wr-options'; options.setAttribute('aria-label','Rose options'); options.setAttribute('aria-expanded','false'); options.textContent = '⋯';
@@ -535,6 +536,7 @@
     appleBuyGuide = /\/shop\/buy-iphone\//i.test(location.pathname) && Date.now() - Number(saved.appleBuyGuide) < 30 * 60 * 1000 ? Number(saved.appleBuyGuide) : 0;
     shoppingHistory = Array.isArray(saved.messages) ? saved.messages.slice(-12) : [];
     shoppingHistory.forEach(message => addMsg(message.role === "user" ? "user" : "bot", String(message.text || "").slice(0, 1600)));
+    if (host?.websiteSkin && shoppingHistory.length) $("[data-rose-greeting]")?.remove();
     lastProducts = Array.isArray(saved.products) ? saved.products.filter(product => product.provider === commerceProvider() && (product.provider !== "native" || product.url === location.href)).slice(0, 4) : [];
     renderProducts(lastProducts);
     lastSitePages = Array.isArray(saved.sitePages) ? saved.sitePages.slice(0, 4) : [];
@@ -1134,7 +1136,10 @@
       row.append(icon, copy, arrow);
       list.appendChild(row);
     }
-    if (chatContext) chatContext.textContent = `Looking at ${document.title.replace(/\s+/g, " ").trim().slice(0, 55) || location.hostname}`;
+    if (chatContext) {
+      const pageName = document.title.replace(/\s+/g, " ").trim().slice(0, 55) || location.hostname;
+      chatContext.textContent = host?.websiteSkin ? pageName : `Looking at ${pageName}`;
+    }
     if (chatStarters) {
       chatStarters.replaceChildren();
       const shoppingPage = !!document.querySelector('[data-component-type="s-search-result"],.product-card,.product-item,.product_pod,[itemtype$="/Product"]');
@@ -1360,7 +1365,7 @@
     log.appendChild(list);
   }
   function ensureGuidePlan() {
-    if (!guideActivity.plan) guideActivity.plan = { title: "Let's do this step by step", items: [] };
+    if (!guideActivity.plan) guideActivity.plan = { title: host?.websiteSkin ? "Steps" : "Let's do this step by step", items: [] };
     return guideActivity.plan;
   }
   function planStep(key, label, state = 'current') {
@@ -2075,8 +2080,8 @@
       const addAction = (label, handler) => { const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.addEventListener('click', handler); actions.appendChild(button); };
       if (pendingTaskGuide?.paused) addAction('Resume guide', resumeGuide);
       else {
-        if (activeSpotlight) { addAction('Focus highlighted control', focusGuideTarget); actions.lastChild.setAttribute('aria-keyshortcuts', 'Alt+Shift+G'); }
-        addAction('Pause guide', pauseGuide);
+        if (activeSpotlight) { addAction(host?.websiteSkin ? 'Show target' : 'Focus highlighted control', focusGuideTarget); actions.lastChild.setAttribute('aria-keyshortcuts', 'Alt+Shift+G'); }
+        addAction(host?.websiteSkin ? 'Pause' : 'Pause guide', pauseGuide);
       }
       status.after(actions);
     }
@@ -3586,6 +3591,7 @@
     const content = input.value.trim();
     if (!content) return;
     input.value = "";
+    if (host?.websiteSkin) $("[data-rose-greeting]")?.remove();
     addMsg("user", content);
     shoppingHistory.push({ role: "user", text: content }); saveSiteSession();
     chatStarters?.replaceChildren();
