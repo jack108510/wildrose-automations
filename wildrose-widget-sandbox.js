@@ -106,7 +106,9 @@
     .wr-ai .wr-panel.wr-ghost:before,.wr-ai .wr-panel.wr-ghost:after{opacity:0}
     .wr-ai .wr-panel.wr-ghost>:not(.wr-ghost-toggle){opacity:0!important;visibility:hidden!important;pointer-events:none}
     .wr-ai .wr-panel.wr-ghost>.wr-ghost-toggle{top:12px;right:12px;opacity:.65;background:rgba(255,248,243,.5);border-color:rgba(255,87,34,.3);color:#ad4d26;pointer-events:auto}
-    .wr-ai.wr-website-skin .wr-title small{display:none}
+    .wr-ai.wr-website-skin .wr-brand,.wr-ai.wr-website-skin .wr-title{min-width:0}
+    .wr-ai.wr-website-skin .wr-title small{display:block;max-width:145px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .wr-ai.wr-website-skin .wr-chat-context{display:none}
     .wr-result-carousel{min-width:0;margin:3px 0 8px}
     .wr-result-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 6px;padding:4px 2px 7px;background:linear-gradient(90deg,#fff8f3,#ffede5);border-radius:12px;color:var(--ink);font-size:12px;font-weight:850}
     .wr-result-nav{display:flex;align-items:center;gap:6px}.wr-result-position{min-width:38px;text-align:center;color:var(--muted);font-size:11px;font-weight:700}
@@ -340,8 +342,10 @@
           account.disabled = !state.available || state.connecting;
           account.textContent = state.connected ? 'Disconnect ChatGPT' : state.connecting ? 'Connecting to ChatGPT…' : 'Continue with ChatGPT';
           note.textContent = !state.available ? state.reason : state.connected ? `Using ChatGPT plan${state.email ? ' · '+state.email : ''}. Manage usage in ChatGPT settings.` : 'Rose sends your chat and the current page address, title, description, and headings to OpenAI.';
-          if (state.connected) $('.wr-title small').textContent = 'Using ChatGPT plan';
-          else if ($('.wr-title small').textContent === 'Using ChatGPT plan') $('.wr-title small').textContent = cfg.subtitle;
+          if (!host?.websiteSkin) {
+            if (state.connected) $('.wr-title small').textContent = 'Using ChatGPT plan';
+            else if ($('.wr-title small').textContent === 'Using ChatGPT plan') $('.wr-title small').textContent = cfg.subtitle;
+          }
         } catch (error) { note.textContent = error.message; }
       };
       account.addEventListener('click', async event => {
