@@ -98,7 +98,7 @@
 
   const style = document.createElement("style");
   style.textContent = css + `
-    .wr-ai .wr-ghost-toggle{position:absolute;z-index:9;top:18px;right:100px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.48);border-radius:11px;background:rgba(255,255,255,.28);color:#78513f;cursor:pointer;backdrop-filter:blur(12px)}
+    .wr-ai .wr-ghost-toggle{position:absolute;z-index:9;top:18px;right:100px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:9px;background:#f7eae1;color:#62483b;cursor:pointer}
     .wr-ai .wr-ghost-toggle svg{width:19px;height:19px}
     .wr-ai .wr-ghost-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .wr-ai.wr-ghost-mode:before{opacity:0}
@@ -106,8 +106,7 @@
     .wr-ai .wr-panel.wr-ghost:before,.wr-ai .wr-panel.wr-ghost:after{opacity:0}
     .wr-ai .wr-panel.wr-ghost>:not(.wr-ghost-toggle){opacity:0!important;visibility:hidden!important;pointer-events:none}
     .wr-ai .wr-panel.wr-ghost>.wr-ghost-toggle{top:12px;right:12px;opacity:.65;background:rgba(255,248,243,.5);border-color:rgba(255,87,34,.3);color:#ad4d26;pointer-events:auto}
-    .wr-ai.wr-website-skin .wr-brand,.wr-ai.wr-website-skin .wr-title{min-width:0}
-    .wr-ai.wr-website-skin .wr-title small{display:block;max-width:145px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .wr-ai.wr-website-skin .wr-title small{display:none}
     .wr-ai.wr-website-skin .wr-chat-context{display:none}
     .wr-result-carousel{min-width:0;margin:3px 0 8px}
     .wr-result-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 3px 6px;padding:4px 2px 7px;background:linear-gradient(90deg,#fff8f3,#ffede5);border-radius:12px;color:var(--ink);font-size:12px;font-weight:850}
