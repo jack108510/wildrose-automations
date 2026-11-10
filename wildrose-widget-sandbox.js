@@ -612,11 +612,42 @@
   function saveSiteSession() {
     try { sessionStorage.setItem(siteSessionKey, JSON.stringify({ chatId, messages: shoppingHistory.slice(-12), products: lastProducts, sitePages: lastSitePages, navigationChoices: lastNavigationChoices, pendingNavigation, pendingSiteSearch, pendingTaskGuide, guideActivity, appleBuyGuide })); } catch { /* Storage can be disabled. */ }
   }
+  function rankedSiteSearchResult(query, links, fromPath = '') {
+    const ignored = new Set(['a', 'an', 'the', 'and', 'or', 'to', 'for', 'how', 'do', 'i', 'my', 'your', 'find', 'page', 'article', 'guide', 'docs', 'documentation', 'command']);
+    const terms = value => controlWords(value).split(' ').filter(word => word.length > 2 && !ignored.has(word));
+    const wanted = terms(query);
+    if (!wanted.length) return null;
+    const same = (part, word) => part === word || part.startsWith(word.slice(0, Math.min(4, word.length)));
+    const originParts = fromPath.split('/').filter(Boolean);
+    const found = new Map();
+    for (const link of links) {
+      if (!visibleSiteControl(link)) continue;
+      const url = safePageUrl(link.href);
+      if (!url || url.pathname === location.pathname) continue;
+      const rawTitle = String(link.querySelector('span, strong')?.textContent || link.textContent || '').split(/\s+[—|–-]\s+/)[0].split(/\s*:\s*/).at(-1);
+      const title = terms(rawTitle), path = terms(url.pathname), last = terms(url.pathname.split('/').filter(Boolean).at(-1) || '');
+      if (!wanted.every(word => [...title, ...path].some(part => same(part, word)))) continue;
+      const hits = parts => wanted.filter(word => parts.some(part => same(part, word))).length;
+      const pathParts = url.pathname.split('/').filter(Boolean);
+      let shared = 0;
+      while (shared < originParts.length && originParts[shared] === pathParts[shared]) shared++;
+      const score = hits(title) * 5 + hits(last) * 8 + hits(path) * 3 + shared * 4 +
+        (title.length === wanted.length && hits(title) === wanted.length ? 30 : 0) -
+        Math.max(0, title.length - wanted.length) - (url.hash ? 3 : 0);
+      url.hash = '';
+      const prior = found.get(url.pathname);
+      if (!prior || score > prior.score) found.set(url.pathname, { url, title: rawTitle, score });
+    }
+    const sorted = [...found.values()].sort((a, b) => b.score - a.score);
+    return sorted[0] && (!sorted[1] || sorted[0].score - sorted[1].score >= 5) ? sorted[0] : null;
+  }
   async function resumeSiteSearch() {
     const search = pendingSiteSearch;
     if (!search || Date.now() - search.at > 30000) return;
     const requestedUrl = safePageUrl(search.url);
-    if (!requestedUrl || requestedUrl.pathname !== location.pathname || [...requestedUrl.searchParams].some(([key, value]) => new URL(location.href).searchParams.get(key) !== value)) return;
+    const dynamicSearch = search.dynamic && /\bsearch\b/i.test(`${location.pathname} ${document.title}`) &&
+      [...new URL(location.href).searchParams.values()].some(value => controlWords(value) === controlWords(search.siteQuery || search.query));
+    if (!requestedUrl || (!dynamicSearch && (requestedUrl.pathname !== location.pathname || [...requestedUrl.searchParams].some(([key, value]) => new URL(location.href).searchParams.get(key) !== value)))) return;
     const wanted = controlWords(search.query).replace(/^(?:how to|how do i|how can i|the)\s+/, '');
     const words = wanted.split(' ').filter(Boolean);
     const originParts = String(search.fromPath || '').split('/').filter(Boolean);
@@ -639,12 +670,19 @@
         navigateTo({ url: distinct[0].url.href, title: search.query }, search.view || 'chat');
         return;
       }
+      const ranked = rankedSiteSearchResult(search.query, document.querySelectorAll('main a[href], [data-result-type]'), search.fromPath);
+      if (ranked) {
+        pendingSiteSearch = null;
+        addMsg('bot', `Found ${ranked.title} in this site's results.`);
+        navigateTo({ url: ranked.url.href, title: ranked.title }, search.view || 'chat');
+        return;
+      }
       if (distinct.length > 1) break;
       if (attempt > 0 && words.length > 1 && [...document.querySelectorAll('[class*="results"] a[href], [id*="results"] a[href]')]
         .some(link => !root.contains(link) && visibleSiteControl(link) && controlWords(link.textContent || '').includes(words.at(-1)))) break;
       await new Promise(resolve => setTimeout(resolve, 350));
     }
-    if (!search.refined && words.length > 1) {
+    if (!search.dynamic && !search.refined && words.length > 1) {
       const shorter = new URL(search.url);
       for (const [key, value] of shorter.searchParams) if (value === search.query) shorter.searchParams.set(key, words.at(-1));
       if (shorter.href !== search.url) {
@@ -2919,7 +2957,8 @@
       const searches = discoverSiteControls().filter(control => control.kind === "search");
       const query = goal.replace(/^(?:my|the|a|an)\s+/i, "").replace(/\b(?:(?:command|article|documentation|docs|guide)\s*)+$/i, "").trim().slice(0, 120);
       if (!query) return false;
-      const siteQuery = /^(?:javascript|typescript|python|html|css)\s+([\w-]+)$/i.exec(query)?.[1] || query;
+      const conciseQuery = query.replace(/^(?:how to|how do i|how can i)\s+/i, '');
+      const siteQuery = /^(?:javascript|typescript|python|html|css)\s+([\w-]+)$/i.exec(conciseQuery)?.[1] || conciseQuery;
       const openSearchResults = async rawUrl => {
         const searchUrl = safePageUrl(rawUrl);
         if (!searchUrl) return false;
@@ -2968,7 +3007,7 @@
           } catch { /* Fall back to the site's own results page. */ }
         }
         addMsg("bot", `Opening this site's search results for “${query}”.`);
-        pendingSiteSearch = { query, url: searchUrl.href, fromPath: location.pathname, view, at: Date.now() };
+        pendingSiteSearch = { query, siteQuery, url: searchUrl.href, fromPath: location.pathname, view, at: Date.now() };
         saveSiteSession();
         if (typeof sessionStorage.flush === 'function') await Promise.race([sessionStorage.flush().catch(() => {}), new Promise(resolve => setTimeout(resolve, 1500))]);
         location.assign(searchUrl.href);
@@ -2997,6 +3036,31 @@
           for (const hidden of form.querySelectorAll('input[type="hidden"][name]')) if (hidden.value) action.searchParams.set(hidden.name, hidden.value);
           action.searchParams.set(element.name, siteQuery);
           return openSearchResults(action.href);
+        }
+        if (form && !element.name && action?.origin === location.origin && form.method.toLowerCase() === 'get' &&
+          !form.querySelector('input[type="password"], input[type="email"], input[type="tel"]')) {
+          // A script-owned search field may ignore synthetic keyboard events. Use
+          // its public results route when the server confirms it is a search page.
+          const searchUrl = new URL('/search/', location.origin);
+          searchUrl.searchParams.set('q', siteQuery);
+          try {
+            const response = await fetch(searchUrl.href, { credentials: 'same-origin', signal: AbortSignal.timeout(3500) });
+            if (response.ok && /<title[^>]*>[^<]*search\b/i.test(await response.text())) return openSearchResults(searchUrl.href);
+          } catch { /* The visible field remains the fallback. */ }
+          const before = location.href;
+          pendingSiteSearch = { query, siteQuery, url: before, fromPath: location.pathname, dynamic: true, view, at: Date.now() };
+          saveSiteSession();
+          // Client-side search often appears before its keyboard handler is ready.
+          await new Promise(resolve => setTimeout(resolve, 1200));
+          element.focus();
+          const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+          setter?.call(element, siteQuery);
+          element.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: siteQuery }));
+          element.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true }));
+          await new Promise(resolve => setTimeout(resolve, 250));
+          if (location.href !== before) return true;
+          pendingSiteSearch = null;
+          saveSiteSession();
         }
         showSpotlight(element, label || "Search");
         addMsg("bot", `Use this site's search for “${query}”. I highlighted the search field.`);
@@ -3040,9 +3104,15 @@
       // Search dialogs expose a button first, then an input and a results link.
       const triggers = [...document.querySelectorAll('button[aria-label], [role="button"][aria-label]')].filter(element => !root.contains(element) && visibleSiteControl(element) && /search/i.test(element.getAttribute("aria-label") || ""));
       if (!triggers.length) return false;
-      (triggers.find(element => element.getAttribute("aria-haspopup") === "dialog") || triggers[0]).click();
-      await new Promise(resolve => setTimeout(resolve, 150));
-      const inputs = [...document.querySelectorAll('input[role="combobox"], input[role="searchbox"], input[type="search"]')].filter(element => visibleSiteControl(element) && /search/i.test(`${controlLabel(element)} ${element.placeholder || ""}`));
+      const trigger = triggers.find(element => element.getAttribute("aria-haspopup") === "dialog") || triggers[0];
+      let inputs = [];
+      for (let attempt = 0; attempt < 8; attempt++) {
+        // A search button may be visible before the site's click handler hydrates.
+        if (!inputs.length && attempt % 2 === 0) trigger.click();
+        await new Promise(resolve => setTimeout(resolve, 150));
+        inputs = [...document.querySelectorAll('input[role="combobox"], input[role="searchbox"], input[type="search"]')].filter(element => visibleSiteControl(element) && /search/i.test(`${controlLabel(element)} ${element.placeholder || ""}`));
+        if (inputs.length) break;
+      }
       if (inputs.length !== 1) return false;
       const input = inputs[0];
       const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
@@ -3051,6 +3121,10 @@
       input.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "insertText", data: siteQuery }));
       for (let attempt = 0; attempt < 20; attempt++) {
         await new Promise(resolve => setTimeout(resolve, 250));
+        const exact = rankedSiteSearchResult(query, document.querySelectorAll('pagefind-results a[href], [data-result-type]'), location.pathname);
+        const documentationTopic = /^find\s+(?:the\s+)?(.+?)\s+(?:documentation|reference)[?.!]*$/i.exec(String(originalMessage).trim())?.[1];
+        if (exact && (!documentationTopic || controlWords(exact.title) === controlWords(documentationTopic)) &&
+          navigateTo({ url: exact.url.href, title: exact.title }, view)) return true;
         const result = [...document.querySelectorAll('a[href]')].find(link => visibleSiteControl(link) && /view all .*results/i.test(link.textContent || "") && safePageUrl(link.href));
         if (result) {
           return openSearchResults(result.href);
@@ -3060,6 +3134,9 @@
       addMsg("bot", `I opened this site's search for “${query}”. Review the results in its search panel.`);
       return true;
     };
+    const docTopic = /^find\s+(?:the\s+)?(.+?)\s+(?:documentation|reference)[?.!]*$/i.exec(String(originalMessage).trim())?.[1];
+    if (ranked.length && docTopic && controlWords(ranked[0].item.title) !== controlWords(docTopic) && await trySiteSearch()) return true;
+    if (ranked.length && words.length >= 3 && ranked[0].titleMatches < 2 && await trySiteSearch()) return true;
     if (!ranked.length && (host?.mapping || cfg.apiBase && cfg.businessId)) {
       const status = addMsg("bot", "Looking through this site's map…");
       let mapped = [];
@@ -3136,6 +3213,7 @@
           .map(link => taskGuideUrl(link.href)).filter(url => url && url.href !== location.href);
         const distinct = [...new Map(matches.map(url => [url.href, url])).values()];
         if (distinct.length === 1 && navigateTo({ url: distinct[0].href, title: exactDoc[1] }, view)) return { handled: true, type: 'exact-documentation-link' };
+        if (await handleVisitorTaskRequest(message, view, originalMessage)) return { handled: true, type: 'documentation-search' };
       }
       if (host?.preferLiveGuidance && (taskGuideIntent(message) && (taskGuideTargets(taskGuideIntent(message)).length || taskGuideRoutes(taskGuideIntent(message), []).length)) && handleTaskGuideRequest(message, view)) return { handled: true, type: 'task-guidance' };
       if (await handleVisitorTaskRequest(message, view, originalMessage)) return { handled: true, type: "site-task" };
