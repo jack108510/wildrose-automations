@@ -98,14 +98,16 @@
 
   const style = document.createElement("style");
   style.textContent = css + `
-    .wr-ai .wr-ghost-toggle{position:absolute;z-index:9;top:18px;right:100px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:9px;background:#f7eae1;color:#62483b;cursor:pointer}
+    .wr-ai .wr-ghost-toggle{width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:9px;background:#f7eae1;color:#62483b;cursor:pointer}
     .wr-ai .wr-ghost-toggle svg{width:19px;height:19px}
     .wr-ai .wr-ghost-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .wr-ai.wr-ghost-mode:before{opacity:0}
     .wr-ai .wr-panel.wr-ghost{background:rgba(255,248,243,.015)!important;border:1px solid rgba(255,87,34,.24)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;pointer-events:none}
     .wr-ai .wr-panel.wr-ghost:before,.wr-ai .wr-panel.wr-ghost:after{opacity:0}
-    .wr-ai .wr-panel.wr-ghost>:not(.wr-ghost-toggle){opacity:0!important;visibility:hidden!important;pointer-events:none}
-    .wr-ai .wr-panel.wr-ghost>.wr-ghost-toggle{top:12px;right:12px;opacity:.65;background:rgba(255,248,243,.5);border-color:rgba(255,87,34,.3);color:#ad4d26;pointer-events:auto}
+    .wr-ai .wr-panel.wr-ghost>:not(.wr-head){opacity:0!important;visibility:hidden!important;pointer-events:none}
+    .wr-ai .wr-panel.wr-ghost>.wr-head{pointer-events:none}
+    .wr-ai .wr-panel.wr-ghost .wr-brand,.wr-ai .wr-panel.wr-ghost .wr-options,.wr-ai .wr-panel.wr-ghost .wr-close{opacity:0!important;visibility:hidden!important;pointer-events:none}
+    .wr-ai.wr-website-skin.wr-minimal .wr-panel.wr-ghost .wr-ghost-toggle{grid-column:4;grid-row:1;opacity:.65;background:rgba(255,248,243,.5);color:#ad4d26;pointer-events:auto}
     .wr-ai.wr-website-skin .wr-title small{display:none}
     .wr-ai.wr-website-skin .wr-chat-context{display:none}
     .wr-result-carousel{min-width:0;margin:3px 0 8px}
@@ -263,8 +265,17 @@
     .wr-ai.wr-website-skin.wr-size-compact.wr-guide-left:not(.inline) .wr-panel{top:12px;bottom:auto}
     @keyframes wrDropIn{from{opacity:0;transform:translateY(-18px) scale(.972);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
     .wr-ai.wr-minimal .wr-top{display:grid;grid-template-columns:minmax(0,1fr) 34px 36px;gap:7px}
+    .wr-ai.wr-website-skin.wr-minimal .wr-top{grid-template-columns:minmax(0,1fr) 34px 34px 36px}
+    .wr-ai.wr-website-skin.wr-minimal .wr-ghost-toggle{grid-column:2;grid-row:1}
     .wr-ai.wr-minimal .wr-options{grid-column:2;grid-row:1;width:34px;height:34px;border:0;border-radius:9px;background:#f7eae1;color:#62483b;font-size:20px;line-height:1;cursor:pointer}
+    .wr-ai.wr-website-skin.wr-minimal .wr-options{grid-column:3}
     .wr-ai.wr-minimal .wr-close{grid-column:3;grid-row:1}
+    .wr-ai.wr-website-skin.wr-minimal .wr-close{grid-column:4}
+    .wr-ai .wr-typing{display:flex;align-items:center;gap:4px;min-height:34px;padding:10px 13px}
+    .wr-ai .wr-typing i{width:6px;height:6px;border-radius:50%;background:#b87658;animation:wrTyping 1.1s ease-in-out infinite}
+    .wr-ai .wr-typing i:nth-child(2){animation-delay:.15s}.wr-ai .wr-typing i:nth-child(3){animation-delay:.3s}
+    @keyframes wrTyping{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+    @media (prefers-reduced-motion:reduce){.wr-ai .wr-typing i{animation:none;opacity:.7}}
     .wr-ai.wr-minimal .wr-head{position:relative;z-index:5}
     .wr-ai.wr-minimal .wr-options-menu{position:absolute;right:14px;top:58px;min-width:240px;padding:8px;border:1px solid #ead8cc;border-radius:12px;background:#fff;box-shadow:0 16px 36px rgba(47,26,14,.18);z-index:8}
     .wr-ai.wr-minimal .wr-options-menu[hidden]{display:none}
@@ -309,6 +320,7 @@
   const chatContext = $(".wr-chat-context");
   const chatStarters = $(".wr-chat-starters");
   const ghostToggle = $(".wr-ghost-toggle");
+  if (ghostToggle) $('.wr-top').insertBefore(ghostToggle, $('.wr-close'));
   ghostToggle?.addEventListener("click", event => {
     event.preventDefault();
     const ghost = panel.classList.toggle("wr-ghost");
@@ -532,6 +544,14 @@
     log.appendChild(el);
     log.parentElement.scrollTop = log.parentElement.scrollHeight;
     return el;
+  }
+  function showTypingIndicator() {
+    const bubble = addMsg('bot', '');
+    bubble.classList.add('wr-typing');
+    bubble.setAttribute('role', 'status');
+    bubble.setAttribute('aria-label', 'Rose is typing');
+    bubble.innerHTML = '<i></i><i></i><i></i>';
+    return bubble.closest('.wr-row');
   }
   try {
     const saved = JSON.parse(sessionStorage.getItem(siteSessionKey) || "{}");
@@ -3598,6 +3618,8 @@
     addMsg("user", content);
     shoppingHistory.push({ role: "user", text: content }); saveSiteSession();
     chatStarters?.replaceChildren();
+    const typing = showTypingIndicator();
+    try {
     if (host?.answerPageQuestion && /\b(?:answer|solve|multiple.choice|mcq|mc|correct (?:option|choice)|which (?:option|choice)|which one is (?:right|correct))\b/i.test(content)) {
       if (!event?.isTrusted) { addMsg('bot', 'Use the Rose chat box to ask about a question.'); return; }
       clearAnswerHint();
@@ -3617,7 +3639,13 @@
       addMsg("bot", "Which phone model do you mean? Tell me the model name and I’ll find its buying page.");
       return;
     }
-    const request = host?.normalizeRequest ? host.normalizeRequest(content) : content;
+    const pagePhrase = /^(?:(?:the|my)\s+)?([\w][\w\s-]{0,60}?)\s+(?:page|section|tab)[?.!]*$/i;
+    const previousPage = /^(?:find|show|open)(?: me)?\s+(?:it|that|there)[?.!]*$/i.test(content)
+      ? shoppingHistory.slice(0, -1).reverse().find(item => item.role === 'user' && pagePhrase.test(item.text))?.text : null;
+    const pageTarget = pagePhrase.exec(previousPage || content)?.[1]?.trim();
+    const visiblePageRequest = host?.websiteSkin && pageTarget && guidanceCandidates(pageTarget).length
+      ? `where is ${pageTarget}` : null;
+    const request = visiblePageRequest || (host?.normalizeRequest ? host.normalizeRequest(content) : content);
     if ((await executeRequestedAction(request, 'chat', content)).handled) return;
     if (cfg.desktopSidePanel && navigationRequested(content)) {
       const localPages = currentPageLinks(content);
@@ -3682,6 +3710,7 @@
       }
       console.error(e);
     }
+    } finally { typing.remove(); }
   }
 
   $(".wr-send").addEventListener("click", submitChat);
