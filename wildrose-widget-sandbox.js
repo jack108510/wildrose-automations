@@ -266,10 +266,6 @@
     .wr-ai.wr-minimal .wr-options-menu .wr-chatgpt-button{border-top:1px solid #f1e8e2;border-radius:0}
     .wr-ai.wr-minimal .wr-chat-context{margin-top:6px}
     .wr-ai.wr-minimal .wr-chat-log .wr-row:first-child .wr-msg{font-weight:550}
-    .wr-ai.wr-extension-voice .wr-voice:not(.is-active) .wr-orb{display:none}
-    .wr-ai.wr-extension-voice .wr-voice:not(.is-active) .wr-status{font-family:ui-serif,Georgia,"Times New Roman",serif;font-size:32px;font-weight:600;letter-spacing:-.055em;line-height:1.05;margin-bottom:12px}
-    .wr-ai.wr-extension-voice .wr-voice:not(.is-active) .wr-note{max-width:250px;margin:0 auto 23px;font-size:13px;line-height:1.5}
-    .wr-ai.wr-extension-voice .wr-voice:not(.is-active) .wr-primary{min-width:172px}
     @keyframes wrAnswerGlow{0%,100%{opacity:0;box-shadow:0 0 0 0 rgba(255,107,43,0)}18%,70%{opacity:1;box-shadow:0 0 0 8px rgba(255,107,43,.24),0 0 24px 8px rgba(255,107,43,.35)}}
     @keyframes wrAnswerFade{0%,100%{opacity:0;transform:translateY(4px)}14%,78%{opacity:1;transform:none}}
     .wr-ai.wr-quick-scanning .wr-fab{animation:wrQuickScan 1.15s ease-in-out infinite}
@@ -484,7 +480,7 @@
     };
     $('.wr-close').addEventListener('click', () => host.onClose?.());
     if (!host.voiceEnabled) { $('.wr-start-voice').disabled = true; $('.wr-note').textContent = 'Speech input is unavailable in this browser. Use Chat for website guidance.'; }
-    else { $('.wr-status').textContent = 'Talk to Rose'; $('.wr-note').textContent = 'Ask where to go or what to do on this page.'; }
+    else { $('.wr-status').textContent = 'Ready when you are'; $('.wr-note').textContent = 'Tap start and speak naturally.'; }
   }
   setView(cfg.defaultView);
   $(".wr-tabs").addEventListener("keydown", event => {
