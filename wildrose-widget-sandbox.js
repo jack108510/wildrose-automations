@@ -352,7 +352,7 @@
           const state = await host.chatgpt.status();
           account.disabled = !state.available || state.connecting;
           account.textContent = state.connected ? 'Disconnect ChatGPT' : state.connecting ? 'Connecting to ChatGPT…' : 'Continue with ChatGPT';
-          note.textContent = !state.available ? state.reason : state.connected ? `Using ChatGPT plan${state.email ? ' · '+state.email : ''}. Manage usage in ChatGPT settings.` : 'Rose sends your chat and the current page address, title, description, and headings to OpenAI.';
+          note.textContent = !state.available ? state.reason : state.connected ? `Using ChatGPT plan${state.email ? ' · '+state.email : ''}. Manage usage in ChatGPT settings.` : 'Rose sends your chat, current page title and address, headings, and a short list of visible links and controls to your provider.';
           if (!host?.websiteSkin) {
             if (state.connected) $('.wr-title small').textContent = 'Using ChatGPT plan';
             else if ($('.wr-title small').textContent === 'Using ChatGPT plan') $('.wr-title small').textContent = cfg.subtitle;
@@ -745,15 +745,21 @@
     target.appendChild(document.createElement("br"));
     target.appendChild(link);
   }
-  function currentPageContext() {
+  function currentPageContext(message = "") {
     const description = document.querySelector('meta[name="description"]')?.content || "";
     const headings = [...document.querySelectorAll("main h1, main h2, h1")].slice(0, 6).map(el => el.textContent.trim()).filter(Boolean);
     const controls = widgetOptions.siteControls ? discoverSiteControls().slice(0, 16).map(control => ({ id: control.id, kind: control.kind, label: control.label, options: control.options?.slice(0, 8) })) : [];
-    const links = [...document.querySelectorAll("nav a[href], header a[href], main a[href]")].filter(link => !root.contains(link) && visibleSiteControl(link)).slice(0, 30).flatMap(link => {
+    const terms = visitorTaskWords(message);
+    const links = [...document.querySelectorAll("a[href]")].filter(link => !root.contains(link) && visibleSiteControl(link) && safeControl(link)).flatMap(link => {
       const url = toolUrl(link.href);
       const title = controlLabel(link);
-      return url && title ? [{ title: title.slice(0, 60), url: `${url.origin}${url.pathname}` }] : [];
-    }).slice(0, 12);
+      if (!url || !title) return [];
+      const labelWords = visitorTaskWords(title);
+      const pathWords = visitorTaskWords(url.pathname);
+      const score = terms.reduce((sum, word) => sum + (labelWords.includes(word) ? 4 : pathWords.includes(word) ? 1 : 0), 0);
+      return [{ title: title.slice(0, 60), url: `${url.origin}${url.pathname}`, score, inNavigation: !!link.closest('nav, aside, header, [role="navigation"]') }];
+    }).sort((a, b) => b.score - a.score || Number(b.inNavigation) - Number(a.inNavigation)).slice(0, 12)
+      .map(({ title, url }) => ({ title, url }));
     return { url: `${location.origin}${location.pathname}`, title: document.title.slice(0, 180), description: description.slice(0, 400), headings: headings.join(" | ").slice(0, 600), controls, links };
   }
   function safePageUrl(value) {
@@ -2914,7 +2920,7 @@
   }
   function visitorTaskLinks(doc = document, base = location.href) {
     const links = new Map();
-    for (const anchor of doc.querySelectorAll("main a[href], article a[href], [role='main'] a[href], #mw-content-text a[href]")) {
+    for (const anchor of doc.querySelectorAll(doc === document ? "a[href]" : "main a[href], article a[href], [role='main'] a[href], #mw-content-text a[href]")) {
       if (doc === document && (root.contains(anchor) || !visibleSiteControl(anchor))) continue;
       let url;
       try { url = toolUrl(new URL(anchor.getAttribute("href"), base).href); } catch { continue; }
@@ -2922,7 +2928,7 @@
       const title = (anchor.textContent || controlLabel(anchor)).replace(/\s+/g, " ").trim().slice(0, 60);
       if (!title) continue;
       const context = (anchor.getAttribute("title") || "") + " " + (anchor.closest("li, p")?.textContent.replace(/\s+/g, " ").trim().slice(0, 180) || "");
-      const item = { key: url.href, kind: "link", title, url: url.href, detail: "Page link", context, redirect: anchor.classList.contains("mw-redirect"), inNavigation: !!anchor.closest("nav, header, [role='navigation']"), score: 0 };
+      const item = { key: url.href, kind: "link", title, url: url.href, detail: "Page link", context, redirect: anchor.classList.contains("mw-redirect"), inNavigation: !!anchor.closest("nav, aside, header, [role='navigation']"), score: 0 };
       const previous = links.get(url.href);
       if (!previous || title.length > previous.title.length || (title.length === previous.title.length && context.length < previous.context.length)) links.set(url.href, item);
     }
@@ -3664,7 +3670,7 @@
       }
     }
     if (host?.fallbackReply) {
-      const reply = await host.fallbackReply(content, currentPageContext(), !!event?.isTrusted); addMsg('bot', reply);
+      const reply = await host.fallbackReply(content, currentPageContext(content), !!event?.isTrusted); addMsg('bot', reply);
       shoppingHistory.push({ role: 'bot', text: reply }); saveSiteSession(); return;
     }
     const pending = addMsg("bot", "Looking into that…");
@@ -3672,7 +3678,7 @@
       let products = [];
       try { products = await findProducts(content); } catch (error) { console.warn("Rose product search unavailable", error); }
       const id = await ensureChat();
-      const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageContext: currentPageContext(), shoppingProducts: products });
+      const data = await api("/api/chat/message", { chatId: id, content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageContext: currentPageContext(content), shoppingProducts: products });
       pending.textContent = data.reply || "I can help with that.";
       shoppingHistory.push({ role: "bot", text: pending.textContent }); saveSiteSession();
       renderProducts(products);
