@@ -46,9 +46,142 @@
   function setView(view){ $$(".wr-tab").forEach(t=>t.classList.toggle("active",t.dataset.view===view)); $$(".wr-view").forEach(v=>v.classList.toggle("active",v.dataset.view===view)); $(".wr-compose").style.display = view === "chat" ? "flex" : "none"; }
   setView("voice");
   function addMsg(role, text){ if(role === "bot"){ const row=document.createElement("div"); row.className="wr-row"; row.innerHTML='<div class="wr-avatar">R</div>'; const bubble=document.createElement("div"); bubble.className="wr-msg bot"; bubble.textContent=text; row.appendChild(bubble); log.appendChild(row); log.parentElement.scrollTop=log.parentElement.scrollHeight; return bubble; } const el=document.createElement("div"); el.className="wr-msg user"; el.textContent=text; log.appendChild(el); log.parentElement.scrollTop=log.parentElement.scrollHeight; return el; }
+  // Keep guidance on the host page; only the visitor can activate a control or link.
+  const guideKey = "rose-direct-guide:" + location.origin;
+  const blockedPath = () => /^\/(?:account|admin|cart|checkout|checkouts|orders|password)(?:\/|$)/i.test(location.pathname);
+  const wordsOf = value => String(value || "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().split(" ").filter(Boolean);
+  const labelOf = element => String(element.getAttribute("aria-label") || [...(element.labels || [])].map(label => label.textContent).join(" ") || element.textContent || element.getAttribute("title") || element.getAttribute("placeholder") || "").replace(/\s+/g, " ").trim().slice(0, 100);
+  const visible = element => !!element && !root.contains(element) && !element.disabled && !element.closest('[hidden],[aria-hidden="true"],[inert]') && element.getClientRects().length > 0 && getComputedStyle(element).visibility !== "hidden";
+  const safe = element => !/\b(?:password|payment|credit|card number|checkout|purchase|place order|confirm order|pay|delete|remove|unsubscribe|subscribe|consent|privacy|login|logout|sign in|sign out|sign up|register|email|phone|address|book|reserve|upload|send)\b/i.test(`${labelOf(element)} ${element.name || ""} ${element.id || ""} ${element.closest("form")?.action || ""}`);
+  const safeLink = element => { try { const url = new URL(element.href, location.href); return /^https?:$/.test(url.protocol) && url.origin === location.origin && !/^\/(?:admin|cart|checkout|checkouts|orders|password)(?:\/|$)/i.test(url.pathname); } catch { return false; } };
+  const guideWords = query => wordsOf(query).map(word => ({ invoices:"invoice", payments:"payment", subscriptions:"subscription" })[word] || word).filter(word => word.length > 1 && !new Set(["the","a","an","button","link","field","section","selector","option","on","this","page","please","to","my","your","choose","change","set","find","show","me","where","is","about","info","information","how","do","can","i","take","go","open","site","website"]).has(word));
+  const matchesWord = (parts, word) => parts.some(part => part === word || part.startsWith(word));
+  let spotlight = null;
+  function clearGlow(){ if(!spotlight) return; cancelAnimationFrame(spotlight.frame); spotlight.layer.remove(); spotlight = null; }
+  function glow(element, label){
+    clearGlow();
+    const layer = document.createElement("div");
+    layer.className = "rose-direct-spotlight";
+    layer.dataset.roseTarget = label;
+    layer.setAttribute("aria-hidden", "true");
+    document.body.appendChild(layer);
+    const state = {layer, element, frame:0}; spotlight = state;
+    const update = () => {
+      if(spotlight !== state) return;
+      if(!element.isConnected || !visible(element)){ clearGlow(); return; }
+      const rect = element.getBoundingClientRect();
+      Object.assign(layer.style,{left:`${rect.left-4}px`,top:`${rect.top-4}px`,width:`${rect.width+8}px`,height:`${rect.height+8}px`,borderRadius:`${Math.max(6,(parseFloat(getComputedStyle(element).borderTopLeftRadius)||0)+4)}px`});
+      state.frame = requestAnimationFrame(update);
+    };
+    element.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",block:"center",inline:"nearest"});
+    update();
+  }
+  const glowStyle = document.createElement("style");
+  glowStyle.textContent = '@property --rose-orbit-angle{syntax:"<angle>";initial-value:0deg;inherits:true}.rose-direct-spotlight{--rose-orbit-angle:0deg;position:fixed;z-index:2147482999;pointer-events:none;box-sizing:border-box;border:1px solid rgba(255,139,91,.28);box-shadow:0 0 12px 2px rgba(255,120,61,.1)}.rose-direct-spotlight::before,.rose-direct-spotlight::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;background:conic-gradient(from var(--rose-orbit-angle),rgba(255,106,53,.12) 0deg,rgba(255,125,68,.3) 65deg,#ff934f 110deg,#ffe4b8 142deg,#ffb66e 160deg,rgba(255,111,57,.2) 205deg,rgba(255,111,57,.12) 245deg,#ffad77 290deg,rgba(255,120,61,.45) 315deg,rgba(255,106,53,.12) 360deg);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;pointer-events:none}.rose-direct-spotlight::before{inset:-4px;padding:6px;filter:blur(5px);opacity:.85}.rose-direct-spotlight{animation:roseDirectOrbit 3.6s linear infinite}@keyframes roseDirectOrbit{to{--rose-orbit-angle:360deg}}@media(prefers-reduced-motion:reduce){.rose-direct-spotlight{animation:none;--rose-orbit-angle:135deg}}';
+  document.head.appendChild(glowStyle);
+  function controlMatches(query){
+    if(blockedPath()) return [];
+    const words = guideWords(query); if(!words.length) return [];
+    return [...document.querySelectorAll('a[href],button,select,input:not([type="hidden"]):not([type="password"]):not([type="email"]):not([type="tel"]):not([type="submit"]),[role="button"],[role="tab"],summary,h1,h2,h3')]
+      .filter(element => visible(element) && safe(element) && (!element.matches('a[href]') || safeLink(element)))
+      .map(element => { const label=labelOf(element), parts=wordsOf(label); return {element,label,score:words.every(word=>matchesWord(parts,word)) ? 30+words.length*10-parts.length+(element.matches('h1,h2,h3')?5:0) : 0}; })
+      .filter(item=>item.score>0).sort((a,b)=>b.score-a.score);
+  }
+  function contentMatches(query){
+    if(blockedPath()) return [];
+    const words=guideWords(query); if(!words.length) return [];
+    const candidates=new Map();
+    for(const element of [...document.querySelectorAll('h1,h2,h3,section,article,main,p,div')].slice(0,500)){
+      if(!visible(element) || element.closest('form,dialog,[role="dialog"]')) continue;
+      const heading=element.matches('h1,h2,h3') ? element : element.tagName==='DIV' ? element.querySelector(':scope > h1,:scope > h2,:scope > h3') : element.querySelector('h1,h2,h3');
+      if(element.tagName==='DIV' && !heading) continue;
+      if(heading && (!visible(heading) || !safe(heading))) continue;
+      if(!heading && !safe(element)) continue;
+      const content=String(element.textContent||'').replace(/\s+/g,' ').trim(); if(!content || content.length>3200) continue;
+      const bodyParts=wordsOf(content), headingParts=wordsOf(heading ? labelOf(heading) : '');
+      const bodyCount=words.filter(word=>matchesWord(bodyParts,word)).length; if(!bodyCount) continue;
+      const headingCount=words.filter(word=>matchesWord(headingParts,word)).length;
+      const target=heading && headingCount ? heading : element;
+      const label=heading ? labelOf(heading) : content.slice(0,80);
+      if(/\b(?:password|payment|checkout|delete|remove|credit card|place order|confirm order)\b/i.test(label)) continue;
+      const score=bodyCount*20+headingCount*8+(heading?3:0)-Math.min(8,Math.floor(content.length/350));
+      if(!candidates.has(target) || candidates.get(target).score<score) candidates.set(target,{element:target,label,score});
+    }
+    return [...candidates.values()].sort((a,b)=>b.score-a.score);
+  }
+  function closestHeadings(query){ const words=guideWords(query); return [...document.querySelectorAll('h1,h2,h3')].filter(element=>visible(element)&&safe(element)).map(element=>({label:labelOf(element),score:words.filter(word=>matchesWord(wordsOf(labelOf(element)),word)).length})).filter(item=>item.label).sort((a,b)=>b.score-a.score).slice(0,2).map(item=>item.label); }
+  function guideFind(query){
+    if(/\b(?:password|payment|credit|checkout|purchase|delete|remove|pay|login|sign in|email|phone|address|book|reserve|upload|send)\b/i.test(query) || blockedPath()) return `I can't highlight that on this page.`;
+    const controls=controlMatches(query), matches=controls.length?controls:contentMatches(query);
+    if(!matches.length){const headings=closestHeadings(query); return `I couldn't find ${query.slice(0,80)} on this page.${headings.length?` Closest sections: ${headings.join(' or ')}.`:''}`;}
+    if(matches[1]?.score===matches[0].score) return `I found several matches for ${query.slice(0,80)}. Please be more specific.`;
+    glow(matches[0].element,matches[0].label); return `I highlighted ${matches[0].label}.`;
+  }
+  function invoiceGoal(message){
+    const direct=/^(?:please\s+)?(?:find|show me|take me to)\s+(?:my\s+|the\s+)?(.+?)[?.!]*$/i.exec(message);
+    const how=/^(?:how (?:do|can) i|help me|show me how to|where (?:do|can) i)\s+(.+?)[?.!]*$/i.exec(message);
+    const goal=(how?.[1] || direct?.[1] || '').replace(/^(?:find|show me|take me to)\s+(?:my\s+|the\s+)?/i,'').replace(/\binvoices\b/ig,'invoice').trim();
+    return /\b(?:invoice|billing|payment|subscription)\b/i.test(goal) ? goal.slice(0,120) : null;
+  }
+  function routeMatches(goal){
+    const hints=/\b(?:invoice|billing|payment|subscription)\b/i.test(goal)?['billing','subscription','settings','account']:[];
+    return [...document.querySelectorAll('button[aria-controls],button[aria-expanded],button[aria-haspopup],summary,[role="tab"],a[href]')]
+      .filter(element=>visible(element)&&safe(element)&&element.getAttribute('aria-expanded')!=='true'&&element.getAttribute('aria-selected')!=='true'&&(!element.matches('a[href]')||safeLink(element)))
+      .map(element=>({element,label:labelOf(element),score:hints.reduce((best,hint,index)=>Math.max(best,wordsOf(labelOf(element)).includes(hint)?20-index*3:0),0)}))
+      .filter(item=>item.score>0).sort((a,b)=>b.score-a.score);
+  }
+  let activeGoal=null;
+  function saveGoal(goal){ try { goal ? sessionStorage.setItem(guideKey,JSON.stringify({goal,at:Date.now()})) : sessionStorage.removeItem(guideKey); } catch {} }
+  function guideTask(goal){
+    activeGoal=goal;
+    const targets=controlMatches(goal);
+    if(targets.length && targets[1]?.score!==targets[0].score){ saveGoal(null); activeGoal=null; glow(targets[0].element,targets[0].label); return `I highlighted ${targets[0].label}.`; }
+    const routes=routeMatches(goal);
+    if(!routes.length) {saveGoal(null);activeGoal=null;return `I couldn't find the next step for ${goal} on this page.`;}
+    if(routes[1]?.score===routes[0].score) return 'I found several possible routes. Please be more specific.';
+    const route=routes[0]; glow(route.element,route.label); saveGoal(goal);
+    route.element.addEventListener('click',()=>setTimeout(()=>{if(activeGoal!==goal)return;if(route.element.matches('a[href]'))return;const reply=guideTask(goal);addMsg('bot',reply);},180),{once:true});
+    return `Open ${route.label}.`;
+  }
+  function guideProfile(){
+    if(blockedPath()) return "I can't guide that on this page.";
+    const opener=controlMatches('update profile').find(item=>item.element.matches('button,[role="button"],a[href]'));
+    if(!opener) return "I couldn't find the profile control on this page.";
+    glow(opener.element,opener.label);
+    opener.element.addEventListener('click',()=>setTimeout(()=>{
+      const field=[...document.querySelectorAll('input:not([type="hidden"]),textarea')].find(element=>visible(element)&&safe(element)&&/display name/i.test(labelOf(element)));
+      if(!field) return;
+      glow(field,labelOf(field));addMsg('bot',`Choose ${labelOf(field)}.`);
+      field.addEventListener('change',()=>{
+        const save=[...document.querySelectorAll('button,[type="submit"]')].find(element=>visible(element)&&safe(element)&&/save profile/i.test(labelOf(element)));
+        if(save){glow(save,labelOf(save));addMsg('bot',`Choose ${labelOf(save)} when you're ready.`);}
+      },{once:true});
+    },180),{once:true});
+    return `Open ${opener.label}.`;
+  }
+  function guideCheapest(){
+    if(blockedPath()) return "I can't compare products on this page.";
+    const candidates=[...document.querySelectorAll('[data-component-type="s-search-result"],[itemtype*="Product"],.product-card,.product-item,article')].filter(visible).flatMap(card=>{
+      const link=[...card.querySelectorAll('a[href]')].find(element=>visible(element)&&safe(element)&&safeLink(element)&&labelOf(element));
+      const priceText=card.querySelector('.a-price .a-offscreen,[itemprop="price"],.price,.product-price')?.textContent||'';
+      const price=Number(String(priceText).replace(/[^0-9.]/g,''));
+      return link&&Number.isFinite(price)&&price>0?[{element:link,label:labelOf(link),price}]:[];
+    }).sort((a,b)=>a.price-b.price);
+    if(!candidates.length) return "I couldn't find comparable product prices on this page.";
+    if(candidates[1]?.price===candidates[0].price) return "I found several products at the lowest price. Please be more specific.";
+    glow(candidates[0].element,candidates[0].label);return `I highlighted ${candidates[0].label} at ${candidates[0].price.toFixed(2)}.`;
+  }
+  try { const saved=JSON.parse(sessionStorage.getItem(guideKey)||'null'); if(saved?.goal && Date.now()-saved.at<120000) setTimeout(()=>{setView('chat');panel.classList.add('open');fab.style.display='none';addMsg('bot',guideTask(saved.goal));},350); else saveGoal(null); } catch {}
+  function handleGuide(message){
+    if(/^(?:how (?:do|can) i|help me)\s+update (?:my\s+)?profile[?.!]*$/i.test(message)) return guideProfile();
+    if(/\b(?:cheapest|lowest price|least expensive)\b/i.test(message)&&/\b(?:product|item)\b/i.test(message)) return guideCheapest();
+    const task=invoiceGoal(message); if(task) return guideTask(task);
+    const intent=/^(?:please\s+)?(?:show me where|show me|highlight|point me to|point to|where is|find)\s+(.+?)[?.!]*$/i.exec(message);
+    return intent ? guideFind(intent[1]) : null;
+  }
   async function api(path, body){ const r=await fetch(cfg.apiBase + path,{method:"POST",headers:{"Content-Type":"application/json","bypass-tunnel-reminder":"1"},body:JSON.stringify(body||{})}); const data=await r.json().catch(()=>({})); if(!r.ok) throw new Error(data.error||"Request failed"); return data; }
   async function ensureChat(){ if(chatId) return chatId; const data=await api("/api/chat/start",{page:location.href}); chatId=data.chatId; return chatId; }
-  async function submitChat(){ const content=input.value.trim(); if(!content) return; input.value=""; addMsg("user",content); const pending=addMsg("bot","Thinking…"); try{ const id=await ensureChat(); const data=await api("/api/chat/message",{chatId:id,content}); pending.textContent=data.reply || "I can help with that."; }catch(e){ pending.textContent="I hit a connection issue. Please try again or email jack@wildroseautomations.ca."; console.error(e); } }
+  async function submitChat(){ const content=input.value.trim(); if(!content) return; input.value=""; addMsg("user",content); const guided=handleGuide(content); if(guided){addMsg("bot",guided);return;} const pending=addMsg("bot","Thinking…"); try{ const id=await ensureChat(); const data=await api("/api/chat/message",{chatId:id,content}); pending.textContent=data.reply || "I can help with that."; if(/\b(?:what are your hours|what are the hours|when are you open|what time are you open)\b/i.test(content)){const matches=contentMatches("hours");if(matches.length&&matches[0].score!==matches[1]?.score) glow(matches[0].element,matches[0].label);} }catch(e){ pending.textContent="I hit a connection issue. Please try again or email jack@wildroseautomations.ca."; console.error(e); } }
   $(".wr-send").addEventListener("click",submitChat); input.addEventListener("keydown",e=>{ if(e.key==="Enter") submitChat(); });
   $(".wr-start-voice").addEventListener("click", async () => { const status=$(".wr-status"), note=$(".wr-note"), orb=$(".wr-orb"); try { status.textContent="Connecting…"; const [{ RetellClient }, { RoseV3VoiceClient }, call] = await Promise.all([import("https://esm.sh/retell-client-js-sdk@3.0.4"), import(`${String(cfg.apiBase || "").replace(/\/+$/, "")}/api/voice/start?module=voice`), api("/api/voice/start", { retellClientVersion: 3, page:location.href,voiceVisitorId:voiceVisitorId()})]); retellClient = new RoseV3VoiceClient(RetellClient, cfg.apiBase); let speechReleaseTimer=null; const clearSpeechRelease=()=>{ if(speechReleaseTimer) clearTimeout(speechReleaseTimer); speechReleaseTimer=null; }; const setRoseSpeaking=()=>{ clearSpeechRelease(); status.textContent="Rose is answering"; orb.classList.add("live","speaking"); $(".wr-voice").classList.add("speaking"); }; const easeBackToListening=()=>{ clearSpeechRelease(); speechReleaseTimer=setTimeout(()=>{ status.textContent="Live with Rose"; orb.classList.remove("speaking"); $(".wr-voice").classList.remove("speaking"); },1150); }; retellClient.on("call_started",()=>{ clearSpeechRelease(); status.textContent="Live with Rose"; note.textContent="Speak naturally. Interrupt anytime."; orb.classList.add("live"); orb.classList.remove("speaking"); $(".wr-voice").classList.remove("speaking"); $(".wr-start-voice").style.display="none"; $(".wr-end-voice").style.display="block"; }); retellClient.on("agent_start_talking",setRoseSpeaking); retellClient.on("agent_stop_talking",easeBackToListening); retellClient.on("user_start_talking",()=>{ clearSpeechRelease(); status.textContent="Listening…"; orb.classList.remove("speaking"); $(".wr-voice").classList.remove("speaking"); }); retellClient.on("call_ended",()=>{ clearSpeechRelease(); status.textContent="Call ended"; note.textContent="Start another conversation anytime."; orb.classList.remove("live","speaking"); $(".wr-voice").classList.remove("speaking"); $(".wr-start-voice").style.display="block"; $(".wr-end-voice").style.display="none"; }); retellClient.on("error",(err)=>{ clearSpeechRelease(); console.error(err); status.textContent="Voice connection failed"; note.textContent="Please check microphone permission or use chat."; orb.classList.remove("live","speaking"); $(".wr-voice").classList.remove("speaking"); }); await retellClient.startCall({ accessToken: call.accessToken, callId: call.callId, transport: call.transport, iceServers: call.ice_servers, monitorToken: call.monitorToken, emitRawAudioSamples: true }); } catch(err){ console.error(err); status.textContent="Voice unavailable"; note.textContent="Please use chat for now."; } });
   $(".wr-end-voice").addEventListener("click",()=>{ try{ retellClient?.stopCall(); }catch{} });
