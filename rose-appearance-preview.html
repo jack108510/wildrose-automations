@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080605">
+  <title>Rose appearance reference | Wildrose Automations</title>
+  <link rel="stylesheet" href="rose-appearance.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; color: #f7eee8; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; background: #080605; }
+    .page { max-width: 1120px; margin: auto; padding: 28px 24px 64px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 10px; color: #f7eee8; font-size: 12px; font-weight: 800; letter-spacing: .16em; text-decoration: none; }
+    .brand img { width: 34px; height: 34px; object-fit: contain; }
+    .home { color: #d7b9a8; font-size: 13px; text-decoration: none; }
+    .home:hover { color: white; }
+    .intro { max-width: 720px; padding: 64px 0 34px; }
+    .eyebrow { color: #e9946e; font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { max-width: 660px; margin: 14px 0 14px; font-size: clamp(40px, 6vw, 68px); line-height: 1.02; letter-spacing: -.065em; }
+    .intro p { max-width: 630px; margin: 0; color: #c9b7ac; font-size: 16px; line-height: 1.65; }
+    .showcase { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 390px); gap: 32px; align-items: center; min-height: 630px; padding: 36px; border: 1px solid #4d3025; border-radius: 32px; background: radial-gradient(circle at 66% 46%, #4c2116 0, transparent 42%), linear-gradient(135deg, #1c100d, #090706 78%); }
+    .notes { align-self: center; max-width: 460px; }
+    .notes h2 { margin: 0 0 14px; font-size: clamp(27px, 3vw, 38px); letter-spacing: -.045em; }
+    .notes p { color: #d3b8a9; line-height: 1.65; }
+    .notes ul { display: grid; gap: 12px; margin: 27px 0 0; padding: 0; list-style: none; }
+    .notes li { padding-left: 18px; position: relative; color: #f0ddd0; font-size: 14px; }
+    .notes li:before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: #f47740; }
+    .demo { display: grid; justify-items: center; gap: 18px; }
+    .wr-ai { --ink: #171310; --muted: #403630; --accent: #f35b22; width: 100%; max-width: 382px; color: var(--ink); }
+    .wr-ai .wr-panel { width: 100%; min-height: 545px; display: grid; grid-template-rows: auto auto 1fr auto; position: relative; overflow: hidden; border-radius: 38px; }
+    .wr-ai .wr-panel:before, .wr-ai .wr-panel:after { content: ""; position: absolute; pointer-events: none; }
+    .wr-ai .wr-head, .wr-ai .wr-tabs, .wr-ai .wr-view, .wr-ai .wr-compose { position: relative; z-index: 1; }
+    .wr-ai .wr-head { padding: 19px 18px 12px; }
+    .wr-ai .wr-brand { display: flex; align-items: center; gap: 11px; }
+    .wr-ai .wr-mark { width: 44px; height: 44px; border-radius: 16px; display: grid; place-items: center; }
+    .wr-ai .wr-mark img { width: 38px; height: 38px; object-fit: contain; }
+    .wr-ai .wr-title h3 { margin: 0; font-size: 17px; letter-spacing: -.03em; }
+    .wr-ai .wr-title small { font-size: 12px; }
+    .wr-ai .wr-tabs { margin: 0 18px 12px; padding: 4px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; border: 1px solid; border-radius: 18px; }
+    .wr-ai .wr-tab { height: 38px; border: 0; border-radius: 14px; background: transparent; font: inherit; font-size: 13px; font-weight: 750; cursor: pointer; }
+    .wr-ai .wr-view { min-height: 356px; padding: 12px 18px 18px; }
+    .wr-ai .wr-view[hidden] { display: none; }
+    .wr-ai .wr-voice { min-height: 324px; display: grid; place-items: center; text-align: center; }
+    .wr-ai .wr-orb { width: 164px; height: 164px; margin: 0 auto 22px; border-radius: 50%; position: relative; overflow: hidden; }
+    .wr-ai .wr-orb:before, .wr-ai .wr-orb:after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; }
+    .wr-ai .wr-status { font-size: 23px; font-weight: 850; letter-spacing: -.05em; }
+    .wr-ai .wr-note { font-size: 13px; line-height: 1.45; }
+    .wr-ai .wr-primary { min-width: 152px; height: 48px; padding: 0 22px; border-radius: 99px; font: inherit; font-size: 13px; font-weight: 800; cursor: default; }
+    .wr-ai .wr-compose { margin: 0 18px 18px; padding: 8px 12px; border: 1px solid rgba(255,245,237,.48); border-radius: 22px; color: #6f6259; font-size: 13px; }
+    .wr-ai .wr-compose[hidden] { display: none; }
+    .wr-ai .wr-chat-log { display: grid; gap: 12px; align-content: start; padding-top: 14px; }
+    .wr-ai .wr-msg { max-width: 87%; padding: 12px 14px; border-radius: 18px; font-size: 14px; line-height: 1.45; }
+    .wr-ai .wr-msg.bot { border: 1px solid; border-bottom-left-radius: 6px; }
+    .wr-ai .wr-msg.user { justify-self: end; color: white; background: #e9632e; border-bottom-right-radius: 6px; }
+    .states { display: flex; align-items: center; gap: 8px; color: #d5b8a7; font-size: 12px; }
+    .states button { border: 1px solid #674438; border-radius: 99px; padding: 8px 11px; background: transparent; color: #e5c9b8; font: inherit; cursor: pointer; }
+    .states button[aria-pressed="true"] { border-color: #f17742; background: #5b2a1a; color: white; }
+    .caption { margin: 22px 4px 0; color: #a99285; font-size: 12px; line-height: 1.5; }
+    @media (max-width: 760px) { .intro { padding-top: 48px; } .showcase { grid-template-columns: 1fr; padding: 26px 16px; gap: 28px; } .notes { padding: 0 8px; } .wr-ai .wr-panel { min-height: 520px; } }
+    @media (max-width: 420px) { .page { padding: 20px 14px 44px; } .states { flex-wrap: wrap; justify-content: center; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/"><img src="logos/wildrose.png" alt="">WILDROSE</a>
+      <a class="home" href="/">Back to site ↗</a>
+    </header>
+    <section class="intro">
+      <div class="eyebrow">Rose / appearance reference</div>
+      <h1>Meet Rose’s visual direction.</h1>
+      <p>The copper orb, warm glass panel, and restrained motion are the reference appearance for the Rose agent. Switch between voice and chat, or preview the voice states below.</p>
+    </section>
+    <section class="showcase" aria-label="Rose appearance preview">
+      <div class="notes">
+        <h2>A calm presence on every site.</h2>
+        <p>Rose should feel recognizable while fitting the business she represents.</p>
+        <ul>
+          <li>Warm copper orb from the Rose reference image</li>
+          <li>Soft, smoke-colored glass and clear dark text</li>
+          <li>Quiet light change while speaking</li>
+        </ul>
+      </div>
+      <div class="demo">
+        <div class="wr-ai">
+          <div class="wr-panel">
+            <div class="wr-head"><div class="wr-brand"><div class="wr-mark"><img src="logos/wildrose.png" alt=""></div><div class="wr-title"><h3>Rose</h3><small>AI front desk</small></div></div></div>
+            <div class="wr-tabs" role="tablist" aria-label="Preview mode"><button class="wr-tab" type="button" role="tab" aria-selected="false" data-tab="chat">Chat</button><button class="wr-tab active" type="button" role="tab" aria-selected="true" data-tab="voice">Voice</button></div>
+            <div class="wr-view" id="voiceView" role="tabpanel"><div class="wr-voice"><div><div class="wr-orb" id="orb" aria-hidden="true"></div><div class="wr-status" id="voiceStatus">Ready when you are</div><div class="wr-note" id="voiceNote">Tap start and speak naturally.</div><button class="wr-primary" type="button" tabindex="-1" aria-hidden="true">Start talking</button></div></div></div>
+            <div class="wr-view" id="chatView" role="tabpanel" hidden><div class="wr-chat-log"><div class="wr-msg bot">Hi, I’m Rose. How can I help today?</div><div class="wr-msg user">What services do you offer?</div><div class="wr-msg bot">I can answer questions and help you reach the team with the details of your request.</div></div></div>
+            <div class="wr-compose" id="compose" hidden>Ask Rose…</div>
+          </div>
+        </div>
+        <div class="states" aria-label="Voice appearance states"><span>Voice state</span><button type="button" data-state="ready" aria-pressed="true">Ready</button><button type="button" data-state="listening" aria-pressed="false">Listening</button><button type="button" data-state="speaking" aria-pressed="false">Speaking</button></div>
+      </div>
+    </section>
+    <p class="caption">Visual reference only. This page does not start a voice call or send a message. Client brand colors and avatars can vary in published widgets.</p>
+  </div>
+  <script>
+    const tabs = document.querySelectorAll('[data-tab]');
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      const voice = tab.dataset.tab === 'voice';
+      tabs.forEach(item => { const active = item === tab; item.classList.toggle('active', active); item.setAttribute('aria-selected', String(active)); });
+      document.getElementById('voiceView').hidden = !voice;
+      document.getElementById('chatView').hidden = voice;
+      document.getElementById('compose').hidden = voice;
+    }));
+    const voiceCopy = { ready: ['Ready when you are', 'Tap start and speak naturally.'], listening: ['Listening', 'Rose is here and ready to help.'], speaking: ['Rose is speaking', 'A quiet glow follows her voice.'] };
+    document.querySelectorAll('[data-state]').forEach(button => button.addEventListener('click', () => {
+      document.querySelectorAll('[data-state]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      const state = button.dataset.state;
+      document.getElementById('orb').classList.toggle('speaking', state === 'speaking');
+      document.getElementById('voiceStatus').textContent = voiceCopy[state][0];
+      document.getElementById('voiceNote').textContent = voiceCopy[state][1];
+      document.querySelector('[data-tab="voice"]').click();
+    }));
+  </script>
+</body>
+</html>
