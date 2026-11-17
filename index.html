@@ -3,2862 +3,650 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1b120e">
-  <title>Rose in motion · Wildrose</title>
-  <meta name="description" content="See how Rose turns customer conversations into useful work.">
-  <style>
-    :root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f9faf6;background:#061c17;font-synthesis:none}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #ff9169;outline-offset:3px}
-    .shell{width:min(1370px,calc(100% - 48px));margin:auto}
-    .site-head{height:82px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 20px;border:1px solid #214036;border-top:0;border-radius:0 0 13px 13px}
-    .brand{display:inline-flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:19px;font-weight:820;letter-spacing:-.05em}.brand img{width:27px;height:27px;object-fit:contain;filter:brightness(0) invert(1)}.brand span{color:#a7bdb2;font-weight:550}
-    .head-tag{font-size:10px;font-weight:760;letter-spacing:.14em;text-transform:uppercase;color:#8ba89a}
-    main{padding:64px 0 72px}
-    .intro{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.7fr);align-items:end;gap:80px;margin-bottom:48px}
-    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:#ff9b73;font-size:11px;font-weight:820;letter-spacing:.15em;text-transform:uppercase}.eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#ff8154;box-shadow:0 0 0 5px rgba(255,129,84,.13)}
-    h1{max-width:820px;margin:20px 0 0;font-size:clamp(57px,6vw,90px);font-weight:650;letter-spacing:-.078em;line-height:.99}h1 em{font-style:normal;color:#ff8e65}
-    .intro-aside{padding-bottom:5px}.intro-aside p{max-width:410px;margin:0 0 24px;color:#d0ded3;font-size:18px;line-height:1.42}.intro-aside small{display:block;max-width:410px;color:#8aa99a;font-size:11px;line-height:1.5}
-    .stage{position:relative;height:620px;overflow:hidden;border:1px solid #2a493d;border-radius:20px;background:radial-gradient(ellipse at 50% 63%,rgba(38,85,65,.3),transparent 42%),linear-gradient(145deg,#09241a,#071c17 70%)}
-    .stage:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 51% 54%,rgba(255,139,94,.09),transparent 33%);pointer-events:none}
-    .stage:after{content:"";position:absolute;left:50%;bottom:87px;width:550px;height:70px;transform:translateX(-50%);border-radius:50%;background:rgba(0,0,0,.24);filter:blur(34px);pointer-events:none}
-    .scene-meta{position:absolute;z-index:5;top:25px;left:30px;right:30px;display:flex;justify-content:space-between;align-items:center;gap:20px}.scene-meta>div{display:flex;align-items:center;gap:12px}.scene-index{color:#77a18a;font-size:10px;font-weight:800;letter-spacing:.14em}.scene-name{color:#e9f1e9;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.scene-meta button{padding:8px 12px;border:1px solid #2f5042;border-radius:9px;background:#123227;color:#dce8dc;font-size:10px;font-weight:760}.scene-meta button:hover{background:#1a4232}.clock{color:#8bab98;font-size:10px;font-weight:740;letter-spacing:.1em}
-    .person{position:absolute;z-index:2;left:7%;bottom:134px;width:250px;display:flex;flex-direction:column;align-items:center}.person-art{width:102px;height:172px;transform-origin:50% 90%;animation:idle 3.4s ease-in-out infinite}.person-art svg{display:block;width:100%;height:100%;overflow:visible}.person-art .ground{fill:#020d09;opacity:.6}.person-art .line{fill:none;stroke:#ff8c64;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.person-art .front-arm,.person-art .front-leg{transform-box:fill-box;transform-origin:top center;animation:gesture 3.4s ease-in-out infinite}.person-art .front-leg{animation-name:step;animation-duration:3.8s}.speaker-person .person-art{animation-duration:.8s}.speaker-person .front-arm{animation-duration:.8s}.person-label{margin-top:0;color:#8fad9a;font-size:10px;font-weight:800;letter-spacing:.17em;text-transform:uppercase}
-    .bubble{position:absolute;z-index:4;max-width:320px;min-height:76px;padding:17px 20px;border:1px solid #355244;border-radius:16px;color:#edf5ec;background:#163729;box-shadow:0 20px 42px rgba(0,0,0,.16);font-size:17px;font-weight:660;line-height:1.36;letter-spacing:-.02em;transition:opacity .32s,transform .32s,filter .32s}.bubble:after{content:"";position:absolute;bottom:-7px;width:12px;height:12px;background:inherit;transform:rotate(45deg);border-right:1px solid #355244;border-bottom:1px solid #355244}.visitor-bubble{left:5.5%;bottom:332px;width:310px}.visitor-bubble:after{left:68%}.rose-bubble{left:50%;top:107px;transform:translateX(-50%);width:360px;max-width:360px;background:#f7f8f0;border-color:#d3ddd0;color:#183629}.rose-bubble:after{left:calc(50% - 6px);border-color:#d3ddd0}.stage[data-speaker="visitor"] .rose-bubble{opacity:0;transform:translate(-50%,12px);pointer-events:none}.stage[data-speaker="rose"] .visitor-bubble{opacity:.38;filter:blur(1px);transform:translateY(-4px)}.stage[data-speaker="tool"] .visitor-bubble,.stage[data-speaker="tool"] .rose-bubble{opacity:.26;filter:blur(1px)}
-    .widget-wrap{position:absolute;z-index:3;left:50%;top:218px;width:334px;transform:translateX(-50%)}
-    .flow{position:absolute;z-index:3;right:5.5%;top:190px;width:260px;display:flex;flex-direction:column;gap:12px}.flow-title{color:#8caa98;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1px}.tool{display:flex;align-items:center;gap:13px;min-height:64px;padding:12px 15px;border:1px solid #244536;border-radius:13px;background:#102b20;opacity:.46;transform:translateY(6px);transition:opacity .45s,transform .45s,border-color .45s,background .45s}.tool:before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:#779987}.tool strong{display:block;font-size:13px;color:#f3f8f0}.tool span{display:block;margin-top:4px;font-size:10px;font-weight:730;letter-spacing:.04em;color:#a4bba9}.tool.active{opacity:1;transform:none;border-color:#47715a;background:#19402c;box-shadow:0 17px 36px rgba(0,0,0,.15)}.tool.active:before{background:#ff976c;box-shadow:0 0 0 5px rgba(255,151,108,.13)}.tool.active span{color:#9eddb3}
-    .stage-foot{position:absolute;z-index:5;left:30px;right:30px;bottom:23px;display:flex;align-items:center;gap:18px}.stage-foot .caption{min-width:230px;max-width:280px;color:#b0c5b5;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stage-foot button{flex:none;padding:8px 11px;border:1px solid #355844;border-radius:8px;background:#163829;color:#edf6ed;font-size:10px;font-weight:750}.stage-foot button:hover{background:#205039}
-    .scenarios{display:flex;align-items:center;gap:8px;margin-top:16px}.scenarios-label{margin-right:12px;color:#8ba999;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.scenarios button{padding:9px 13px;border:1px solid transparent;border-radius:8px;background:transparent;color:#9fbbab;font-size:11px;font-weight:740}.scenarios button.active{border-color:#315843;background:#153626;color:#fff}.scenarios button:hover{color:#fff}
-    @keyframes idle{50%{transform:translateY(-4px) rotate(1deg)}}@keyframes gesture{42%{transform:rotate(-18deg)}72%{transform:rotate(6deg)}}@keyframes step{50%{transform:rotate(8deg)}}
-    @media(max-width:1100px){.intro{gap:35px}.person{left:3%;width:210px}.visitor-bubble{left:3%;width:250px}.flow{right:3%;width:205px}.widget-wrap{width:305px}.rose-bubble{width:320px}.tool{padding:10px}}
-    @media(max-width:760px){.shell{width:calc(100% - 28px)}.site-head{height:65px;padding:0 14px}.head-tag{display:none}main{padding:42px 0 50px}.intro{display:block;margin-bottom:30px}h1{font-size:clamp(49px,10.5vw,72px)}.intro-aside{padding:0;margin-top:25px}.intro-aside p{font-size:16px;margin-bottom:14px}.stage{height:760px;border-radius:16px}.scene-meta{top:17px;left:16px;right:16px}.person{left:20px;top:110px;bottom:auto;width:65px}.person-art{width:58px;height:98px}.person-label{display:none}.visitor-bubble{top:116px;bottom:auto;left:103px;width:calc(100% - 122px);max-width:none;min-height:72px;padding:13px 15px;font-size:13px}.visitor-bubble:after{left:14px}.rose-bubble{top:224px;left:auto;right:20px;width:calc(100% - 105px);max-width:none;min-height:63px;padding:12px 15px;font-size:13px;transform:none}.rose-bubble:after{left:auto;right:28px}.stage[data-speaker="visitor"] .rose-bubble{transform:translateY(10px)}.widget-wrap{top:306px;width:min(300px,calc(100% - 44px))}.flow{top:612px;left:20px;right:20px;width:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.flow-title{grid-column:1/-1;font-size:8px}.tool{min-height:43px;padding:6px;gap:4px;border-radius:8px}.tool:before{width:5px;height:5px}.tool strong{font-size:9px}.tool span{font-size:7px}.stage-foot{left:15px;right:15px;bottom:13px;gap:8px}.stage-foot .caption{min-width:0;max-width:125px;font-size:9px}.stage-foot button{font-size:9px;padding:7px}.scenarios{flex-wrap:wrap;gap:4px}.scenarios-label{width:100%;margin:0 0 5px}.scenarios button{padding:8px 9px;font-size:10px}}
-    @media(max-width:410px){.stage{height:790px}.flow{top:625px}.widget-wrap{top:315px}.scene-meta>div{gap:6px}.scene-name{font-size:8px}.clock{font-size:9px}.scene-meta button{padding:6px 8px}.visitor-bubble{left:91px;width:calc(100% - 106px)}.rose-bubble{right:15px;width:calc(100% - 91px)}}
-    @media(prefers-reduced-motion:reduce){.person-art,.person-art .front-arm,.person-art .front-leg{animation:none}.bubble,.tool{transition:none}}
-    /* Rose's orange palette, with the widget at a comfortable native scale. */
-    :root{color:#fff8f3;background:#1b120e}
-    .site-head{border-color:#513326}
-    .brand span{color:#c4a697}.head-tag{color:#c49b85}
-    .intro-aside p{color:#f0ddd2}.intro-aside small{color:#b99684}
-    .stage{height:785px;border-color:#5a3929;background:radial-gradient(ellipse at 50% 59%,rgba(155,73,37,.19),transparent 43%),linear-gradient(145deg,#291a14,#1d130f 72%)}
-    .stage:before{background:radial-gradient(circle at 50% 54%,rgba(255,116,59,.1),transparent 35%)}
-    .scene-index{color:#d69c7c}.scene-name{color:#fff0e5}
-    .scene-meta button{border-color:#654332;background:#382419;color:#ffeadc}.scene-meta button:hover{background:#51301f}.clock{color:#cda58e}
-    .person{bottom:150px}.person-art .ground{fill:#110a07}.person-art .line{stroke:#ff824a}.person-label{color:#c4a08c}
-    .bubble{border-color:#744936;background:#3b271d;color:#fff2e8}
-    .bubble:after{border-color:#744936}.visitor-bubble{bottom:350px}
-    .rose-bubble{top:95px;background:#fff5ec;border-color:#edd6c6;color:#43281c}.rose-bubble:after{border-color:#edd6c6}
-    .widget-wrap{top:195px;width:360px}
-    .flow{top:285px}.flow-title{color:#c09a84}
-    .tool{border-color:#583a2b;background:#302016;opacity:.56}.tool:before{background:#b58c74}
-    .tool strong{color:#fff3e9}.tool span{color:#c8a996}
-    .tool.active{border-color:#cf784b;background:#4a291a}.tool.active:before{background:#ff864d}.tool.active span{color:#ffd0b7}
-    .stage-foot{justify-content:space-between}.stage-foot .caption{max-width:none;color:#d6b9a5}
-    .stage-foot button{border-color:#67412e;background:#3c261b;color:#fff2e6}.stage-foot button:hover{background:#59301d}
-    .scenarios-label{color:#c69a80}.scenarios button{color:#d6ad98}.scenarios button.active{border-color:#744731;background:#3a2318;color:#fff}.scenarios button:hover{color:#fff}
-    @media(max-width:1100px){.widget-wrap{width:340px}}
-    @media(max-width:760px){
-      .stage{height:960px}.person{top:110px;bottom:auto}.visitor-bubble{top:116px;bottom:auto}
-      .rose-bubble{top:224px}.widget-wrap{top:310px;width:min(340px,calc(100% - 36px))}
-      .flow{top:812px}.stage-foot{bottom:16px}
-    }
-    @media(max-width:410px){.stage{height:980px}.widget-wrap{top:315px}.flow{top:817px}}
-    .flow{top:192px;right:5%;width:285px;display:block}
-    .flow-title{margin:0 0 10px}
-    .workflow-card{min-height:235px;padding:17px;border:1px solid #704431;border-radius:16px;background:linear-gradient(155deg,#382319,#2a1b15);box-shadow:0 18px 38px rgba(0,0,0,.18);animation:wfEnter .36s ease both}
-    .wf-head{display:flex;align-items:center;gap:10px}.wf-mark{width:35px;height:35px;flex:none;display:grid;place-items:center;border:1px solid #8d553b;border-radius:10px;background:#4a2c1d;color:#ffb58c;font-size:10px;font-weight:900;letter-spacing:.03em}.wf-tool{color:#ffd4bb;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.wf-state{margin-left:auto;color:#eeb491;font-size:9px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.workflow-card.working .wf-state:before{content:"";display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:#ff9560;box-shadow:0 0 0 4px rgba(255,149,96,.15);animation:wfPulse 1s ease-in-out infinite}.workflow-card.done .wf-state{color:#ffd4a7}
-    .wf-title{margin:16px 0 5px;color:#fff5ed;font-size:17px;font-weight:760;letter-spacing:-.025em;line-height:1.25}.wf-detail{min-height:32px;margin:0;color:#cfae9b;font-size:11px;line-height:1.42}
-    .wf-visual{min-height:73px;margin-top:14px;padding-top:12px;border-top:1px solid #68412e}
-    .wf-search{display:flex;align-items:center;gap:7px;height:34px;padding:0 10px;border:1px solid #78503a;border-radius:8px;background:#211713;color:#ffe8d9;font-size:11px;font-weight:670;white-space:nowrap;overflow:hidden}.wf-search b{color:#ff986b;font-size:18px;line-height:1}.workflow-card.working .wf-search span{overflow:hidden;white-space:nowrap;border-right:1px solid #ff9f74;animation:wfType 2.1s steps(20,end) infinite alternate}.wf-result{display:flex;align-items:center;gap:6px;margin-top:10px;color:#d9b8a6;font-size:10px;font-weight:710}.wf-result i{width:7px;height:7px;border-radius:50%;background:#ff986b}.workflow-card.working .wf-result i{animation:wfPulse .9s ease-in-out infinite}.workflow-card.done .wf-result{color:#ffd5b8}
-    .wf-slots{display:flex;gap:5px}.wf-slot{flex:1;padding:9px 3px;border:1px solid #6c4633;border-radius:7px;color:#d2ab96;text-align:center;font-size:9px;font-weight:800}.wf-slot.selected{border-color:#ff9a69;background:#65402b;color:#fff1e4}.workflow-card.working .wf-slot:nth-child(1){animation:wfSlot 1.3s ease-in-out infinite}.workflow-card.working .wf-slot:nth-child(2){animation:wfSlot 1.3s ease-in-out .25s infinite}.workflow-card.working .wf-slot:nth-child(3){animation:wfSlot 1.3s ease-in-out .5s infinite}.wf-date{margin-bottom:9px;color:#eac5ae;font-size:10px;font-weight:750}
-    .wf-field{display:flex;justify-content:space-between;gap:7px;padding:5px 0;border-bottom:1px solid #573827;color:#d0a994;font-size:10px}.wf-field b{max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ffe4d2;font-weight:780}.workflow-card.working .wf-field:nth-child(2) b{animation:wfPulse 1.2s ease-in-out infinite}
-    .wf-message{padding:9px 10px;border:1px solid #78503a;border-radius:9px;background:#211713}.wf-message b{display:block;color:#ffe5d4;font-size:10px}.wf-message span{display:block;margin-top:5px;color:#cda994;font-size:9px}.wf-message:after{content:"→";display:block;margin-top:7px;color:#ff9a69;text-align:right;font-size:15px;font-weight:900}.workflow-card.working .wf-message:after{animation:wfSend 1.5s ease-in-out infinite}
-    .wf-idle{display:flex;gap:6px;align-items:center;height:48px}.wf-idle i{width:7px;height:7px;border-radius:50%;background:#ff986b;animation:wfPulse 1.1s ease-in-out infinite}.wf-idle i:nth-child(2){animation-delay:.2s}.wf-idle i:nth-child(3){animation-delay:.4s}
-    .tool-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.tool-list .tool{min-height:49px;margin:0;padding:7px 9px;gap:7px;border-radius:9px;transform:none}.tool-list .tool:before{width:6px;height:6px}.tool-list .tool strong{font-size:10px}.tool-list .tool span{font-size:8px;margin-top:2px}.tool-list .tool.working{opacity:1;border-color:#b96e46;background:#452a1c}.tool-list .tool.working:before{background:#ff985f;animation:wfPulse 1s ease-in-out infinite}
-    @keyframes wfEnter{from{opacity:.35;transform:translateY(9px)}to{opacity:1;transform:none}}@keyframes wfPulse{50%{opacity:.35;transform:scale(.8)}}@keyframes wfType{from{max-width:0}to{max-width:190px}}@keyframes wfSlot{45%{border-color:#ff9a69;color:#fff0e5;background:#5d3928}}@keyframes wfSend{50%{transform:translateX(7px);opacity:.55}}
-    @media(max-width:1100px){.flow{right:3%;width:240px}.workflow-card{padding:13px}.wf-title{font-size:15px}}
-    @media(max-width:760px){.stage{height:1250px}.flow{top:812px;left:20px;right:20px;width:auto;display:block}.workflow-card{min-height:218px}.tool-list{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-foot{bottom:15px}}
-    @media(max-width:410px){.stage{height:1280px}.flow{top:817px}}
-    @media(prefers-reduced-motion:reduce){.workflow-card,.wf-idle i,.workflow-card.working .wf-search span,.workflow-card.working .wf-result i,.workflow-card.working .wf-slot,.workflow-card.working .wf-message:after,.tool-list .tool.working:before{animation:none}}
-    /* Connected workflow graph with transient tool popups. */
-    .flow{top:116px;right:3.7%;width:430px;height:558px;margin:0}
-    .workflow-graph{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.94;pointer-events:none}
-    .flow-title{position:absolute;z-index:2;top:5px;left:14px;margin:0;color:#d7a98e;font-size:10px;letter-spacing:.18em}
-    .workflow-card{position:absolute;z-index:3;top:259px;left:calc(50% - 142px);width:284px;min-height:220px;padding:15px;border-color:#80513a;border-radius:14px;background:rgba(49,30,22,.95);box-shadow:0 20px 45px rgba(0,0,0,.32);backdrop-filter:blur(12px)}
-    .workflow-card .wf-title{margin-top:13px;font-size:16px}.workflow-card .wf-detail{font-size:10px}.workflow-card .wf-visual{margin-top:10px;padding-top:10px}
-    .tool-list{position:absolute;z-index:2;inset:0;display:block;margin:0;pointer-events:none}
-    .tool-list .tool{position:absolute;width:122px;min-height:45px;padding:6px 8px;border-color:#9b6040;background:rgba(71,41,26,.95);opacity:0;transform:translateY(12px) scale(.92);box-shadow:0 12px 28px rgba(0,0,0,.2)}
-    .tool-list .tool.working,.tool-list .tool.active{opacity:1;transform:translateY(0) scale(1)}
-    .tool-list .tool:nth-child(1){top:84px;left:8px}.tool-list .tool:nth-child(2){top:138px;right:5px}.tool-list .tool:nth-child(3){bottom:18px;left:2px}.tool-list .tool:nth-child(4){bottom:18px;right:9px}
-    .tool-list .tool strong{font-size:10px}.tool-list .tool span{font-size:7px;letter-spacing:.03em}
-    @media(max-width:1150px){.widget-wrap{left:43%}.rose-bubble{left:43%}.stage[data-speaker="visitor"] .rose-bubble{transform:translate(-50%,12px)}.flow{right:2%;top:125px;width:330px;height:550px}.workflow-card{left:calc(50% - 125px);width:250px}.tool-list .tool{width:105px}.tool-list .tool:nth-child(2){right:0}}
-    @media(max-width:760px){.stage{height:1420px}.widget-wrap{left:50%}.rose-bubble{left:auto}.stage[data-speaker="visitor"] .rose-bubble{transform:translateY(10px)}.flow{top:813px;left:10px;right:10px;width:auto;height:535px}.workflow-card{top:230px;left:calc(50% - 140px);width:280px}.tool-list .tool{width:112px}.tool-list .tool:nth-child(3),.tool-list .tool:nth-child(4){bottom:4px}}
-    @media(max-width:410px){.stage{height:1440px}.flow{top:818px;height:540px}.workflow-card{left:10px;right:10px;width:auto}.tool-list .tool{width:102px}}
-    /* Let the tool marks and moving connections carry the workflow story. */
-    .flow{top:119px;height:560px}
-    .flow-title{top:0;left:10px}
-    .workflow-card{top:392px;left:calc(50% - 133px);width:266px;min-height:104px;padding:11px 13px;border-color:#9a5a3b;background:rgba(44,27,20,.93)}
-    .workflow-card .wf-head{gap:9px}
-    .workflow-card .wf-mark{width:38px;height:38px;border:0;background:transparent}
-    .workflow-card .wf-mark img{width:32px;height:32px;object-fit:contain}
-    .workflow-card .wf-tool{font-size:11px;letter-spacing:.02em;text-transform:none}
-    .workflow-card .wf-state{font-size:8px}
-    .workflow-card .wf-title{margin:7px 0 0;font-size:15px}
-    .workflow-card .wf-detail,.workflow-card .wf-visual{display:none}
-    .tool-list{display:none}
-    @media(max-width:1150px){.workflow-card{left:calc(50% - 120px);width:240px}}
-    @media(max-width:760px){.flow{top:813px;height:535px}.workflow-card{top:382px;left:calc(50% - 130px);width:260px}}
-    @media(max-width:410px){.flow{top:818px;height:540px}.workflow-card{top:387px;left:calc(50% - 120px);right:auto;width:240px}}
-    @media(prefers-reduced-motion:reduce){.workflow-card{animation:none}}
-    /* Circular tool nodes in a luminous web, with notification cards below. */
-    .flow{right:1.5%;width:33%;height:560px;isolation:isolate}
-    .flow:before{content:"";position:absolute;inset:22px -12px 112px;background:radial-gradient(ellipse at 50% 48%,rgba(255,116,57,.12),transparent 68%);pointer-events:none}
-    .flow-title{left:50%;transform:translateX(-50%);white-space:nowrap;color:#e0ac8c;font-size:9px;letter-spacing:.22em}
-    .flow-title:before{content:"";display:inline-block;width:5px;height:5px;margin:0 8px 1px 0;border-radius:50%;background:#ff985d;box-shadow:0 0 12px #ff7842}
-    .workflow-graph{opacity:1}
-    .workflow-card{top:433px;left:7%;width:86%;min-height:90px;border-radius:17px;border-color:rgba(255,172,119,.24);background:linear-gradient(135deg,rgba(93,49,29,.5),rgba(34,22,17,.8));box-shadow:0 15px 35px #10080455,inset 0 1px 0 #ffcfa914;backdrop-filter:blur(20px)}
-    .workflow-card .wf-title{font-size:14px}.workflow-card .wf-state{font-size:7px}
-    @media(min-width:1151px){.widget-wrap,.rose-bubble{left:46%}.stage[data-speaker="visitor"] .rose-bubble{transform:translate(-50%,12px)}}
-    @media(min-width:761px) and (max-width:1150px){.flow{right:1%;width:31%}.workflow-card{left:3%;width:94%}.workflow-card .wf-head{gap:5px}.workflow-card .wf-tool{font-size:10px}}
-    @media(max-width:760px){.flow{left:10px;right:10px;width:auto;height:550px}.workflow-card{top:431px;left:8%;width:84%}.flow-title{top:12px}}
-    .scenarios{overflow-x:auto;flex-wrap:nowrap;padding-bottom:7px;scrollbar-width:thin;scrollbar-color:#75432d transparent}.scenarios-label{width:auto;flex:none;margin:0 10px 0 0}.scenarios button{flex:none;white-space:nowrap}
-
-
-    .person{left:2%;top:auto;bottom:96px;width:25%;gap:9px}.person-art{width:154px;height:254px;max-width:100%;filter:drop-shadow(0 0 20px rgba(255,122,56,.10))}.person-label{display:block;margin:0;font-size:10px;letter-spacing:.2em}
-    .visitor-bubble{left:2%;top:auto;bottom:386px;width:25%;max-width:330px}.visitor-bubble:after{left:calc(50% - 6px)}
-    @media(min-width:761px) and (max-width:1150px){
-      .person{left:2%;width:23%;bottom:110px}.person-art{width:120px;height:218px}.visitor-bubble{left:2%;width:23%;bottom:365px;font-size:14px;padding:14px}
-      .widget-wrap,.rose-bubble{left:45%;width:30%}
-    }
-    @media(max-width:760px){
-      .person{left:13px;top:105px;bottom:auto;width:72px;gap:2px}.person-art{width:72px;height:115px}.person-label{font-size:7px;letter-spacing:.09em}
-      .visitor-bubble{left:101px;top:112px;bottom:auto;width:calc(100% - 117px);max-width:none;min-height:72px;padding:12px;font-size:13px}.visitor-bubble:after{left:15px}
-      .rose-bubble{top:248px;right:18px;width:calc(100% - 70px)}.widget-wrap{top:344px}
-      .flow{top:848px}.stage{height:1470px}
-    }
-    @media(max-width:410px){.person{left:10px;width:66px}.person-art{width:66px;height:112px}.visitor-bubble{left:88px;width:calc(100% - 103px)}.rose-bubble{right:15px;width:calc(100% - 55px)}}
-
-    /* Keep the actual Rose widget independent from the illustrated conversation. */
-    .stage{height:860px}.widget-wrap{top:190px;width:382px}
-    .person{left:1.5%;width:27%;bottom:100px;gap:12px}.person-art{width:220px;height:320px}.person-label{font-size:12px;letter-spacing:.16em;color:#f0c5aa}
-    .visitor-bubble{left:2%;width:27%;max-width:350px;bottom:459px;padding:20px 22px;font-size:20px;line-height:1.45;font-weight:650;background:#4a2c1d;border-color:#bc7950;color:#fff7ee;box-shadow:0 16px 34px #0b050333}
-    .stage[data-speaker] .visitor-bubble{opacity:1;filter:none;transform:none}
-    .stage[data-speaker="tool"] .rose-bubble{opacity:1;filter:none}
-    .flow{top:140px}
-    @media(min-width:761px) and (max-width:1150px){.widget-wrap{width:34%;left:46%}.person{left:1%;width:27%;bottom:110px}.person-art{width:168px;height:292px}.visitor-bubble{left:1.5%;width:27%;bottom:445px;padding:17px;font-size:18px}.rose-bubble{left:46%;width:34%;font-size:16px}.flow{right:1%;width:30%}}
-    @media(max-width:760px){
-      .stage{height:1560px}.person{left:10px;top:100px;bottom:auto;width:110px;gap:5px}.person-art{width:110px;height:174px}.person-label{font-size:9px}
-      .visitor-bubble{left:132px;top:109px;bottom:auto;width:calc(100% - 148px);min-height:110px;padding:15px;font-size:16px;line-height:1.42;max-width:none}
-      .rose-bubble{top:298px;left:auto;right:18px;width:calc(100% - 36px);max-width:none;font-size:15px;padding:14px 16px;min-height:65px}
-      .widget-wrap{top:386px;left:50%;width:calc(100% - 36px);max-width:430px}.flow{top:981px;left:10px;right:10px;width:auto;height:550px}
-    }
-    @media(max-width:410px){.person{left:7px;width:100px}.person-art{width:100px;height:170px}.visitor-bubble{left:116px;width:calc(100% - 128px);font-size:15px;padding:13px}.rose-bubble{right:15px;width:calc(100% - 30px)}}
-    .wr-ai[data-simulation-paused="true"] .wr-orb:after{animation-play-state:paused}
-    @media(min-width:1151px){.person{bottom:230px}.visitor-bubble{bottom:589px}}
-    @media(min-width:761px) and (max-width:1150px){.person{bottom:215px}.visitor-bubble{bottom:550px}}
-    .anatomy-surface{z-index:0}#workflowGraph{z-index:1;pointer-events:auto;cursor:grab;touch-action:pan-y}#workflowGraph.dragging{cursor:grabbing}#workflowGraph:focus-visible{outline:1px solid #df9a72;outline-offset:-6px;border-radius:18px}.brain-hint{position:absolute;top:29px;left:50%;transform:translateX(-50%);font-size:10px;color:#c59a83;pointer-events:none;white-space:nowrap;z-index:2}
-  </style>
+  <meta name="theme-color" content="#050505">
+  <title>Rose — an AI front desk for your website · Wildrose Automations</title>
+  <meta name="description" content="Rose answers questions, captures quote requests and sends the lead to you by chat or voice, while the visitor is still on your site. Set up for you, from CA$39/month.">
+  <link rel="canonical" href="https://wildroseautomations.ca/">
+  <link rel="icon" href="https://wildroseautomations.ca/logos/wildrose.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Wildrose Automations">
+  <meta property="og:url" content="https://wildroseautomations.ca/">
+  <meta property="og:title" content="Rose — give your website a front desk">
+  <meta property="og:description" content="Rose answers questions, captures quote requests and sends the lead to you, while the visitor is still on the page.">
+  <meta property="og:image" content="https://wildroseautomations.ca/assets/rose-voice-reference.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="rose-appearance.css?v=calm-1">
-  <link rel="stylesheet" href="demo-layout.css?v=homepage-buy-cta-1">
-  <link rel="stylesheet" href="rose-reveal.css?v=inline-preview-1">
+  <style>
+    :root{
+      --bg:#050505;--bg-2:#0a0908;--surface:#100d0c;--surface-2:#16110f;
+      --line:rgba(255,236,222,.08);--line-2:rgba(255,236,222,.14);
+      --text:#f6efe8;--muted:rgba(246,239,232,.62);--faint:rgba(246,239,232,.42);
+      --orange:#ff5722;--orange-2:#ff8a4c;--peach:#ffc4a1;--cream:#f3e3d3;
+      --radius:24px;--wrap:1200px;
+      --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --serif:"Instrument Serif",Georgia,serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit}
+    img{max-width:100%;display:block}
+    button,input{font:inherit}
+    :focus-visible{outline:2px solid var(--peach);outline-offset:3px}
+    .wrap{width:min(var(--wrap),100% - 40px);margin-inline:auto}
+    .serif{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+    .grad{background:linear-gradient(100deg,#ffd6bb 0%,#ff9a62 45%,#ff5722 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0;color:var(--orange-2);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+    .h2{margin:16px 0 0;font-size:clamp(38px,5.2vw,68px);line-height:1.02;letter-spacing:-.045em;font-weight:650}
+    .h2 .serif{font-size:1.08em}
+    h1,h2,h3{text-wrap:balance}
+    .lead{margin:20px 0 0;color:var(--muted);font-size:clamp(17px,1.5vw,20px);line-height:1.55;max-width:600px}
+    .center{text-align:center}.center .lead{margin-inline:auto}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;border:1px solid transparent;text-decoration:none;font-size:15px;font-weight:650;letter-spacing:-.01em;cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;white-space:nowrap}
+    .btn-primary{background:var(--orange);color:#fff;box-shadow:0 10px 30px -8px rgba(255,87,34,.6),inset 0 1px 0 rgba(255,255,255,.25)}
+    .btn-primary:hover{background:#ff6a3a;transform:translateY(-1px);box-shadow:0 16px 36px -8px rgba(255,87,34,.7),inset 0 1px 0 rgba(255,255,255,.25)}
+    .btn-ghost{background:rgba(255,255,255,.04);border-color:var(--line-2);color:var(--text)}
+    .btn-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,236,222,.28)}
+    .btn .arrow{transition:transform .2s ease}.btn:hover .arrow{transform:translateX(3px)}
+
+    /* Nav */
+    .nav{position:fixed;inset:16px 0 auto;z-index:50;pointer-events:none}
+    .nav-inner{pointer-events:auto;display:flex;align-items:center;gap:24px;width:min(1120px,100% - 32px);margin:auto;padding:10px 10px 10px 20px;border:1px solid transparent;border-radius:999px;transition:background .3s ease,border-color .3s ease,box-shadow .3s ease,backdrop-filter .3s ease}
+    .nav.scrolled .nav-inner{background:rgba(12,10,9,.72);border-color:var(--line-2);box-shadow:0 20px 50px -20px rgba(0,0,0,.8);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4)}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:750;font-size:17px;letter-spacing:-.02em}
+    .brand img{width:30px;height:30px;object-fit:contain}
+    .nav-links{display:flex;gap:4px;margin-left:auto}
+    .nav-links a{padding:9px 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:550;transition:color .2s ease,background .2s ease}
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+    .nav-actions{display:flex;gap:8px}
+    .nav-actions .btn{min-height:42px;padding:0 18px;font-size:14px}
+
+    /* Hero */
+    .hero{position:relative;padding:150px 0 90px;overflow:hidden;isolation:isolate}
+    .hero:before{content:"";position:absolute;inset:-20% -10% auto;height:900px;z-index:-2;background:radial-gradient(ellipse 50% 45% at 72% 42%,rgba(255,87,34,.22),transparent 70%),radial-gradient(ellipse 40% 40% at 15% 10%,rgba(255,138,76,.08),transparent 70%)}
+    .hero-waves{position:absolute;inset:0;z-index:-1;width:100%;height:100%;pointer-events:none;mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 72%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 72%,transparent 100%)}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center}
+    .pill{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border:1px solid var(--line-2);border-radius:999px;background:rgba(255,255,255,.03);color:var(--muted);font-size:13px;font-weight:550;text-decoration:none}
+    .pill b{padding:3px 10px;border-radius:999px;background:rgba(255,87,34,.16);color:var(--peach);font-size:12px;font-weight:700}
+    .hero h1{margin:26px 0 0;font-size:clamp(52px,7.4vw,104px);line-height:.95;letter-spacing:-.055em;font-weight:680}
+    .hero h1 .serif{display:block;font-size:1.1em;line-height:.95;padding-bottom:.06em}
+    .hero .lead{font-size:clamp(18px,1.7vw,21px);max-width:540px;margin-top:26px}
+    .try{margin-top:36px;max-width:540px}
+    .try-bar{display:flex;align-items:center;gap:6px;padding:6px 6px 6px 20px;border:1px solid var(--line-2);border-radius:999px;background:rgba(18,14,12,.8);box-shadow:0 20px 60px -25px rgba(255,87,34,.45),inset 0 1px 0 rgba(255,255,255,.05);transition:border-color .2s ease,box-shadow .2s ease;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    .try-bar:focus-within{border-color:rgba(255,138,76,.6);box-shadow:0 0 0 4px rgba(255,87,34,.14),0 20px 60px -25px rgba(255,87,34,.6)}
+    .try-bar svg{flex:none;color:var(--faint)}
+    .try-bar input{flex:1;min-width:0;height:48px;border:0;outline:0;background:transparent;color:var(--text);font-size:16px}
+    .try-bar input::placeholder{color:var(--faint)}
+    .try-bar .btn{min-height:48px}
+    .try-note{margin:12px 0 0 20px;color:var(--faint);font-size:13px}
+    .hero-meta{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:34px;color:var(--muted);font-size:14px}
+    .hero-meta span{display:inline-flex;align-items:center;gap:8px}
+    .hero-meta svg{color:var(--orange-2)}
+    .hero-alt{display:inline-flex;align-items:center;gap:6px;margin:18px 0 0 20px;color:var(--text);font-size:14px;font-weight:600;text-decoration:none;opacity:.85}
+    .hero-alt:hover{opacity:1}
+    .hero-stage{position:relative;display:grid;place-items:center;min-height:620px}
+    .hero-stage:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.32),transparent 62%);filter:blur(20px)}
+    .stage-ring{position:absolute;width:590px;height:590px;border-radius:50%;border:1px solid rgba(255,196,161,.1)}
+    .stage-ring:nth-child(2){width:720px;height:720px;border-color:rgba(255,196,161,.06)}
+    #liveRoseVoice{position:relative;z-index:2;display:flex;justify-content:center;width:min(430px,100%);min-height:560px}
+    #liveRoseVoice .wr-ai.inline{position:relative;inset:auto;margin:auto}
+    #liveRoseVoice .wr-ai.inline .wr-panel{position:relative;right:auto;bottom:auto}
+    #liveRoseVoice .wr-fab,#liveRoseVoice .wr-close{display:none!important}
+    #liveRoseVoice main{padding:0}
+    .float-card{position:absolute;z-index:3;display:flex;align-items:center;gap:12px;padding:12px 16px 12px 12px;border:1px solid var(--line-2);border-radius:18px;background:rgba(20,15,13,.78);box-shadow:0 24px 50px -20px rgba(0,0,0,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-size:13px;line-height:1.35;animation:float 7s ease-in-out infinite}
+    .float-card strong{display:block;font-size:13.5px;font-weight:650}
+    .float-card small{color:var(--muted);font-size:12px}
+    .float-card .ico{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:11px;background:rgba(255,87,34,.15);color:var(--orange-2)}
+    .float-card.one{left:-46px;top:3%}
+    .float-card.two{right:-18px;bottom:18%;animation-delay:-3.5s}
+    @keyframes float{50%{transform:translateY(-10px)}}
+
+    /* Inline preview */
+    .preview[hidden]{display:none}
+    .preview{width:min(1200px,100% - 40px);margin:0 auto 40px;overflow:hidden;border:1px solid var(--line-2);border-radius:22px;background:#fbf7f1;box-shadow:0 40px 100px -30px rgba(0,0,0,.9);scroll-margin-top:96px}
+    .preview-bar{display:flex;align-items:center;gap:14px;min-height:50px;padding:8px 16px;background:#17110e;color:var(--text);font-size:13px;border-bottom:1px solid var(--line)}
+    .preview-dots{display:flex;gap:6px}.preview-dots i{width:10px;height:10px;border-radius:50%;background:#3a2c25}
+    .preview-bar strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+    .preview-bar button{margin-left:auto;flex:none;padding:6px 14px;border:1px solid var(--line-2);border-radius:999px;background:transparent;color:var(--text);font-size:12px;cursor:pointer}
+    .preview iframe{display:block;width:100%;height:min(1050px,88vh);min-height:610px;border:0;background:#fbf7f1}
+
+    /* Marquee */
+    .strip{padding:28px 0 36px;border-block:1px solid var(--line);background:linear-gradient(180deg,transparent,rgba(255,255,255,.012))}
+    .strip p{margin:0 0 18px;padding:0 16px;text-align:center;color:var(--faint);font-size:13px;font-weight:550}
+    .marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+    .marquee-track{display:flex;gap:56px;width:max-content;animation:marquee 40s linear infinite}
+    .marquee span{display:inline-flex;align-items:center;gap:12px;color:rgba(246,239,232,.55);font-size:20px;font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+    .marquee span:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange);opacity:.7}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+
+    /* Sections */
+    section.block{padding:140px 0 0}
+    .section-head{max-width:760px;margin-bottom:64px}
+    .section-head.center{margin-inline:auto}
+
+    /* Bento */
+    .bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
+    .card{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:400px;padding:30px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,var(--surface-2),var(--surface) 60%);transition:border-color .3s ease}
+    .card:hover{border-color:var(--line-2)}
+    .card:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(500px circle at var(--mx,50%) var(--my,0%),rgba(255,138,76,.07),transparent 40%);opacity:0;transition:opacity .3s ease}
+    .card:hover:after{opacity:1}
+    .card h3{margin:0;font-size:22px;font-weight:650;letter-spacing:-.03em;line-height:1.2}
+    .card p{margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.55;max-width:420px}
+    .card .viz{margin-top:auto;padding-top:28px}
+    .span-4{grid-column:span 4}.span-3{grid-column:span 3}.span-2{grid-column:span 2}
+    .tag{display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;color:var(--peach);font-size:12px;font-weight:650;letter-spacing:.02em}
+    .tag i{width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--orange)}
+
+    /* viz: transcript */
+    .chat{display:grid;gap:10px;max-width:560px}
+    .msg{max-width:78%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.45}
+    .msg.v{justify-self:end;background:rgba(255,255,255,.06);border:1px solid var(--line);border-bottom-right-radius:6px;color:var(--text)}
+    .msg.r{background:linear-gradient(135deg,rgba(255,87,34,.2),rgba(255,138,76,.1));border:1px solid rgba(255,138,76,.25);border-bottom-left-radius:6px;color:#ffe9dc}
+    .msg small{display:block;margin-bottom:4px;color:var(--faint);font-size:11px;font-weight:650;letter-spacing:.04em;text-transform:uppercase}
+    .msg.r small{color:rgba(255,196,161,.75)}
+    .wave{display:flex;align-items:center;gap:3px;height:28px;margin-top:6px}
+    .wave i{width:3px;border-radius:3px;background:var(--orange-2);animation:bar 1.2s ease-in-out infinite;animation-delay:calc(var(--i)*-90ms)}
+    @keyframes bar{0%,100%{height:5px;opacity:.5}50%{height:24px;opacity:1}}
+
+    /* viz: scan */
+    .scan{border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.35);overflow:hidden;font-size:13px}
+    .scan-url{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+    .scan-url b{color:var(--text);font-weight:600}
+    .scan-url .bar{margin-left:auto;width:64px;height:4px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}
+    .scan-url .bar:after{content:"";display:block;width:100%;height:100%;background:var(--orange);animation:load 2.4s ease-in-out infinite;transform-origin:left}
+    @keyframes load{0%{transform:scaleX(0)}70%,100%{transform:scaleX(1)}}
+    .scan ul{margin:0;padding:8px 14px 12px;list-style:none;display:grid;gap:2px}
+    .scan li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);color:var(--muted)}
+    .scan li:last-child{border:0}
+    .scan li b{color:var(--text);font-weight:550;text-align:right}
+
+    /* viz: lead card */
+    .lead-card{border:1px solid rgba(255,138,76,.22);border-radius:18px;background:linear-gradient(160deg,rgba(255,87,34,.1),rgba(0,0,0,.3) 55%);padding:18px;font-size:13px}
+    .lead-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+    .lead-top strong{font-size:14px}
+    .ok{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(74,222,128,.12);color:#86efac;font-size:11.5px;font-weight:650}
+    .ok:before{content:"";width:6px;height:6px;border-radius:50%;background:#4ade80}
+    .lead-row{display:grid;grid-template-columns:76px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--line);color:var(--muted)}
+    .lead-row b{color:var(--text);font-weight:550}
+
+    /* viz: notifications */
+    .notes{position:relative;display:grid;gap:10px}
+    .note{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line-2);border-radius:16px;background:rgba(28,22,19,.9);font-size:13px;box-shadow:0 16px 30px -18px #000}
+    .note:nth-child(2){opacity:.6;transform:scale(.96);margin-top:-4px}
+    .note:nth-child(3){opacity:.3;transform:scale(.92);margin-top:-8px}
+    .note .ico{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:10px;background:var(--orange);color:#fff}
+    .note strong{display:block;font-size:13px}
+    .note span{color:var(--muted)}
+    .note time{margin-left:auto;color:var(--faint);font-size:11.5px;white-space:nowrap}
+
+    /* viz: brand looks */
+    .looks{display:flex;justify-content:center;align-items:flex-end;gap:12px;padding:8px 0}
+    .look{position:relative;width:62px;height:62px;border-radius:50%;background:#c96c49 url('assets/rose-voice-reference.jpg') 50.93% 43.69%/482% auto;border:1px solid rgba(255,225,205,.6);box-shadow:0 10px 24px -8px var(--t,rgba(255,87,34,.6));transition:transform .3s ease}
+    .look:after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--t);mix-blend-mode:color;opacity:.85}
+    .look.main{width:84px;height:84px}.look.main:after{display:none}
+    .card:hover .look{transform:translateY(-4px)}
+    .card:hover .look:nth-child(2n){transform:translateY(-8px)}
+    .swatches{display:flex;justify-content:center;gap:8px;margin-top:20px}
+    .swatches i{width:22px;height:22px;border-radius:7px;background:var(--t);border:1px solid rgba(255,255,255,.18)}
+
+    /* viz: clock */
+    .clock{display:flex;align-items:baseline;gap:10px}
+    .clock b{font-size:64px;font-weight:650;letter-spacing:-.05em;line-height:1}
+    .clock span{color:var(--muted);font-size:16px;font-weight:550}
+    .timeline{display:flex;gap:4px;margin-top:18px}
+    .timeline i{flex:1;height:30px;border-radius:5px;background:rgba(255,255,255,.05)}
+    .timeline i.on{background:linear-gradient(180deg,var(--orange-2),var(--orange));box-shadow:0 0 14px -2px rgba(255,87,34,.6)}
+    .timeline-labels{display:flex;justify-content:space-between;margin-top:8px;color:var(--faint);font-size:11px}
+
+    /* Flow */
+    .flow{position:relative;margin-top:24px;padding:72px 40px;border:1px solid var(--line);border-radius:32px;background:radial-gradient(ellipse 60% 80% at 50% 120%,rgba(255,87,34,.18),transparent 70%),var(--bg-2);overflow:hidden}
+    .flow-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:20px;max-width:980px;margin:auto}
+    .node{padding:24px;border:1px solid var(--line-2);border-radius:20px;background:rgba(16,13,12,.85);text-align:center}
+    .node .ico{display:grid;place-items:center;width:52px;height:52px;margin:0 auto 14px;border-radius:16px;background:rgba(255,255,255,.05);color:var(--peach)}
+    .node.rose{border-color:rgba(255,138,76,.45);box-shadow:0 0 60px -10px rgba(255,87,34,.45)}
+    .node.rose .ico{background:linear-gradient(145deg,#ff8a4c,#ff5722);color:#fff}
+    .node strong{display:block;font-size:17px;letter-spacing:-.02em}
+    .node span{display:block;margin-top:6px;color:var(--muted);font-size:13.5px;line-height:1.45}
+    .link-line{position:relative;width:90px;height:2px;background:linear-gradient(90deg,rgba(255,138,76,.15),rgba(255,138,76,.5),rgba(255,138,76,.15));border-radius:2px;overflow:hidden}
+    .link-line:after{content:"";position:absolute;top:-2px;left:-30%;width:30%;height:6px;border-radius:6px;background:radial-gradient(closest-side,#ffd6bb,transparent);animation:travel 2.2s ease-in-out infinite}
+    .link-line.b:after{animation-delay:1.1s}
+    @keyframes travel{to{left:100%}}
+
+    /* Steps */
+    .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:s}
+    .step{position:relative;padding:34px 30px 32px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);counter-increment:s}
+    .step:before{content:"0" counter(s);display:block;margin-bottom:44px;font-family:var(--serif);font-style:italic;font-size:56px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,138,76,.55)}
+    .step h3{margin:0;font-size:21px;font-weight:650;letter-spacing:-.03em}
+    .step p{margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.55}
+    .step em{font-style:normal;color:var(--peach)}
+
+    /* Pricing */
+    .plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:920px;margin:auto}
+    .plan{position:relative;display:flex;flex-direction:column;padding:36px;border:1px solid var(--line);border-radius:28px;background:var(--surface)}
+    .plan.pro{border-color:transparent;background:linear-gradient(var(--surface-2),var(--surface)) padding-box,linear-gradient(160deg,rgba(255,138,76,.8),rgba(255,87,34,.15) 40%,rgba(255,138,76,.35)) border-box;border:1px solid transparent;box-shadow:0 40px 90px -40px rgba(255,87,34,.5)}
+    .plan .badge{position:absolute;top:34px;right:34px;padding:5px 12px;border-radius:999px;background:var(--orange);color:#fff;font-size:12px;font-weight:700}
+    .plan h3{margin:0;font-size:16px;font-weight:650;color:var(--muted)}
+    .price{display:flex;align-items:baseline;gap:8px;margin:18px 0 6px}
+    .price b{font-size:64px;font-weight:650;letter-spacing:-.055em;line-height:1}
+    .price b sup{font-size:.36em;font-weight:600;vertical-align:top;margin-right:4px;letter-spacing:0;position:relative;top:.55em;color:var(--muted)}
+    .price span{color:var(--muted)}
+    .plan .desc{margin:0;color:var(--muted);font-size:15px}
+    .plan ul{display:grid;gap:14px;margin:30px 0 36px;padding:30px 0 0;border-top:1px solid var(--line);list-style:none;font-size:15px}
+    .plan li{display:flex;gap:12px;align-items:flex-start}
+    .plan li svg{flex:none;margin-top:3px;color:var(--orange-2)}
+    .plan .btn{margin-top:auto;width:100%}
+    .fine{margin:28px auto 0;max-width:640px;text-align:center;color:var(--faint);font-size:13.5px;line-height:1.6}
+
+    /* FAQ */
+    .faq{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:64px;align-items:start}
+    .faq .section-head{position:sticky;top:120px;margin:0}
+    .faq-list{border-top:1px solid var(--line)}
+    .faq details{border-bottom:1px solid var(--line)}
+    .faq summary{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;cursor:pointer;list-style:none;font-size:18px;font-weight:600;letter-spacing:-.02em}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary .pm{position:relative;flex:none;width:32px;height:32px;border:1px solid var(--line-2);border-radius:50%;transition:transform .3s ease,background .3s ease}
+    .faq summary .pm:before,.faq summary .pm:after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;background:var(--peach);transform:translate(-50%,-50%)}
+    .faq summary .pm:after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .3s ease}
+    .faq details[open] .pm{background:rgba(255,87,34,.14)}
+    .faq details[open] .pm:after{transform:translate(-50%,-50%) rotate(0)}
+    .faq details p{margin:-8px 0 26px;max-width:620px;color:var(--muted);font-size:16px;line-height:1.65}
+
+    /* Final CTA */
+    .final{position:relative;margin-top:160px;padding:120px 24px;border:1px solid var(--line);border-radius:40px;text-align:center;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse 70% 90% at 50% 115%,rgba(255,87,34,.35),transparent 65%),var(--bg-2)}
+    .final canvas{position:absolute;inset:0;z-index:-1;width:100%;height:100%;opacity:.8}
+    .final h2{margin:0 auto;max-width:900px;font-size:clamp(44px,6.6vw,92px);line-height:.98;letter-spacing:-.055em;font-weight:680}
+    .final .lead{margin-inline:auto}
+    .final .actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:40px}
+
+    /* Footer */
+    footer{margin-top:100px;border-top:1px solid var(--line);padding:64px 0 40px;color:var(--muted);font-size:14px}
+    .foot{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:40px}
+    .foot p{margin:16px 0 0;max-width:300px;line-height:1.6}
+    .foot h4{margin:0 0 16px;color:var(--text);font-size:13px;font-weight:650}
+    .foot ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+    .foot a{text-decoration:none;color:var(--muted);transition:color .2s ease}
+    .foot a:hover{color:var(--text)}
+    .foot-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--faint);font-size:13px}
+    .wordmark{margin-top:56px;font-size:clamp(64px,15vw,210px);font-weight:750;letter-spacing:-.06em;line-height:.8;text-align:center;background:linear-gradient(180deg,rgba(255,236,222,.1),rgba(255,236,222,0) 85%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none}
+
+    /* Reveal */
+    .js .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+    .js .reveal.in{opacity:1;transform:none}
+
+    /* Responsive */
+    @media(max-width:1080px){
+      .hero-grid{grid-template-columns:1fr;gap:40px;text-align:center}
+      .hero .lead,.try{margin-inline:auto}
+      .hero-meta{justify-content:center}
+      .try-note,.hero-alt{margin-left:0}
+      .hero-copy{display:flex;flex-direction:column;align-items:center}
+      .float-card.one{left:0}.float-card.two{right:0}
+      .span-4,.span-3,.span-2{grid-column:span 6}
+      .bento{grid-template-columns:repeat(6,minmax(0,1fr))}
+      .card.half{grid-column:span 3}
+      .faq{grid-template-columns:1fr;gap:40px}
+      .faq .section-head{position:static}
+      .foot{grid-template-columns:1fr 1fr 1fr}
+      .foot>div:first-child{grid-column:1/-1}
+    }
+    @media(max-width:860px){
+      .nav-links{display:none}
+      .nav-actions{margin-left:auto}
+      .flow-row{grid-template-columns:1fr;justify-items:center}
+      .flow-row .node{width:100%;max-width:360px}
+      .link-line{width:2px;height:44px;background:linear-gradient(180deg,rgba(255,138,76,.15),rgba(255,138,76,.5),rgba(255,138,76,.15))}
+      .link-line:after{left:-2px;top:-30%;width:6px;height:30%;animation-name:travel-y}
+      @keyframes travel-y{to{top:100%}}
+      .steps,.plans{grid-template-columns:1fr}
+      .plans{max-width:480px}
+      .card.half{grid-column:span 6}
+    }
+    @media(max-width:600px){
+      .wrap{width:calc(100% - 32px)}
+      .nav{inset:10px 0 auto}
+      .nav-inner{width:calc(100% - 20px);padding:8px 8px 8px 14px;gap:10px}
+      .nav-actions .btn-ghost{display:none}
+      .brand{font-size:16px}
+      .hero{padding:120px 0 64px}
+      .hero h1{font-size:clamp(46px,13vw,64px)}
+      .try-bar{flex-wrap:wrap;padding:6px;border-radius:22px}
+      .try-bar svg{display:none}
+      .try-bar input{padding:0 14px}
+      .try-bar .btn{width:100%}
+      .try-note{margin-top:10px}
+      .hero-stage{min-height:0;padding:20px 0}
+      .hero-stage:before{width:340px;height:340px}
+      .stage-ring{width:380px;height:380px}.stage-ring:nth-child(2){display:none}
+      .float-card{display:none}
+      #liveRoseVoice{min-height:540px}
+      section.block{padding-top:100px}
+      .section-head{margin-bottom:44px}
+      .card{min-height:0;padding:24px}
+      .flow{padding:44px 20px;border-radius:24px}
+      .plan{padding:28px 24px}
+      .plan .badge{top:26px;right:24px}
+      .final{margin-top:110px;padding:84px 20px;border-radius:28px}
+      .foot{grid-template-columns:1fr 1fr}
+      .marquee span{font-size:17px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*:before,*:after{animation:none!important;transition:none!important}
+      .js .reveal{opacity:1;transform:none}
+    }
+  </style>
+  <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
-  <nav class="wr-site-nav" aria-label="Wildrose navigation">
-    <div class="wr-site-wrap">
-      <a class="wr-site-brand" href="https://wildroseautomations.ca/"><img src="https://wildroseautomations.ca/logos/wildrose.png" width="36" height="36" alt="">Wildrose</a>
-      <div class="wr-site-links"><a href="#try-rose">Rose Setup</a></div>
-      <div class="wr-site-actions">
-        <a class="wr-site-login" href="https://workground.wildroseautomations.ca/login.html">Login</a>
-        <a class="wr-site-buy" href="https://wildroseautomations.ca/configure/">Configure my Agent</a>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top"><img src="https://wildroseautomations.ca/logos/wildrose.png" width="30" height="30" alt="">Wildrose</a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#product">Product</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="https://workground.wildroseautomations.ca/login.html">Log in</a>
+        <a class="btn btn-primary" href="https://wildroseautomations.ca/configure/">Get Rose</a>
       </div>
     </div>
-  </nav>
-  <section class="wr-site-hero" id="top" aria-labelledby="heroTitle">
-    <div class="wr-site-wrap wr-site-hero-inner">
-      <div class="wr-site-label"><span aria-hidden="true"></span>Introducing Rose</div>
-      <h1 id="heroTitle">Give your website<br><em>a front desk.</em></h1>
-      <p class="wr-site-lead">Rose answers questions, captures quote requests, and sends the lead to you — while the visitor is still on the page.</p>
-      <div class="wr-site-hero-actions">
-        <a class="wr-site-cta" href="#try-rose">See Rose on My Site</a>
-        <a class="wr-site-hero-buy" href="https://wildroseautomations.ca/configure/">Configure my Agent</a>
-      </div>
-      <div class="wr-site-widget" id="liveRoseVoice"></div>
-    </div>
-  </section>
-  <main class="shell">
-    <section class="rose-reveal" id="roseReveal" aria-labelledby="roseRevealTitle">
-      <p class="rose-reveal__eyebrow">Rose, made yours</p>
-      <h2 id="roseRevealTitle">One Rose. Your look.</h2>
-      <span id="mockup" aria-hidden="true"></span>
-      <form class="wr-try-form" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
-        <label for="tryRoseWebsite">Try Rose on your website</label>
-        <div class="wr-try-bar">
-          <input id="tryRoseWebsite" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com" required maxlength="2048" aria-describedby="tryRoseNote">
-          <button type="submit">Build my preview <span aria-hidden="true">→</span></button>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="heroTitle">
+      <canvas class="hero-waves" id="heroWaves" aria-hidden="true"></canvas>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <a class="pill reveal" href="#product"><b>Chat + voice</b>Meet Rose, your AI front desk <span aria-hidden="true">→</span></a>
+          <h1 id="heroTitle" class="reveal" style="--d:.08s">Give your website <span class="serif grad">a front desk.</span></h1>
+          <p class="lead reveal" style="--d:.16s">Rose answers questions, captures quote requests and sends the lead to you, while the visitor is still on the page.</p>
+          <form class="try reveal" style="--d:.24s" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
+            <label class="sr" for="tryRoseWebsite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Your website address</label>
+            <div class="try-bar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
+              <input id="tryRoseWebsite" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com" required maxlength="2048" aria-describedby="tryRoseNote">
+              <button class="btn btn-primary" type="submit">See Rose on my site <span class="arrow" aria-hidden="true">→</span></button>
+            </div>
+            <p class="try-note" id="tryRoseNote">Free preview in seconds. Nothing is installed.</p>
+          </form>
+          <div class="hero-meta reveal" style="--d:.32s">
+            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Set up for you</span>
+            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No code needed</span>
+            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>From CA$39/month</span>
+          </div>
         </div>
-        <p id="tryRoseNote">Enter a public website address. Your preview appears below on this page; nothing is installed.</p>
-      </form>
-      <div class="rose-reveal__stage" role="img" aria-label="One orange Rose assistant expands into a lineup of seven colourful design variations">
-        <svg class="rose-reveal__arch" viewBox="0 0 1000 380" preserveAspectRatio="none" aria-hidden="true"><path d="M 85 315 C 130 72, 369 20, 500 20 C 685 20, 890 90, 927 315"/></svg>
-        <div class="rose-reveal__floor" aria-hidden="true"></div>
-        <div id="roseRevealCards" aria-hidden="true"></div>
+        <div class="hero-stage reveal" style="--d:.2s">
+          <span class="stage-ring" aria-hidden="true"></span><span class="stage-ring" aria-hidden="true"></span>
+          <div class="float-card one" aria-hidden="true"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><strong>“Could I get a quote?”</strong><small>Visitor · just now</small></div></div>
+          <div class="float-card two" aria-hidden="true"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity=".0"/><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></span><div><strong>New quote request</strong><small>Sent to you by Rose</small></div></div>
+          <div id="liveRoseVoice" aria-label="Talk to Rose live"></div>
+        </div>
       </div>
-      <section class="wr-inline-preview" id="roseSitePreview" aria-label="Rose website preview" hidden>
-        <div class="wr-inline-preview__bar"><span class="wr-inline-preview__dots" aria-hidden="true">● ● ●</span><strong id="rosePreviewTitle">Building your Rose preview…</strong><button type="button" id="rosePreviewClose" aria-label="Close website preview">Close</button></div>
-        <iframe id="rosePreviewFrame" title="Rose preview for your website" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </section>
+
+    <section class="preview" id="roseSitePreview" aria-label="Rose website preview" hidden>
+      <div class="preview-bar"><span class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></span><strong id="rosePreviewTitle">Building your Rose preview…</strong><button type="button" id="rosePreviewClose" aria-label="Close website preview">Close</button></div>
+      <iframe id="rosePreviewFrame" title="Rose preview for your website" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </section>
+
+    <div class="strip" aria-label="Who Rose is for">
+      <p>Made for businesses that live on enquiries and quote requests</p>
+      <div class="marquee"><div class="marquee-track">
+        <span>Plumbers</span><span>Contractors</span><span>Landscapers</span><span>Clinics</span><span>Salons &amp; spas</span><span>Auto shops</span><span>Cleaners</span><span>Real estate</span><span>Bakeries</span><span>Electricians</span>
+        <span aria-hidden="true">Plumbers</span><span aria-hidden="true">Contractors</span><span aria-hidden="true">Landscapers</span><span aria-hidden="true">Clinics</span><span aria-hidden="true">Salons &amp; spas</span><span aria-hidden="true">Auto shops</span><span aria-hidden="true">Cleaners</span><span aria-hidden="true">Real estate</span><span aria-hidden="true">Bakeries</span><span aria-hidden="true">Electricians</span>
+      </div></div>
+    </div>
+
+    <section class="block" id="product" aria-labelledby="productTitle">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Meet Rose</p>
+          <h2 class="h2" id="productTitle">Everything a great front desk does. <span class="serif grad">None of the hold music.</span></h2>
+          <p class="lead">Rose greets every visitor, by chat or by voice, and turns real conversations into leads you can act on.</p>
+        </div>
+        <div class="bento">
+          <article class="card span-4 reveal">
+            <span class="tag"><i></i>Voice + chat</span>
+            <h3>Talks like your best receptionist</h3>
+            <p>Visitors can type or simply tap and speak. Rose answers naturally and asks the right follow-up questions.</p>
+            <div class="viz chat" aria-hidden="true">
+              <div class="msg v"><small>Visitor</small>Hi, do you fix leaking kitchen taps?</div>
+              <div class="msg r"><small>Rose</small>We do. What’s happening with yours?<div class="wave"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i><i style="--i:14"></i><i style="--i:15"></i></div></div>
+              <div class="msg v"><small>Visitor</small>It’s been dripping all week. Could I get a quote?</div>
+            </div>
+          </article>
+          <article class="card span-2 reveal" style="--d:.08s">
+            <span class="tag"><i></i>Learns your business</span>
+            <h3>Trained on your website</h3>
+            <p>Rose reads your public pages. You correct anything before she goes live.</p>
+            <div class="viz scan" aria-hidden="true">
+              <div class="scan-url"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><b>yourbusiness.ca</b><span class="bar"></span></div>
+              <ul><li>Services<b>Repairs, installs</b></li><li>Hours<b>Mon–Sat, 8–6</b></li><li>Service area<b>Within 40 km</b></li><li>Quotes<b>Free, in 24 h</b></li></ul>
+            </div>
+          </article>
+          <article class="card span-2 reveal">
+            <span class="tag"><i></i>Lead capture</span>
+            <h3>Turns chats into quote requests</h3>
+            <p>Name, contact details and what they need, all in one tidy request.</p>
+            <div class="viz lead-card" aria-hidden="true">
+              <div class="lead-top"><strong>Quote request</strong><span class="ok">Sent to you</span></div>
+              <div class="lead-row">Name<b>Sam Taylor</b></div>
+              <div class="lead-row">Email<b>sam@example.com</b></div>
+              <div class="lead-row">Needs<b>Leaking kitchen tap</b></div>
+            </div>
+          </article>
+          <article class="card span-2 reveal" style="--d:.08s">
+            <span class="tag"><i></i>Owner handoff</span>
+            <h3>The lead lands with you</h3>
+            <p>When Rose can’t help, she takes their details and passes the conversation to you.</p>
+            <div class="viz notes" aria-hidden="true">
+              <div class="note"><span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6 12 13 2 6"/></svg></span><div><strong>New quote request</strong><span>Sam needs a tap repair</span></div><time>7:02 AM</time></div>
+              <div class="note"><span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6 12 13 2 6"/></svg></span><div><strong>Callback requested</strong><span>Priya, after 5 pm</span></div><time>Yesterday</time></div>
+              <div class="note"><span class="ico"></span><div><strong>New question</strong><span>Do you work weekends?</span></div></div>
+            </div>
+          </article>
+          <article class="card span-2 reveal" style="--d:.16s">
+            <span class="tag"><i></i>After hours</span>
+            <h3>Awake at 11:47 PM</h3>
+            <p>Most visitors browse after you’ve closed. Rose is there for every one of them.</p>
+            <div class="viz" aria-hidden="true">
+              <div class="clock"><b>24/7</b><span>always answering</span></div>
+              <div class="timeline"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+              <div class="timeline-labels"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
+            </div>
+          </article>
+          <article class="card span-3 half reveal">
+            <span class="tag"><i></i>Your brand</span>
+            <h3>One Rose. Your look.</h3>
+            <p>Pick her name, greeting, tone and colour so she feels like part of your team.</p>
+            <div class="viz" aria-hidden="true">
+              <div class="looks"><span class="look" style="--t:#e94b6a"></span><span class="look" style="--t:#e3a63b"></span><span class="look main"></span><span class="look" style="--t:#3b82f6"></span><span class="look" style="--t:#22c55e"></span></div>
+              <div class="swatches"><i style="--t:#e94b6a"></i><i style="--t:#e3a63b"></i><i style="--t:#ff5722"></i><i style="--t:#3b82f6"></i><i style="--t:#22c55e"></i><i style="--t:#a855f7"></i></div>
+            </div>
+          </article>
+          <article class="card span-3 half reveal" style="--d:.08s">
+            <span class="tag"><i></i>Workground</span>
+            <h3>You stay in control</h3>
+            <p>Update business facts, greetings and how Rose speaks anytime in your Workground dashboard. Your corrections always win.</p>
+            <div class="viz scan" aria-hidden="true">
+              <div class="scan-url"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><b>Correct a business fact</b></div>
+              <ul><li>Agent name<b>Rose</b></li><li>Voice and tone<b>Friendly</b></li><li>Helps visitors<b>Quotes, questions</b></li></ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="flowTitle">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <p class="eyebrow">Why it works</p>
+          <h2 class="h2" id="flowTitle">Every visitor gets an answer. <span class="serif grad">Every lead reaches you.</span></h2>
+        </div>
+        <div class="flow reveal">
+          <div class="flow-row">
+            <div class="node"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span><strong>A visitor has a question</strong><span>Day or night, on any page of your site.</span></div>
+            <span class="link-line" aria-hidden="true"></span>
+            <div class="node rose"><span class="ico"><img src="https://wildroseautomations.ca/logos/wildrose.png" width="28" height="28" alt="" style="filter:brightness(0) invert(1)"></span><strong>Rose answers</strong><span>By chat or voice, from what your business actually offers.</span></div>
+            <span class="link-line b" aria-hidden="true"></span>
+            <div class="node"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg></span><strong>You get the lead</strong><span>Contact details and the request, ready for your reply.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="how-it-works" aria-labelledby="howTitle">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">How it works</p>
+          <h2 class="h2" id="howTitle">Live on your site <span class="serif grad">without touching code.</span></h2>
+          <p class="lead">You don’t have to install Rose yourself. We help get her live and test everything before calling it done.</p>
+        </div>
+        <div class="steps">
+          <div class="step reveal"><h3>Enter your website</h3><p>Rose reads your public pages and drafts what she knows about your business. <em>Correct anything</em> before you continue.</p></div>
+          <div class="step reveal" style="--d:.08s"><h3>Shape and test her</h3><p>Choose her name, greeting, tone and colour, then <em>talk to her by chat or voice</em> before you pick a plan.</p></div>
+          <div class="step reveal" style="--d:.16s"><h3>We take her live</h3><p>We install Rose on your site, or send the snippet to your web person, then <em>test chat, voice and lead delivery</em>.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="pricing" aria-labelledby="pricingTitle">
+      <div class="wrap">
+        <div class="section-head center reveal">
+          <p class="eyebrow">Pricing</p>
+          <h2 class="h2" id="pricingTitle">Simple plans. <span class="serif grad">Serious results.</span></h2>
+          <p class="lead">Both plans include Rose chat and voice. Try your agent first and choose a plan when you’re happy with her.</p>
+        </div>
+        <div class="plans">
+          <article class="plan reveal">
+            <h3>Rose Basic</h3>
+            <div class="price"><b><sup>CA$</sup>39</b><span>/ month</span></div>
+            <p class="desc">For getting every visitor answered.</p>
+            <ul>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Rose chat and voice on your website</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>75 voice minutes each month</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Quote requests sent to you</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Edit Rose anytime in Workground</li>
+            </ul>
+            <a class="btn btn-ghost" href="https://wildroseautomations.ca/configure/">Start with Basic</a>
+          </article>
+          <article class="plan pro reveal" style="--d:.08s">
+            <span class="badge">Most voice</span>
+            <h3>Rose Pro</h3>
+            <div class="price"><b><sup>CA$</sup>129</b><span>/ month</span></div>
+            <p class="desc">For busy sites where visitors love to talk.</p>
+            <ul>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Rose chat and voice on your website</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>275 voice minutes each month</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Quote requests sent to you</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Edit Rose anytime in Workground</li>
+            </ul>
+            <a class="btn btn-primary" href="https://wildroseautomations.ca/configure/">Start with Pro <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+        </div>
+        <p class="fine reveal">Extra voice minutes are CA$0.29 each. Custom integrations are quoted separately. Payments are handled securely by Square.</p>
+      </div>
+    </section>
+
+    <section class="block" id="faq" aria-labelledby="faqTitle">
+      <div class="wrap faq">
+        <div class="section-head reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2 class="h2" id="faqTitle">Questions, <span class="serif grad">answered.</span></h2>
+          <p class="lead">Something else on your mind? Email <a href="mailto:jack@wildroseautomations.ca" style="color:var(--peach)">jack@wildroseautomations.ca</a>.</p>
+        </div>
+        <div class="faq-list reveal">
+          <details><summary>Can I see Rose on my site before I pay?<span class="pm" aria-hidden="true"></span></summary><p>Yes. Enter your website at the top of this page and a preview appears right here. Nothing is installed. When you configure your agent you can also talk to her by chat and voice before choosing a plan.</p></details>
+          <details><summary>Do I need to install anything myself?<span class="pm" aria-hidden="true"></span></summary><p>No. After checkout, Wildrose helps get Rose live. Most owners invite us as a website contributor, or we can guide you on a call, send the snippet to your web person, or set up a hosted Rose page if your builder blocks custom code.</p></details>
+          <details><summary>What does Rose do when someone asks for a quote?<span class="pm" aria-hidden="true"></span></summary><p>She asks the right follow-up questions, collects the visitor’s contact details and sends the request to you, so you can reply while the lead is still warm.</p></details>
+          <details><summary>Can I change what Rose says?<span class="pm" aria-hidden="true"></span></summary><p>Yes. Your website scan and choices carry into Workground, where you can update business facts, her greeting, tone and colours at any time.</p></details>
+          <details><summary>What if Rose can’t answer a question?<span class="pm" aria-hidden="true"></span></summary><p>Rose offers a handoff to you: she takes the visitor’s contact details and passes the request along, so nobody leaves without a way to reach you.</p></details>
+          <details><summary>What happens if I go over my voice minutes?<span class="pm" aria-hidden="true"></span></summary><p>Extra voice minutes are CA$0.29 each. Chat is included on both plans.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <section class="final reveal" aria-labelledby="finalTitle">
+        <canvas id="finalWaves" aria-hidden="true"></canvas>
+        <p class="eyebrow">Ready when you are</p>
+        <h2 id="finalTitle" style="margin-top:18px">Stop losing visitors. <span class="serif grad">Give them Rose.</span></h2>
+        <p class="lead">See her on your own website in seconds. No card, no install.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#top" id="finalTry">See Rose on my site <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="https://wildroseautomations.ca/configure/">Configure my agent</a>
+        </div>
       </section>
-    </section>
-    <section class="stage" id="stage" data-speaker="visitor" aria-labelledby="brainTitle">
-      <h2 class="brain-title" id="brainTitle">Meet Rose’s brain.</h2>
-      <div class="demo-layout">
-        <div class="terminal" aria-label="Illustrated Customer and Rose conversation">
-          <div class="terminal-top"><span class="terminal-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>customer ↔ rose</span><span class="terminal-live">ILLUSTRATED PLAYBACK</span></div>
-          <div class="terminal-log" id="conversation" role="log" aria-live="off"></div>
-          <div class="terminal-footer"><span class="terminal-cursor" aria-hidden="true">›</span><span id="terminalStatus">Rose is listening</span><span class="terminal-pulse" aria-hidden="true"></span></div>
-        </div>
-        <div class="flow" id="flow" aria-label="Translucent brain visualization synchronized to illustrated workflow events"><div class="brain-scene"><canvas class="workflow-graph" id="workflowGraph" aria-label="Animated brain; drag or use arrow keys to rotate" tabindex="0"></canvas><div class="workflow-card" id="workflowCard" aria-live="polite"></div><div class="tool-list" id="toolList"></div></div></div>
-      </div>
-    </section>
-    <p class="demo-disclaimer">The brain conversation is illustrated playback, separate from the live Rose voice test above.</p>
+    </div>
   </main>
-  <script src="rose-reveal.js?v=2" defer></script>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div>
+          <a class="brand" href="#top"><img src="https://wildroseautomations.ca/logos/wildrose.png" width="30" height="30" alt="">Wildrose Automations</a>
+          <p>Rose is the AI front desk that answers your website visitors and sends the leads to you.</p>
+        </div>
+        <div><h4>Product</h4><ul><li><a href="#product">Meet Rose</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+        <div><h4>Get started</h4><ul><li><a href="https://wildroseautomations.ca/configure/">Configure my agent</a></li><li><a href="https://workground.wildroseautomations.ca/login.html">Log in to Workground</a></li><li><a href="rose-install-help.html">Install help</a></li><li><a href="mailto:jack@wildroseautomations.ca">Contact</a></li></ul></div>
+        <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li><li><a href="data-deletion.html">Data deletion</a></li></ul></div>
+      </div>
+      <div class="foot-bottom"><span>© 2026 Wildrose Automations</span><a href="mailto:jack@wildroseautomations.ca">jack@wildroseautomations.ca</a></div>
+      <div class="wordmark" aria-hidden="true">Wildrose</div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav background, scroll reveals and card spotlight.
+    (()=>{
+      const nav=document.getElementById('nav');
+      const onScroll=()=>nav.classList.toggle('scrolled',scrollY>12);
+      addEventListener('scroll',onScroll,{passive:true});onScroll();
+      const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+      document.querySelectorAll('.card').forEach(card=>card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`)}));
+      document.getElementById('finalTry').addEventListener('click',e=>{e.preventDefault();scrollTo({top:0,behavior:'smooth'});setTimeout(()=>document.getElementById('tryRoseWebsite').focus({preventScroll:true}),500)});
+    })();
+
+    // Glowing voice waves, after the brand ad.
+    (()=>{
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function waves(canvas,{lines=26,amp=.16,center=.5,speed=1,fadeLeft=false,narrowCenter=0}){
+        const ctx=canvas.getContext('2d');let w=0,h=0,dpr=1,visible=true,t=0,last=performance.now();
+        const size=()=>{dpr=Math.min(devicePixelRatio||1,2);w=canvas.clientWidth;h=canvas.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)};
+        const draw=now=>{
+          t+=(now-last)/1000*speed;last=now;ctx.clearRect(0,0,w,h);const A=Math.min(h,760),mid=h*(w<1080&&narrowCenter?narrowCenter:center);ctx.globalCompositeOperation='lighter';
+          for(let i=0;i<lines;i++){
+            const k=i/(lines-1),phase=k*2.2,alpha=.05+.5*Math.pow(1-Math.abs(k-.5)*2,2);
+            ctx.beginPath();
+            for(let x=0;x<=w;x+=6){
+              const nx=x/w,env=Math.pow(Math.sin(Math.PI*nx),1.4);
+              const y=mid+Math.sin(nx*9+t*1.1+phase)*A*amp*env*(.55+.45*Math.sin(t*.5+k*3))+Math.sin(nx*3.3-t*.6+phase*1.7)*A*amp*.45*env;
+              x?ctx.lineTo(x,y):ctx.moveTo(x,y);
+            }
+            const rgb=`255,${110+Math.round(70*k)},${50+Math.round(40*k)}`;
+            if(fadeLeft&&w>1080){const g=ctx.createLinearGradient(0,0,w,0);g.addColorStop(0,`rgba(${rgb},0)`);g.addColorStop(.42,`rgba(${rgb},0)`);g.addColorStop(.62,`rgba(${rgb},${alpha})`);g.addColorStop(1,`rgba(${rgb},${alpha})`);ctx.strokeStyle=g}
+            else ctx.strokeStyle=`rgba(${rgb},${alpha})`;ctx.lineWidth=1;ctx.shadowColor='rgba(255,87,34,.9)';ctx.shadowBlur=8;ctx.stroke();
+          }
+          if(visible&&!reduced)requestAnimationFrame(draw);
+        };
+        size();new ResizeObserver(()=>{size();if(reduced)draw(performance.now())}).observe(canvas);
+        new IntersectionObserver(([e])=>{const was=visible;visible=e.isIntersecting;if(visible&&!was&&!reduced){last=performance.now();requestAnimationFrame(draw)}}).observe(canvas);
+        requestAnimationFrame(draw);
+      }
+      waves(document.getElementById('heroWaves'),{lines:28,amp:.11,center:.56,fadeLeft:true,narrowCenter:.7});
+      waves(document.getElementById('finalWaves'),{lines:20,amp:.14,center:.62,speed:.8});
+    })();
+  </script>
   <script src="rose-funnel-client.js?v=4" data-api-base="https://rose-publisher.wildeautomations.com"></script>
   <script>window.wrFunnel?.('landing');</script>
   <script src="https://wildroseautomations.ca/wildrose-widget-sandbox.js?v=voice-universal-3" data-api-base="https://wildrose-widget.wildeautomations.com" data-title="Rose" data-accent="#ff5722" data-logo="https://wildroseautomations.ca/logos/wildrose.png" data-fallback-url="mailto:jack@wildroseautomations.ca" data-greeting="Hi, I’m Rose. Ask questions about our services or tell me what you need a quote for, and I’ll help you reach the owner." data-placeholder="Ask a question or describe your request…" data-business-context="You are the visitor-facing assistant for Wildrose Automations. Help visitors with FAQs, capture quote requests and contact details, and offer owner handoff. Do not act as an owner configuration tool. Rose Basic is CA$39/month with 75 voice minutes; Pro is CA$129/month with 275 voice minutes. Extra voice minutes are $0.29/minute. Custom integrations are separately scoped. Do not promise completed bookings, payments or integrations." data-mount="#liveRoseVoice" data-inline="true" data-default-view="voice"></script>
-  <script src="brain-3d.js?v=calm-1"></script>
-  <script>
-    (async()=>{
-      const scenarios=[
-  {
-    "name": "QUOTE REQUEST",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Hi, do you fix leaking kitchen taps?",
-        "caption": "Hi, do you fix leaking kitchen taps?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "We do. What’s happening with yours?",
-        "caption": "We do. What’s happening with yours?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "It’s been dripping all week. Could I get a quote?",
-        "caption": "It’s been dripping all week. Could I get a quote?"
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "Of course. What email can we reach you on?",
-        "caption": "Of course. What email can we reach you on?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "It’s sam@example.com.",
-        "caption": "It’s sam@example.com."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Thanks, Sam. Our team will get back to you.",
-        "caption": "Thanks, Sam. Our team will get back to you."
-      }
-    ],
-    "tools": [
-      {
-        "at": 4600,
-        "name": "Knowledge",
-        "status": "ANSWER FOUND"
-      },
-      {
-        "at": 12400,
-        "name": "HubSpot",
-        "status": "LEAD CREATED"
-      },
-      {
-        "at": 13800,
-        "name": "Gmail",
-        "status": "SUMMARY SENT"
-      },
-      {
-        "at": 14700,
-        "name": "Twilio",
-        "status": "ALERT SENT"
-      }
-    ]
-  },
-  {
-    "name": "BOOK AN APPOINTMENT",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Do you have anyone available to fix my tap on Tuesday?",
-        "caption": "Do you have anyone available to fix my tap on Tuesday?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "I can check. Is it a leak or another issue?",
-        "caption": "I can check. Is it a leak or another issue?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "It’s leaking under the kitchen sink.",
-        "caption": "It’s leaking under the kitchen sink."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "We have 9:30 available. Does that work for you?",
-        "caption": "We have 9:30 available. Does that work for you?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Yes, that would be great.",
-        "caption": "Yes, that would be great."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "You’re booked for Tuesday at 9:30.",
-        "caption": "You’re booked for Tuesday at 9:30."
-      }
-    ],
-    "tools": [
-      {
-        "at": 11200,
-        "name": "Calendar",
-        "status": "BOOKED"
-      },
-      {
-        "at": 13200,
-        "name": "Gmail",
-        "status": "INVITE SENT"
-      },
-      {
-        "at": 14500,
-        "name": "Twilio",
-        "status": "REMINDER SET"
-      }
-    ]
-  },
-  {
-    "name": "SERVICE QUESTION",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Do you repair heat pumps in Dartmouth?",
-        "caption": "Do you repair heat pumps in Dartmouth?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "Let me check whether we cover your area.",
-        "caption": "Let me check whether we cover your area."
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "Mine keeps switching off. Could someone take a look?",
-        "caption": "Mine keeps switching off. Could someone take a look?"
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "Yes, we cover Dartmouth. What number can we call?",
-        "caption": "Yes, we cover Dartmouth. What number can we call?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "You can reach me at 555-0104.",
-        "caption": "You can reach me at 555-0104."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Thanks. Our service team will give you a call.",
-        "caption": "Thanks. Our service team will give you a call."
-      }
-    ],
-    "tools": [
-      {
-        "at": 3600,
-        "name": "Knowledge",
-        "status": "ANSWER FOUND"
-      },
-      {
-        "at": 11500,
-        "name": "HubSpot",
-        "status": "LEAD CREATED"
-      },
-      {
-        "at": 13400,
-        "name": "Gmail",
-        "status": "TEAM NOTIFIED"
-      }
-    ]
-  },
-  {
-    "name": "JOB STATUS",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Hi, what time is someone coming to fix my boiler?",
-        "caption": "Hi, what time is someone coming to fix my boiler?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "Let me check. Do you have your job number?",
-        "caption": "Let me check. Do you have your job number?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "Yes, it’s NC-4182.",
-        "caption": "Yes, it’s NC-4182."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "Your technician is due today at 2 PM.",
-        "caption": "Your technician is due today at 2 PM."
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Great. Could you text me that?",
-        "caption": "Great. Could you text me that?"
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Of course. I’ll send you the details.",
-        "caption": "Of course. I’ll send you the details."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5700,
-        "name": "HubSpot",
-        "status": "JOB FOUND"
-      },
-      {
-        "at": 12700,
-        "name": "Twilio",
-        "status": "UPDATE SENT"
-      },
-      {
-        "at": 14000,
-        "name": "Gmail",
-        "status": "RECAP SENT"
-      }
-    ]
-  }
-];
-      const workflowFrames=[
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request",
-      "detail": "Rose identifies the service the customer needs."
-    },
-    {
-      "at": 2200,
-      "tool": "Knowledge",
-      "kind": "search",
-      "state": "working",
-      "verb": "SEARCHING",
-      "title": "Searching service information",
-      "detail": "Looking for the right repair category.",
-      "value": "kitchen faucet repair",
-      "result": "Checking approved service notes"
-    },
-    {
-      "at": 4600,
-      "tool": "Knowledge",
-      "kind": "search",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Service match found",
-      "detail": "The repair request is in scope.",
-      "value": "kitchen faucet repair",
-      "result": "Kitchen plumbing · repair request"
-    },
-    {
-      "at": 9100,
-      "tool": "HubSpot",
-      "kind": "record",
-      "state": "working",
-      "verb": "PREPARING",
-      "title": "Preparing a new lead",
-      "detail": "Rose organizes the request for the team.",
-      "fields": [
-        [
-          "Service",
-          "Faucet repair"
-        ],
-        [
-          "Contact",
-          "sam@example.com"
-        ]
-      ]
-    },
-    {
-      "at": 12400,
-      "tool": "HubSpot",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Lead created",
-      "detail": "The team has a clean record to follow up.",
-      "fields": [
-        [
-          "Service",
-          "Faucet repair"
-        ],
-        [
-          "Contact",
-          "sam@example.com"
-        ]
-      ]
-    },
-    {
-      "at": 13400,
-      "tool": "Gmail",
-      "kind": "message",
-      "state": "working",
-      "verb": "DRAFTING",
-      "title": "Preparing a summary",
-      "detail": "Rose packages the conversation for the inbox.",
-      "value": "Kitchen repair request",
-      "result": "Service, issue, and contact details"
-    },
-    {
-      "at": 13800,
-      "tool": "Gmail",
-      "kind": "message",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Summary sent",
-      "detail": "The repair details are ready for the team.",
-      "value": "Kitchen repair request",
-      "result": "Service, issue, and contact details"
-    },
-    {
-      "at": 14700,
-      "tool": "Twilio",
-      "kind": "message",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Owner alerted",
-      "detail": "A short notification completes the handoff.",
-      "value": "New quote request",
-      "result": "Kitchen faucet · sam@example.com"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the booking",
-      "detail": "Rose gets the service and preferred day."
-    },
-    {
-      "at": 2100,
-      "tool": "Calendar",
-      "kind": "calendar",
-      "state": "working",
-      "verb": "CHECKING",
-      "title": "Checking availability",
-      "detail": "Looking for an opening on Tuesday.",
-      "value": "Tuesday · repair visit"
-    },
-    {
-      "at": 5000,
-      "tool": "Calendar",
-      "kind": "calendar",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "9:30 AM is available",
-      "detail": "Rose offers the open time to the customer.",
-      "value": "Tuesday · repair visit"
-    },
-    {
-      "at": 9200,
-      "tool": "Calendar",
-      "kind": "calendar",
-      "state": "working",
-      "verb": "BOOKING",
-      "title": "Reserving the visit",
-      "detail": "The customer confirmed the 9:30 AM time.",
-      "value": "Tuesday · 9:30 AM"
-    },
-    {
-      "at": 11200,
-      "tool": "Calendar",
-      "kind": "calendar",
-      "state": "done",
-      "verb": "BOOKED",
-      "title": "Client booked",
-      "detail": "Tuesday at 9:30 AM is on the calendar.",
-      "value": "Tuesday · 9:30 AM"
-    },
-    {
-      "at": 12700,
-      "tool": "Gmail",
-      "kind": "message",
-      "state": "working",
-      "verb": "DRAFTING",
-      "title": "Sending confirmation",
-      "detail": "The customer gets the appointment details.",
-      "value": "Your Tuesday visit",
-      "result": "Faucet repair · 9:30 AM"
-    },
-    {
-      "at": 13200,
-      "tool": "Gmail",
-      "kind": "message",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Confirmation sent",
-      "detail": "The appointment details are in their inbox.",
-      "value": "Your Tuesday visit",
-      "result": "Faucet repair · 9:30 AM"
-    },
-    {
-      "at": 14500,
-      "tool": "Twilio",
-      "kind": "message",
-      "state": "done",
-      "verb": "SCHEDULED",
-      "title": "Reminder scheduled",
-      "detail": "A text reminder is ready for the visit.",
-      "value": "Appointment reminder",
-      "result": "Tuesday · 9:30 AM"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the question",
-      "detail": "Rose identifies the service and location."
-    },
-    {
-      "at": 1900,
-      "tool": "Knowledge",
-      "kind": "search",
-      "state": "working",
-      "verb": "SEARCHING",
-      "title": "Searching business information",
-      "detail": "Checking services and coverage.",
-      "value": "heat pumps · Dartmouth",
-      "result": "Searching approved answers"
-    },
-    {
-      "at": 3600,
-      "tool": "Knowledge",
-      "kind": "search",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Answer found",
-      "detail": "Heat pump service is available in Dartmouth.",
-      "value": "heat pumps · Dartmouth",
-      "result": "Service area and repair policy matched"
-    },
-    {
-      "at": 7400,
-      "tool": "HubSpot",
-      "kind": "record",
-      "state": "working",
-      "verb": "PREPARING",
-      "title": "Preparing follow-up",
-      "detail": "Rose gathers what the team will need.",
-      "fields": [
-        [
-          "Service",
-          "Heat pump"
-        ],
-        [
-          "Area",
-          "Dartmouth"
-        ]
-      ]
-    },
-    {
-      "at": 11500,
-      "tool": "HubSpot",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Lead created",
-      "detail": "The callback request is organized.",
-      "fields": [
-        [
-          "Service",
-          "Heat pump"
-        ],
-        [
-          "Area",
-          "Dartmouth"
-        ]
-      ]
-    },
-    {
-      "at": 13400,
-      "tool": "Gmail",
-      "kind": "message",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Team notified",
-      "detail": "The follow-up request is shared.",
-      "value": "Heat pump callback",
-      "result": "Dartmouth service request"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the status request",
-      "detail": "Rose asks for the job reference."
-    },
-    {
-      "at": 2700,
-      "tool": "HubSpot",
-      "kind": "search",
-      "state": "working",
-      "verb": "SEARCHING",
-      "title": "Searching job records",
-      "detail": "Matching the reference number.",
-      "value": "NC-4182",
-      "result": "Checking customer jobs"
-    },
-    {
-      "at": 5700,
-      "tool": "HubSpot",
-      "kind": "record",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Job found",
-      "detail": "Technician scheduled for 2 PM today.",
-      "fields": [
-        [
-          "Job",
-          "NC-4182"
-        ],
-        [
-          "Status",
-          "Scheduled · 2 PM"
-        ]
-      ]
-    },
-    {
-      "at": 11300,
-      "tool": "Twilio",
-      "kind": "message",
-      "state": "working",
-      "verb": "PREPARING",
-      "title": "Preparing a text update",
-      "detail": "Rose confirms the status in writing.",
-      "value": "Repair update",
-      "result": "Technician scheduled for 2 PM"
-    },
-    {
-      "at": 12700,
-      "tool": "Twilio",
-      "kind": "message",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Update sent",
-      "detail": "The customer has the latest status.",
-      "value": "Repair update",
-      "result": "Technician scheduled for 2 PM"
-    },
-    {
-      "at": 14000,
-      "tool": "Gmail",
-      "kind": "message",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Recap sent",
-      "detail": "The team receives the conversation recap.",
-      "value": "Job NC-4182",
-      "result": "Customer update completed"
-    }
-  ]
-];
-      const extraScenarios=[
-  {
-    "name": "RESTAURANT RESERVATION",
-    "label": "Table booking",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Hi, do you have a table for four this Friday?",
-        "caption": "Hi, do you have a table for four this Friday?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "Let me check. What time were you hoping for?",
-        "caption": "Let me check. What time were you hoping for?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "Around seven, if possible.",
-        "caption": "Around seven, if possible."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "We have 7 PM available. Shall I book it?",
-        "caption": "We have 7 PM available. Shall I book it?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Yes, please. The name is Jamie.",
-        "caption": "Yes, please. The name is Jamie."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "All set, Jamie. Friday at seven for four people.",
-        "caption": "All set, Jamie. Friday at seven for four people."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Calendar",
-        "status": "BOOKED"
-      },
-      {
-        "at": 10000,
-        "name": "Gmail",
-        "status": "SENT"
-      },
-      {
-        "at": 14500,
-        "name": "Twilio",
-        "status": "SCHEDULED"
-      }
-    ]
-  },
-  {
-    "name": "ONLINE ORDER",
-    "label": "Order tracking",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Hi, my order still hasn’t arrived.",
-        "caption": "Hi, my order still hasn’t arrived."
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "I can check that. What’s your order number?",
-        "caption": "I can check that. What’s your order number?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "It’s 1048. I ordered it last week.",
-        "caption": "It’s 1048. I ordered it last week."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "It’s on its way and due to arrive tomorrow.",
-        "caption": "It’s on its way and due to arrive tomorrow."
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Oh, great. Can you send me the tracking link?",
-        "caption": "Oh, great. Can you send me the tracking link?"
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Of course. I’ll email it to you.",
-        "caption": "Of course. I’ll email it to you."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Shopify",
-        "status": "FOUND"
-      },
-      {
-        "at": 10000,
-        "name": "Gmail",
-        "status": "SENT"
-      },
-      {
-        "at": 14500,
-        "name": "Zendesk",
-        "status": "SAVED"
-      }
-    ]
-  },
-  {
-    "name": "SUPPORT REQUEST",
-    "label": "Support ticket",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "I can’t log in to my account. Can you help?",
-        "caption": "I can’t log in to my account. Can you help?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "I’ll help you get this sorted. What happens?",
-        "caption": "I’ll help you get this sorted. What happens?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "The page freezes after I enter my password.",
-        "caption": "The page freezes after I enter my password."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "I’ll ask our support team to take a look.",
-        "caption": "I’ll ask our support team to take a look."
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Thanks. My email is sam@example.com.",
-        "caption": "Thanks. My email is sam@example.com."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Thanks, Sam. Our support team will be in touch.",
-        "caption": "Thanks, Sam. Our support team will be in touch."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Zendesk",
-        "status": "CREATED"
-      },
-      {
-        "at": 10000,
-        "name": "Slack",
-        "status": "ALERTED"
-      },
-      {
-        "at": 14500,
-        "name": "Gmail",
-        "status": "SENT"
-      }
-    ]
-  },
-  {
-    "name": "WINDOW QUOTE",
-    "label": "Window quote",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Do you give quotes for replacing windows?",
-        "caption": "Do you give quotes for replacing windows?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "We do. How many windows need replacing?",
-        "caption": "We do. How many windows need replacing?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "Six, in a bungalow.",
-        "caption": "Six, in a bungalow."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "Would Thursday suit you for a measure-up?",
-        "caption": "Would Thursday suit you for a measure-up?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Thursday afternoon would be ideal.",
-        "caption": "Thursday afternoon would be ideal."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Great. I’ll send you the link to choose a time.",
-        "caption": "Great. I’ll send you the link to choose a time."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Salesforce",
-        "status": "CREATED"
-      },
-      {
-        "at": 10000,
-        "name": "Calendly",
-        "status": "READY"
-      },
-      {
-        "at": 14500,
-        "name": "Slack",
-        "status": "ALERTED"
-      }
-    ]
-  },
-  {
-    "name": "SALON WEBSITE ENQUIRY",
-    "label": "Salon website",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Do you build websites for hair salons?",
-        "caption": "Do you build websites for hair salons?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "Yes. What would you like your website to do?",
-        "caption": "Yes. What would you like your website to do?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "I’d like customers to book appointments online.",
-        "caption": "I’d like customers to book appointments online."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "That’s something we can help with. When do you need it?",
-        "caption": "That’s something we can help with. When do you need it?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Next month, ideally. Could someone send me a quote?",
-        "caption": "Next month, ideally. Could someone send me a quote?"
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Absolutely. I’ll pass your enquiry to our design team.",
-        "caption": "Absolutely. I’ll pass your enquiry to our design team."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Notion",
-        "status": "CREATED"
-      },
-      {
-        "at": 10000,
-        "name": "Asana",
-        "status": "CREATED"
-      },
-      {
-        "at": 14500,
-        "name": "Slack",
-        "status": "ALERTED"
-      }
-    ]
-  },
-  {
-    "name": "CUSTOMER RECEIPT",
-    "label": "Receipt request",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "I paid for my repair but didn’t get a receipt.",
-        "caption": "I paid for my repair but didn’t get a receipt."
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "I can help. Do you have the invoice number?",
-        "caption": "I can help. Do you have the invoice number?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "Yes, it’s 2041.",
-        "caption": "Yes, it’s 2041."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "I found your payment. Would you like a copy by email?",
-        "caption": "I found your payment. Would you like a copy by email?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Yes, please. It’s alex@example.com.",
-        "caption": "Yes, please. It’s alex@example.com."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Of course. I’ll send your receipt there.",
-        "caption": "Of course. I’ll send your receipt there."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "QuickBooks",
-        "status": "FOUND"
-      },
-      {
-        "at": 10000,
-        "name": "Stripe",
-        "status": "FOUND"
-      },
-      {
-        "at": 14500,
-        "name": "Gmail",
-        "status": "SENT"
-      }
-    ]
-  },
-  {
-    "name": "GYM CONSULTATION",
-    "label": "Gym consultation",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Do you offer a consultation before I join your gym?",
-        "caption": "Do you offer a consultation before I join your gym?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "We do. Would you prefer online or in person?",
-        "caption": "We do. Would you prefer online or in person?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "Online, please. I’m new to training.",
-        "caption": "Online, please. I’m new to training."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "How about Wednesday at 11 AM?",
-        "caption": "How about Wednesday at 11 AM?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "That works. Can you send me the call link?",
-        "caption": "That works. Can you send me the call link?"
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "You’re booked. I’ll email the link and details.",
-        "caption": "You’re booked. I’ll email the link and details."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Calendar",
-        "status": "BOOKED"
-      },
-      {
-        "at": 10000,
-        "name": "Zoom",
-        "status": "CREATED"
-      },
-      {
-        "at": 14500,
-        "name": "Outlook",
-        "status": "SENT"
-      }
-    ]
-  },
-  {
-    "name": "WEDDING PHOTOGRAPHY",
-    "label": "Wedding booking",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Hi, I’d like to book you for our wedding photos.",
-        "caption": "Hi, I’d like to book you for our wedding photos."
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "Lovely! What date is your wedding?",
-        "caption": "Lovely! What date is your wedding?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "June 12. We’ve already spoken to your photographer.",
-        "caption": "June 12. We’ve already spoken to your photographer."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "Great. Would you like the booking agreement by email?",
-        "caption": "Great. Would you like the booking agreement by email?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Yes, please. Send it to alex@example.com.",
-        "caption": "Yes, please. Send it to alex@example.com."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "I’ll send your agreement and package details.",
-        "caption": "I’ll send your agreement and package details."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Drive",
-        "status": "FOUND"
-      },
-      {
-        "at": 10000,
-        "name": "DocuSign",
-        "status": "READY"
-      },
-      {
-        "at": 14500,
-        "name": "Gmail",
-        "status": "SENT"
-      }
-    ]
-  },
-  {
-    "name": "EVENT ENQUIRY",
-    "label": "Event enquiry",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Can I hire your room for a birthday party?",
-        "caption": "Can I hire your room for a birthday party?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "Of course. What date and how many guests?",
-        "caption": "Of course. What date and how many guests?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "The 18th next month, for about twenty people.",
-        "caption": "The 18th next month, for about twenty people."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "I’ll check that with our events team.",
-        "caption": "I’ll check that with our events team."
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Do you have a projector for a photo slideshow?",
-        "caption": "Do you have a projector for a photo slideshow?"
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "I’ll include that and ask the team to get back to you.",
-        "caption": "I’ll include that and ask the team to get back to you."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Airtable",
-        "status": "SAVED"
-      },
-      {
-        "at": 10000,
-        "name": "Trello",
-        "status": "CREATED"
-      },
-      {
-        "at": 14500,
-        "name": "Teams",
-        "status": "ALERTED"
-      }
-    ]
-  },
-  {
-    "name": "NEWSLETTER SIGNUP",
-    "label": "Newsletter signup",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "How do I hear about your next pottery classes?",
-        "caption": "How do I hear about your next pottery classes?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "I can sign you up for class updates. Which ones?",
-        "caption": "I can sign you up for class updates. Which ones?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "The weekend classes, please.",
-        "caption": "The weekend classes, please."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "Sure. What email would you like us to use?",
-        "caption": "Sure. What email would you like us to use?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "sam@example.com. I’d love to get the updates.",
-        "caption": "sam@example.com. I’d love to get the updates."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "You’re on the list, Sam. Watch for our next class dates.",
-        "caption": "You’re on the list, Sam. Watch for our next class dates."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Mailchimp",
-        "status": "SAVED"
-      },
-      {
-        "at": 10000,
-        "name": "Sheets",
-        "status": "SAVED"
-      },
-      {
-        "at": 14500,
-        "name": "Gmail",
-        "status": "SENT"
-      }
-    ]
-  },
-  {
-    "name": "URGENT SERVICE",
-    "label": "Urgent repair",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "My boiler’s stopped working. Do you do emergency repairs?",
-        "caption": "My boiler’s stopped working. Do you do emergency repairs?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "We do. What’s the address?",
-        "caption": "We do. What’s the address?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "12 Harbour Street. There’s no heating at all.",
-        "caption": "12 Harbour Street. There’s no heating at all."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "I’ll flag this as urgent. What number can we call?",
-        "caption": "I’ll flag this as urgent. What number can we call?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "555-0104. We’re home all afternoon.",
-        "caption": "555-0104. We’re home all afternoon."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Thanks. I’ve asked our on-call team to contact you.",
-        "caption": "Thanks. I’ve asked our on-call team to contact you."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "ClickUp",
-        "status": "CREATED"
-      },
-      {
-        "at": 10000,
-        "name": "Twilio",
-        "status": "ALERTED"
-      },
-      {
-        "at": 14500,
-        "name": "Teams",
-        "status": "ALERTED"
-      }
-    ]
-  },
-  {
-    "name": "CUSTOMER FEEDBACK",
-    "label": "Customer feedback",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Can I leave some feedback about my appointment?",
-        "caption": "Can I leave some feedback about my appointment?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "Of course. How did it go?",
-        "caption": "Of course. How did it go?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "The staff were lovely, but I waited nearly an hour.",
-        "caption": "The staff were lovely, but I waited nearly an hour."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "I’m sorry about the wait. When was your appointment?",
-        "caption": "I’m sorry about the wait. When was your appointment?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Yesterday afternoon, at three.",
-        "caption": "Yesterday afternoon, at three."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Thank you. I’ll pass that to our manager.",
-        "caption": "Thank you. I’ll pass that to our manager."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Typeform",
-        "status": "SAVED"
-      },
-      {
-        "at": 10000,
-        "name": "Sheets",
-        "status": "SAVED"
-      },
-      {
-        "at": 14500,
-        "name": "Slack",
-        "status": "ALERTED"
-      }
-    ]
-  },
-  {
-    "name": "PROPERTY VIEWING",
-    "label": "Property viewing",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Is the apartment on King Street still available?",
-        "caption": "Is the apartment on King Street still available?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "It is. Would you like to arrange a viewing?",
-        "caption": "It is. Would you like to arrange a viewing?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "Yes. Could I come on Saturday morning?",
-        "caption": "Yes. Could I come on Saturday morning?"
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "We have 10 AM available. Would that suit you?",
-        "caption": "We have 10 AM available. Would that suit you?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Perfect. My name is Taylor.",
-        "caption": "Perfect. My name is Taylor."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "You’re booked for Saturday at ten, Taylor.",
-        "caption": "You’re booked for Saturday at ten, Taylor."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Airtable",
-        "status": "FOUND"
-      },
-      {
-        "at": 10000,
-        "name": "Calendar",
-        "status": "BOOKED"
-      },
-      {
-        "at": 14500,
-        "name": "Outlook",
-        "status": "SENT"
-      }
-    ]
-  },
-  {
-    "name": "CUSTOM ORDER",
-    "label": "Custom order",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Do you make outdoor signs for cafés?",
-        "caption": "Do you make outdoor signs for cafés?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "We do. What size are you thinking of?",
-        "caption": "We do. What size are you thinking of?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "About four feet wide, with our café’s logo.",
-        "caption": "About four feet wide, with our café’s logo."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "Great. When would you need it?",
-        "caption": "Great. When would you need it?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Before we open next month. Could I get a price?",
-        "caption": "Before we open next month. Could I get a price?"
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Absolutely. I’ll ask our team to quote for that.",
-        "caption": "Absolutely. I’ll ask our team to quote for that."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Monday",
-        "status": "CREATED"
-      },
-      {
-        "at": 10000,
-        "name": "Drive",
-        "status": "READY"
-      },
-      {
-        "at": 14500,
-        "name": "Slack",
-        "status": "ALERTED"
-      }
-    ]
-  },
-  {
-    "name": "TICKET DOWNLOAD HELP",
-    "label": "Ticket help",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "I can’t download the tickets I bought.",
-        "caption": "I can’t download the tickets I bought."
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "I can help get that sorted. Which event are they for?",
-        "caption": "I can help get that sorted. Which event are they for?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "The comedy show this Friday.",
-        "caption": "The comedy show this Friday."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "What happens when you tap Download?",
-        "caption": "What happens when you tap Download?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Nothing happens. I’m using Chrome on my laptop.",
-        "caption": "Nothing happens. I’m using Chrome on my laptop."
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "I’ll ask our support team to help you get your tickets.",
-        "caption": "I’ll ask our support team to help you get your tickets."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "Intercom",
-        "status": "SAVED"
-      },
-      {
-        "at": 10000,
-        "name": "GitHub",
-        "status": "CREATED"
-      },
-      {
-        "at": 14500,
-        "name": "Discord",
-        "status": "ALERTED"
-      }
-    ]
-  },
-  {
-    "name": "NEW ENQUIRY",
-    "label": "Lead handoff",
-    "lines": [
-      {
-        "at": 0,
-        "who": "visitor",
-        "text": "Do you clean offices outside normal working hours?",
-        "caption": "Do you clean offices outside normal working hours?"
-      },
-      {
-        "at": 1800,
-        "who": "rose",
-        "text": "We do. How big is the office?",
-        "caption": "We do. How big is the office?"
-      },
-      {
-        "at": 4100,
-        "who": "visitor",
-        "text": "About 3,000 square feet.",
-        "caption": "About 3,000 square feet."
-      },
-      {
-        "at": 6200,
-        "who": "rose",
-        "text": "And how often would you need us?",
-        "caption": "And how often would you need us?"
-      },
-      {
-        "at": 9000,
-        "who": "visitor",
-        "text": "Twice a week. Could someone email me a price?",
-        "caption": "Twice a week. Could someone email me a price?"
-      },
-      {
-        "at": 11000,
-        "who": "rose",
-        "text": "Of course. I’ll arrange a quote for you.",
-        "caption": "Of course. I’ll arrange a quote for you."
-      }
-    ],
-    "tools": [
-      {
-        "at": 5000,
-        "name": "HubSpot",
-        "status": "CREATED"
-      },
-      {
-        "at": 10000,
-        "name": "Zapier",
-        "status": "QUEUED"
-      },
-      {
-        "at": 14500,
-        "name": "Gmail",
-        "status": "SENT"
-      }
-    ]
-  }
-];
-      const extraFrames=[
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Calendar",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Checking table availability"
-    },
-    {
-      "at": 5000,
-      "tool": "Calendar",
-      "kind": "record",
-      "state": "done",
-      "verb": "BOOKED",
-      "title": "Table reserved"
-    },
-    {
-      "at": 7400,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing your reservation details"
-    },
-    {
-      "at": 10000,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Confirmation sent"
-    },
-    {
-      "at": 12300,
-      "tool": "Twilio",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing a reminder"
-    },
-    {
-      "at": 14500,
-      "tool": "Twilio",
-      "kind": "record",
-      "state": "done",
-      "verb": "SCHEDULED",
-      "title": "Reminder scheduled"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Shopify",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Looking up order 1048"
-    },
-    {
-      "at": 5000,
-      "tool": "Shopify",
-      "kind": "record",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Order found"
-    },
-    {
-      "at": 7400,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the tracking details"
-    },
-    {
-      "at": 10000,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Tracking link sent"
-    },
-    {
-      "at": 12300,
-      "tool": "Zendesk",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Updating the support conversation"
-    },
-    {
-      "at": 14500,
-      "tool": "Zendesk",
-      "kind": "record",
-      "state": "done",
-      "verb": "SAVED",
-      "title": "Conversation saved"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Zendesk",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Organizing the reported issue"
-    },
-    {
-      "at": 5000,
-      "tool": "Zendesk",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Support ticket created"
-    },
-    {
-      "at": 7400,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing a support handoff"
-    },
-    {
-      "at": 10000,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Support team alerted"
-    },
-    {
-      "at": 12300,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing your ticket confirmation"
-    },
-    {
-      "at": 14500,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Ticket confirmation sent"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Salesforce",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Recording the window enquiry"
-    },
-    {
-      "at": 5000,
-      "tool": "Salesforce",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Window enquiry saved"
-    },
-    {
-      "at": 7400,
-      "tool": "Calendly",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Finding measure-up times"
-    },
-    {
-      "at": 10000,
-      "tool": "Calendly",
-      "kind": "record",
-      "state": "done",
-      "verb": "READY",
-      "title": "Booking link prepared"
-    },
-    {
-      "at": 12300,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Sharing the quote request"
-    },
-    {
-      "at": 14500,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Window team notified"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Notion",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Recording the salon’s requirements"
-    },
-    {
-      "at": 5000,
-      "tool": "Notion",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Website enquiry saved"
-    },
-    {
-      "at": 7400,
-      "tool": "Asana",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing a quote review"
-    },
-    {
-      "at": 10000,
-      "tool": "Asana",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Quote review task created"
-    },
-    {
-      "at": 12300,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Sharing the website enquiry"
-    },
-    {
-      "at": 14500,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Design team notified"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "QuickBooks",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Looking up invoice 2041"
-    },
-    {
-      "at": 5000,
-      "tool": "QuickBooks",
-      "kind": "record",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Payment status found"
-    },
-    {
-      "at": 7400,
-      "tool": "Stripe",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Looking up the payment receipt"
-    },
-    {
-      "at": 10000,
-      "tool": "Stripe",
-      "kind": "record",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Receipt found"
-    },
-    {
-      "at": 12300,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing your receipt email"
-    },
-    {
-      "at": 14500,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Receipt sent"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Calendar",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Checking consultation times"
-    },
-    {
-      "at": 5000,
-      "tool": "Calendar",
-      "kind": "record",
-      "state": "done",
-      "verb": "BOOKED",
-      "title": "Consultation booked"
-    },
-    {
-      "at": 7400,
-      "tool": "Zoom",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the consultation call"
-    },
-    {
-      "at": 10000,
-      "tool": "Zoom",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Call link created"
-    },
-    {
-      "at": 12300,
-      "tool": "Outlook",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the consultation invitation"
-    },
-    {
-      "at": 14500,
-      "tool": "Outlook",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Invitation sent"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Drive",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Finding the photography package"
-    },
-    {
-      "at": 5000,
-      "tool": "Drive",
-      "kind": "record",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Package details found"
-    },
-    {
-      "at": 7400,
-      "tool": "DocuSign",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the booking agreement"
-    },
-    {
-      "at": 10000,
-      "tool": "DocuSign",
-      "kind": "record",
-      "state": "done",
-      "verb": "READY",
-      "title": "Signing request prepared"
-    },
-    {
-      "at": 12300,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the booking email"
-    },
-    {
-      "at": 14500,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Booking details sent"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Airtable",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Checking the event enquiry details"
-    },
-    {
-      "at": 5000,
-      "tool": "Airtable",
-      "kind": "record",
-      "state": "done",
-      "verb": "SAVED",
-      "title": "Event enquiry saved"
-    },
-    {
-      "at": 7400,
-      "tool": "Trello",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the event planning card"
-    },
-    {
-      "at": 10000,
-      "tool": "Trello",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Planning card created"
-    },
-    {
-      "at": 12300,
-      "tool": "Teams",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the event team handoff"
-    },
-    {
-      "at": 14500,
-      "tool": "Teams",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Events team notified"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Mailchimp",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing your newsletter signup"
-    },
-    {
-      "at": 5000,
-      "tool": "Mailchimp",
-      "kind": "record",
-      "state": "done",
-      "verb": "SAVED",
-      "title": "Newsletter signup saved"
-    },
-    {
-      "at": 7400,
-      "tool": "Sheets",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Recording your class interests"
-    },
-    {
-      "at": 10000,
-      "tool": "Sheets",
-      "kind": "record",
-      "state": "done",
-      "verb": "SAVED",
-      "title": "Preferences saved"
-    },
-    {
-      "at": 12300,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing a welcome email"
-    },
-    {
-      "at": 14500,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Welcome email sent"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "ClickUp",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing an urgent service task"
-    },
-    {
-      "at": 5000,
-      "tool": "ClickUp",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Urgent task created"
-    },
-    {
-      "at": 7400,
-      "tool": "Twilio",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the urgent team alert"
-    },
-    {
-      "at": 10000,
-      "tool": "Twilio",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "On-call team alerted"
-    },
-    {
-      "at": 12300,
-      "tool": "Teams",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Sharing the service request"
-    },
-    {
-      "at": 14500,
-      "tool": "Teams",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Service team notified"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Typeform",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Organizing the customer feedback"
-    },
-    {
-      "at": 5000,
-      "tool": "Typeform",
-      "kind": "record",
-      "state": "done",
-      "verb": "SAVED",
-      "title": "Feedback recorded"
-    },
-    {
-      "at": 7400,
-      "tool": "Sheets",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the feedback log"
-    },
-    {
-      "at": 10000,
-      "tool": "Sheets",
-      "kind": "record",
-      "state": "done",
-      "verb": "SAVED",
-      "title": "Feedback log updated"
-    },
-    {
-      "at": 12300,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the manager handoff"
-    },
-    {
-      "at": 14500,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Manager notified"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Airtable",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Checking the property listing"
-    },
-    {
-      "at": 5000,
-      "tool": "Airtable",
-      "kind": "record",
-      "state": "done",
-      "verb": "FOUND",
-      "title": "Listing details found"
-    },
-    {
-      "at": 7400,
-      "tool": "Calendar",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Checking viewing availability"
-    },
-    {
-      "at": 10000,
-      "tool": "Calendar",
-      "kind": "record",
-      "state": "done",
-      "verb": "BOOKED",
-      "title": "Viewing booked"
-    },
-    {
-      "at": 12300,
-      "tool": "Outlook",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the viewing invitation"
-    },
-    {
-      "at": 14500,
-      "tool": "Outlook",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Viewing details sent"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Monday",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Organizing the custom order"
-    },
-    {
-      "at": 5000,
-      "tool": "Monday",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Custom order request created"
-    },
-    {
-      "at": 7400,
-      "tool": "Drive",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing a place for artwork"
-    },
-    {
-      "at": 10000,
-      "tool": "Drive",
-      "kind": "record",
-      "state": "done",
-      "verb": "READY",
-      "title": "Artwork folder prepared"
-    },
-    {
-      "at": 12300,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the design team brief"
-    },
-    {
-      "at": 14500,
-      "tool": "Slack",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Design team notified"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "Intercom",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Recording the ticket download problem"
-    },
-    {
-      "at": 5000,
-      "tool": "Intercom",
-      "kind": "record",
-      "state": "done",
-      "verb": "SAVED",
-      "title": "Support conversation saved"
-    },
-    {
-      "at": 7400,
-      "tool": "GitHub",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing a ticket download issue"
-    },
-    {
-      "at": 10000,
-      "tool": "GitHub",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Issue created"
-    },
-    {
-      "at": 12300,
-      "tool": "Discord",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Sharing the customer’s ticket problem"
-    },
-    {
-      "at": 14500,
-      "tool": "Discord",
-      "kind": "record",
-      "state": "done",
-      "verb": "ALERTED",
-      "title": "Support team notified"
-    }
-  ],
-  [
-    {
-      "at": 0,
-      "tool": "Rose",
-      "kind": "idle",
-      "state": "working",
-      "verb": "LISTENING",
-      "title": "Understanding the request"
-    },
-    {
-      "at": 2300,
-      "tool": "HubSpot",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Organizing the cleaning enquiry"
-    },
-    {
-      "at": 5000,
-      "tool": "HubSpot",
-      "kind": "record",
-      "state": "done",
-      "verb": "CREATED",
-      "title": "Lead created"
-    },
-    {
-      "at": 7400,
-      "tool": "Zapier",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the approved handoff"
-    },
-    {
-      "at": 10000,
-      "tool": "Zapier",
-      "kind": "record",
-      "state": "done",
-      "verb": "QUEUED",
-      "title": "Handoff queued"
-    },
-    {
-      "at": 12300,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "working",
-      "verb": "WORKING",
-      "title": "Preparing the service summary"
-    },
-    {
-      "at": 14500,
-      "tool": "Gmail",
-      "kind": "record",
-      "state": "done",
-      "verb": "SENT",
-      "title": "Team summary sent"
-    }
-  ]
-];
-      scenarios.push(...extraScenarios);workflowFrames.push(...extraFrames);
-      const studio=document.querySelector('#stage'),conversation=document.querySelector('#conversation'),terminalStatus=document.querySelector('#terminalStatus'),toolList=document.querySelector('#toolList'),workflowCard=document.querySelector('#workflowCard');
-      const duration=18000,playbackRate=.72,reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const logos={"Rose": "wildrose.png", "Knowledge": "icons/knowledge.svg", "Calendar": "icons/googlecalendar.svg", "HubSpot": "icons/hubspot.svg", "Gmail": "icons/gmail.svg", "Twilio": "icons/twilio.svg", "Notion": "icons/notion.svg", "Airtable": "icons/airtable.svg", "Stripe": "icons/stripe.svg", "Shopify": "icons/shopify.svg", "Zendesk": "icons/zendesk.svg", "Asana": "icons/asana.svg", "Trello": "icons/trello.svg", "ClickUp": "icons/clickup.svg", "Zoom": "icons/zoom.svg", "Calendly": "icons/calendly.svg", "Sheets": "icons/googlesheets.svg", "Drive": "icons/googledrive.svg", "QuickBooks": "icons/quickbooks.svg", "Mailchimp": "icons/mailchimp.svg", "Discord": "icons/discord.svg", "Intercom": "icons/intercom.svg", "GitHub": "icons/github.svg", "Typeform": "icons/typeform.svg", "Zapier": "icons/zapier.svg", "Slack": "icons/slack.svg", "Salesforce": "icons/salesforce.svg", "Monday": "icons/mondaydotcom.svg", "Teams": "icons/microsoftteams.svg", "Outlook": "icons/microsoftoutlook.svg", "DocuSign": "icons/docusign.svg"};
-      let index=0,time=0,playing=!reduced,shownFrame=-1,shownTranscript='';
-      let shuffleBag=[];
-      function pickExample(){
-        if(!shuffleBag.length){shuffleBag=scenarios.map((_,i)=>i).filter(i=>i!==index);for(let i=shuffleBag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffleBag[i],shuffleBag[j]]=[shuffleBag[j],shuffleBag[i]]}}
-        return shuffleBag.pop();
-      }
-      const graphCanvas=document.querySelector('#workflowGraph'),graphContext=graphCanvas.getContext('2d');
-      await RoseBrain3D.ready;
-      const brainModel=RoseBrain3D.createModel(),webNodes=brainModel.nodes,webEdges=brainModel.edges;
-      const adjacency=webNodes.map(()=>[]);
-      for(const [a,b] of webEdges){const p=webNodes[a],q=webNodes[b],distance=Math.hypot(p.x-q.x,p.y-q.y,p.z-q.z);adjacency[a].push({i:b,distance});adjacency[b].push({i:a,distance})}
-      const toolNames=[...new Set(workflowFrames.flat().map(f=>f.tool).filter(t=>t!=='Rose'))];
-      const toolNode={Rose:0,...Object.fromEntries(toolNames.map((name,i)=>[name,1+(i*73+19)%(webNodes.length-1)]))};
-      const bulbNames=new Map(Object.entries(toolNode).map(([name,i])=>[i,name]));
-      let routeTool='',routePath=[0],speechRouteTool='',speechRoute=[0];
-      function shortestRoute(start,end){
-        const distances=webNodes.map(()=>Infinity),previous=webNodes.map(()=>-1),visited=new Set();distances[start]=0;
-        for(let step=0;step<webNodes.length;step++){
-          let current=-1;for(let i=0;i<distances.length;i++)if(!visited.has(i)&&(current<0||distances[i]<distances[current]))current=i;
-          if(current<0||!Number.isFinite(distances[current]))break;
-          if(current===end)break;visited.add(current);
-          for(const edge of adjacency[current]){const candidate=distances[current]+edge.distance;if(candidate<distances[edge.i]){distances[edge.i]=candidate;previous[edge.i]=current}}
-        }
-        if(start===end)return [start];if(previous[end]===-1)return [start];
-        const path=[end];while(path[0]!==start)path.unshift(previous[path[0]]);return path;
-      }
-      function activateTool(frame){
-        if(routeTool!==frame.tool){const start=routePath.at(-1)??0;routePath=shortestRoute(start,toolNode[frame.tool]??0);routeTool=frame.tool}
-        graphCanvas.dataset.tool=frame.tool;graphCanvas.dataset.routeBulb=String(routePath.at(-1));graphCanvas.dataset.routeLength=String(routePath.length);
-      }
-      let graphWidth=0,graphHeight=0,graphClock=0,graphLast=performance.now(),uiKey='',baseRevision=-1;
-      const baseCanvas=document.createElement('canvas'),baseContext=baseCanvas.getContext('2d');
-      function sizeGraph(){const rect=graphCanvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);graphWidth=rect.width;graphHeight=rect.height;graphCanvas.width=Math.round(graphWidth*ratio);graphCanvas.height=Math.round(graphHeight*ratio);graphContext.setTransform(ratio,0,0,ratio,0,0);baseRevision=-1}
-      // Jagged, flickering discharges, drawn in the projected brain network.
-      // Stable per 55ms tick so the bolts crackle without random frame noise.
-      function bolt(ctx,p,q,seed,alpha,scale){
-        if(!p||!q||alpha<=0)return;
-        const dx=q.x-p.x,dy=q.y-p.y,length=Math.hypot(dx,dy);
-        if(length<2)return;
-        const tick=Math.floor(graphClock/55),jitter=Math.min(8*scale,length*.17);
-        const points=[p];
-        for(let k=1;k<6;k++){
-          const t=k/6,noise=Math.sin((seed*31+k*97+tick*37)*12.9898)*43758.5453;
-          const offset=((noise-Math.floor(noise))*2-1)*jitter*Math.sin(Math.PI*t);
-          points.push({x:p.x+dx*t-dy/length*offset,y:p.y+dy*t+dx/length*offset});
-        }
-        points.push(q);
-        ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);
-        for(let k=1;k<points.length;k++)ctx.lineTo(points[k].x,points[k].y);
-        ctx.lineJoin='round';ctx.lineCap='round';
-        ctx.strokeStyle=`rgba(255,104,30,${alpha*.65})`;ctx.lineWidth=7*scale;ctx.shadowBlur=18*scale;ctx.shadowColor='#ff6a27';ctx.stroke();
-        ctx.shadowBlur=0;ctx.strokeStyle=`rgba(255,182,84,${alpha})`;ctx.lineWidth=2.7*scale;ctx.stroke();
-        ctx.strokeStyle=`rgba(255,249,223,${Math.min(1,alpha*1.25)})`;ctx.lineWidth=1.05*scale;ctx.stroke();
-      }
-      function drawGraph(now){
-        const delta=Math.min(Math.max(now-graphLast,0),100);graphLast=now;
-        if(playing&&!document.hidden&&!reduced){graphClock+=delta;time+=delta*playbackRate;if(time>=duration)next()}
-        const timelineKey=[index,scenarios[index].lines.filter(line=>line.at<=time).length,workflowFrames[index].filter(item=>item.at<=time).length,Math.floor(time/150),playing].join(':');
-        if(timelineKey!==uiKey){uiKey=timelineKey;render()}
-        if(!graphWidth||!graphHeight)sizeGraph();
-        const ctx=graphContext,frame=workflowFrames[index].filter(item=>item.at<=time).at(-1),active=toolNode[frame.tool]??0;
-        const completed=new Set(scenarios[index].tools.filter(tool=>time>=tool.at).map(tool=>tool.name));
-        const scale=Math.min(graphWidth/430,1.12);
-        const projected=RoseBrain3D.project(brainModel,graphWidth,graphHeight,graphClock),point=i=>projected[i];
-        ctx.clearRect(0,0,graphWidth,graphHeight);
-        RoseBrain3D.paint(ctx,brainModel,projected,graphWidth,graphHeight);
-        // Cache the stationary network; only electrical pulses change each frame.
-        if(baseRevision!==brainModel.revision){
-          baseCanvas.width=graphCanvas.width;baseCanvas.height=graphCanvas.height;
-          baseContext.setTransform(graphCanvas.width/graphWidth,0,0,graphCanvas.height/graphHeight,0,0);
-          for(const [a,b] of webEdges){const p=point(a),q=point(b),front=(p.z+q.z)/2>0;baseContext.beginPath();baseContext.moveTo(p.x,p.y);baseContext.lineTo(q.x,q.y);baseContext.strokeStyle=front?'#ffc59b25':'#efa16814';baseContext.lineWidth=front?.65:.45;baseContext.stroke()}
-          for(let i=0;i<webNodes.length;i++){
-            const p=point(i),name=bulbNames.get(i),radius=(name?2.7:i%11===0?1.2:.65)*scale*p.perspective;
-            baseContext.beginPath();baseContext.arc(p.x,p.y,radius,0,Math.PI*2);baseContext.fillStyle=p.z>0?'#ef9d6345':'#ef9d6320';baseContext.fill();
-            if(name){baseContext.beginPath();baseContext.arc(p.x,p.y,radius+2.5*scale,0,Math.PI*2);baseContext.strokeStyle='#efa66a35';baseContext.lineWidth=.7;baseContext.stroke()}
-          }
-          baseRevision=brainModel.revision;
-        }
-        ctx.drawImage(baseCanvas,0,0,graphWidth,graphHeight);
-        // All bright activity is keyed to this scenario's transcript and workflow timestamps.
-        // Silence between events leaves the anatomy and faint network visible, not random lightning.
-        const latestLine=scenarios[index].lines.filter(line=>line.at<=time).at(-1);
-        const lineAge=latestLine?time-latestLine.at:Infinity,frameAge=time-frame.at;
-        const strength=(age,span)=>age>=0&&age<span?Math.min(1,age/120)*(1-age/span):0;
-        const speechPower=strength(lineAge,1700),workPower=strength(frameAge,1450);
-        graphCanvas.dataset.cue=speechPower>=workPower&&speechPower>0?`speech:${latestLine.who}`:workPower>0?`tool:${frame.tool}:${frame.state}`:'idle';
-        graphCanvas.dataset.power=(Math.max(speechPower,workPower)).toFixed(2);
-        function discharge(path,power,age,seed){
-          if(power<=0||path.length<2)return null;
-          const travel=Math.min(1,age/620),position=(travel*path.length-1),tipIndex=Math.min(path.length-2,Math.max(0,Math.floor(position)));
-          let head=null;
-          for(let n=0;n<path.length-1;n++){
-            if(n>tipIndex)break;
-            const p=point(path[n]),q=point(path[n+1]),fraction=n===tipIndex?Math.min(1,Math.max(.08,position-n+1)):1;
-            const tip={x:p.x+(q.x-p.x)*fraction,y:p.y+(q.y-p.y)*fraction};
-            bolt(ctx,p,tip,seed+n,power*(n===tipIndex?1:.52),scale);
-            if(n===tipIndex)head=tip;
-          }
-          // A short cluster flares around the current impulse, then dies with its event.
-          for(let k=0;k<3;k++){
-            const at=path[Math.max(0,tipIndex-k)],branches=adjacency[at];
-            if(!branches.length)continue;
-            const branch=branches[(Math.floor(age/110)+seed+k*7)%branches.length];
-            if(branch.i!==path[Math.max(0,tipIndex-k)+1])bolt(ctx,point(at),point(branch.i),seed+97+k,power*(.58-k*.11),scale);
-          }
-          return head;
-        }
-        // Speech lights a path out from Rose; tool activity travels on the actual selected route.
-        if(speechRouteTool!==frame.tool){speechRoute=shortestRoute(0,active);if(speechRoute.length<2)speechRoute=[0,adjacency[0][0].i];speechRouteTool=frame.tool}
-        const speechHead=discharge(speechRoute,speechPower,lineAge,latestLine?.who==='rose'?37:11);
-        const toolHead=discharge(routePath,workPower,frameAge,71);
-        const head=workPower>speechPower?toolHead:speechHead;
-        const routeSet=new Set(routePath);
-        for(let i=0;i<webNodes.length;i++){
-          const p=point(i),name=bulbNames.get(i),hot=i===active,done=completed.has(name),onRoute=routeSet.has(i);
-          if(!hot&&!done&&!onRoute)continue;
-          const radius=(hot?6:name?3.4:i%11===0?1.6:.65)*scale*p.perspective;
-          ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fillStyle=hot?'#fff0d0':done?'#ffd2a0':onRoute?'#ffc990':'#ef9d6330';ctx.shadowBlur=hot?20:done?8:0;ctx.shadowColor='#ff9444';ctx.fill();ctx.shadowBlur=0;
-          if(name||i%13===0){ctx.beginPath();ctx.arc(p.x,p.y,radius+(hot?5:2.5)*scale,0,Math.PI*2);ctx.strokeStyle=hot?'#ffdcab99':done?'#ffb77b77':'#efa66a3d';ctx.lineWidth=.7;ctx.stroke()}
-        }
-        if(head){ctx.beginPath();ctx.arc(head.x,head.y,3.5*scale,0,Math.PI*2);ctx.fillStyle='#fff7de';ctx.shadowBlur=20;ctx.shadowColor='#ff984c';ctx.fill();ctx.shadowBlur=0}
-        if(!reduced)requestAnimationFrame(drawGraph);
-      }
-      graphCanvas.addEventListener('rose:brain-change',()=>{if(reduced)drawGraph(performance.now())});
-      sizeGraph();new ResizeObserver(()=>{sizeGraph();if(reduced)drawGraph(performance.now())}).observe(graphCanvas);if(!reduced)requestAnimationFrame(drawGraph);
-
-      function showWorkflow(frame){
-        activateTool(frame);
-        workflowCard.dataset.tool=frame.tool;
-        workflowCard.className=`workflow-card ${frame.kind} ${frame.state}`;
-        if(!workflowCard.firstElementChild)workflowCard.innerHTML='<div class="wf-head"><span class="wf-mark"><img alt=""></span><span class="wf-tool"></span><span class="wf-state"></span></div><h2 class="wf-title"></h2>';
-        const icon=workflowCard.querySelector('img');if(icon.getAttribute('src')!==logos[frame.tool])icon.src=logos[frame.tool];
-        for(const [selector,value] of [['.wf-tool',frame.tool],['.wf-state',frame.verb],['.wf-title',frame.title]]){const el=workflowCard.querySelector(selector);if(el.textContent!==value)el.textContent=value}
-      }
-      function reset(){
-        time=reduced?15000:0;shownFrame=-1;shownTranscript='';toolList.replaceChildren();
-        routeTool='';routePath=[0];speechRouteTool='';speechRoute=[0];
-        for(const tool of scenarios[index].tools){const el=document.createElement('div');el.className='tool';el.dataset.name=tool.name;const copy=document.createElement('div'),name=document.createElement('strong'),status=document.createElement('span');name.textContent=tool.name;status.textContent='READY';copy.append(name,status);el.append(copy);toolList.append(el)}
-        graphLast=performance.now();uiKey='';render();if(reduced)drawGraph(performance.now());
-      }
-      function render(){
-        const scene=scenarios[index],lines=scene.lines.filter(line=>line.at<=time),latest=lines.at(-1);
-        const transcriptKey=`${index}:${lines.length}`;
-        if(shownTranscript!==transcriptKey){
-          shownTranscript=transcriptKey;
-          const entries=lines.map(line=>{
-            const entry=document.createElement('div');entry.className=`terminal-entry ${line.who==='rose'?'terminal-rose':'terminal-customer'}`;
-            const label=document.createElement('span');label.className='terminal-speaker';label.textContent=line.who==='rose'?'rose':'customer';
-            const message=document.createElement('p');message.textContent=line.text;
-            entry.append(label,message);return entry;
-          });
-          conversation.replaceChildren(...entries);
-          conversation.scrollTop=conversation.scrollHeight;
-        }
-        const frames=workflowFrames[index],frameIndex=frames.findLastIndex(frame=>frame.at<=time),frame=frames[Math.max(frameIndex,0)];
-        if(frameIndex!==shownFrame){shownFrame=frameIndex;showWorkflow(frame)}
-        const workflowCurrent=frame.at>(latest?.at??-1);
-        studio.dataset.speaker=workflowCurrent?'tool':latest?.who||'visitor';
-        studio.classList.toggle('speaker-person',latest?.who==='visitor'&&time-latest.at<1500);
-        const nextReply=scene.lines.find(line=>line.who==='rose'&&line.at>time);
-        const status=nextReply&&latest?.who==='visitor'?'Rose is checking the request':latest?.who==='rose'?'Rose responded':'Rose is listening';
-        if(terminalStatus.textContent!==status)terminalStatus.textContent=status;
-        for(const tool of scene.tools){const el=[...toolList.children].find(item=>item.dataset.name===tool.name);const done=time>=tool.at,working=!done&&frame.tool===tool.name&&frame.state==='working';el.classList.toggle('active',done);el.classList.toggle('working',working);el.querySelector('span').textContent=done?tool.status:working?frame.verb:'READY'}
-      }
-      function next(){index=pickExample();playing=!reduced;reset()}
-      reset();
-    })().catch(error=>{console.error('Rose demo failed to initialize',error);document.querySelector('#flow').setAttribute('aria-label','Brain demo failed to load; reload the page');});
-  </script>
   <script>
     (()=>{
       const form=document.getElementById('try-rose');
