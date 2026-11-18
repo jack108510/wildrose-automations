@@ -425,20 +425,7 @@
 
     /* Glow showcase: a back-office dashboard */
     .glow-device{max-width:1080px;margin:0 auto}
-    .dash{position:relative;display:block;height:540px;overflow:hidden;background:#f7f5f2;color:#1c1917}
-    .dash-ui{display:grid;grid-template-columns:200px 1fr;height:100%;transform-origin:0 0;transition:transform 1s cubic-bezier(.65,0,.35,1)}
-    .glow-beam{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none;overflow:visible}
-    .glow-beam path{filter:drop-shadow(0 0 6px rgba(255,120,60,.9))}
-    .glow-beam circle{opacity:0;filter:drop-shadow(0 0 8px #ff7a3c) drop-shadow(0 0 16px #ff5722)}
-    .dash.spot .site-glow{box-shadow:0 0 0 3000px rgba(12,9,8,.58),0 0 34px 6px rgba(255,120,61,.45)}
-    .site-glow{transition:left .6s cubic-bezier(.2,.7,.2,1),top .6s cubic-bezier(.2,.7,.2,1),width .6s cubic-bezier(.2,.7,.2,1),height .6s cubic-bezier(.2,.7,.2,1),opacity .4s ease,box-shadow .6s ease!important}
-    .site-glow.pop{animation:ringpop .55s ease}
-    @keyframes ringpop{40%{transform:scale(1.08)}}
-    .dash-toast{position:absolute;left:50%;top:22px;z-index:7;display:flex;align-items:center;gap:10px;padding:11px 18px 11px 11px;border-radius:999px;background:#1c1917;color:#fff;font-size:14px;box-shadow:0 18px 40px -10px rgba(0,0,0,.5);transform:translate(-50%,-30px);opacity:0;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .4s ease}
-    .dash-toast span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#22c55e;font-size:13px}
-    .dash-toast.on{transform:translate(-50%,0);opacity:1}
-    .spark{position:absolute;z-index:7;width:6px;height:6px;border-radius:50%;background:#ffb37a;box-shadow:0 0 8px #ff7a3c;pointer-events:none;animation:spark .8s ease-out forwards}
-    @keyframes spark{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+    .dash{position:relative;display:grid;grid-template-columns:200px 1fr;height:540px;overflow:hidden;background:#f7f5f2;color:#1c1917}
     .dash-side{display:flex;flex-direction:column;gap:4px;padding:20px 14px;border-right:1px solid #e7e2dc;background:#fff}
     .dash-brand{display:flex;align-items:center;gap:9px;margin:0 6px 18px;font-size:15px;letter-spacing:-.02em}
     .dash-brand span{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,#6366f1,#22d3ee)}
@@ -481,7 +468,7 @@
       .brain-box{height:300px}
     }
     @media(max-width:860px){
-      .dash-ui{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+      .dash{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:700px}
       .dash-side{flex-direction:row;flex-wrap:wrap;gap:4px;padding:10px;border-right:0;border-bottom:1px solid #e7e2dc}
       .dash-brand{display:none}
       .dash-nav{padding:8px 10px;font-size:12px}.dash-nav i{display:none}
@@ -598,11 +585,9 @@
       .capture .rose-copy,.capture .glass-panel{width:382px!important;max-width:100%;margin:0 auto!important}
     }
     @media(max-width:860px){
-      .dash{height:auto}
-      .dash-ui{grid-template-columns:1fr;grid-template-rows:auto auto;height:auto}
-      .glow-beam{display:none}
+      .dash{grid-template-rows:auto auto auto;height:auto}
       .dash-main{max-width:none}
-      .site-rose{position:relative;z-index:6;padding:0 12px 12px}
+      .site-rose{position:static;padding:0 12px 12px}
       .site-rose .rose-wrap{width:100%}
     }
     @media(max-width:600px){
@@ -788,7 +773,6 @@
         <div class="device glow-device reveal" id="glowDemo" aria-label="Rose guiding someone through a business dashboard">
           <div class="device-bar" aria-hidden="true"><i></i><i></i><i></i><span>portal.brightside.app/dashboard</span></div>
           <div class="dash" aria-hidden="true">
-            <div class="dash-ui" id="dashUI">
             <aside class="dash-side">
               <b class="dash-brand"><span></span>Brightside</b>
               <span class="dash-nav on" data-glow="nav-overview" data-view="overview"><i></i>Overview</span>
@@ -815,9 +799,6 @@
                 <div class="dash-pane" data-pane="team"><div class="dash-table"><div><span>Alex Morgan</span><span>Owner</span><em class="muted">You</em></div><div><span>Sam Lee</span><span>Admin</span><em class="muted">Active</em></div></div><span class="dash-btn" data-glow="invite">+ Invite member</span></div>
               </div>
             </div>
-            </div>
-            <svg class="glow-beam" id="glowBeam"><defs><linearGradient id="beamGrad" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffb37a" stop-opacity=".1"/><stop offset="1" stop-color="#ff7a3c"/></linearGradient></defs><path id="beamPath" fill="none" stroke="url(#beamGrad)" stroke-width="2.5" stroke-linecap="round"/><circle id="beamHead" r="5" fill="#fff4e6"/></svg>
-            <div class="dash-toast" id="dashToast"><span>✓</span><b></b></div>
             <span class="site-glow" id="siteGlow"></span>
             <span class="dash-cursor" id="dashCursor"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 2l15 11-6.5 1.2L16 21l-3 1.4-3.4-6.6L4 20z" fill="#fff" stroke="#1b1410" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
             <div class="site-rose" id="siteRose"></div>
@@ -1167,77 +1148,48 @@
       };
     })();
 
-    // Glow showcase: Rose guides someone through a dashboard. The camera zooms to each step, the page dims to a
-    // spotlight, a beam of light travels from Rose's reply to the control, and the cursor clicks it.
+    // Glow showcase: Rose guides someone through a business dashboard, one lit-up step at a time.
     (()=>{
-      const demo=document.getElementById('glowDemo'),dash=demo.querySelector('.dash'),ui=document.getElementById('dashUI'),ring=document.getElementById('siteGlow'),cursor=document.getElementById('dashCursor'),slot=document.getElementById('siteRose');
-      const beam=document.getElementById('glowBeam'),path=document.getElementById('beamPath'),head=document.getElementById('beamHead'),grad=document.getElementById('beamGrad'),toast=document.getElementById('dashToast');
+      const demo=document.getElementById('glowDemo'),dash=demo.querySelector('.dash'),ring=document.getElementById('siteGlow'),cursor=document.getElementById('dashCursor'),slot=document.getElementById('siteRose');
       const flows=[
-        {q:'How do I download last month’s invoice?',done:'October invoice downloaded',steps:[
+        {q:'How do I download last month’s invoice?',steps:[
           {say:'Open Billing in the menu. I’ve lit it up for you.',glow:'nav-billing',click:()=>view('billing')},
           {say:'Now choose Invoice history.',glow:'tab-invoices',click:()=>pane('billing','invoices')},
-          {say:'There it is. Hit Download next to October.',glow:'dl-oct',click:()=>{}}]},
-        {q:'Where do I add a team member?',done:'Invite sent to jamie@brightside.app',steps:[
+          {say:'There it is. Hit Download next to October.',glow:'dl-oct'}]},
+        {q:'Where do I add a team member?',steps:[
           {say:'Head to Settings. It’s glowing in the menu.',glow:'nav-settings',click:()=>view('settings')},
           {say:'Pick the Team tab.',glow:'tab-team',click:()=>pane('settings','team')},
-          {say:'Tap Invite member and enter their email. That’s it!',glow:'invite',click:()=>{}}]}
+          {say:'Tap Invite member and enter their email. That’s it!',glow:'invite'}]}
       ];
       const wait=ms=>new Promise(r=>setTimeout(r,ms));
-      const camOn=()=>!reduced&&innerWidth>1080;
-      function view(name){ui.querySelectorAll('.dash-nav').forEach(n=>n.classList.toggle('on',n.dataset.view===name));ui.querySelectorAll('.dash-view').forEach(v=>v.classList.toggle('on',v.dataset.view===name));ui.querySelectorAll(`.dash-view[data-view="${name}"] .dash-tabs span`).forEach((s,i)=>s.classList.toggle('on',i===0));ui.querySelectorAll(`.dash-view[data-view="${name}"] .dash-pane`).forEach((p,i)=>p.classList.toggle('on',i===0))}
-      function pane(v,name){const root=ui.querySelector(`.dash-view[data-view="${v}"]`);root.querySelectorAll('.dash-tabs span').forEach(s=>s.classList.toggle('on',s.dataset.tab===name));root.querySelectorAll('.dash-pane').forEach(p=>p.classList.toggle('on',p.dataset.pane===name))}
-      const local=el=>{const d=dash.getBoundingClientRect(),r=el.getBoundingClientRect();return {x:r.left-d.left,y:r.top-d.top,w:r.width,h:r.height}};
-      const target=key=>ui.querySelector(`[data-glow="${key}"]`);
-      // Camera on the dashboard only; Rose, the ring and the beam stay in screen space.
-      let cs=1;
-      const zoomTo=(el,s)=>{if(!camOn())return;const u=ui.getBoundingClientRect(),r=el.getBoundingClientRect(),W=dash.clientWidth,H=dash.clientHeight;
-        const ex=(r.left-u.left+r.width/2)/cs,ey=(r.top-u.top+r.height/2)/cs,cx=W*.38,cy=H*.45;
-        let x=cx-s*ex,y=cy-s*ey;x=Math.min(0,Math.max(W-s*W,x));y=Math.min(0,Math.max(H-s*H,y));cs=s;ui.style.transform=`translate(${x}px,${y}px) scale(${s})`};
-      const unzoom=()=>{cs=1;ui.style.transform=''};
-      const place=key=>{ring.dataset.k=key;const el=target(key),{x,y,w,h}=local(el),pad=6*cs;ring.style.left=`${x-pad}px`;ring.style.top=`${y-pad}px`;ring.style.width=`${w+pad*2}px`;ring.style.height=`${h+pad*2}px`;ring.style.borderRadius=`${((parseFloat(getComputedStyle(el).borderTopLeftRadius)||8)+6)*cs}px`;ring.classList.add('on');ring.classList.remove('pop');void ring.offsetWidth;ring.classList.add('pop')};
-      async function shoot(fromEl,key){
-        if(!camOn()||!fromEl)return;
-        const a=local(fromEl),b=local(target(key));
-        const x1=a.x,y1=a.y+a.h/2,x2=b.x+b.w/2,y2=b.y+b.h/2,mx=(x1+x2)/2,my=Math.min(y1,y2)-90;
-        path.setAttribute('d',`M${x1},${y1} Q${mx},${my} ${x2},${y2}`);grad.setAttribute('x1',x1);grad.setAttribute('y1',y1);grad.setAttribute('x2',x2);grad.setAttribute('y2',y2);
-        const L=path.getTotalLength();path.style.strokeDasharray=L;path.style.strokeDashoffset=L;path.style.opacity=1;head.style.opacity=1;
-        const t0=performance.now(),dur=650;
-        await new Promise(res=>{const step=now=>{const k=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-k,3);path.style.strokeDashoffset=L*(1-e);const pt=path.getPointAtLength(L*e);head.setAttribute('cx',pt.x);head.setAttribute('cy',pt.y);k<1?requestAnimationFrame(step):res()};requestAnimationFrame(step)});
-        head.style.opacity=0;
-        path.animate([{opacity:1},{opacity:0}],{duration:700,delay:250,fill:'forwards'});
-      }
-      const point=async key=>{const {x,y,w,h}=local(target(key));cursor.classList.add('on');cursor.style.left=`${x+w*.6}px`;cursor.style.top=`${y+h*.55}px`;await wait(950);cursor.classList.remove('click');void cursor.offsetWidth;cursor.classList.add('click');await wait(280)};
-      const sparks=key=>{const {x,y,w,h}=local(target(key)),cx=x+w/2,cy=y+h/2;for(let i=0;i<14;i++){const s=document.createElement('span');s.className='spark';const a=i/14*Math.PI*2,d=40+Math.random()*40;s.style.left=`${cx}px`;s.style.top=`${cy}px`;s.style.setProperty('--dx',`${Math.cos(a)*d}px`);s.style.setProperty('--dy',`${Math.sin(a)*d}px`);dash.append(s);setTimeout(()=>s.remove(),900)}};
+      function view(name){dash.querySelectorAll('.dash-nav').forEach(n=>n.classList.toggle('on',n.dataset.view===name));dash.querySelectorAll('.dash-view').forEach(v=>v.classList.toggle('on',v.dataset.view===name));dash.querySelectorAll(`.dash-view[data-view="${name}"] .dash-tabs span`).forEach((s,i)=>s.classList.toggle('on',i===0));dash.querySelectorAll(`.dash-view[data-view="${name}"] .dash-pane`).forEach((p,i)=>p.classList.toggle('on',i===0))}
+      function pane(v,name){const root=dash.querySelector(`.dash-view[data-view="${v}"]`);root.querySelectorAll('.dash-tabs span').forEach(s=>s.classList.toggle('on',s.dataset.tab===name));root.querySelectorAll('.dash-pane').forEach(p=>p.classList.toggle('on',p.dataset.pane===name))}
+      const rect=key=>{const el=dash.querySelector(`[data-glow="${key}"]`),d=dash.getBoundingClientRect(),r=el.getBoundingClientRect();return {el,x:r.left-d.left,y:r.top-d.top,w:r.width,h:r.height}};
+      const place=key=>{ring.dataset.k=key;const {el,x,y,w,h}=rect(key),pad=6;ring.style.left=`${x-pad}px`;ring.style.top=`${y-pad}px`;ring.style.width=`${w+pad*2}px`;ring.style.height=`${h+pad*2}px`;ring.style.borderRadius=`${(parseFloat(getComputedStyle(el).borderTopLeftRadius)||8)+pad}px`;ring.classList.add('on')};
+      const point=async key=>{const {x,y,w,h}=rect(key);cursor.classList.add('on');cursor.style.left=`${x+w*.6}px`;cursor.style.top=`${y+h*.55}px`;await wait(950);cursor.classList.remove('click');void cursor.offsetWidth;cursor.classList.add('click');await wait(260)};
       let copy=null,log=null,inView=false,running=false;
       roseReady.then(ok=>{if(!ok)return;copy=roseCopy('chat');const wrap=document.createElement('div');wrap.className='rose-wrap';wrap.append(copy);slot.append(wrap);log=copy.querySelector('.wr-chat-log');if(inView)play()});
-      const resetScene=()=>{view('overview');unzoom();dash.classList.remove('spot');ring.classList.remove('on');cursor.classList.remove('on');toast.classList.remove('on');if(log)roseReset(log)};
       async function play(){
         if(running)return;running=true;
         while(inView){
           for(const f of flows){
             if(!inView)break;
-            resetScene();await wait(900);
+            view('overview');ring.classList.remove('on');cursor.classList.remove('on');if(log)roseReset(log);await wait(700);
             if(copy){await roseType(copy,f.q,()=>inView);roseMsg(log,'v',f.q)}
-            for(const [n,s] of f.steps.entries()){
+            for(const s of f.steps){
               if(!inView)break;
-              let reply=null;
-              if(copy){const typing=roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true);await wait(700);typing.remove();reply=roseMsg(log,'r',s.say)?.querySelector?.('.wr-msg')||null}
-              zoomTo(target(s.glow),1.5);await wait(camOn()?1050:200);
-              dash.classList.add('spot');
-              await shoot(reply,s.glow);
-              place(s.glow);await wait(700);
-              await point(s.glow);s.click();
-              if(n===f.steps.length-1){sparks(s.glow);toast.querySelector('b').textContent=f.done;toast.classList.add('on');await wait(1900)}
-              else{ring.classList.remove('on');dash.classList.remove('spot');await wait(350)}
+              if(copy){const typing=roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true);await wait(750);typing.remove();roseMsg(log,'r',s.say)}
+              await wait(200);place(s.glow);await wait(1100);
+              if(s.click){await point(s.glow);s.click();ring.classList.remove('on');await wait(450)}else await wait(1800);
             }
-            unzoom();dash.classList.remove('spot');ring.classList.remove('on');cursor.classList.remove('on');await wait(1600);
+            cursor.classList.remove('on');await wait(1400);
           }
         }
         running=false;
       }
       if(reduced){place('nav-billing');return}
-      new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play();else resetScene()},{threshold:.35}).observe(demo);
-      addEventListener('resize',()=>{unzoom();if(ring.classList.contains('on')&&ring.dataset.k)setTimeout(()=>place(ring.dataset.k),1050)});
+      new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play()},{threshold:.35}).observe(demo);
+      addEventListener('resize',()=>{if(ring.classList.contains('on')&&ring.dataset.k)place(ring.dataset.k)});
     })();
 
     // Lead capture demo: typing zooms in, the brain works behind the scenes, the quote fills in.
