@@ -292,6 +292,23 @@
     .foot a:hover{color:var(--text)}
     .foot-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--faint);font-size:13px}
 
+    /* Real Rose copies inside every example */
+    .rose-copy{pointer-events:none;user-select:none}
+    .rose-copy .wr-panel{animation:none!important}
+    .rose-wrap{position:relative;width:calc(430px*var(--s,.62));height:calc(560px*var(--s,.62));margin-left:auto}
+    .rose-wrap>.wr-ai{position:absolute!important;left:0!important;top:0!important;width:430px!important;margin:0!important;transform:scale(var(--s,.62));transform-origin:top left}
+    .scene.has-rose{width:auto}
+    .scene.has-rose .captured{margin-top:10px;margin-left:auto;width:calc(430px*var(--s,.62))}
+    .rose-copy .wr-msg.user mark{background:rgba(255,255,255,.3);color:inherit;border-radius:4px;padding:0 3px}
+    .rose-copy .wr-typing{display:inline-flex;gap:4px;padding:3px 2px}
+    .rose-copy .wr-typing i{width:6px;height:6px;border-radius:50%;background:#6b5a50;animation:dot 1s infinite}
+    .rose-copy .wr-typing i:nth-child(2){animation-delay:.15s}.rose-copy .wr-typing i:nth-child(3){animation-delay:.3s}
+    .rose-copy .wr-orb{position:relative;overflow:hidden}
+    .orb-tint{position:absolute;inset:0;border-radius:50%;mix-blend-mode:color;background:var(--tint,transparent);opacity:var(--tint-o,0);transition:background .5s ease,opacity .5s ease;pointer-events:none}
+    .capture .rose-copy{margin:0 auto}
+    .rose-copy.tinted .wr-primary{background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 78%,black))!important;box-shadow:0 10px 24px -8px var(--accent)!important;border-color:transparent!important}
+    @media(max-width:600px){.scene{--s:.47}}
+
     /* Rose, all over the page: a guide that follows the visitor and points at things */
     @property --orbit{syntax:"<angle>";initial-value:0deg;inherits:false}
     .rose-glow{position:fixed;z-index:40;pointer-events:none;border-radius:var(--gr,24px);opacity:0;transition:opacity .5s ease;box-shadow:0 0 22px 2px rgba(255,120,61,.22)}
@@ -737,6 +754,49 @@
       ticks.forEach(b=>b.addEventListener('click',()=>{const span=section.offsetHeight-innerHeight;scrollTo({top:section.offsetTop+span*events[+b.dataset.step],behavior:'smooth'})}));
     })();
 
+    // Every example uses a static copy of the real, live Rose widget once it has loaded.
+    const roseReady=new Promise(resolve=>{
+      const started=performance.now();
+      const check=()=>{const live=document.querySelector('#liveRoseVoice .wr-ai .wr-panel');if(live)return setTimeout(()=>resolve(true),400);if(performance.now()-started>15000)return resolve(false);setTimeout(check,150)};
+      check();
+    });
+    const LOGO='https://wildroseautomations.ca/logos/wildrose.png';
+    function roseCopy(view){
+      const copy=document.querySelector('#liveRoseVoice .wr-ai').cloneNode(true);
+      copy.classList.add('rose-copy');copy.setAttribute('aria-hidden','true');copy.inert=true;
+      copy.querySelectorAll('.wr-tab').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+      copy.querySelectorAll('.wr-view').forEach(v=>v.classList.toggle('active',v.dataset.view===view));
+      copy.querySelector('.wr-chat-log')?.replaceChildren();
+      return copy;
+    }
+    function roseMsg(log,who,content,html){
+      let bubble;
+      if(who==='r'){const row=document.createElement('div');row.className='wr-row';const av=document.createElement('div');av.className='wr-avatar';const img=document.createElement('img');img.src=LOGO;img.alt='';av.append(img);bubble=document.createElement('div');bubble.className='wr-msg bot';row.append(av,bubble);log.append(row)}
+      else{bubble=document.createElement('div');bubble.className='wr-msg user';log.append(bubble)}
+      html?bubble.innerHTML=content:bubble.textContent=content;
+      log.parentElement.scrollTop=log.parentElement.scrollHeight;
+      return who==='r'?bubble.parentElement:bubble;
+    }
+
+    // Night shift scenes: the real Rose in the corner of the website.
+    roseReady.then(ok=>{
+      if(!ok)return;
+      const chats={0:[['v','Do you work on weekends?'],['r','We do! Saturdays 9 to 4. Want me to send a request to the team?']],1:[['v','My tap’s been dripping all week. Can I get a quote?'],['r','Of course. What’s the best email to reach you?']]};
+      document.querySelectorAll('#night .scene').forEach(scene=>{
+        const n=+scene.dataset.scene;if(n>2)return;
+        const mini=scene.querySelector('.mini');if(!mini)return;
+        const copy=roseCopy(n===2?'voice':'chat'),wrap=document.createElement('div');wrap.className='rose-wrap';wrap.append(copy);
+        if(n===2){
+          copy.querySelector('.wr-orb')?.classList.add('speaking');
+          const st=copy.querySelector('.wr-status'),note=copy.querySelector('.wr-note');if(st)st.textContent='On a call with a visitor';if(note)note.textContent='“Hi, I need someone for a furnace check…”';
+          const start=copy.querySelector('.wr-start-voice'),end=copy.querySelector('.wr-end-voice');if(start)start.style.display='none';if(end)end.style.display='';
+        }else{const log=copy.querySelector('.wr-chat-log');chats[n].forEach(([w,s])=>roseMsg(log,w,s))}
+        const captured=mini.querySelector('.captured');
+        mini.replaceWith(wrap);if(captured)wrap.after(captured);
+        scene.classList.add('has-rose');
+      });
+    });
+
     // Lead capture demo: the chat fills in the quote request.
     (()=>{
       const convo=document.getElementById('convo'),status=document.getElementById('leadStatus'),demo=document.getElementById('captureDemo');
@@ -753,16 +813,22 @@
       ];
       const wait=ms=>new Promise(r=>setTimeout(r,ms));
       let running=false,inView=false;
-      const bubble=(who,content,html)=>{const b=document.createElement('div');b.className=`bub ${who}`;html?b.innerHTML=content:b.textContent=content;convo.append(b);return b};
-      const reset=()=>{convo.replaceChildren();demo.querySelectorAll('.field').forEach(f=>{f.classList.remove('fill');f.querySelector('b').textContent=''});status.textContent='Listening';status.classList.remove('sent')};
-      const fillAll=()=>{script.forEach(s=>s.who==='v'?bubble('v',s.html,true):bubble('r',s.text));script.forEach(s=>{if(s.fill)field(s.fill[0]).querySelector('b').textContent=s.fill[1]});status.textContent='Sent to owner';status.classList.add('sent')};
+      let log=null,pending=null;
+      roseReady.then(ok=>{if(ok)pending=roseCopy('chat')});
+      const swap=()=>{if(!pending)return;const panel=demo.querySelector('.glass-panel');pending.setAttribute('aria-label','Example Rose chat');panel.replaceWith(pending);log=pending.querySelector('.wr-chat-log');pending=null};
+      const bubble=(who,content,html)=>{
+        if(log)return roseMsg(log,who,content,html);
+        const b=document.createElement('div');b.className=`bub ${who}`;html?b.innerHTML=content:b.textContent=content;convo.append(b);return b};
+      const typingBubble=()=>log?roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true):(()=>{const t=bubble('r','<i></i><i></i><i></i>',true);t.classList.add('typing');return t})();
+      const reset=()=>{swap();(log||convo).replaceChildren();demo.querySelectorAll('.field').forEach(f=>{f.classList.remove('fill');f.querySelector('b').textContent=''});status.textContent='Listening';status.classList.remove('sent')};
+      const fillAll=()=>{(log||convo).replaceChildren();script.forEach(s=>s.who==='v'?bubble('v',s.html,true):bubble('r',s.text));script.forEach(s=>{if(s.fill)field(s.fill[0]).querySelector('b').textContent=s.fill[1]});status.textContent='Sent to owner';status.classList.add('sent')};
       async function play(){
         if(running)return;running=true;
         while(inView){
           reset();await wait(700);
           for(const s of script){
             if(!inView)break;
-            if(s.who==='r'){const t=bubble('r','<i></i><i></i><i></i>',true);t.classList.add('typing');await wait(900);t.remove();bubble('r',s.text)}
+            if(s.who==='r'){const t=typingBubble();await wait(900);t.remove();bubble('r',s.text)}
             else{await wait(500);bubble('v',s.html,true)}
             if(s.fill){await wait(350);const f=field(s.fill[0]);f.querySelector('b').textContent=s.fill[1];f.classList.add('fill');status.textContent='Capturing'}
             if(s.done){status.textContent='Sent to owner';status.classList.add('sent')}
@@ -772,7 +838,7 @@
         }
         running=false;
       }
-      if(reduced){fillAll();return}
+      if(reduced){roseReady.then(()=>{reset();fillAll()});fillAll();return}
       new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play()},{threshold:.35}).observe(demo);
     })();
 
@@ -822,11 +888,22 @@
 
     // Your look: tint the orb and button.
     (()=>{
-      const orb=document.getElementById('bigOrb'),btn=document.getElementById('lookBtn'),stage=document.getElementById('lookStage');
+      let orb=document.getElementById('bigOrb'),btn=document.getElementById('lookBtn'),real=null,chosen=null;const stage=document.getElementById('lookStage');
+      const apply=s=>{
+        if(!s)return;
+        if(real){real.style.setProperty('--accent',s.dataset.btn);real.classList.toggle('tinted',!!s.dataset.tint);orb.style.setProperty('--tint',s.dataset.tint||'transparent');orb.style.setProperty('--tint-o',s.dataset.tint?'.85':'0')}
+        else{orb.style.setProperty('--tint',s.dataset.tint||'transparent');orb.style.setProperty('--tint-o',s.dataset.tint?'.85':'0');btn.style.setProperty('--btn',s.dataset.btn)}
+        stage.style.setProperty('--tint-glow',s.dataset.glow);
+      };
+      roseReady.then(ok=>{
+        if(!ok)return;
+        real=roseCopy('voice');const tint=document.createElement('span');tint.className='orb-tint';
+        const realOrb=real.querySelector('.wr-orb');if(!realOrb){real=null;return}
+        realOrb.append(tint);orb=tint;stage.querySelector('.look-card').replaceWith(real);apply(chosen);
+      });
       document.querySelectorAll('.swatch').forEach(s=>s.addEventListener('click',()=>{
         document.querySelectorAll('.swatch').forEach(o=>o.setAttribute('aria-pressed',String(o===s)));
-        orb.style.setProperty('--tint',s.dataset.tint||'transparent');orb.style.setProperty('--tint-o',s.dataset.tint?'.85':'0');
-        btn.style.setProperty('--btn',s.dataset.btn);stage.style.setProperty('--tint-glow',s.dataset.glow);
+        chosen=s;apply(s);
       }));
     })();
   </script>
