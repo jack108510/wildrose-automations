@@ -292,6 +292,46 @@
     .foot a:hover{color:var(--text)}
     .foot-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--faint);font-size:13px}
 
+    /* Rose, all over the page: a guide that follows the visitor and points at things */
+    @property --orbit{syntax:"<angle>";initial-value:0deg;inherits:false}
+    .rose-glow{position:fixed;z-index:40;pointer-events:none;border-radius:var(--gr,24px);opacity:0;transition:opacity .5s ease;box-shadow:0 0 22px 2px rgba(255,120,61,.22)}
+    .rose-glow.on{opacity:1}
+    .rose-glow:before,.rose-glow:after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;background:conic-gradient(from var(--orbit),rgba(255,106,53,.12) 0deg,rgba(255,125,68,.32) 65deg,#ff934f 110deg,#ffe4b8 142deg,#ffb66e 160deg,rgba(255,111,57,.2) 205deg,rgba(255,111,57,.12) 245deg,#ffad77 290deg,rgba(255,120,61,.45) 315deg,rgba(255,106,53,.12) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:orbit 3.6s linear infinite}
+    .rose-glow:before{inset:-5px;padding:7px;filter:blur(6px);opacity:.85}
+    @keyframes orbit{to{--orbit:360deg}}
+    .rose-guide{position:fixed;right:24px;bottom:24px;z-index:60;display:flex;align-items:flex-end;gap:12px;pointer-events:none;opacity:0;transform:translateY(20px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+    .rose-guide.show{opacity:1;transform:none}
+    .rose-guide.show .rg-orb,.rose-guide.show .rg-bubble.open{pointer-events:auto}
+    .rg-bubble{position:relative;width:300px;padding:14px 16px 15px;border:1px solid rgba(255,242,232,.75);border-radius:22px 22px 6px 22px;background:var(--glass);color:var(--ink);box-shadow:0 24px 60px -18px rgba(0,0,0,.85),0 0 30px rgba(224,89,34,.18),inset 0 1px 1px rgba(255,255,255,.8);opacity:0;transform:translateY(8px) scale(.97);transform-origin:bottom right;transition:opacity .3s ease,transform .3s ease}
+    .rg-bubble.open{opacity:1;transform:none}
+    .rg-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .rg-head img{width:22px;height:22px;padding:3px;border-radius:7px;background:rgba(255,255,255,.65)}
+    .rg-head strong{font-size:13px}
+    .rg-head small{font-size:11px;color:var(--ink-2)}
+    .rg-close{margin-left:auto;width:24px;height:24px;border:0;border-radius:50%;background:rgba(27,20,16,.08);color:var(--ink-2);font-size:15px;line-height:1;cursor:pointer}
+    .rg-bubble p{margin:0;min-height:40px;font-size:14px;line-height:1.45;font-weight:500}
+    .rg-bubble p:after{content:"";display:inline-block;width:2px;height:1em;margin-left:2px;vertical-align:-2px;background:#e2531f;animation:blink 1s step-end infinite}
+    .rg-bubble.done p:after{display:none}
+    @keyframes blink{50%{opacity:0}}
+    .rg-orb{position:relative;flex:none;width:68px;height:68px;padding:0;border:1px solid rgba(255,225,205,.85);border-radius:50%;cursor:pointer;background:#c96c49 url('assets/rose-voice-reference.jpg') 50.93% 43.69%/482% auto;box-shadow:0 14px 34px -8px rgba(255,87,34,.7),0 0 0 6px rgba(255,87,34,.12);transition:transform .2s ease}
+    .rg-orb:hover{transform:scale(1.06)}
+    .rg-orb:after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(255,138,76,.55);animation:ring 2.4s ease-out infinite}
+    @keyframes ring{from{transform:scale(.9);opacity:.9}to{transform:scale(1.35);opacity:0}}
+    .rg-orb.talking{animation:pulse 1.2s ease-in-out infinite}
+    .rg-label{position:absolute;right:0;bottom:-22px;width:100%;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--peach);white-space:nowrap}
+    .rose-ans{display:flex;align-items:flex-start;gap:14px;margin:-6px 0 26px}
+    .rose-ans .orb-xs{flex:none;width:34px;height:34px;border-radius:50%;background:#c96c49 url('assets/rose-voice-reference.jpg') 50.93% 43.69%/482% auto;border:1px solid rgba(255,225,205,.6);box-shadow:0 0 16px rgba(255,87,34,.4)}
+    .faq details .rose-ans p{margin:0;max-width:600px;padding:14px 18px;border:1px solid var(--line-2);border-radius:6px 18px 18px 18px;background:linear-gradient(160deg,#1a1210,#110d0b);color:rgba(246,239,232,.82);font-size:15.5px;line-height:1.6}
+    .faq details[open] .rose-ans{animation:pop .4s cubic-bezier(.2,.7,.2,1) both}
+    @media(max-width:600px){
+      .rose-guide{right:14px;bottom:14px;gap:8px}
+      .rg-bubble{width:calc(100vw - 104px);padding:12px 14px}
+      .rg-bubble p{font-size:13.5px;min-height:0}
+      .rg-orb{width:56px;height:56px}
+      .rg-label{display:none}
+    }
+    @media(prefers-reduced-motion:reduce){.rg-bubble p:after{display:none}}
+
     /* Reveal */
     .js .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
     .js .reveal.in{opacity:1;transform:none}
@@ -499,7 +539,7 @@
       </div>
     </section>
 
-    <section class="block" aria-labelledby="lookTitle">
+    <section class="block" id="look" aria-labelledby="lookTitle">
       <div class="wrap look">
         <div class="reveal">
           <p class="eyebrow">Rose, made yours</p>
@@ -585,21 +625,21 @@
       <div class="wrap faq">
         <div class="section-head reveal">
           <p class="eyebrow">FAQ</p>
-          <h2 class="display" id="faqTitle">Questions,<br><em>answered.</em></h2>
+          <h2 class="display" id="faqTitle">Questions,<br><em>answered by Rose.</em></h2>
           <p class="lead">Something else on your mind? Email <a href="mailto:jack@wildroseautomations.ca" style="color:var(--peach)">jack@wildroseautomations.ca</a>.</p>
         </div>
         <div class="faq-list reveal">
-          <details><summary>Can I see Rose on my site before I pay?<span class="pm" aria-hidden="true"></span></summary><p>Yes. Enter your website at the top of this page and a preview appears right there. Nothing is installed. When you configure your agent you can also talk to her by chat and voice before choosing a plan.</p></details>
-          <details><summary>Do I need to install anything myself?<span class="pm" aria-hidden="true"></span></summary><p>No. After checkout, Wildrose helps get Rose live. Most owners invite us as a website contributor, or we can guide you on a call, send the snippet to your web person, or set up a hosted Rose page if your builder blocks custom code.</p></details>
-          <details><summary>What does Rose do when someone asks for a quote?<span class="pm" aria-hidden="true"></span></summary><p>She asks the right follow-up questions, collects the visitor’s contact details and sends the request to you, so you can reply while the lead is still warm.</p></details>
-          <details><summary>Can I change what Rose says?<span class="pm" aria-hidden="true"></span></summary><p>Yes. Your website scan and choices carry into Workground, where you can update business facts, her greeting, tone and colours at any time.</p></details>
-          <details><summary>What if Rose can’t answer a question?<span class="pm" aria-hidden="true"></span></summary><p>Rose offers a handoff to you: she takes the visitor’s contact details and passes the request along, so nobody leaves without a way to reach you.</p></details>
-          <details><summary>What happens if I go over my voice minutes?<span class="pm" aria-hidden="true"></span></summary><p>Extra voice minutes are CA$0.29 each. Chat is included on both plans.</p></details>
+          <details><summary>Can I see Rose on my site before I pay?<span class="pm" aria-hidden="true"></span></summary><div class="rose-ans"><span class="orb-xs" aria-hidden="true"></span><p>Yes! Pop your website into the box at the top of this page and I’ll show up on it right here. Nothing gets installed. When you configure me, you can chat with me and talk to me out loud before you choose a plan.</p></div></details>
+          <details><summary>Do I need to install anything myself?<span class="pm" aria-hidden="true"></span></summary><div class="rose-ans"><span class="orb-xs" aria-hidden="true"></span><p>Nope. After checkout, the Wildrose team gets me live. Most owners invite them as a website contributor. They can also guide you on a call, send my snippet to your web person, or set up a hosted Rose page if your builder blocks custom code.</p></div></details>
+          <details><summary>What does Rose do when someone asks for a quote?<span class="pm" aria-hidden="true"></span></summary><div class="rose-ans"><span class="orb-xs" aria-hidden="true"></span><p>I ask the follow-up questions you would, collect their contact details and send the request straight to you, so you can reply while the lead is still warm.</p></div></details>
+          <details><summary>Can I change what Rose says?<span class="pm" aria-hidden="true"></span></summary><div class="rose-ans"><span class="orb-xs" aria-hidden="true"></span><p>Of course. Everything from your website scan carries into Workground, where you can update my business facts, greeting, tone and colours whenever you like.</p></div></details>
+          <details><summary>What if Rose can’t answer a question?<span class="pm" aria-hidden="true"></span></summary><div class="rose-ans"><span class="orb-xs" aria-hidden="true"></span><p>I hand off to you. I take the visitor’s contact details and pass their request along, so nobody leaves without a way to reach you.</p></div></details>
+          <details><summary>What happens if I go over my voice minutes?<span class="pm" aria-hidden="true"></span></summary><div class="rose-ans"><span class="orb-xs" aria-hidden="true"></span><p>Extra voice minutes are CA$0.29 each. Chat is included on both plans, so I can keep typing all day.</p></div></details>
         </div>
       </div>
     </section>
 
-    <section class="final" aria-labelledby="finalTitle">
+    <section class="final" id="get-rose" aria-labelledby="finalTitle">
       <canvas id="finalWaves" aria-hidden="true"></canvas>
       <p class="eyebrow reveal">Ready when you are</p>
       <h2 class="display reveal" id="finalTitle" style="--d:.08s">Stop losing visitors.<br><em>Give them Rose.</em></h2>
@@ -608,6 +648,14 @@
       <div class="lockup reveal" style="--d:.24s"><img src="https://wildroseautomations.ca/logos/wildrose.png" width="52" height="52" alt=""><div><b>WILDROSE</b><span>AUTOMATIONS</span></div></div>
     </section>
   </main>
+
+  <aside class="rose-guide" id="roseGuide" aria-label="Rose, your guide to this page">
+    <div class="rg-bubble" id="rgBubble" role="status" aria-live="polite">
+      <div class="rg-head"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt=""><strong>Rose</strong><small>here to help</small><button class="rg-close" type="button" id="rgClose" aria-label="Hide Rose’s tips">×</button></div>
+      <p id="rgText"></p>
+    </div>
+    <button class="rg-orb" type="button" id="rgOrb" aria-label="Talk to Rose"><span class="rg-label">Talk to me</span></button>
+  </aside>
 
   <footer>
     <div class="wrap">
@@ -726,6 +774,50 @@
       }
       if(reduced){fillAll();return}
       new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play()},{threshold:.35}).observe(demo);
+    })();
+
+    // Rose follows the visitor down the page, says something about each section and points at it.
+    (()=>{
+      const guide=document.getElementById('roseGuide'),bubble=document.getElementById('rgBubble'),text=document.getElementById('rgText'),orb=document.getElementById('rgOrb');
+      const lines=[
+        {id:'night',say:'This is me on the night shift. Keep scrolling and watch the clock run.',glow:'.device'},
+        {id:'capture',say:'Watch this. I’ll turn a simple chat into a real quote request.',glow:'.ticket'},
+        {id:'look',say:'Go on, pick my colour. I’ll wear whatever suits your brand.',glow:'.swatch-row',pad:12},
+        {id:'how-it-works',say:'You won’t have to install me yourself. The Wildrose team takes care of it.',glow:'.step:nth-child(3)'},
+        {id:'pricing',say:'Both plans get all of me, chat and voice. Pro just comes with more voice minutes.',glow:'.plan.pro'},
+        {id:'faq',say:'I answered these myself. Can’t find yours? Tap me and ask out loud.',glow:'.faq-list details:first-child',pad:4},
+        {id:'get-rose',say:'Ready when you are. I’d love to meet your visitors.',glow:'.big-cta',pad:8}
+      ].map(l=>({...l,el:document.getElementById(l.id)})).filter(l=>l.el);
+      let dismissed=false;try{dismissed=sessionStorage.getItem('roseGuideHidden')==='1'}catch{}
+      let current=null,typing=0,glowEl=null;
+      const narrow=matchMedia('(max-width:600px)');
+      const clearGlow=()=>{if(glowEl){const g=glowEl.el;g.classList.remove('on');setTimeout(()=>g.remove(),500);glowEl=null}};
+      const track=()=>{if(!glowEl)return;const {el,target,pad}=glowEl,r=target.getBoundingClientRect();el.style.left=`${r.left-pad}px`;el.style.top=`${r.top-pad}px`;el.style.width=`${r.width+pad*2}px`;el.style.height=`${r.height+pad*2}px`;requestAnimationFrame(track)};
+      const glow=(line)=>{
+        clearGlow();const target=line.el.querySelector(line.glow);if(!target)return;
+        const g=document.createElement('span');g.className='rose-glow';g.setAttribute('aria-hidden','true');
+        const r=parseFloat(getComputedStyle(target).borderTopLeftRadius)||14,pad=line.pad??8;
+        g.style.setProperty('--gr',`${r+pad}px`);document.body.append(g);glowEl={el:g,target,pad};track();requestAnimationFrame(()=>g.classList.add('on'));
+      };
+      const say=(line)=>{
+        const run=++typing;bubble.classList.add('open');bubble.classList.remove('done');orb.classList.add('talking');
+        if(reduced){text.textContent=line.say;bubble.classList.add('done');orb.classList.remove('talking');glow(line);return}
+        text.textContent='';let i=0;
+        const step=()=>{if(run!==typing)return;text.textContent=line.say.slice(0,++i);if(i<line.say.length)setTimeout(step,22);else{bubble.classList.add('done');orb.classList.remove('talking');glow(line);if(narrow.matches)setTimeout(()=>{if(run===typing)bubble.classList.remove('open')},6500)}};
+        step();
+      };
+      const update=()=>{
+        const hero=document.querySelector('.hero').getBoundingClientRect();
+        const past=hero.bottom<innerHeight*.35;
+        guide.classList.toggle('show',past);
+        if(!past){if(current){current=null;clearGlow();bubble.classList.remove('open')}return}
+        const mid=innerHeight*.55;let active=null;
+        for(const l of lines){const r=l.el.getBoundingClientRect();if(r.top<=mid&&r.bottom>mid)active=l}
+        if(active&&active!==current){current=active;if(!dismissed)say(active);else glow(active)}
+      };
+      addEventListener('scroll',update,{passive:true});addEventListener('resize',update);update();
+      document.getElementById('rgClose').addEventListener('click',()=>{dismissed=true;typing++;bubble.classList.remove('open');try{sessionStorage.setItem('roseGuideHidden','1')}catch{}});
+      orb.addEventListener('click',()=>{document.getElementById('liveRoseVoice').scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'})});
     })();
 
     // Your look: tint the orb and button.
