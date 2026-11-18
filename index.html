@@ -146,6 +146,28 @@
     .device-bar i{width:9px;height:9px;border-radius:50%;background:#2c221d}
     .device-bar span{margin-left:10px;padding:4px 12px;border-radius:8px;background:rgba(255,255,255,.04)}
     .device-body{position:relative;height:440px;padding:24px;background:linear-gradient(180deg,#120e0c,#0b0908)}
+    .device-body{padding:0!important;overflow:hidden}
+    .nsite{position:absolute;inset:0;background:linear-gradient(180deg,#fbf7f1,#f1e9df);color:#1b1410}
+    .nsite-nav{display:flex;align-items:center;gap:22px;padding:16px 24px;border-bottom:1px solid rgba(27,20,16,.08);font-size:12.5px;color:#5a4a40}
+    .nsite-nav b{display:flex;align-items:center;gap:9px;margin-right:auto;font-size:14px;color:#1b1410;letter-spacing:-.02em}
+    .nsite-nav b span{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#0ea5e9,#1d4ed8)}
+    .nsite-nav em{font-style:normal}
+    .nsite-hero{position:relative;max-width:calc(100% - 440px);padding:34px 24px 0}
+    .nsite-kicker{margin:0;color:#1d4ed8;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+    .nsite-hero h4{margin:10px 0 0;font-size:30px;line-height:1.05;letter-spacing:-.04em}
+    .nsite-copy{margin:10px 0 0;color:#5a4a40;font-size:13.5px;line-height:1.45}
+    .nsite-btn{display:inline-block;margin-top:18px;padding:10px 16px;border-radius:10px;background:#1d4ed8;color:#fff;font-size:12.5px;font-weight:650}
+    .nsite-closed{display:flex;align-items:center;gap:8px;width:fit-content;margin-top:16px;padding:7px 12px;border-radius:999px;background:#fee2e2;color:#991b1b;font-size:11.5px;font-weight:650;transition:background .5s ease,color .5s ease}
+    .nsite-closed i{width:7px;height:7px;border-radius:50%;background:currentColor}
+    .nsite-closed.open{background:#dcfce7;color:#166534}
+    .nsite-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:calc(100% - 440px);padding:26px 24px 0}
+    .nsite-cards div{padding:12px;border:1px solid rgba(27,20,16,.1);border-radius:12px;background:#fff}
+    .nsite-cards small{display:block;color:#8a776b;font-size:10px;font-weight:650;text-transform:uppercase;letter-spacing:.08em}
+    .nsite-cards b{display:block;margin-top:4px;font-size:14px}
+    .nsite-night{position:absolute;inset:0;background:#0b1024;mix-blend-mode:multiply;opacity:0;transition:opacity .9s ease;pointer-events:none}
+    .scene{z-index:3}
+    @media(max-width:600px){.nsite-hero{padding-top:14px}.nsite-hero h4,.nsite-copy,.nsite-btn,.nsite-kicker{display:none}.nsite-closed{margin-top:0}}
+    @media(max-width:860px){.nsite-nav em{display:none}.nsite-hero,.nsite-cards{max-width:none}.nsite-hero h4{font-size:22px}.nsite-cards{display:none}}
     .skel{display:grid;gap:10px;max-width:56%}
     .skel i{display:block;height:12px;border-radius:6px;background:rgba(255,255,255,.05)}
     .skel i:nth-child(1){height:26px;width:80%;background:rgba(255,255,255,.08)}
@@ -181,7 +203,7 @@
     .night-static .skel{display:none}
 
     /* Lead demo */
-    section.block{padding:150px 0 0}
+    section.block{padding:120px 0 0}
     .section-head{max-width:820px;margin-bottom:64px}
     .section-head.center{margin-inline:auto}
     .capture{display:grid;grid-template-columns:minmax(0,1fr) 90px minmax(0,1fr);align-items:center;max-width:1080px;margin:auto}
@@ -244,7 +266,30 @@
     /* Steps */
     .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:s}
     .step{position:relative;padding:34px 30px 32px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);counter-increment:s}
-    .step:before{content:"0" counter(s);display:block;margin-bottom:44px;font-family:var(--serif);font-style:italic;font-size:56px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,138,76,.55)}
+    .step{display:flex;flex-direction:column}
+    .step-viz{order:0}.step h3{order:2}.step p{order:3}
+    .step:before{order:1;content:"0" counter(s);display:block;margin:0 0 10px;font-size:34px!important;font-family:var(--serif);font-style:italic;font-size:56px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,138,76,.55)}
+    .step-viz{height:150px;margin:0 0 26px;padding:16px;border:1px solid var(--line);border-radius:16px;background:radial-gradient(ellipse at 50% 120%,rgba(255,87,34,.16),transparent 70%),#0c0908;display:flex;flex-direction:column;justify-content:center;gap:12px;overflow:hidden}
+    .sv-url{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line-2);border-radius:10px;background:#15100d;color:var(--faint);font-size:13px}
+    .sv-typed{color:var(--text);font-weight:550;overflow:hidden;white-space:nowrap;border-right:2px solid var(--orange);width:0;animation:typeurl 4.5s steps(15) infinite}
+    @keyframes typeurl{0%{width:0}35%,100%{width:15ch}}
+    .sv-bar{margin-left:auto;width:46px;height:4px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;position:relative}
+    .sv-bar:after{content:"";position:absolute;inset:0;background:var(--orange);transform-origin:left;animation:svload 4.5s ease infinite}
+    @keyframes svload{0%,35%{transform:scaleX(0)}70%,100%{transform:scaleX(1)}}
+    .sv-found{display:flex;gap:6px;flex-wrap:wrap}
+    .sv-found span{padding:5px 9px;border-radius:999px;background:rgba(74,222,128,.1);color:#86efac;font-size:11.5px;font-weight:650;opacity:0;animation:svpop 4.5s ease infinite}
+    .sv-found span:nth-child(2){animation-delay:.25s}.sv-found span:nth-child(3){animation-delay:.5s}
+    @keyframes svpop{0%,62%{opacity:0;transform:translateY(4px)}70%,100%{opacity:1;transform:none}}
+    .sv-rose{display:flex;align-items:center;gap:14px}
+    .sv-orb{width:58px;height:58px;border-radius:50%;background:#c96c49 url('assets/rose-voice-reference.jpg') 50.93% 43.69%/482% auto;border:1px solid rgba(255,225,205,.7);box-shadow:0 0 22px rgba(255,87,34,.4);animation:pulse 2.4s ease-in-out infinite}
+    .sv-sw{display:flex;gap:6px}.sv-sw i{width:20px;height:20px;border-radius:50%;background:var(--c);border:2px solid rgba(255,255,255,.15)}
+    .sv-sw i:first-child{border-color:#fff}
+    .sv-say{width:fit-content;padding:8px 12px;border-radius:12px 12px 12px 4px;background:rgba(255,255,255,.08);border:1px solid var(--line-2);color:var(--text);font-size:12.5px}
+    .sv-checks{display:grid;gap:6px}
+    .sv-checks span{display:flex;align-items:center;gap:8px;color:rgba(246,239,232,.8);font-size:12.5px;font-weight:550}
+    .sv-checks i{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:rgba(74,222,128,.15);color:#86efac;font-style:normal;font-size:10px}
+    .sv-live{display:flex;align-items:center;gap:8px;width:fit-content;padding:7px 12px;border-radius:999px;background:rgba(255,87,34,.14);color:var(--peach);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    .sv-live b{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--orange);animation:pulse 1.4s ease-in-out infinite}
     .step h3{margin:0;font-size:21px;font-weight:650;letter-spacing:-.03em}
     .step p{margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.55}
     .step em{font-style:normal;color:var(--peach)}
@@ -476,7 +521,7 @@
       .clock-big b{font-size:64px}
       .device-body{height:330px;padding:16px}
       .scene{right:12px;bottom:12px;width:calc(100% - 24px)}
-      section.block{padding-top:110px}
+      section.block{padding-top:88px}
       .section-head{margin-bottom:44px}
       .glass-panel{min-height:430px;padding:16px;border-radius:26px}
       .ticket{padding:22px}
@@ -606,9 +651,20 @@
             </div>
           </div>
           <div class="device" aria-label="Rose working overnight on a website">
-            <div class="device-bar" aria-hidden="true"><i></i><i></i><i></i><span>yourbusiness.ca</span></div>
+            <div class="device-bar" aria-hidden="true"><i></i><i></i><i></i><span>northsideplumbing.ca</span></div>
             <div class="device-body">
-              <div class="skel" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="nsite" aria-hidden="true">
+                <div class="nsite-nav"><b><span></span>Northside Plumbing</b><em>Services</em><em>Pricing</em><em>Reviews</em><em>Contact</em></div>
+                <div class="nsite-hero">
+                  <p class="nsite-kicker">Licensed · Insured · Local</p>
+                  <h4>Fast, friendly plumbing for your home.</h4>
+                  <p class="nsite-copy">Leaks, drains, water heaters and more. Real people, upfront prices.</p>
+                  <span class="nsite-btn">Book a quote</span>
+                  <span class="nsite-closed" id="nsClosed"><i></i>Office closed · opens 8 AM</span>
+                </div>
+                <div class="nsite-cards"><div><small>Hours</small><b>Mon–Sat</b></div><div><small>Service call</small><b>From $89</b></div></div>
+                <span class="nsite-night" id="nsNight"></span>
+              </div>
               <div class="scene" data-scene="0">
                 <div class="mini"><div class="mini-head"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt=""><div><strong>Rose</strong><small>AI assistant</small></div><span class="live">Online</span></div>
                   <div class="bub v">Do you work on weekends?</div>
@@ -762,9 +818,9 @@
           <p class="lead">You don’t have to install Rose yourself. We help get her live and test everything before calling it done.</p>
         </div>
         <div class="steps">
-          <div class="step reveal"><h3>Enter your website</h3><p>Rose reads your public pages and drafts what she knows about your business. <em>Correct anything</em> before you continue.</p></div>
-          <div class="step reveal" style="--d:.08s"><h3>Shape and test her</h3><p>Choose her name, greeting, tone and colour, then <em>talk to her by chat or voice</em> before you pick a plan.</p></div>
-          <div class="step reveal" style="--d:.16s"><h3>We take her live</h3><p>We install Rose on your site, or send the snippet to your web person, then <em>test chat, voice and lead delivery</em>.</p></div>
+          <div class="step reveal"><div class="step-viz" aria-hidden="true"><div class="sv-url"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/></svg><b class="sv-typed">yourbusiness.ca</b><span class="sv-bar"></span></div><div class="sv-found"><span>✓ Services</span><span>✓ Hours</span><span>✓ Pricing</span></div></div><h3>Enter your website</h3><p>Rose reads your public pages and drafts what she knows about your business. <em>Correct anything</em> before you continue.</p></div>
+          <div class="step reveal" style="--d:.08s"><div class="step-viz" aria-hidden="true"><div class="sv-rose"><span class="sv-orb"></span><div class="sv-sw"><i style="--c:#ff5722"></i><i style="--c:#e94b6a"></i><i style="--c:#3b82f6"></i><i style="--c:#22c55e"></i></div></div><div class="sv-say">“Hi, I’m Rose. How can I help?”</div></div><h3>Shape and test her</h3><p>Choose her name, greeting, tone and colour, then <em>talk to her by chat or voice</em> before you pick a plan.</p></div>
+          <div class="step reveal" style="--d:.16s"><div class="step-viz" aria-hidden="true"><div class="sv-checks"><span><i>✓</i>Chat tested</span><span><i>✓</i>Voice tested</span><span><i>✓</i>Leads reach you</span></div><div class="sv-live"><b></b>Rose is live</div></div><h3>We take her live</h3><p>We install Rose on your site, or send the snippet to your web person, then <em>test chat, voice and lead delivery</em>.</p></div>
         </div>
       </div>
     </section>
@@ -921,7 +977,8 @@
       const events=[.04,.3,.56,.8],times=[[0,17*60],[.04,18*60+40],[.3,23*60+47],[.56,26*60+13],[.8,31*60+2],[1,31*60+20]],LOOP=14000;
       const fmt=m=>{m=Math.round(m)%1440;const h=Math.floor(m/60),mm=String(m%60).padStart(2,'0');return [`${h%12||12}:${mm}`,h<12?'AM':'PM']};
       const setScene=i=>{scenes.forEach((s,n)=>s.classList.toggle('on',n===i));ticks.forEach((b,n)=>b.classList.toggle('on',n===i))};
-      const paint=(minutes,i)=>{const [a,b]=fmt(minutes);timeEl.textContent=a;ampm.textContent=b;setScene(i);const p=(minutes-17*60)/(14*60);dusk.style.opacity=String(Math.max(0,1-p*3));night.style.opacity=String(p>.1&&p<.85?1:0);stars.style.opacity=String(p>.15&&p<.8?.9:0);dawn.style.opacity=String(p>.78?1:0)};
+      const nsNight=document.getElementById('nsNight'),nsClosed=document.getElementById('nsClosed');
+      const paint=(minutes,i)=>{const [a,b]=fmt(minutes);timeEl.textContent=a;ampm.textContent=b;setScene(i);const p=(minutes-17*60)/(14*60);if(nsNight){nsNight.style.opacity=String(p<.06?p/.06*.42:p>.86?Math.max(0,.42-(p-.86)/.08*.42):.42)}if(nsClosed){const open=p>=.86&&minutes%1440>=8*60;nsClosed.classList.toggle('open',open);nsClosed.lastChild.textContent=open?'Open now':'Office closed · opens 8 AM'}dusk.style.opacity=String(Math.max(0,1-p*3));night.style.opacity=String(p>.1&&p<.85?1:0);stars.style.opacity=String(p>.15&&p<.8?.9:0);dawn.style.opacity=String(p>.78?1:0)};
       let lastKey='';
       const at=p=>{let m=times[0][1];for(let k=1;k<times.length;k++){const [p0,m0]=times[k-1],[p1,m1]=times[k];if(p<=p1){m=m0+(m1-m0)*((p-p0)/(p1-p0));break}m=m1}let i=0;events.forEach((e,n)=>{if(p>=e)i=n});const key=`${Math.round(m)}:${i}`;if(key===lastKey)return;lastKey=key;paint(m,i)};
       if(reduced){at(.8);ticks.forEach(b=>b.addEventListener('click',()=>at(events[+b.dataset.step])));return}
