@@ -78,36 +78,35 @@
     .nav-cta:hover{transform:translateY(-1px);box-shadow:0 14px 34px -10px rgba(255,87,34,.95),inset 0 1px 0 rgba(255,255,255,.3)}
     .nav-links a:focus-visible,.nav-login:focus-visible,.nav-cta:focus-visible,.nav-brand:focus-visible{outline:2px solid var(--peach);outline-offset:4px;border-radius:4px}
 
-    /* Hero: the brand ad, live */
-    .hero{position:relative;padding:118px 0 100px;overflow:hidden;isolation:isolate;text-align:center}
-    .hero:before{content:"";position:absolute;left:50%;top:52%;width:1100px;height:900px;transform:translate(-50%,-30%);z-index:-2;background:radial-gradient(ellipse 50% 45% at 50% 50%,rgba(255,87,34,.24),transparent 70%);pointer-events:none}
-    .hero-title{margin:18px auto 0;max-width:1240px;font-size:clamp(58px,8.2vw,128px);line-height:.86}
-    .hero-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"copy stage chips";align-items:center;gap:52px;margin-top:26px}
+    /* Hero: cinematic stage. The headline sits behind Rose like a poster; her glass blurs the letters behind her. */
+    .hero{position:relative;min-height:100vh;min-height:100svh;padding:100px 0 34px;overflow:hidden;isolation:isolate;display:flex;align-items:center;text-align:center}
+    .hero:before{content:"";position:absolute;left:50%;top:55%;width:1200px;height:950px;transform:translate(-50%,-50%);z-index:-2;background:radial-gradient(ellipse 50% 45% at 50% 50%,rgba(255,87,34,.26),transparent 70%);pointer-events:none}
+    .hero-stack{position:relative;width:100%;display:flex;flex-direction:column;align-items:center}
+    .hero-eyebrow{margin:0 0 20px}
+    .hero-core{position:relative;display:grid;place-items:center;width:100%}
+    .hero-title{position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);z-index:0;display:flex;flex-direction:column;justify-content:center;margin:0;padding-bottom:2%;font-family:var(--serif);font-weight:400;text-transform:uppercase;color:var(--cream);font-size:clamp(84px,12.4vw,214px);line-height:.84;letter-spacing:-.01em;pointer-events:none;white-space:nowrap;-webkit-mask-image:radial-gradient(ellipse 250px 330px at 50% 48%,transparent 62%,#000 100%);mask-image:radial-gradient(ellipse 250px 330px at 50% 48%,transparent 62%,#000 100%)}
+    .hero-title span{display:block}
+    .hero-title em{font-style:normal;color:var(--orange)}
+    .hero-rose{position:relative;z-index:1;display:grid;place-items:center}
+    .hero-rose:before{content:"";position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.32),transparent 62%);filter:blur(24px);pointer-events:none;z-index:-2}
     .hero-waves{position:absolute;left:50%;top:50%;z-index:-1;width:100vw;height:640px;transform:translate(-50%,-50%);pointer-events:none}
-    .hero-copy{grid-area:copy;text-align:left;max-width:360px;justify-self:end}
-    .hero-copy .lead{margin:0;font-size:18px;color:rgba(246,239,232,.78)}
-    .hero-copy .lead strong{color:var(--text);font-weight:600}
-    .try{margin-top:28px}
-    .try-bar{display:flex;align-items:center;gap:10px;padding:0 18px;border:1px solid var(--line-2);border-radius:16px;background:rgba(14,11,10,.82);transition:border-color .2s ease,box-shadow .2s ease;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-    .try-bar:focus-within{border-color:rgba(255,138,76,.65);box-shadow:0 0 0 4px rgba(255,87,34,.14)}
+    .hero-under{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:22px;width:min(620px,100%)}
+    .try{width:100%}
+    .try-bar{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 20px;border:1px solid var(--line-2);border-radius:999px;background:rgba(14,11,10,.85);box-shadow:0 20px 50px -25px rgba(255,87,34,.5);transition:border-color .2s ease,box-shadow .2s ease}
+    .try-bar:focus-within{border-color:rgba(255,138,76,.65);box-shadow:0 0 0 4px rgba(255,87,34,.14),0 20px 50px -25px rgba(255,87,34,.6)}
     .try-bar svg{flex:none;color:var(--faint)}
-    .try-bar input{flex:1;min-width:0;height:54px;border:0;outline:0;background:transparent;color:var(--text);font-size:16px}
+    .try-bar input{flex:1;min-width:0;height:48px;border:0;outline:0;background:transparent;color:var(--text);font-size:16px;text-align:left}
     .try-bar input::placeholder{color:var(--faint)}
-    .try-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:10px;min-height:56px;border:0;border-radius:999px;background:linear-gradient(180deg,#fa7135,#ee511b);color:#fff;font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 16px 40px -12px rgba(255,87,34,.75),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .2s ease,box-shadow .2s ease}
-    .try-cta:hover{transform:translateY(-1px);box-shadow:0 22px 50px -12px rgba(255,87,34,.9),inset 0 1px 0 rgba(255,255,255,.3)}
-    .try-note{margin:12px 0 0;color:var(--faint);font-size:13px;text-align:center}
-    .hero-stage{grid-area:stage;position:relative;display:grid;place-items:center;min-width:0}
-    .hero-stage:before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.36),transparent 62%);filter:blur(24px);pointer-events:none}
+    .try-cta{flex:none;display:inline-flex;align-items:center;gap:9px;min-height:48px;padding:0 24px;border:0;border-radius:999px;background:linear-gradient(180deg,#fa7135,#ee511b);color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;cursor:pointer;box-shadow:0 12px 30px -10px rgba(255,87,34,.8),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .2s ease,box-shadow .2s ease}
+    .try-cta:hover{transform:translateY(-1px);box-shadow:0 16px 36px -10px rgba(255,87,34,.95),inset 0 1px 0 rgba(255,255,255,.3)}
+    .hero-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 10px}
+    .chip{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border:1px solid rgba(255,108,60,.55);border-radius:9px;background:rgba(5,5,5,.6);color:var(--orange-2);font-size:11.5px;font-weight:650;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+    .try-note{margin:0 0 0 6px;color:var(--faint);font-size:13px}
     #liveRoseVoice{position:relative;z-index:2;display:flex;justify-content:center;width:430px;max-width:100%;min-height:560px}
     #liveRoseVoice .wr-ai.inline{position:relative;inset:auto;margin:auto}
     #liveRoseVoice .wr-ai.inline .wr-panel{position:relative;right:auto;bottom:auto}
     #liveRoseVoice .wr-fab,#liveRoseVoice .wr-close{display:none!important}
     #liveRoseVoice main{padding:0}
-    .hero-chips{grid-area:chips;display:grid;gap:12px;justify-items:start;justify-self:start}
-    .chip{display:inline-flex;align-items:center;gap:12px;padding:13px 20px;border:1px solid rgba(255,108,60,.6);border-radius:10px;background:rgba(5,5,5,.66);color:var(--orange-2);font-size:13px;font-weight:650;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-    .hero-facts{display:grid;gap:8px;margin:18px 0 0 4px;padding:0;list-style:none;color:var(--muted);font-size:14px;text-align:left}
-    .hero-facts li{display:flex;align-items:center;gap:10px}
-    .hero-facts li:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
     /* Inline preview */
     .preview[hidden]{display:none}
     .preview{width:min(1200px,100% - 40px);margin:0 auto 40px;overflow:hidden;border:1px solid var(--line-2);border-radius:22px;background:#fbf7f1;box-shadow:0 40px 100px -30px rgba(0,0,0,.9);scroll-margin-top:96px}
@@ -449,13 +448,6 @@
 
     /* Responsive */
     @media(max-width:1080px){
-      .hero-row{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "copy" "chips";gap:36px;margin-top:28px}
-      .hero-stage{grid-template-columns:minmax(0,1fr);width:100%}
-      .hero-waves{top:280px}
-      #liveRoseVoice{justify-self:center}
-      .hero-copy{justify-self:center;text-align:center;max-width:480px}
-      .hero-chips{justify-self:center;justify-items:center;grid-template-columns:repeat(3,auto);gap:10px}
-      .hero-facts{display:none}
       .night-grid{grid-template-columns:1fr;gap:28px}
       .device-body{height:360px}
       .capture{grid-template-columns:1fr;max-width:520px;gap:0}
@@ -469,6 +461,18 @@
       .foot>div:first-child{grid-column:1/-1}
     }
     @media(max-width:860px){
+      .hero{min-height:0;padding:96px 0 56px}
+      .hero-title{position:static;display:block;padding:0;width:auto;-webkit-mask-image:none;mask-image:none;margin:0 0 26px;white-space:normal;font-size:clamp(50px,14vw,96px);line-height:.88}
+      .hero-title span{display:inline}
+      .hero-core{display:flex;flex-direction:column;align-items:center}
+      .hero-rose{width:100%}
+      .hero-rose:before{width:380px;height:380px}
+      .hero-waves{height:520px}
+      .try-bar{flex-wrap:wrap;padding:6px;border-radius:24px}
+      .try-bar svg{display:none}
+      .try-bar input{padding:0 14px}
+      .try-cta{width:100%;justify-content:center}
+      .try-note{width:100%;margin:2px 0 0;text-align:center}
       .nav-links{display:none}
       .nav-actions{margin-left:auto}
       .nav-inner{gap:16px}
@@ -477,12 +481,6 @@
       .facts{gap:28px;max-width:520px}
     }
     @media(max-width:600px){
-      .hero{padding:112px 0 72px}
-      .hero-title{font-size:clamp(50px,14.5vw,76px)}
-      .hero-stage:before{width:360px;height:360px}
-      .hero-waves{height:520px}
-      .hero-chips{grid-template-columns:1fr;justify-items:center}
-      .chip{font-size:11.5px;padding:11px 16px}
       .wrap{width:calc(100% - 32px)}
       .nav-inner{width:calc(100% - 28px);height:66px}
       .nav-brand img{width:30px;height:30px}
@@ -575,31 +573,29 @@
 
   <main id="top">
     <section class="hero" id="hero" aria-labelledby="heroTitle">
-      <div class="wrap">
-        <p class="eyebrow reveal">Introducing Rose</p>
-        <h1 class="display hero-title reveal" id="heroTitle" style="--d:.06s">Your website just got <em>a voice.</em></h1>
-        <div class="hero-row">
-          <canvas class="hero-waves" id="heroWaves" aria-hidden="true"></canvas>
-          <div class="hero-copy reveal" style="--d:.2s">
-            <p class="lead"><strong>Rose is the AI front desk for your website.</strong> She answers questions, captures quote requests and sends the lead to you, while the visitor is still on the page.</p>
-            <form class="try" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
-              <label class="sr" for="tryRoseWebsite">Your website address</label>
-              <div class="try-bar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
-                <input id="tryRoseWebsite" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com" required maxlength="2048" aria-describedby="tryRoseNote">
-              </div>
-              <button class="try-cta" type="submit">See Rose on my site <span aria-hidden="true">→</span></button>
-              <p class="try-note" id="tryRoseNote">Free preview in seconds. Nothing is installed.</p>
-            </form>
-          </div>
-          <div class="hero-stage reveal" id="heroStage" style="--d:.12s">
+      <div class="wrap hero-stack">
+        <p class="eyebrow hero-eyebrow reveal">Introducing Rose · The AI front desk for your website</p>
+        <div class="hero-core">
+          <h1 class="hero-title reveal" id="heroTitle"><span>Your website just</span> <span>got <em>a voice.</em></span></h1>
+          <div class="hero-rose">
+            <canvas class="hero-waves" id="heroWaves" aria-hidden="true"></canvas>
             <div id="liveRoseVoice" aria-label="Talk to Rose live"></div>
           </div>
-          <div class="hero-chips reveal" style="--d:.28s">
-            <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg>Voice agent</span>
-            <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>On your website</span>
-            <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12h3l3-8 4 16 3-8h7"/></svg>Speaks naturally</span>
-            <ul class="hero-facts"><li>Set up for you, no code</li><li>Chat and voice included</li><li>From CA$39/month</li></ul>
+        </div>
+        <div class="hero-under reveal" style="--d:.3s">
+          <form class="try" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
+            <label class="sr" for="tryRoseWebsite">Your website address</label>
+            <div class="try-bar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
+              <input id="tryRoseWebsite" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com" required maxlength="2048" aria-describedby="tryRoseNote">
+              <button class="try-cta" type="submit">See Rose on my site <span aria-hidden="true">→</span></button>
+            </div>
+          </form>
+          <div class="hero-row">
+            <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg>Voice agent</span>
+            <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>On your website</span>
+            <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12h3l3-8 4 16 3-8h7"/></svg>Speaks naturally</span>
+            <p class="try-note" id="tryRoseNote">Free preview in seconds. Nothing is installed.</p>
           </div>
         </div>
       </div>
