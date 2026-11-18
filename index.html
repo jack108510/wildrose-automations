@@ -478,6 +478,27 @@
       .dash-tabs span{padding:7px 9px;font-size:11.5px}
     }
 
+    /* Try the glow on this page */
+    .glow-try{max-width:880px;margin:34px auto 0;padding:22px 24px;border:1px solid var(--line-2);border-radius:24px;background:radial-gradient(ellipse at 0% 0%,rgba(255,87,34,.12),transparent 55%),#0d0a09;text-align:center}
+    .gt-label{display:flex;align-items:center;justify-content:center;gap:10px;margin:0;font-size:16px;font-weight:600;color:var(--text)}
+    .gt-label em{font-style:normal;color:var(--orange-2)}
+    .gt-orb{flex:none;width:28px;height:28px;border-radius:50%;background:#c96c49 url('assets/rose-voice-reference.jpg') 50.93% 43.69%/482% auto;border:1px solid rgba(255,225,205,.7);box-shadow:0 0 16px rgba(255,87,34,.5)}
+    .gt-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px}
+    .gt-chips button{padding:12px 18px;border:1px solid rgba(255,138,76,.5);border-radius:999px;background:rgba(255,87,34,.08);color:var(--peach);font-size:14.5px;font-weight:600;cursor:pointer;transition:background .2s ease,color .2s ease,transform .2s ease}
+    .gt-chips button:hover{background:rgba(255,87,34,.2);color:#fff;transform:translateY(-1px)}
+    .gt-reply{min-height:0;margin:0;color:var(--muted);font-size:15px}
+    .gt-reply:not(:empty){margin-top:14px}
+    .page-glow{position:absolute;z-index:45;left:0;top:0;width:0;height:0;border-radius:20px;pointer-events:none;opacity:0;box-shadow:0 0 0 0 rgba(8,6,5,0),0 0 30px 6px rgba(255,120,61,.45);transition:left 1.15s cubic-bezier(.65,0,.35,1),top 1.15s cubic-bezier(.65,0,.35,1),width 1.15s cubic-bezier(.65,0,.35,1),height 1.15s cubic-bezier(.65,0,.35,1),border-radius 1.15s ease,opacity .4s ease,box-shadow .8s ease .6s}
+    .page-glow.on{opacity:1}
+    .page-glow.landed{box-shadow:0 0 0 4000px rgba(8,6,5,.62),0 0 40px 8px rgba(255,120,61,.55)}
+    .page-glow:before,.page-glow:after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2.5px;background:conic-gradient(from var(--orbit),rgba(255,106,53,.12) 0deg,rgba(255,125,68,.32) 65deg,#ff934f 110deg,#ffe4b8 142deg,#ffb66e 160deg,rgba(255,111,57,.2) 205deg,rgba(255,111,57,.12) 245deg,#ffad77 290deg,rgba(255,120,61,.45) 315deg,rgba(255,106,53,.12) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:orbit 3.6s linear infinite}
+    .page-glow:before{inset:-5px;padding:7px;filter:blur(6px);opacity:.85}
+    .page-glow-tip{position:fixed;left:50%;bottom:24px;z-index:46;display:flex;align-items:center;gap:12px;max-width:min(620px,calc(100vw - 24px));padding:10px 10px 10px 14px;border:1px solid rgba(255,242,232,.7);border-radius:999px;background:var(--glass);color:var(--ink);box-shadow:0 20px 50px -10px rgba(0,0,0,.7);transform:translate(-50%,140%);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+    .page-glow-tip.on{transform:translate(-50%,0)}
+    .page-glow-tip p{margin:0;font-size:14px;font-weight:550;text-align:left}
+    .page-glow-tip button{flex:none;padding:10px 16px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:13px;font-weight:650;cursor:pointer}
+    @media(max-width:600px){.page-glow-tip{border-radius:22px;flex-wrap:wrap;justify-content:center}.page-glow-tip p{text-align:center;flex-basis:100%}}
+
     /* Rose, all over the page: a guide that follows the visitor and points at things */
     @property --orbit{syntax:"<angle>";initial-value:0deg;inherits:false}
     @keyframes orbit{to{--orbit:360deg}}
@@ -804,8 +825,19 @@
             <div class="site-rose" id="siteRose"></div>
           </div>
         </div>
+        <div class="glow-try reveal" id="glowTry">
+          <p class="gt-label"><span class="gt-orb" aria-hidden="true"></span>Now try it on <em>this</em> page. Ask Rose:</p>
+          <div class="gt-chips">
+            <button type="button" data-target=".plan.pro" data-say="Rose starts at CA$39 a month. Pro is the one most busy sites pick. Let me show you.">How much is Rose?</button>
+            <button type="button" data-target="#try-rose .try-bar" data-say="Yes! Pop your website in here and I’ll appear on it in seconds.">Can I see her on my site?</button>
+            <button type="button" data-target="#how-it-works .step:nth-child(3)" data-say="The Wildrose team does it for you. No code on your end.">Who sets her up?</button>
+          </div>
+          <p class="gt-reply" id="gtReply" aria-live="polite"></p>
+        </div>
       </div>
     </section>
+    <span class="page-glow" id="pageGlow" aria-hidden="true"></span>
+    <div class="page-glow-tip" id="pageGlowTip" role="status"><span class="gt-orb" aria-hidden="true"></span><p></p><button type="button" id="pageGlowBack">↑ Back to the demo</button></div>
 
     <section class="block" id="look" aria-labelledby="lookTitle">
       <div class="wrap look">
@@ -1190,6 +1222,31 @@
       if(reduced){place('nav-billing');return}
       new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play()},{threshold:.35}).observe(demo);
       addEventListener('resize',()=>{if(ring.classList.contains('on')&&ring.dataset.k)place(ring.dataset.k)});
+    })();
+
+    // Try it on this page: Rose answers, then her glow flies off the demo to the real element on this page.
+    (()=>{
+      const box=document.getElementById('glowTry'),reply=document.getElementById('gtReply'),ring=document.getElementById('pageGlow'),tip=document.getElementById('pageGlowTip'),tipText=tip.querySelector('p');
+      const pageRect=el=>{const r=el.getBoundingClientRect();return {x:r.left+scrollX,y:r.top+scrollY,w:r.width,h:r.height}};
+      const put=(el,pad,radius)=>{const {x,y,w,h}=pageRect(el);ring.style.left=`${x-pad}px`;ring.style.top=`${y-pad}px`;ring.style.width=`${w+pad*2}px`;ring.style.height=`${h+pad*2}px`;ring.style.borderRadius=`${radius}px`};
+      let run=0,current=null;
+      const clear=()=>{run++;ring.classList.remove('on','landed');tip.classList.remove('on');current=null};
+      async function fly(btn){
+        const id=++run,target=document.querySelector(btn.dataset.target);if(!target)return;
+        reply.textContent='';const say=btn.dataset.say;
+        if(reduced)reply.textContent=say;else for(let i=1;i<=say.length&&id===run;i++){reply.textContent=say.slice(0,i);await new Promise(r=>setTimeout(r,16))}
+        if(id!==run)return;
+        ring.style.transition='none';ring.classList.remove('landed');put(btn,4,999);void ring.offsetWidth;ring.style.transition='';ring.classList.add('on');
+        await new Promise(r=>setTimeout(r,250));if(id!==run)return;
+        const radius=(parseFloat(getComputedStyle(target).borderTopLeftRadius)||14)+10;
+        target.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});put(target,10,radius);current=target;
+        const settle=()=>{if(id===run&&current===target)put(target,10,radius)};addEventListener('scrollend',settle,{once:true});
+        setTimeout(()=>{if(id!==run)return;put(target,10,radius);ring.classList.add('landed');tipText.textContent=say;tip.classList.add('on')},reduced?0:1150);
+      }
+      box.querySelectorAll('.gt-chips button').forEach(b=>b.addEventListener('click',()=>fly(b)));
+      document.getElementById('pageGlowBack').addEventListener('click',()=>{clear();document.getElementById('glow').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'})});
+      addEventListener('keydown',e=>{if(e.key==='Escape'&&current)clear()});
+      addEventListener('resize',()=>{if(current)put(current,10,parseFloat(ring.style.borderRadius))});
     })();
 
     // Lead capture demo: typing zooms in, the brain works behind the scenes, the quote fills in.
