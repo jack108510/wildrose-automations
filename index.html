@@ -112,7 +112,6 @@
     .hero:not(.ready) .hero-waves{transition:none}
     .hero:not(.ready) .hero-stage,.hero:not(.ready) .hero-text{transition:none}
     .nav{transition:opacity .6s ease .15s,transform .6s ease .15s}
-    body.intro-on .nav{opacity:0;transform:translateY(-14px);pointer-events:none}
     .scroll-cue{position:absolute;left:50%;bottom:-58px;width:26px;height:42px;margin-left:-13px;border:1.5px solid rgba(255,196,161,.5);border-radius:14px;opacity:0;transition:opacity .5s ease;pointer-events:none}
     .scroll-cue i{position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--peach);animation:cue 1.6s ease-in-out infinite}
     @keyframes cue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(12px);opacity:0}100%{opacity:0}}
@@ -332,36 +331,91 @@
     .rose-copy.tinted .wr-primary{background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 78%,black))!important;box-shadow:0 10px 24px -8px var(--accent)!important;border-color:transparent!important}
     @media(max-width:600px){.scene{--s:.47}}
 
-    /* Glow showcase */
+    /* Brain + zoom in the lead demo */
+    .capture-cam{position:relative;max-width:1180px;margin:0 auto;padding:30px 10px;overflow:hidden;border-radius:30px}
+    .capture-cam:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(ellipse 60% 55% at var(--vx,50%) var(--vy,80%),transparent 40%,rgba(5,5,5,.85));opacity:0;transition:opacity .7s ease}
+    .capture-cam.zooming:after{opacity:1}
+    .capture{grid-template-columns:minmax(0,1fr) minmax(0,.95fr) minmax(0,1fr)!important;gap:26px!important;max-width:none!important;transition:transform .85s cubic-bezier(.2,.7,.2,1)}
+    .capture.zoom{transform:scale(var(--zoom,1.65))}
+    .capture .glass-panel{min-height:560px}
+    .brain-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+    .brain-label{margin:0;text-align:center;color:var(--orange-2);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+    .brain-box{position:relative;height:340px}
+    .brain-box canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .brain-box .anatomy-surface{z-index:0}
+    .brain-box #workflowGraph{z-index:1;cursor:grab;touch-action:pan-y}
+    .brain-card{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid #6a3f2c;border-radius:16px;background:linear-gradient(155deg,#2c1a12,#1a110d);box-shadow:0 18px 38px rgba(0,0,0,.3);transition:border-color .3s ease}
+    .brain-card.working{border-color:#ff8a4c}
+    .bc-mark{flex:none;display:grid;place-items:center;width:38px;height:38px;border:1px solid #8d553b;border-radius:11px;background:#fff}
+    .bc-mark img{width:22px;height:22px;object-fit:contain}
+    .bc-top{display:flex;align-items:center;gap:10px;margin:0}
+    .bc-tool{color:#ffd4bb;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+    .bc-state{margin-left:auto;color:#eeb491;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+    .brain-card.working .bc-state:before{content:"";display:inline-block;width:6px;height:6px;margin-right:6px;border-radius:50%;background:#ff9560;box-shadow:0 0 0 4px rgba(255,149,96,.15);animation:pulse 1s ease-in-out infinite}
+    .bc-title{margin:4px 0 0;color:#fff5ed;font-size:14.5px;font-weight:650;letter-spacing:-.01em;line-height:1.3}
+    .brain-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .bt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border:1px solid #3a271e;border-radius:12px;background:#140e0b;opacity:.5;transition:opacity .4s ease,border-color .4s ease,background .4s ease}
+    .bt img{width:20px;height:20px;object-fit:contain}
+    .bt span{font-size:10.5px;font-weight:650;color:#e9cdbb;text-align:center;line-height:1.2}
+    .bt.hot{opacity:1;border-color:#ff8a4c;background:#2d190f}
+    .bt.done{opacity:1;border-color:#6a3f2c}
+    .demo-note{margin:14px 0 0;text-align:center;color:var(--faint);font-size:12px}
+
+    /* Glow showcase: a back-office dashboard */
     .glow-device{max-width:1080px;margin:0 auto}
-    .site{position:relative;height:540px;overflow:hidden;background:linear-gradient(180deg,#fbf7f1,#f3ece3);color:#1b1410}
-    .site-nav{display:flex;align-items:center;gap:26px;padding:18px 28px;border-bottom:1px solid rgba(27,20,16,.08);font-size:13px;color:#5a4a40}
-    .site-nav b{margin-right:auto;font-size:15px;color:#1b1410;letter-spacing:-.02em}
-    .site-main{max-width:58%;padding:40px 28px}
-    .site-kicker{margin:0;color:#b4461c;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-    .site h3{margin:12px 0 0;font-size:34px;line-height:1.05;letter-spacing:-.04em;font-weight:700}
-    .site-copy{margin:12px 0 0;color:#5a4a40;font-size:15px}
-    .site-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:30px}
-    .site-card{padding:16px;border:1px solid rgba(27,20,16,.1);border-radius:16px;background:#fff;box-shadow:0 10px 24px -16px rgba(27,20,16,.35)}
-    .site-card small{display:block;color:#8a776b;font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.08em}
-    .site-card b{display:block;margin-top:6px;font-size:17px;letter-spacing:-.02em}
-    .site-card span{display:block;margin-top:3px;color:#6b5a50;font-size:12.5px}
-    .site-card.cta{background:#1b1410;color:#fff;border-color:#1b1410}.site-card.cta small,.site-card.cta span{color:rgba(255,255,255,.65)}
-    .site-glow{position:absolute;z-index:4;pointer-events:none;border-radius:22px;opacity:0;box-shadow:0 0 28px 4px rgba(255,120,61,.35);transition:left .6s cubic-bezier(.2,.7,.2,1),top .6s cubic-bezier(.2,.7,.2,1),width .6s cubic-bezier(.2,.7,.2,1),height .6s cubic-bezier(.2,.7,.2,1),opacity .4s ease}
+    .dash{position:relative;display:grid;grid-template-columns:200px 1fr;height:540px;overflow:hidden;background:#f7f5f2;color:#1c1917}
+    .dash-side{display:flex;flex-direction:column;gap:4px;padding:20px 14px;border-right:1px solid #e7e2dc;background:#fff}
+    .dash-brand{display:flex;align-items:center;gap:9px;margin:0 6px 18px;font-size:15px;letter-spacing:-.02em}
+    .dash-brand span{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,#6366f1,#22d3ee)}
+    .dash-nav{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:#57534e;font-size:13.5px;font-weight:550;transition:background .3s ease,color .3s ease}
+    .dash-nav i{width:16px;height:16px;border-radius:5px;background:#e7e5e4}
+    .dash-nav.on{background:#f1f0ee;color:#1c1917}
+    .dash-nav.on i{background:#6366f1}
+    .dash-main{padding:28px 30px;max-width:620px}
+    .dash-main h4{margin:0 0 18px;font-size:22px;letter-spacing:-.03em}
+    .dash-view{display:none}.dash-view.on{display:block;animation:pop .35s ease both}
+    .dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .dash-stats div,.dash-card{padding:16px;border:1px solid #e7e2dc;border-radius:14px;background:#fff}
+    .dash-stats small,.dash-card small{display:block;color:#78716c;font-size:11.5px;font-weight:600}
+    .dash-stats b{display:block;margin-top:6px;font-size:22px;letter-spacing:-.03em}
+    .dash-chart{display:flex;align-items:flex-end;gap:10px;height:150px;margin-top:16px;padding:18px;border:1px solid #e7e2dc;border-radius:14px;background:#fff}
+    .dash-chart i{flex:1;height:var(--h);border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#818cf8,#6366f1)}
+    .dash-tabs{display:flex;gap:6px;margin-bottom:16px;padding:4px;border-radius:12px;background:#ecebe8;width:fit-content}
+    .dash-tabs span{padding:8px 14px;border-radius:9px;color:#57534e;font-size:13px;font-weight:600}
+    .dash-tabs span.on{background:#fff;color:#1c1917;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    .dash-pane{display:none}.dash-pane.on{display:block;animation:pop .35s ease both}
+    .dash-card b{display:block;margin-top:6px;font-size:17px}
+    .dash-card span{display:block;margin-top:3px;color:#78716c;font-size:12.5px}
+    .dash-table{border:1px solid #e7e2dc;border-radius:14px;background:#fff;overflow:hidden}
+    .dash-table div{display:grid;grid-template-columns:1.4fr 1fr auto;align-items:center;gap:12px;padding:13px 16px;border-top:1px solid #f0ece7;font-size:13.5px}
+    .dash-table div:first-child{border-top:0}
+    .dash-table em{font-style:normal;padding:6px 12px;border-radius:8px;background:#eef2ff;color:#4338ca;font-size:12px;font-weight:650}
+    .dash-table em.muted{background:#f5f5f4;color:#78716c}
+    .dash-btn{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:10px;background:#1c1917;color:#fff;font-size:13px;font-weight:650}
+    .site-glow{position:absolute;z-index:4;pointer-events:none;border-radius:14px;opacity:0;box-shadow:0 0 28px 4px rgba(255,120,61,.35);transition:left .6s cubic-bezier(.2,.7,.2,1),top .6s cubic-bezier(.2,.7,.2,1),width .6s cubic-bezier(.2,.7,.2,1),height .6s cubic-bezier(.2,.7,.2,1),opacity .4s ease}
     .site-glow.on{opacity:1}
     .site-glow:before,.site-glow:after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2.5px;background:conic-gradient(from var(--orbit),rgba(255,106,53,.12) 0deg,rgba(255,125,68,.32) 65deg,#ff934f 110deg,#ffe4b8 142deg,#ffb66e 160deg,rgba(255,111,57,.2) 205deg,rgba(255,111,57,.12) 245deg,#ffad77 290deg,rgba(255,120,61,.45) 315deg,rgba(255,106,53,.12) 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:orbit 3.6s linear infinite}
     .site-glow:before{inset:-5px;padding:7px;filter:blur(6px);opacity:.85}
-    .site-rose{position:absolute;right:20px;bottom:20px;z-index:5;--s:.66}
+    .dash-cursor{position:absolute;z-index:6;left:70%;top:70%;opacity:0;pointer-events:none;transition:left .9s cubic-bezier(.3,.6,.2,1),top .9s cubic-bezier(.3,.6,.2,1),opacity .3s ease;filter:drop-shadow(0 3px 6px rgba(0,0,0,.3))}
+    .dash-cursor.on{opacity:1}
+    .dash-cursor:after{content:"";position:absolute;left:-12px;top:-12px;width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,120,61,.9);opacity:0;transform:scale(.4)}
+    .dash-cursor.click:after{animation:clickring .5s ease-out}
+    @keyframes clickring{0%{opacity:1;transform:scale(.4)}100%{opacity:0;transform:scale(1.6)}}
+    .site-rose{position:absolute;right:20px;bottom:20px;z-index:5;--s:.62}
     .site-rose .rose-wrap{margin:0}
+    @media(max-width:1080px){
+      .capture{grid-template-columns:minmax(0,1fr)!important;max-width:520px!important;margin:0 auto}
+      .brain-box{height:300px}
+    }
     @media(max-width:860px){
-      .site{height:640px}
-      .site-nav span{display:none}
-      .site-main{max-width:none;padding:24px 18px}
-      .site h3{font-size:24px}
-      .site-copy{font-size:13.5px}
-      .site-cards{gap:8px;margin-top:18px}
-      .site-card{padding:10px;border-radius:12px}
-      .site-card b{font-size:13.5px}.site-card span{display:none}
+      .dash{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:700px}
+      .dash-side{flex-direction:row;flex-wrap:wrap;gap:4px;padding:10px;border-right:0;border-bottom:1px solid #e7e2dc}
+      .dash-brand{display:none}
+      .dash-nav{padding:8px 10px;font-size:12px}.dash-nav i{display:none}
+      .dash-main{padding:18px 16px;max-width:none}
+      .dash-main h4{font-size:18px;margin-bottom:12px}
+      .dash-stats b{font-size:16px}.dash-chart{height:90px}
+      .dash-tabs span{padding:7px 9px;font-size:11.5px}
       .site-rose{--s:.5;right:12px;bottom:12px}
     }
 
@@ -470,7 +524,7 @@
     }
     @media(prefers-reduced-motion:reduce){
       *,*:before,*:after{animation:none!important;transition:none!important}
-      .hero.intro .hero-text{opacity:1;transform:none;pointer-events:auto}.hero.intro .hero-stage{transform:none}body.intro-on .nav{opacity:1;transform:none;pointer-events:auto}
+      .hero.intro .hero-text{opacity:1;transform:none;pointer-events:auto}.hero.intro .hero-stage{transform:none}
       .js .reveal{opacity:1;transform:none}
     }
   </style>
@@ -589,13 +643,19 @@
           <h2 class="display" id="captureTitle">From hello <em>to a real lead.</em></h2>
           <p class="lead">Rose asks the follow-up questions you would, and fills in the request as she goes. You get the finished lead, not a transcript.</p>
         </div>
-        <div class="capture reveal" id="captureDemo">
+        <div class="capture-cam reveal" id="captureCam">
+        <div class="capture" id="captureDemo">
           <div class="glass-panel" aria-label="Example Rose chat">
             <div class="mini-head"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt=""><div><strong>Rose</strong><small>AI assistant</small></div><span class="live">Online</span></div>
             <div class="tabs" aria-hidden="true"><span>Chat</span><span>Voice</span></div>
             <div class="convo" id="convo" aria-live="off"></div>
           </div>
-          <div class="beam" aria-hidden="true"></div>
+          <div class="brain-col">
+            <p class="brain-label">Rose’s brain</p>
+            <div class="brain-box"><canvas class="workflow-graph" id="workflowGraph" aria-hidden="true"></canvas></div>
+            <div class="brain-card" id="brainCard" aria-live="polite"><span class="bc-mark"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt=""></span><div><p class="bc-top"><b class="bc-tool">Rose</b><span class="bc-state">Listening</span></p><p class="bc-title">Understanding the request</p></div></div>
+            <div class="brain-tools" id="brainTools"></div>
+          </div>
           <div class="ticket" aria-label="Quote request Rose is filling in">
             <div class="ticket-top"><p>Lead · #0142</p><span class="status" id="leadStatus">Listening</span></div>
             <h3>Quote request</h3>
@@ -603,8 +663,11 @@
             <div class="field" data-key="property"><span>Property</span><b></b></div>
             <div class="field" data-key="email"><span>Email</span><b></b></div>
             <div class="field" data-key="name"><span>Name</span><b></b></div>
+            <div class="field" data-key="crm"><span>CRM</span><b></b></div>
           </div>
         </div>
+        </div>
+        <p class="demo-note reveal">Illustrated example. The tools Rose connects to depend on your setup.</p>
         <div class="facts">
           <div class="fact reveal"><span class="orb-xs" aria-hidden="true"></span><div><h3>Trained on your website</h3><p>Rose reads your public pages, and you correct anything before she goes live.</p></div></div>
           <div class="fact reveal" style="--d:.08s"><span class="orb-xs" aria-hidden="true"></span><div><h3>Hands off to you</h3><p>If she can’t help, she takes the visitor’s details and passes the request along.</p></div></div>
@@ -618,23 +681,39 @@
         <div class="section-head center reveal">
           <p class="eyebrow">Rose’s glow</p>
           <h2 class="display" id="glowTitle">She shows them <em>where to go.</em></h2>
-          <p class="lead">Ask Rose where something is and she lights it up right on your page, so visitors find it in a second instead of hunting through menus.</p>
+          <p class="lead">Rose can guide your customers through your own dashboard or portal. Ask her how to do something and she lights up each step, one click at a time.</p>
         </div>
-        <div class="device glow-device reveal" id="glowDemo" aria-label="Rose highlighting parts of a website">
-          <div class="device-bar" aria-hidden="true"><i></i><i></i><i></i><span>northsideplumbing.ca</span></div>
-          <div class="site" aria-hidden="true">
-            <div class="site-nav"><b>Northside Plumbing</b><span>Services</span><span>Pricing</span><span>Reviews</span><span>Contact</span></div>
-            <div class="site-main">
-              <p class="site-kicker">Licensed · Insured · Local</p>
-              <h3>Fast, friendly plumbing for your home.</h3>
-              <p class="site-copy">Leaks, drains, water heaters and more. Real people, upfront prices.</p>
-              <div class="site-cards">
-                <div class="site-card" data-glow="hours"><small>Hours</small><b>Mon–Sat</b><span>8:00 am – 6:00 pm</span></div>
-                <div class="site-card" data-glow="price"><small>Service call</small><b>From $89</b><span>No surprise fees</span></div>
-                <div class="site-card cta" data-glow="book"><small>Need a hand?</small><b>Book a quote</b><span>Reply within a day</span></div>
+        <div class="device glow-device reveal" id="glowDemo" aria-label="Rose guiding someone through a business dashboard">
+          <div class="device-bar" aria-hidden="true"><i></i><i></i><i></i><span>portal.brightside.app/dashboard</span></div>
+          <div class="dash" aria-hidden="true">
+            <aside class="dash-side">
+              <b class="dash-brand"><span></span>Brightside</b>
+              <span class="dash-nav on" data-glow="nav-overview" data-view="overview"><i></i>Overview</span>
+              <span class="dash-nav" data-glow="nav-customers"><i></i>Customers</span>
+              <span class="dash-nav" data-glow="nav-billing" data-view="billing"><i></i>Billing</span>
+              <span class="dash-nav" data-glow="nav-settings" data-view="settings"><i></i>Settings</span>
+            </aside>
+            <div class="dash-main">
+              <div class="dash-view on" data-view="overview">
+                <h4>Good morning, Alex</h4>
+                <div class="dash-stats"><div><small>Revenue</small><b>$48,210</b></div><div><small>Open invoices</small><b>12</b></div><div><small>Customers</small><b>318</b></div></div>
+                <div class="dash-chart"><i style="--h:40%"></i><i style="--h:62%"></i><i style="--h:48%"></i><i style="--h:75%"></i><i style="--h:58%"></i><i style="--h:84%"></i><i style="--h:70%"></i><i style="--h:92%"></i></div>
+              </div>
+              <div class="dash-view" data-view="billing">
+                <h4>Billing</h4>
+                <div class="dash-tabs"><span class="on" data-tab="plan">Plan</span><span>Payment methods</span><span data-tab="invoices" data-glow="tab-invoices">Invoice history</span></div>
+                <div class="dash-pane on" data-pane="plan"><div class="dash-card"><small>Current plan</small><b>Growth · $79/month</b><span>Renews December 1</span></div></div>
+                <div class="dash-pane" data-pane="invoices"><div class="dash-table"><div><span>October 2026</span><span>$79.00</span><em data-glow="dl-oct">Download</em></div><div><span>September 2026</span><span>$79.00</span><em>Download</em></div><div><span>August 2026</span><span>$79.00</span><em>Download</em></div></div></div>
+              </div>
+              <div class="dash-view" data-view="settings">
+                <h4>Settings</h4>
+                <div class="dash-tabs"><span class="on" data-tab="profile">Profile</span><span data-tab="team" data-glow="tab-team">Team</span><span>Notifications</span></div>
+                <div class="dash-pane on" data-pane="profile"><div class="dash-card"><small>Business name</small><b>Brightside Studio</b><span>alex@brightside.app</span></div></div>
+                <div class="dash-pane" data-pane="team"><div class="dash-table"><div><span>Alex Morgan</span><span>Owner</span><em class="muted">You</em></div><div><span>Sam Lee</span><span>Admin</span><em class="muted">Active</em></div></div><span class="dash-btn" data-glow="invite">+ Invite member</span></div>
               </div>
             </div>
             <span class="site-glow" id="siteGlow"></span>
+            <span class="dash-cursor" id="dashCursor"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 2l15 11-6.5 1.2L16 21l-3 1.4-3.4-6.6L4 20z" fill="#fff" stroke="#1b1410" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
             <div class="site-rose" id="siteRose"></div>
           </div>
         </div>
@@ -774,6 +853,7 @@
     </div>
   </footer>
 
+  <script src="brain-3d.js?v=calm-1"></script>
   <script>
     const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -783,15 +863,15 @@
       if(reduced||scrollY>40){hero.classList.add('ready');return}
       let shown=false;
       const measure=()=>{
-        if(shown)return;
-        const shift=parseFloat(getComputedStyle(hero).getPropertyValue('--intro-y'))||0;
+        const shift=hero.classList.contains('intro')?parseFloat(getComputedStyle(hero).getPropertyValue('--intro-y'))||0:0;
         const top=stage.getBoundingClientRect().top+scrollY+shift,h=stage.offsetHeight;
         hero.style.setProperty('--intro-y',`${Math.max(0,top-(innerHeight-h)/2-(innerWidth>1080?0:20))}px`);
         pin.classList.toggle('pinned',innerWidth>1080&&hero.scrollHeight<=innerHeight+10);
       };
-      const show=()=>{if(shown)return;shown=true;hero.classList.remove('intro');document.body.classList.remove('intro-on');removeEventListener('scroll',onScroll);};
-      const onScroll=()=>{if(scrollY>8)show()};
-      hero.classList.add('intro');document.body.classList.add('intro-on');measure();
+      const show=()=>{if(shown)return;shown=true;hero.classList.remove('intro')};
+      const hide=()=>{if(!shown||hero.contains(document.activeElement))return;measure();shown=false;hero.classList.add('intro')};
+      const onScroll=()=>{scrollY>8?show():hide()};
+      hero.classList.add('intro');measure();
       requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add('ready')));
       addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',measure);
       hero.addEventListener('focusin',show);document.getElementById('nav').addEventListener('focusin',show);
@@ -916,79 +996,175 @@
       });
     });
 
-    // Glow showcase: a visitor asks where something is and Rose lights it up.
+    // Rose's brain: the anatomical brain from the original site, lit up by the demo's own events.
+    const brain=(()=>{
+      const canvas=document.getElementById('workflowGraph'),card=document.getElementById('brainCard'),toolsEl=document.getElementById('brainTools');
+      const TOOLS=[['Knowledge','icons/knowledge.svg'],['Price guide','icons/googlesheets.svg'],['HubSpot','icons/hubspot.svg'],['Gmail','icons/gmail.svg']];
+      const icons=Object.fromEntries([['Rose','https://wildroseautomations.ca/logos/wildrose.png'],...TOOLS]);
+      toolsEl.replaceChildren(...TOOLS.map(([name,src])=>{const d=document.createElement('div');d.className='bt';d.dataset.tool=name;const i=document.createElement('img');i.src=src;i.alt='';const s=document.createElement('span');s.textContent=name;d.append(i,s);return d}));
+      const setCard=(tool,state,title,working)=>{card.classList.toggle('working',!!working);card.querySelector('img').src=icons[tool]||icons.Rose;card.querySelector('.bc-tool').textContent=tool;card.querySelector('.bc-state').textContent=state;card.querySelector('.bc-title').textContent=title;
+        toolsEl.querySelectorAll('.bt').forEach(b=>{if(b.dataset.tool===tool){b.classList.toggle('hot',!!working);if(!working)b.classList.add('done')}})};
+      let model=null,ctx=canvas.getContext('2d'),W=0,H=0,clock=0,last=performance.now(),visible=false,adj=[],toolNode={},bulbs=new Map();
+      let active=0,routePath=[0],work={path:[],at:-1e9},speech={path:[],at:-1e9,seed:11},done=new Set(),base=document.createElement('canvas'),baseCtx=base.getContext('2d'),baseRev=-1;
+      const size=()=>{const r=canvas.getBoundingClientRect(),k=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*k);canvas.height=Math.round(H*k);ctx.setTransform(k,0,0,k,0,0);baseRev=-1};
+      const route=(a,b)=>{const n=model.nodes.length,dist=Array(n).fill(Infinity),prev=Array(n).fill(-1),seen=new Set();dist[a]=0;
+        for(let s=0;s<n;s++){let c=-1;for(let i=0;i<n;i++)if(!seen.has(i)&&(c<0||dist[i]<dist[c]))c=i;if(c<0||!isFinite(dist[c])||c===b)break;seen.add(c);for(const e of adj[c]){const d=dist[c]+e.d;if(d<dist[e.i]){dist[e.i]=d;prev[e.i]=c}}}
+        if(a===b||prev[b]<0)return [a];const path=[b];while(path[0]!==a)path.unshift(prev[path[0]]);return path};
+      function bolt(p,q,seed,alpha,scale){
+        if(!p||!q||alpha<=0)return;const dx=q.x-p.x,dy=q.y-p.y,len=Math.hypot(dx,dy);if(len<2)return;
+        const tick=Math.floor(clock/55),jit=Math.min(8*scale,len*.17),pts=[p];
+        for(let k=1;k<6;k++){const t=k/6,nz=Math.sin((seed*31+k*97+tick*37)*12.9898)*43758.5453,off=((nz-Math.floor(nz))*2-1)*jit*Math.sin(Math.PI*t);pts.push({x:p.x+dx*t-dy/len*off,y:p.y+dy*t+dx/len*off})}
+        pts.push(q);ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let k=1;k<pts.length;k++)ctx.lineTo(pts[k].x,pts[k].y);
+        ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle=`rgba(255,104,30,${alpha*.65})`;ctx.lineWidth=7*scale;ctx.shadowBlur=18*scale;ctx.shadowColor='#ff6a27';ctx.stroke();
+        ctx.shadowBlur=0;ctx.strokeStyle=`rgba(255,182,84,${alpha})`;ctx.lineWidth=2.7*scale;ctx.stroke();ctx.strokeStyle=`rgba(255,249,223,${Math.min(1,alpha*1.25)})`;ctx.lineWidth=1.05*scale;ctx.stroke();
+      }
+      const strength=(age,span)=>age>=0&&age<span?Math.min(1,age/120)*(1-age/span):0;
+      function discharge(P,path,power,age,seed,scale){
+        if(power<=0||path.length<2)return null;const travel=Math.min(1,age/620),pos=travel*path.length-1,tip=Math.min(path.length-2,Math.max(0,Math.floor(pos)));let head=null;
+        for(let n=0;n<path.length-1&&n<=tip;n++){const p=P[path[n]],q=P[path[n+1]],f=n===tip?Math.min(1,Math.max(.08,pos-n+1)):1,h={x:p.x+(q.x-p.x)*f,y:p.y+(q.y-p.y)*f};bolt(p,h,seed+n,power*(n===tip?1:.52),scale);if(n===tip)head=h}
+        for(let k=0;k<3;k++){const at=path[Math.max(0,tip-k)],br=adj[at];if(!br.length)continue;const b=br[(Math.floor(age/110)+seed+k*7)%br.length];if(b.i!==path[Math.max(0,tip-k)+1])bolt(P[at],P[b.i],seed+97+k,power*(.58-k*.11),scale)}
+        return head;
+      }
+      function draw(now){
+        const dt=Math.min(Math.max(now-last,0),100);last=now;clock+=dt;
+        if(!W)size();const scale=Math.min(W/430,1.12),P=RoseBrain3D.project(model,W,H,clock);
+        ctx.clearRect(0,0,W,H);RoseBrain3D.paint(ctx,model,P,W,H);
+        if(baseRev!==model.revision){base.width=canvas.width;base.height=canvas.height;baseCtx.setTransform(canvas.width/W,0,0,canvas.height/H,0,0);
+          for(const [a,b] of model.edges){const p=P[a],q=P[b],front=(p.z+q.z)/2>0;baseCtx.beginPath();baseCtx.moveTo(p.x,p.y);baseCtx.lineTo(q.x,q.y);baseCtx.strokeStyle=front?'#ffc59b25':'#efa16814';baseCtx.lineWidth=front?.65:.45;baseCtx.stroke()}
+          for(let i=0;i<model.nodes.length;i++){const p=P[i],name=bulbs.get(i),r=(name?2.7:i%11===0?1.2:.65)*scale*p.perspective;baseCtx.beginPath();baseCtx.arc(p.x,p.y,r,0,Math.PI*2);baseCtx.fillStyle=p.z>0?'#ef9d6345':'#ef9d6320';baseCtx.fill()}
+          baseRev=model.revision}
+        ctx.drawImage(base,0,0,W,H);
+        const wAge=clock-work.at,sAge=clock-speech.at,wp=strength(wAge,1450),sp=strength(sAge,1700);
+        const head=wp>sp?discharge(P,work.path,wp,wAge,71,scale):discharge(P,speech.path,sp,sAge,speech.seed,scale);
+        const onRoute=new Set(routePath);
+        for(let i=0;i<model.nodes.length;i++){const p=P[i],name=bulbs.get(i),hot=i===active&&active!==0,isDone=done.has(name);if(!hot&&!isDone&&!onRoute.has(i))continue;
+          const r=(hot?6:name?3.4:.9)*scale*p.perspective;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fillStyle=hot?'#fff0d0':isDone?'#ffd2a0':'#ffc99055';ctx.shadowBlur=hot?20:isDone?8:0;ctx.shadowColor='#ff9444';ctx.fill();ctx.shadowBlur=0}
+        if(head){ctx.beginPath();ctx.arc(head.x,head.y,3.5*scale,0,Math.PI*2);ctx.fillStyle='#fff7de';ctx.shadowBlur=20;ctx.shadowColor='#ff984c';ctx.fill();ctx.shadowBlur=0}
+        if(visible&&!reduced)requestAnimationFrame(draw);
+      }
+      const ready=(async()=>{
+        if(!window.RoseBrain3D)return false;
+        try{await RoseBrain3D.ready}catch{return false}
+        model=RoseBrain3D.createModel();
+        model.nodes.forEach(()=>adj.push([]));
+        for(const [a,b] of model.edges){const p=model.nodes[a],q=model.nodes[b],d=Math.hypot(p.x-q.x,p.y-q.y,p.z-q.z);adj[a].push({i:b,d});adj[b].push({i:a,d})}
+        TOOLS.forEach(([name],i)=>{toolNode[name]=1+(i*97+31)%(model.nodes.length-1);bulbs.set(toolNode[name],name)});
+        size();new ResizeObserver(size).observe(canvas);canvas.addEventListener('rose:brain-change',()=>{if(reduced)draw(performance.now())});
+        new IntersectionObserver(([e])=>{const was=visible;visible=e.isIntersecting;if(visible&&!was){last=performance.now();requestAnimationFrame(draw)}}).observe(canvas);
+        if(reduced)draw(performance.now());
+        return true;
+      })();
+      return {
+        speak(who){if(!model)return;const target=active||toolNode.Knowledge;let path=route(0,target);if(path.length<2)path=[0,adj[0][0].i];speech={path,at:clock,seed:who==='r'?37:11}},
+        work(tool,state,title){setCard(tool,state,title,true);if(!model)return;const to=toolNode[tool]??0;routePath=route(routePath.at(-1)??0,to);active=to;work={path:routePath,at:clock}},
+        finish(tool,state,title){setCard(tool,state,title,false);done.add(tool);if(model)work={path:routePath.slice(-3),at:clock}},
+        idle(title){setCard('Rose','Listening',title||'Understanding the request',false)},
+        reset(){done.clear();active=0;routePath=[0];toolsEl.querySelectorAll('.bt').forEach(b=>b.classList.remove('hot','done'));this.idle()}
+      };
+    })();
+
+    // Glow showcase: Rose guides someone through a business dashboard, one lit-up step at a time.
     (()=>{
-      const demo=document.getElementById('glowDemo'),site=demo.querySelector('.site'),ring=document.getElementById('siteGlow'),slot=document.getElementById('siteRose');
-      const steps=[
-        {q:'What are your hours?',a:'We’re open Monday to Saturday, 8 to 6. I’ve highlighted them for you.',target:'hours'},
-        {q:'How much is a service call?',a:'Service calls start at $89, with no surprise fees. Here it is.',target:'price'},
-        {q:'Where do I book a quote?',a:'Right here. Tap “Book a quote” and I’ll help you with the details.',target:'book'}
+      const demo=document.getElementById('glowDemo'),dash=demo.querySelector('.dash'),ring=document.getElementById('siteGlow'),cursor=document.getElementById('dashCursor'),slot=document.getElementById('siteRose');
+      const flows=[
+        {q:'How do I download last month’s invoice?',steps:[
+          {say:'Open Billing in the menu. I’ve lit it up for you.',glow:'nav-billing',click:()=>view('billing')},
+          {say:'Now choose Invoice history.',glow:'tab-invoices',click:()=>pane('billing','invoices')},
+          {say:'There it is. Hit Download next to October.',glow:'dl-oct'}]},
+        {q:'Where do I add a team member?',steps:[
+          {say:'Head to Settings. It’s glowing in the menu.',glow:'nav-settings',click:()=>view('settings')},
+          {say:'Pick the Team tab.',glow:'tab-team',click:()=>pane('settings','team')},
+          {say:'Tap Invite member and enter their email. That’s it!',glow:'invite'}]}
       ];
       const wait=ms=>new Promise(r=>setTimeout(r,ms));
-      const place=key=>{ring.dataset.k=key;const el=site.querySelector(`[data-glow="${key}"]`),s=site.getBoundingClientRect(),r=el.getBoundingClientRect(),pad=7;ring.style.left=`${r.left-s.left-pad}px`;ring.style.top=`${r.top-s.top-pad}px`;ring.style.width=`${r.width+pad*2}px`;ring.style.height=`${r.height+pad*2}px`;ring.style.borderRadius=`${parseFloat(getComputedStyle(el).borderTopLeftRadius)+pad}px`;ring.classList.add('on')};
+      function view(name){dash.querySelectorAll('.dash-nav').forEach(n=>n.classList.toggle('on',n.dataset.view===name));dash.querySelectorAll('.dash-view').forEach(v=>v.classList.toggle('on',v.dataset.view===name));dash.querySelectorAll(`.dash-view[data-view="${name}"] .dash-tabs span`).forEach((s,i)=>s.classList.toggle('on',i===0));dash.querySelectorAll(`.dash-view[data-view="${name}"] .dash-pane`).forEach((p,i)=>p.classList.toggle('on',i===0))}
+      function pane(v,name){const root=dash.querySelector(`.dash-view[data-view="${v}"]`);root.querySelectorAll('.dash-tabs span').forEach(s=>s.classList.toggle('on',s.dataset.tab===name));root.querySelectorAll('.dash-pane').forEach(p=>p.classList.toggle('on',p.dataset.pane===name))}
+      const rect=key=>{const el=dash.querySelector(`[data-glow="${key}"]`),d=dash.getBoundingClientRect(),r=el.getBoundingClientRect();return {el,x:r.left-d.left,y:r.top-d.top,w:r.width,h:r.height}};
+      const place=key=>{ring.dataset.k=key;const {el,x,y,w,h}=rect(key),pad=6;ring.style.left=`${x-pad}px`;ring.style.top=`${y-pad}px`;ring.style.width=`${w+pad*2}px`;ring.style.height=`${h+pad*2}px`;ring.style.borderRadius=`${(parseFloat(getComputedStyle(el).borderTopLeftRadius)||8)+pad}px`;ring.classList.add('on')};
+      const point=async key=>{const {x,y,w,h}=rect(key);cursor.classList.add('on');cursor.style.left=`${x+w*.6}px`;cursor.style.top=`${y+h*.55}px`;await wait(950);cursor.classList.remove('click');void cursor.offsetWidth;cursor.classList.add('click');await wait(260)};
       let copy=null,log=null,inView=false,running=false;
       roseReady.then(ok=>{if(!ok)return;copy=roseCopy('chat');const wrap=document.createElement('div');wrap.className='rose-wrap';wrap.append(copy);slot.append(wrap);log=copy.querySelector('.wr-chat-log');if(inView)play()});
       async function play(){
         if(running)return;running=true;
         while(inView){
-          if(log)roseReset(log);ring.classList.remove('on');await wait(600);
-          for(const s of steps){
+          for(const f of flows){
             if(!inView)break;
-            if(copy){await roseType(copy,s.q,()=>inView);roseMsg(log,'v',s.q);const typing=roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true);await wait(850);typing.remove();roseMsg(log,'r',s.a)}
-            await wait(250);place(s.target);await wait(2600);
+            view('overview');ring.classList.remove('on');cursor.classList.remove('on');if(log)roseReset(log);await wait(700);
+            if(copy){await roseType(copy,f.q,()=>inView);roseMsg(log,'v',f.q)}
+            for(const s of f.steps){
+              if(!inView)break;
+              if(copy){const typing=roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true);await wait(750);typing.remove();roseMsg(log,'r',s.say)}
+              await wait(200);place(s.glow);await wait(1100);
+              if(s.click){await point(s.glow);s.click();ring.classList.remove('on');await wait(450)}else await wait(1800);
+            }
+            cursor.classList.remove('on');await wait(1400);
           }
-          await wait(1200);
         }
         running=false;
       }
-      if(reduced){place('book');return}
+      if(reduced){place('nav-billing');return}
       new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play()},{threshold:.35}).observe(demo);
       addEventListener('resize',()=>{if(ring.classList.contains('on')&&ring.dataset.k)place(ring.dataset.k)});
     })();
 
-    // Lead capture demo: the chat fills in the quote request.
+    // Lead capture demo: typing zooms in, the brain works behind the scenes, the quote fills in.
     (()=>{
-      const convo=document.getElementById('convo'),status=document.getElementById('leadStatus'),demo=document.getElementById('captureDemo');
+      const convo=document.getElementById('convo'),status=document.getElementById('leadStatus'),demo=document.getElementById('captureDemo'),cam=document.getElementById('captureCam');
       const field=k=>demo.querySelector(`.field[data-key="${k}"]`);
+      const setField=(k,v)=>{const f=field(k);f.querySelector('b').textContent=v;f.classList.remove('fill');void f.offsetWidth;f.classList.add('fill')};
       const script=[
-        {who:'v',html:'Hi! Do you install <mark>heat pumps</mark>?',fill:['service','Heat pump install']},
-        {who:'r',text:'We do. Is it for a house or a business?'},
-        {who:'v',html:'A <mark>house, about 1,800 sq ft</mark>.',fill:['property','House · 1,800 sq ft']},
-        {who:'r',text:'Great. What’s the best email for your quote?'},
+        {who:'v',html:'Hi! Do you install <mark>heat pumps</mark>?',fill:['service','Heat pump install'],work:['Knowledge','Searching','Checking the services you offer','Found','Heat pump installs are offered']},
+        {who:'r',text:'We do! Is it for a house or a business?'},
+        {who:'v',html:'A <mark>house, about 1,800 sq ft</mark>.',fill:['property','House · 1,800 sq ft'],work:['Price guide','Looking up','Checking prices for a 1,800 sq ft home','Found','Estimate range added to the quote']},
+        {who:'r',text:'Great, that’s one of our standard installs. What’s the best email for your quote?'},
         {who:'v',html:'<mark>jordan@example.com</mark>',fill:['email','jordan@example.com']},
         {who:'r',text:'And who should the team ask for?'},
-        {who:'v',html:'<mark>Jordan Lee</mark>',fill:['name','Jordan Lee']},
-        {who:'r',text:'Thanks Jordan! I’ve sent this to the team. They’ll be in touch with your quote.',done:true}
+        {who:'v',html:'<mark>Jordan Lee</mark>',fill:['name','Jordan Lee'],work:['HubSpot','Creating','Creating the quote in your CRM','Created','New deal: Heat pump install · Jordan Lee'],after:['crm','HubSpot deal created']},
+        {who:'r',text:'Thanks Jordan! I’ve sent this to the team. They’ll be in touch with your quote.',done:true,work:['Gmail','Sending','Emailing the quote summary to you','Sent','Quote summary is in your inbox']}
       ];
       const wait=ms=>new Promise(r=>setTimeout(r,ms));
-      let running=false,inView=false;
-      let log=null,pending=null;
+      let running=false,inView=false,log=null,pending=null;
       roseReady.then(ok=>{if(ok)pending=roseCopy('chat')});
       const swap=()=>{if(!pending)return;const panel=demo.querySelector('.glass-panel');pending.setAttribute('aria-label','Example Rose chat');panel.replaceWith(pending);log=pending.querySelector('.wr-chat-log');pending=null};
       const bubble=(who,content,html)=>{
         if(log)return roseMsg(log,who,content,html);
         const b=document.createElement('div');b.className=`bub ${who}`;html?b.innerHTML=content:b.textContent=content;convo.append(b);return b};
       const typingBubble=()=>log?roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true):(()=>{const t=bubble('r','<i></i><i></i><i></i>',true);t.classList.add('typing');return t})();
-      const reset=()=>{swap();log?roseReset(log):convo.replaceChildren();demo.querySelectorAll('.field').forEach(f=>{f.classList.remove('fill');f.querySelector('b').textContent=''});status.textContent='Listening';status.classList.remove('sent')};
-      const fillAll=()=>{log?roseReset(log):convo.replaceChildren();script.forEach(s=>s.who==='v'?bubble('v',s.html,true):bubble('r',s.text));script.forEach(s=>{if(s.fill)field(s.fill[0]).querySelector('b').textContent=s.fill[1]});status.textContent='Sent to owner';status.classList.add('sent')};
+      const zoom=on=>{
+        if(reduced)return;
+        if(on){const compose=demo.querySelector('.rose-copy .wr-compose');if(!compose)return;const d=demo.getBoundingClientRect(),c=compose.getBoundingClientRect(),cm=cam.getBoundingClientRect();if(c.top<60||c.bottom>innerHeight-20)return;
+          demo.style.transformOrigin=`${c.left-d.left+c.width/2}px ${c.top-d.top+c.height/2}px`;
+          cam.style.setProperty('--vx',`${(c.left-cm.left+c.width/2)/cm.width*100}%`);cam.style.setProperty('--vy',`${(c.top-cm.top+c.height/2)/cm.height*100}%`);
+          demo.style.setProperty('--zoom',innerWidth<700?'1.45':'1.75');demo.classList.add('zoom');cam.classList.add('zooming')}
+        else{demo.classList.remove('zoom');cam.classList.remove('zooming')}
+      };
+      const reset=()=>{swap();log?roseReset(log):convo.replaceChildren();demo.querySelectorAll('.field').forEach(f=>{f.classList.remove('fill');f.querySelector('b').textContent=''});status.textContent='Listening';status.classList.remove('sent');brain.reset()};
+      const fillAll=()=>{log?roseReset(log):convo.replaceChildren();script.forEach(s=>s.who==='v'?bubble('v',s.html,true):bubble('r',s.text));script.forEach(s=>{if(s.fill)field(s.fill[0]).querySelector('b').textContent=s.fill[1];if(s.after)field(s.after[0]).querySelector('b').textContent=s.after[1]});status.textContent='Sent to owner';status.classList.add('sent');brain.finish('Gmail','Sent','Quote summary is in your inbox')};
+      async function runWork(w){brain.work(w[0],w[1],w[2]);await wait(1500);brain.finish(w[0],w[3],w[4])}
       async function play(){
         if(running)return;running=true;
         while(inView){
-          reset();await wait(700);
+          reset();await wait(900);
           for(const s of script){
             if(!inView)break;
-            if(s.who==='r'){const t=typingBubble();await wait(900);t.remove();bubble('r',s.text)}
-            else{await wait(350);if(log)await roseType(log.closest('.wr-ai'),s.html.replace(/<[^>]+>/g,''),()=>inView);bubble('v',s.html,true)}
-            if(s.fill){await wait(350);const f=field(s.fill[0]);f.querySelector('b').textContent=s.fill[1];f.classList.add('fill');status.textContent='Capturing'}
+            if(s.who==='r'){const t=typingBubble();await wait(850);t.remove();bubble('r',s.text);brain.speak('r')}
+            else{
+              await wait(300);
+              if(log){zoom(true);await wait(700);await roseType(log.closest('.wr-ai'),s.html.replace(/<[^>]+>/g,''),()=>inView);zoom(false)}
+              bubble('v',s.html,true);brain.speak('v');
+            }
+            if(s.fill){await wait(300);setField(s.fill[0],s.fill[1]);status.textContent='Capturing'}
+            if(s.work){await wait(s.who==='v'?500:300);await runWork(s.work)}
+            if(s.after){setField(s.after[0],s.after[1])}
             if(s.done){status.textContent='Sent to owner';status.classList.add('sent')}
-            await wait(s.who==='r'?1100:700);
+            await wait(s.who==='r'?900:500);
           }
-          await wait(3800);
+          brain.idle('All done. Waiting for the next visitor');await wait(4000);
         }
         running=false;
       }
-      if(reduced){roseReady.then(()=>{reset();fillAll()});fillAll();return}
-      new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play()},{threshold:.35}).observe(demo);
+      if(reduced){roseReady.then(()=>{swap();fillAll()});fillAll();return}
+      new IntersectionObserver(([e])=>{inView=e.isIntersecting;if(inView)play();else zoom(false)},{threshold:.3}).observe(cam);
     })();
 
     // Rose follows the visitor down the page, says something about each section and points at it.
@@ -996,8 +1172,8 @@
       const guide=document.getElementById('roseGuide'),bubble=document.getElementById('rgBubble'),text=document.getElementById('rgText'),orb=document.getElementById('rgOrb');
       const lines=[
         {id:'night',say:'This is me on the night shift. Watch the clock: I never clock out.',glow:'.device'},
-        {id:'capture',say:'Watch this. I’ll turn a simple chat into a real quote request.',glow:'.ticket'},
-        {id:'glow',say:'One of my favourite tricks: ask me where something is and I’ll light it up.'},
+        {id:'capture',say:'Watch my brain work: prices, your CRM, then the quote lands in your inbox.',glow:'.ticket'},
+        {id:'glow',say:'One of my favourite tricks: I can guide your customers through your dashboard and light up each step.'},
         {id:'look',say:'Go on, pick my colour. I’ll wear whatever suits your brand.',glow:'.swatch-row',pad:12},
         {id:'how-it-works',say:'You won’t have to install me yourself. The Wildrose team takes care of it.',glow:'.step:nth-child(3)'},
         {id:'pricing',say:'Both plans get all of me, chat and voice. Pro just comes with more voice minutes.',glow:'.plan.pro'},
