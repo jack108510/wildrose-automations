@@ -32,8 +32,8 @@
       --serif:"Instrument Serif",Georgia,serif;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
     a{color:inherit}
     img{max-width:100%;display:block}
     button,input{font:inherit}
@@ -99,6 +99,27 @@
     .hero-facts{display:grid;gap:8px;margin:18px 0 0 4px;padding:0;list-style:none;color:var(--muted);font-size:14px;text-align:left}
     .hero-facts li{display:flex;align-items:center;gap:10px}
     .hero-facts li:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
+    /* Hero intro: Rose alone first, the words arrive when the visitor scrolls */
+    .hero-text{transition:opacity .8s ease var(--hd,0s),transform .9s cubic-bezier(.2,.7,.2,1) var(--hd,0s)}
+    .hero.intro .hero-text{opacity:0;pointer-events:none}
+    .hero.intro .t-top{transform:translateY(34px)}
+    .hero.intro .t-left{transform:translateX(-48px)}
+    .hero.intro .t-right{transform:translateX(48px)}
+    .hero-stage{transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+    .hero.intro .hero-stage{transform:translateY(calc(var(--intro-y,0px) * -1)) scale(1.05)}
+    .hero-waves{transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+    .hero.intro .hero-waves{transform:translate(-50%,calc(-50% - var(--intro-y,0px)))}
+    .hero:not(.ready) .hero-waves{transition:none}
+    .hero:not(.ready) .hero-stage,.hero:not(.ready) .hero-text{transition:none}
+    .nav{transition:opacity .6s ease .15s,transform .6s ease .15s}
+    body.intro-on .nav{opacity:0;transform:translateY(-14px);pointer-events:none}
+    .scroll-cue{position:absolute;left:50%;bottom:-58px;width:26px;height:42px;margin-left:-13px;border:1.5px solid rgba(255,196,161,.5);border-radius:14px;opacity:0;transition:opacity .5s ease;pointer-events:none}
+    .scroll-cue i{position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--peach);animation:cue 1.6s ease-in-out infinite}
+    @keyframes cue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(12px);opacity:0}100%{opacity:0}}
+    .hero.intro .scroll-cue{opacity:1;transition-delay:.6s}
+    .hero-pin.pinned{height:calc(100vh + 38vh);height:calc(100svh + 38svh)}
+    .hero-pin.pinned .hero{position:sticky;top:0;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+
     /* Inline preview */
     .preview[hidden]{display:none}
     .preview{width:min(1200px,100% - 40px);margin:0 auto 40px;overflow:hidden;border:1px solid var(--line-2);border-radius:22px;background:#fbf7f1;box-shadow:0 40px 100px -30px rgba(0,0,0,.9);scroll-margin-top:96px}
@@ -449,6 +470,7 @@
     }
     @media(prefers-reduced-motion:reduce){
       *,*:before,*:after{animation:none!important;transition:none!important}
+      .hero.intro .hero-text{opacity:1;transform:none;pointer-events:auto}.hero.intro .hero-stage{transform:none}body.intro-on .nav{opacity:1;transform:none;pointer-events:auto}
       .js .reveal{opacity:1;transform:none}
     }
   </style>
@@ -472,13 +494,14 @@
   </header>
 
   <main id="top">
-    <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-pin" id="heroPin">
+    <section class="hero" id="hero" aria-labelledby="heroTitle">
       <div class="wrap">
-        <p class="eyebrow reveal">Introducing Rose</p>
-        <h1 class="display hero-title reveal" id="heroTitle" style="--d:.06s">Your website just got <em>a voice.</em></h1>
+        <p class="eyebrow hero-text t-top">Introducing Rose</p>
+        <h1 class="display hero-title hero-text t-top" id="heroTitle" style="--hd:.08s">Your website just got <em>a voice.</em></h1>
         <div class="hero-row">
           <canvas class="hero-waves" id="heroWaves" aria-hidden="true"></canvas>
-          <div class="hero-copy reveal" style="--d:.2s">
+          <div class="hero-copy hero-text t-left" style="--hd:.3s">
             <p class="lead"><strong>Rose is the AI front desk for your website.</strong> She answers questions, captures quote requests and sends the lead to you, while the visitor is still on the page.</p>
             <form class="try" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
               <label class="sr" for="tryRoseWebsite">Your website address</label>
@@ -490,10 +513,11 @@
               <p class="try-note" id="tryRoseNote">Free preview in seconds. Nothing is installed.</p>
             </form>
           </div>
-          <div class="hero-stage reveal" style="--d:.12s">
+          <div class="hero-stage" id="heroStage">
             <div id="liveRoseVoice" aria-label="Talk to Rose live"></div>
+            <span class="scroll-cue" aria-hidden="true"><i></i></span>
           </div>
-          <div class="hero-chips reveal" style="--d:.28s">
+          <div class="hero-chips hero-text t-right" style="--hd:.42s">
             <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg>Voice agent</span>
             <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>On your website</span>
             <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12h3l3-8 4 16 3-8h7"/></svg>Speaks naturally</span>
@@ -502,6 +526,7 @@
         </div>
       </div>
     </section>
+    </div>
 
     <section class="preview" id="roseSitePreview" aria-label="Rose website preview" hidden>
       <div class="preview-bar"><span class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></span><strong id="rosePreviewTitle">Building your Rose preview…</strong><button type="button" id="rosePreviewClose" aria-label="Close website preview">Close</button></div>
@@ -752,6 +777,27 @@
   <script>
     const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Hero intro: only Rose until the visitor scrolls, then the words arrive.
+    (()=>{
+      const hero=document.getElementById('hero'),pin=document.getElementById('heroPin'),stage=document.getElementById('heroStage');
+      if(reduced||scrollY>40){hero.classList.add('ready');return}
+      let shown=false;
+      const measure=()=>{
+        if(shown)return;
+        const shift=parseFloat(getComputedStyle(hero).getPropertyValue('--intro-y'))||0;
+        const top=stage.getBoundingClientRect().top+scrollY+shift,h=stage.offsetHeight;
+        hero.style.setProperty('--intro-y',`${Math.max(0,top-(innerHeight-h)/2-(innerWidth>1080?0:20))}px`);
+        pin.classList.toggle('pinned',innerWidth>1080&&hero.scrollHeight<=innerHeight+10);
+      };
+      const show=()=>{if(shown)return;shown=true;hero.classList.remove('intro');document.body.classList.remove('intro-on');removeEventListener('scroll',onScroll);};
+      const onScroll=()=>{if(scrollY>8)show()};
+      hero.classList.add('intro');document.body.classList.add('intro-on');measure();
+      requestAnimationFrame(()=>requestAnimationFrame(()=>hero.classList.add('ready')));
+      addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',measure);
+      hero.addEventListener('focusin',show);document.getElementById('nav').addEventListener('focusin',show);
+      new ResizeObserver(measure).observe(stage);
+    })();
+
     // Nav background and scroll reveals.
     (()=>{
       const nav=document.getElementById('nav');
@@ -822,9 +868,14 @@
       copy.classList.add('rose-copy');copy.setAttribute('aria-hidden','true');copy.inert=true;
       copy.querySelectorAll('.wr-tab').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
       copy.querySelectorAll('.wr-view').forEach(v=>v.classList.toggle('active',v.dataset.view===view));
-      copy.querySelector('.wr-chat-log')?.replaceChildren();
+      const log=copy.querySelector('.wr-chat-log');if(log)roseReset(log);
       const compose=copy.querySelector('.wr-compose');if(compose)compose.style.display=view==='chat'?'flex':'none';
       return copy;
+    }
+    let ROSE_GREETING='';
+    function roseReset(log){
+      if(!ROSE_GREETING)ROSE_GREETING=document.querySelector('#liveRoseVoice .wr-chat-log .wr-msg.bot')?.textContent.trim()||'Hi, I’m Rose. How can I help?';
+      log.replaceChildren();roseMsg(log,'r',ROSE_GREETING);
     }
     function roseMsg(log,who,content,html){
       let bubble;
@@ -880,7 +931,7 @@
       async function play(){
         if(running)return;running=true;
         while(inView){
-          if(log)log.replaceChildren();ring.classList.remove('on');await wait(600);
+          if(log)roseReset(log);ring.classList.remove('on');await wait(600);
           for(const s of steps){
             if(!inView)break;
             if(copy){await roseType(copy,s.q,()=>inView);roseMsg(log,'v',s.q);const typing=roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true);await wait(850);typing.remove();roseMsg(log,'r',s.a)}
@@ -918,8 +969,8 @@
         if(log)return roseMsg(log,who,content,html);
         const b=document.createElement('div');b.className=`bub ${who}`;html?b.innerHTML=content:b.textContent=content;convo.append(b);return b};
       const typingBubble=()=>log?roseMsg(log,'r','<span class="wr-typing"><i></i><i></i><i></i></span>',true):(()=>{const t=bubble('r','<i></i><i></i><i></i>',true);t.classList.add('typing');return t})();
-      const reset=()=>{swap();(log||convo).replaceChildren();demo.querySelectorAll('.field').forEach(f=>{f.classList.remove('fill');f.querySelector('b').textContent=''});status.textContent='Listening';status.classList.remove('sent')};
-      const fillAll=()=>{(log||convo).replaceChildren();script.forEach(s=>s.who==='v'?bubble('v',s.html,true):bubble('r',s.text));script.forEach(s=>{if(s.fill)field(s.fill[0]).querySelector('b').textContent=s.fill[1]});status.textContent='Sent to owner';status.classList.add('sent')};
+      const reset=()=>{swap();log?roseReset(log):convo.replaceChildren();demo.querySelectorAll('.field').forEach(f=>{f.classList.remove('fill');f.querySelector('b').textContent=''});status.textContent='Listening';status.classList.remove('sent')};
+      const fillAll=()=>{log?roseReset(log):convo.replaceChildren();script.forEach(s=>s.who==='v'?bubble('v',s.html,true):bubble('r',s.text));script.forEach(s=>{if(s.fill)field(s.fill[0]).querySelector('b').textContent=s.fill[1]});status.textContent='Sent to owner';status.classList.add('sent')};
       async function play(){
         if(running)return;running=true;
         while(inView){
