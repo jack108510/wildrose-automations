@@ -52,6 +52,9 @@
     .wr-fab:hover{transform:translateY(-4px) scale(1.035);box-shadow:0 34px 86px rgba(34,20,14,.30),0 0 0 1px rgba(255,255,255,.70),0 0 36px color-mix(in srgb,var(--accent) 18%,transparent),inset 0 1px 0 rgba(255,255,255,.98)}
     .wr-dot{width:56px;height:56px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.26));box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 12px 30px rgba(36,20,12,.15);overflow:hidden;position:relative}.wr-dot img{width:92%;height:92%;object-fit:contain;filter:drop-shadow(0 5px 12px rgba(0,0,0,.14))}
     .wr-panel{position:absolute;right:0;bottom:0;width:min(382px,calc(100vw - 24px));height:min(578px,calc(100vh - 24px));display:none;grid-template-rows:auto auto 1fr auto;overflow:hidden;border-radius:38px;background:linear-gradient(145deg,#fffefd,color-mix(in srgb,var(--accent) 7%,white) 46%,color-mix(in srgb,var(--accent) 16%,white));border:1px solid rgba(255,255,255,.75);box-shadow:0 34px 110px rgba(29,18,12,.28),0 0 0 1px rgba(255,255,255,.28),inset 0 1px 0 rgba(255,255,255,.92),inset 0 -1px 0 rgba(255,255,255,.20);backdrop-filter:blur(44px) saturate(1.8);-webkit-backdrop-filter:blur(44px) saturate(1.8)}
+    .wr-ai[data-rose-glass] .wr-panel{background:linear-gradient(155deg,rgba(237,230,224,var(--rose-glass-top,.87)),rgba(194,177,164,var(--rose-glass-bottom,.72)));backdrop-filter:blur(var(--rose-glass-blur,44px)) saturate(1.05);-webkit-backdrop-filter:blur(var(--rose-glass-blur,44px)) saturate(1.05)}
+    .wr-ai[data-rose-glass] .wr-panel:before{opacity:var(--rose-glass-sheen,1)}
+    @media(prefers-reduced-transparency:reduce){.wr-ai[data-rose-glass] .wr-panel{background:#ede6e0;backdrop-filter:none;-webkit-backdrop-filter:none}.wr-ai[data-rose-glass] .wr-panel:before{display:none}}
     .wr-panel:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 0%,rgba(255,255,255,.88),transparent 30%),radial-gradient(circle at 92% 10%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 34%),linear-gradient(160deg,rgba(255,255,255,.38),transparent 45%);pointer-events:none}.wr-panel:after{content:"";position:absolute;inset:1px;border-radius:37px;border:1px solid rgba(255,255,255,.40);pointer-events:none}.wr-panel.open{display:grid;animation:wrGlassIn .28s cubic-bezier(.18,.9,.2,1)}@keyframes wrGlassIn{from{opacity:0;transform:translateY(18px) scale(.972);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
     .wr-head,.wr-tabs,.wr-compose{position:relative;z-index:1}.wr-head{padding:17px 17px 12px}.wr-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.wr-brand{display:flex;align-items:center;gap:11px}.wr-mark{width:44px;height:44px;border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.68),rgba(255,255,255,.24));display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 12px 28px rgba(36,20,12,.13);overflow:hidden}.wr-mark img{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 4px 9px rgba(0,0,0,.12))}.wr-title h3{margin:0;font-size:17px;font-weight:850;letter-spacing:-.035em}.wr-title small{display:block;margin-top:1px;color:var(--muted);font-size:12px;font-weight:650}.wr-close{width:36px;height:36px;border:1px solid rgba(255,255,255,.46);border-radius:14px;background:rgba(255,255,255,.28);color:rgba(24,18,15,.72);font-size:21px;line-height:1;cursor:pointer;backdrop-filter:blur(16px);transition:.16s ease}.wr-close:hover{background:rgba(255,255,255,.48);color:#160f0c;transform:scale(1.04)}
     .wr-tabs{margin:0 17px 12px;padding:4px;border-radius:18px;background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.42);display:grid;grid-template-columns:1fr 1fr;gap:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.50)}.wr-tab{height:38px;border:0;border-radius:14px;background:transparent;color:rgba(24,18,15,.54);font-weight:780;cursor:pointer;transition:.18s ease}.wr-tab.active{background:rgba(255,255,255,.62);color:#18120f;box-shadow:0 10px 24px rgba(28,18,12,.10),inset 0 1px 0 rgba(255,255,255,.82)}
@@ -170,7 +173,19 @@
     if (a.avatarUrl) root.querySelectorAll(".wr-mark img,.wr-dot img,.wr-avatar img").forEach(img => img.src = a.avatarUrl);
     root.style.setProperty("--accent", cfg.accent);
     root.style.setProperty("--accent-soft", useEmbedAccent ? "color-mix(in srgb,var(--accent) 32%,white)" : (a.brandAccent || a.brandPrimary || cfg.accent));
-    root.style.setProperty("--rose-bg", a.backgroundColor || "#fffaf3");
+    root.style.setProperty("--rose-bg", a.backgroundColor || "#fffaf3");    const glassOpacity = typeof a.glassOpacity === "number" && Number.isFinite(a.glassOpacity) ? Math.max(0, Math.min(1, a.glassOpacity)) : null;
+    if (glassOpacity !== null) {
+      root.dataset.roseGlass = "true";
+      root.style.setProperty("--rose-glass-top", Math.min(1, glassOpacity * 1.0875));
+      root.style.setProperty("--rose-glass-bottom", glassOpacity * 0.9);
+      root.style.setProperty("--rose-glass-blur", `${4 + 50 * glassOpacity}px`);
+      root.style.setProperty("--rose-glass-sheen", glassOpacity);
+    } else {
+      delete root.dataset.roseGlass;
+      for (const key of ["top", "bottom", "blur", "sheen"]) root.style.removeProperty(`--rose-glass-${key}`);
+    }
+
+
     root.style.setProperty("--rose-text", a.textColor || "#18120f");
     root.style.setProperty("--rose-bubble", a.bubbleColor || "rgba(255,255,255,.54)");
     root.style.setProperty("--rose-button", useEmbedAccent ? cfg.accent : (a.buttonColor || a.brandPrimary || cfg.accent));
