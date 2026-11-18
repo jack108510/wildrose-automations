@@ -83,11 +83,19 @@
     .hero:before{content:"";position:absolute;left:50%;top:55%;width:1200px;height:950px;transform:translate(-50%,-50%);z-index:-2;background:radial-gradient(ellipse 50% 45% at 50% 50%,rgba(255,87,34,.26),transparent 70%);pointer-events:none}
     .hero-stack{position:relative;width:100%;display:flex;flex-direction:column;align-items:center}
     .hero-eyebrow{margin:0 0 20px}
-    .hero-core{position:relative;display:grid;place-items:center;width:100%}
-    .hero-title{position:absolute;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);z-index:0;display:flex;flex-direction:column;justify-content:center;margin:0;padding-bottom:2%;font-family:var(--serif);font-weight:400;text-transform:uppercase;color:var(--cream);font-size:clamp(84px,12.4vw,214px);line-height:.84;letter-spacing:-.01em;pointer-events:none;white-space:nowrap;-webkit-mask-image:radial-gradient(ellipse 250px 330px at 50% 48%,transparent 62%,#000 100%);mask-image:radial-gradient(ellipse 250px 330px at 50% 48%,transparent 62%,#000 100%)}
-    .hero-title span{display:block}
-    .hero-title em{font-style:normal;color:var(--orange)}
-    .hero-rose{position:relative;z-index:1;display:grid;place-items:center}
+    .hero-core{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:clamp(28px,3.4vw,56px);width:100%}
+    .hw{display:block;margin:0;font-family:var(--serif);font-weight:400;text-transform:uppercase;color:var(--cream);font-size:clamp(72px,8.4vw,132px);line-height:.86;letter-spacing:-.005em;white-space:nowrap;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+    .hw-left{text-align:right;justify-self:end}
+    .hw-right{text-align:left;justify-self:start}
+    .hw em{font-style:normal;color:var(--orange)}
+    .hw i{display:block;font-style:normal;overflow:hidden;padding:.04em 0}
+    .hw i>b{display:inline-block;font-weight:inherit}
+    .js .hw i>b{animation:rise 1s cubic-bezier(.2,.75,.15,1) both;animation-delay:var(--w)}
+    @keyframes rise{from{transform:translateY(105%);filter:blur(6px);opacity:0}to{transform:none;filter:none;opacity:1}}
+    .hero-rose{position:relative;z-index:1;display:grid;place-items:center;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+    .js .hero-rose{animation:arrive 1.2s cubic-bezier(.2,.75,.15,1) .55s both}
+    @keyframes arrive{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+    .hero-rose:after{content:"";position:absolute;left:50%;bottom:-38px;width:520px;height:70px;margin-left:-260px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,110,50,.45),rgba(255,87,34,.12) 45%,transparent 70%);filter:blur(10px);pointer-events:none;z-index:-1}
     .hero-rose:before{content:"";position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.32),transparent 62%);filter:blur(24px);pointer-events:none;z-index:-2}
     .hero-waves{position:absolute;left:50%;top:50%;z-index:-1;width:100vw;height:640px;transform:translate(-50%,-50%);pointer-events:none}
     .hero-under{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:22px;width:min(620px,100%)}
@@ -460,13 +468,21 @@
       .foot{grid-template-columns:1fr 1fr 1fr}
       .foot>div:first-child{grid-column:1/-1}
     }
+    @media(max-width:1180px){
+      .hero-core{display:flex;flex-direction:column;align-items:center;gap:0}
+      .hw{text-align:center!important;font-size:clamp(54px,9.6vw,110px)}
+      .hw i{display:inline-block}
+      .hw i+i{margin-left:.24em}
+      .hw-left{margin-bottom:26px}
+      .hw-right{margin:30px 0 4px}
+    }
     @media(max-width:860px){
       .hero{min-height:0;padding:96px 0 56px}
-      .hero-title{position:static;display:block;padding:0;width:auto;-webkit-mask-image:none;mask-image:none;margin:0 0 26px;white-space:normal;font-size:clamp(50px,14vw,96px);line-height:.88}
-      .hero-title span{display:inline}
       .hero-core{display:flex;flex-direction:column;align-items:center}
       .hero-rose{width:100%}
       .hero-rose:before{width:380px;height:380px}
+      .hero-rose:after{width:320px;margin-left:-160px}
+      .hw{font-size:clamp(44px,13vw,80px);white-space:normal}
       .hero-waves{height:520px}
       .try-bar{flex-wrap:wrap;padding:6px;border-radius:24px}
       .try-bar svg{display:none}
@@ -576,11 +592,13 @@
       <div class="wrap hero-stack">
         <p class="eyebrow hero-eyebrow reveal">Introducing Rose · The AI front desk for your website</p>
         <div class="hero-core">
-          <h1 class="hero-title reveal" id="heroTitle"><span>Your website just</span> <span>got <em>a voice.</em></span></h1>
-          <div class="hero-rose">
+          <h1 class="sr" id="heroTitle">Your website just got a voice.</h1>
+          <p class="hw hw-left" aria-hidden="true"><i><b style="--w:.05s">Your</b></i><i><b style="--w:.17s">website</b></i></p>
+          <div class="hero-rose" id="heroRose">
             <canvas class="hero-waves" id="heroWaves" aria-hidden="true"></canvas>
             <div id="liveRoseVoice" aria-label="Talk to Rose live"></div>
           </div>
+          <p class="hw hw-right" aria-hidden="true"><i><b style="--w:.29s">Just got</b></i><i><b style="--w:.41s"><em>a voice.</em></b></i></p>
         </div>
         <div class="hero-under reveal" style="--d:.3s">
           <form class="try" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
@@ -877,6 +895,15 @@
     const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     // All scroll work runs once per frame, not once per scroll event.
     const onScrollFrame=(()=>{const fns=[];let queued=false;const run=()=>{queued=false;fns.forEach(f=>f())};addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(run)}},{passive:true});addEventListener('resize',()=>{if(!queued){queued=true;requestAnimationFrame(run)}});return f=>{fns.push(f);f()}})();
+
+    // Hero depth: Rose and the headline drift against each other with the pointer.
+    (()=>{
+      const hero=document.getElementById('hero'),rose=document.getElementById('heroRose'),words=hero.querySelectorAll('.hw');
+      if(reduced||!matchMedia('(pointer:fine)').matches)return;
+      let raf=0,tx=0,ty=0;
+      hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();tx=(e.clientX-r.left)/r.width-.5;ty=(e.clientY-r.top)/r.height-.5;if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(innerWidth<=1180)return;rose.style.transform=`translate(${tx*-14}px,${ty*-10}px)`;words.forEach(w=>w.style.transform=`translate(${tx*22}px,${ty*12}px)`)})});
+      hero.addEventListener('pointerleave',()=>{rose.style.transform='';words.forEach(w=>w.style.transform='')});
+    })();
 
     // Nav background and scroll reveals.
     (()=>{
