@@ -32,8 +32,8 @@
       --serif:"Instrument Serif",Georgia,serif;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
     a{color:inherit}
     img{max-width:100%;display:block}
     button,input{font:inherit}
@@ -69,44 +69,36 @@
     .nav-actions{display:flex;gap:8px}
     .nav-actions .btn{min-height:42px;padding:0 18px;font-size:14px}
 
-    /* Hero */
-    .hero{position:relative;padding:150px 0 90px;overflow:hidden;isolation:isolate}
-    .hero:before{content:"";position:absolute;inset:-20% -10% auto;height:900px;z-index:-2;background:radial-gradient(ellipse 50% 45% at 72% 42%,rgba(255,87,34,.22),transparent 70%),radial-gradient(ellipse 40% 40% at 15% 10%,rgba(255,138,76,.08),transparent 70%)}
-    .hero-waves{position:absolute;inset:0;z-index:-1;width:100%;height:100%;pointer-events:none;mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 72%,transparent 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 72%,transparent 100%)}
-    .hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center}
-    .pill{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border:1px solid var(--line-2);border-radius:999px;background:rgba(255,255,255,.03);color:var(--muted);font-size:13px;font-weight:550;text-decoration:none}
-    .pill b{padding:3px 10px;border-radius:999px;background:rgba(255,87,34,.16);color:var(--peach);font-size:12px;font-weight:700}
-    .hero h1{margin:26px 0 0;font-size:clamp(52px,7.4vw,104px);line-height:.95;letter-spacing:-.055em;font-weight:680}
-    .hero h1 .serif{display:block;font-size:1.1em;line-height:.95;padding-bottom:.06em}
-    .hero .lead{font-size:clamp(18px,1.7vw,21px);max-width:540px;margin-top:26px}
-    .try{margin-top:36px;max-width:540px}
-    .try-bar{display:flex;align-items:center;gap:6px;padding:6px 6px 6px 20px;border:1px solid var(--line-2);border-radius:999px;background:rgba(18,14,12,.8);box-shadow:0 20px 60px -25px rgba(255,87,34,.45),inset 0 1px 0 rgba(255,255,255,.05);transition:border-color .2s ease,box-shadow .2s ease;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-    .try-bar:focus-within{border-color:rgba(255,138,76,.6);box-shadow:0 0 0 4px rgba(255,87,34,.14),0 20px 60px -25px rgba(255,87,34,.6)}
+    /* Hero: the brand ad, live */
+    .hero{position:relative;padding:118px 0 100px;overflow:hidden;isolation:isolate;text-align:center}
+    .hero:before{content:"";position:absolute;left:50%;top:52%;width:1100px;height:900px;transform:translate(-50%,-30%);z-index:-2;background:radial-gradient(ellipse 50% 45% at 50% 50%,rgba(255,87,34,.24),transparent 70%);pointer-events:none}
+    .hero-title{margin:18px auto 0;max-width:1240px;font-size:clamp(58px,8.2vw,128px);line-height:.86}
+    .hero-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"copy stage chips";align-items:center;gap:52px;margin-top:26px}
+    .hero-waves{position:absolute;left:50%;top:50%;z-index:-1;width:100vw;height:640px;transform:translate(-50%,-50%);pointer-events:none}
+    .hero-copy{grid-area:copy;text-align:left;max-width:360px;justify-self:end}
+    .hero-copy .lead{margin:0;font-size:18px;color:rgba(246,239,232,.78)}
+    .hero-copy .lead strong{color:var(--text);font-weight:600}
+    .try{margin-top:28px}
+    .try-bar{display:flex;align-items:center;gap:10px;padding:0 18px;border:1px solid var(--line-2);border-radius:16px;background:rgba(14,11,10,.82);transition:border-color .2s ease,box-shadow .2s ease;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    .try-bar:focus-within{border-color:rgba(255,138,76,.65);box-shadow:0 0 0 4px rgba(255,87,34,.14)}
     .try-bar svg{flex:none;color:var(--faint)}
-    .try-bar input{flex:1;min-width:0;height:48px;border:0;outline:0;background:transparent;color:var(--text);font-size:16px}
+    .try-bar input{flex:1;min-width:0;height:54px;border:0;outline:0;background:transparent;color:var(--text);font-size:16px}
     .try-bar input::placeholder{color:var(--faint)}
-    .try-bar .btn{min-height:48px}
-    .try-note{margin:12px 0 0 20px;color:var(--faint);font-size:13px}
-    .hero-meta{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:34px;color:var(--muted);font-size:14px}
-    .hero-meta span{display:inline-flex;align-items:center;gap:8px}
-    .hero-meta svg{color:var(--orange-2)}
-    .hero-stage{position:relative;display:grid;place-items:center;min-height:620px}
-    .hero-stage:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.32),transparent 62%);filter:blur(20px)}
-    .stage-ring{position:absolute;width:590px;height:590px;border-radius:50%;border:1px solid rgba(255,196,161,.1)}
-    .stage-ring:nth-child(2){width:720px;height:720px;border-color:rgba(255,196,161,.06)}
-    #liveRoseVoice{position:relative;z-index:2;display:flex;justify-content:center;width:min(430px,100%);min-height:560px}
+    .try-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:10px;min-height:56px;border:0;border-radius:999px;background:linear-gradient(180deg,#fa7135,#ee511b);color:#fff;font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;box-shadow:0 16px 40px -12px rgba(255,87,34,.75),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .2s ease,box-shadow .2s ease}
+    .try-cta:hover{transform:translateY(-1px);box-shadow:0 22px 50px -12px rgba(255,87,34,.9),inset 0 1px 0 rgba(255,255,255,.3)}
+    .try-note{margin:12px 0 0;color:var(--faint);font-size:13px;text-align:center}
+    .hero-stage{grid-area:stage;position:relative;display:grid;place-items:center;min-width:0}
+    .hero-stage:before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(255,87,34,.36),transparent 62%);filter:blur(24px);pointer-events:none}
+    #liveRoseVoice{position:relative;z-index:2;display:flex;justify-content:center;width:430px;max-width:100%;min-height:560px}
     #liveRoseVoice .wr-ai.inline{position:relative;inset:auto;margin:auto}
     #liveRoseVoice .wr-ai.inline .wr-panel{position:relative;right:auto;bottom:auto}
     #liveRoseVoice .wr-fab,#liveRoseVoice .wr-close{display:none!important}
     #liveRoseVoice main{padding:0}
-    .float-card{position:absolute;z-index:3;display:flex;align-items:center;gap:12px;padding:12px 16px 12px 12px;border:1px solid var(--line-2);border-radius:18px;background:rgba(20,15,13,.78);box-shadow:0 24px 50px -20px rgba(0,0,0,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-size:13px;line-height:1.35;animation:float 7s ease-in-out infinite}
-    .float-card strong{display:block;font-size:13.5px;font-weight:650}
-    .float-card small{color:var(--muted);font-size:12px}
-    .float-card .ico{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:11px;background:rgba(255,87,34,.15);color:var(--orange-2)}
-    .float-card.one{left:-46px;top:3%}
-    .float-card.two{right:-18px;bottom:18%;animation-delay:-3.5s}
-    @keyframes float{50%{transform:translateY(-10px)}}
-
+    .hero-chips{grid-area:chips;display:grid;gap:12px;justify-items:start;justify-self:start}
+    .chip{display:inline-flex;align-items:center;gap:12px;padding:13px 20px;border:1px solid rgba(255,108,60,.6);border-radius:10px;background:rgba(5,5,5,.66);color:var(--orange-2);font-size:13px;font-weight:650;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+    .hero-facts{display:grid;gap:8px;margin:18px 0 0 4px;padding:0;list-style:none;color:var(--muted);font-size:14px;text-align:left}
+    .hero-facts li{display:flex;align-items:center;gap:10px}
+    .hero-facts li:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--orange)}
     /* Inline preview */
     .preview[hidden]{display:none}
     .preview{width:min(1200px,100% - 40px);margin:0 auto 40px;overflow:hidden;border:1px solid var(--line-2);border-radius:22px;background:#fbf7f1;box-shadow:0 40px 100px -30px rgba(0,0,0,.9);scroll-margin-top:96px}
@@ -115,14 +107,6 @@
     .preview-bar strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
     .preview-bar button{margin-left:auto;flex:none;padding:6px 14px;border:1px solid var(--line-2);border-radius:999px;background:transparent;color:var(--text);font-size:12px;cursor:pointer}
     .preview iframe{display:block;width:100%;height:min(1050px,88vh);min-height:610px;border:0;background:#fbf7f1}
-
-    /* Voice band: the ad, as a section */
-    .voice{position:relative;padding:150px 0 160px;overflow:hidden;isolation:isolate;text-align:center;border-top:1px solid var(--line)}
-    .voice canvas{position:absolute;inset:0;z-index:-1;width:100%;height:100%}
-    .voice:after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 45% 55% at 50% 50%,rgba(5,5,5,.86),transparent 75%);pointer-events:none}
-    .voice .display{margin:20px auto 0;font-size:clamp(58px,10.5vw,168px);line-height:.86;text-shadow:0 0 60px rgba(0,0,0,.6)}
-    .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:48px}
-    .chip{display:inline-flex;align-items:center;gap:10px;padding:11px 18px;border:1px solid rgba(255,108,60,.55);border-radius:10px;background:rgba(5,5,5,.6);color:var(--orange-2);font-size:12.5px;font-weight:650;letter-spacing:.16em;text-transform:uppercase;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 
     /* Night shift */
     .night{position:relative;border-top:1px solid var(--line)}
@@ -234,7 +218,7 @@
     .swatch[aria-pressed="true"]{border-color:var(--c);box-shadow:inset 0 0 0 3px var(--bg)}
     .look-note{margin:18px 0 0;color:var(--faint);font-size:13.5px}
     .look-stage{position:relative;display:grid;place-items:center;min-height:520px}
-    .look-stage:before{content:"";position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,var(--tint-glow,rgba(255,87,34,.35)),transparent 62%);filter:blur(10px);transition:background .6s ease}
+    .look-stage:before{content:"";position:absolute;width:min(460px,100vw);height:460px;border-radius:50%;background:radial-gradient(circle,var(--tint-glow,rgba(255,87,34,.35)),transparent 62%);filter:blur(10px);transition:background .6s ease}
     .look-card{position:relative;width:340px;padding:18px 18px 26px;border:1px solid rgba(255,242,232,.75);border-radius:34px;background:var(--glass);color:var(--ink);text-align:center;box-shadow:0 40px 90px -30px rgba(0,0,0,.9),inset 0 1px 1px rgba(255,255,255,.8)}
     .look-card .mini-head{text-align:left}
     .big-orb{position:relative;width:170px;height:170px;margin:26px auto 20px;border-radius:50%;overflow:hidden;background:#c96c49 url('assets/rose-voice-reference.jpg') 50.93% 43.69%/482% auto;border:1px solid rgba(255,225,205,.85);box-shadow:0 18px 40px -10px rgba(153,60,26,.5)}
@@ -314,12 +298,13 @@
 
     /* Responsive */
     @media(max-width:1080px){
-      .hero-grid{grid-template-columns:1fr;gap:40px;text-align:center}
-      .hero .lead,.try{margin-inline:auto}
-      .hero-meta{justify-content:center}
-      .try-note{margin-left:0}
-      .hero-copy{display:flex;flex-direction:column;align-items:center}
-      .float-card.one{left:0}.float-card.two{right:0}
+      .hero-row{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "copy" "chips";gap:36px;margin-top:28px}
+      .hero-stage{grid-template-columns:minmax(0,1fr);width:100%}
+      .hero-waves{top:280px}
+      #liveRoseVoice{width:min(430px,100%);justify-self:center}
+      .hero-copy{justify-self:center;text-align:center;max-width:480px}
+      .hero-chips{justify-self:center;justify-items:center;grid-template-columns:repeat(3,auto);gap:10px}
+      .hero-facts{display:none}
       .night-grid{grid-template-columns:1fr;gap:28px}
       .js .night.live .clock-big{margin-top:18px}
       .js .night.live .ticks{display:none}
@@ -342,25 +327,18 @@
       .facts{gap:28px;max-width:520px}
     }
     @media(max-width:600px){
+      .hero{padding:112px 0 72px}
+      .hero-title{font-size:clamp(50px,14.5vw,76px)}
+      .hero-stage:before{width:360px;height:360px}
+      .hero-waves{height:520px}
+      #liveRoseVoice{min-height:540px}
+      .hero-chips{grid-template-columns:1fr;justify-items:center}
+      .chip{font-size:11.5px;padding:11px 16px}
       .wrap{width:calc(100% - 32px)}
       .nav{inset:10px 0 auto}
       .nav-inner{width:calc(100% - 20px);padding:8px 8px 8px 14px;gap:10px}
       .nav-actions .btn-ghost{display:none}
       .brand{font-size:16px}
-      .hero{padding:120px 0 64px}
-      .hero h1{font-size:clamp(46px,13vw,64px)}
-      .try-bar{flex-wrap:wrap;padding:6px;border-radius:22px}
-      .try-bar svg{display:none}
-      .try-bar input{padding:0 14px}
-      .try-bar .btn{width:100%}
-      .try-note{margin-top:10px}
-      .hero-stage{min-height:0;padding:20px 0}
-      .hero-stage:before{width:340px;height:340px}
-      .stage-ring{width:380px;height:380px}.stage-ring:nth-child(2){display:none}
-      .float-card{display:none}
-      #liveRoseVoice{min-height:540px}
-      .voice{padding:100px 0 110px}
-      .chip{font-size:11px;padding:9px 13px;letter-spacing:.12em}
       .night .display{font-size:44px}
       .clock-big b{font-size:64px}
       .js .night.live .night-copy .lead{display:none}
@@ -406,32 +384,32 @@
 
   <main id="top">
     <section class="hero" aria-labelledby="heroTitle">
-      <canvas class="hero-waves" id="heroWaves" aria-hidden="true"></canvas>
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <a class="pill reveal" href="#night"><b>Chat + voice</b>Meet Rose, your AI front desk <span aria-hidden="true">→</span></a>
-          <h1 id="heroTitle" class="reveal" style="--d:.08s">Give your website <span class="serif grad">a front desk.</span></h1>
-          <p class="lead reveal" style="--d:.16s">Rose answers questions, captures quote requests and sends the lead to you, while the visitor is still on the page.</p>
-          <form class="try reveal" style="--d:.24s" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
-            <label class="sr" for="tryRoseWebsite">Your website address</label>
-            <div class="try-bar">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
-              <input id="tryRoseWebsite" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com" required maxlength="2048" aria-describedby="tryRoseNote">
-              <button class="btn btn-primary" type="submit">See Rose on my site <span class="arrow" aria-hidden="true">→</span></button>
-            </div>
-            <p class="try-note" id="tryRoseNote">Free preview in seconds. Nothing is installed.</p>
-          </form>
-          <div class="hero-meta reveal" style="--d:.32s">
-            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Set up for you</span>
-            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No code needed</span>
-            <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>From CA$39/month</span>
+      <div class="wrap">
+        <p class="eyebrow reveal">Introducing Rose</p>
+        <h1 class="display hero-title reveal" id="heroTitle" style="--d:.06s">Your website just got <em>a voice.</em></h1>
+        <div class="hero-row">
+          <canvas class="hero-waves" id="heroWaves" aria-hidden="true"></canvas>
+          <div class="hero-copy reveal" style="--d:.2s">
+            <p class="lead"><strong>Rose is the AI front desk for your website.</strong> She answers questions, captures quote requests and sends the lead to you, while the visitor is still on the page.</p>
+            <form class="try" id="try-rose" action="https://wildroseautomations.ca/ai-tool-mockup-final.html" method="get">
+              <label class="sr" for="tryRoseWebsite">Your website address</label>
+              <div class="try-bar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
+                <input id="tryRoseWebsite" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com" required maxlength="2048" aria-describedby="tryRoseNote">
+              </div>
+              <button class="try-cta" type="submit">See Rose on my site <span aria-hidden="true">→</span></button>
+              <p class="try-note" id="tryRoseNote">Free preview in seconds. Nothing is installed.</p>
+            </form>
           </div>
-        </div>
-        <div class="hero-stage reveal" style="--d:.2s">
-          <span class="stage-ring" aria-hidden="true"></span><span class="stage-ring" aria-hidden="true"></span>
-          <div class="float-card one" aria-hidden="true"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><strong>“Could I get a quote?”</strong><small>Visitor · just now</small></div></div>
-          <div class="float-card two" aria-hidden="true"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></span><div><strong>New quote request</strong><small>Sent to you by Rose</small></div></div>
-          <div id="liveRoseVoice" aria-label="Talk to Rose live"></div>
+          <div class="hero-stage reveal" style="--d:.12s">
+            <div id="liveRoseVoice" aria-label="Talk to Rose live"></div>
+          </div>
+          <div class="hero-chips reveal" style="--d:.28s">
+            <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg>Voice agent</span>
+            <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>On your website</span>
+            <span class="chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12h3l3-8 4 16 3-8h7"/></svg>Speaks naturally</span>
+            <ul class="hero-facts"><li>Set up for you, no code</li><li>Chat and voice included</li><li>From CA$39/month</li></ul>
+          </div>
         </div>
       </div>
     </section>
@@ -439,19 +417,6 @@
     <section class="preview" id="roseSitePreview" aria-label="Rose website preview" hidden>
       <div class="preview-bar"><span class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></span><strong id="rosePreviewTitle">Building your Rose preview…</strong><button type="button" id="rosePreviewClose" aria-label="Close website preview">Close</button></div>
       <iframe id="rosePreviewFrame" title="Rose preview for your website" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    </section>
-
-    <section class="voice" aria-labelledby="voiceTitle">
-      <canvas id="voiceWaves" aria-hidden="true"></canvas>
-      <div class="wrap">
-        <p class="eyebrow reveal">Introducing Rose</p>
-        <h2 class="display reveal" id="voiceTitle" style="--d:.08s">Your website<br>just got<br>a <em>voice.</em></h2>
-        <div class="chips reveal" style="--d:.16s">
-          <span class="chip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg>Voice agent</span>
-          <span class="chip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>On your website</span>
-          <span class="chip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12h3l3-8 4 16 3-8h7"/></svg>Speaks naturally</span>
-        </div>
-      </div>
     </section>
 
     <section class="night" id="night" aria-labelledby="nightTitle">
@@ -698,8 +663,7 @@
         new IntersectionObserver(([e])=>{const was=visible;visible=e.isIntersecting;if(visible&&!was&&!reduced){last=performance.now();requestAnimationFrame(draw)}}).observe(canvas);
         requestAnimationFrame(draw);
       }
-      waves(document.getElementById('heroWaves'),{lines:28,amp:.11,center:.56,fadeLeft:true,narrowCenter:.7});
-      waves(document.getElementById('voiceWaves'),{lines:34,amp:.2,center:.5,speed:.9});
+      waves(document.getElementById('heroWaves'),{lines:34,amp:.22,center:.5,speed:.9});
       waves(document.getElementById('finalWaves'),{lines:24,amp:.16,center:.5,speed:.7});
     })();
 
