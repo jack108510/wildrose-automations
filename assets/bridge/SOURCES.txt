@@ -1,0 +1,7 @@
+claude.svg: https://unpkg.com/@lobehub/icons-static-svg@latest/icons/claude-color.svg
+openai.svg: https://unpkg.com/@lobehub/icons-static-svg@latest/icons/openai.svg
+cloudflare.svg: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/cloudflare.svg
+lobe-icons-LICENSE: https://raw.githubusercontent.com/lobehub/lobe-icons/master/LICENSE
+simple-icons-LICENSE: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/LICENSE.md
+Brand marks identify the services in an illustrative demo and do not imply endorsement.
+Alo Yoga is represented by text rather than a downloaded logo asset.
