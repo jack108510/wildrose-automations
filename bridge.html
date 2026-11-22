@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wildrose Bridge — AI to WebMCP Pilot</title>
+<meta name="description" content="Wildrose Bridge connects Claude and ChatGPT to native tools published by websites through WebMCP. Apply for pilot access.">
+<link rel="canonical" href="https://wildroseautomations.ca/bridge">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/*
+  === TOKEN SYSTEM: warm editorial meets technical product ===
+  Layout: full-width bands, constrained content wrapper (1120px)
+  Color: wildrose warm palette — ink on off-white, coral accent, dark nav
+  Type: Instrument Serif italic for display moments, Inter everywhere else
+*/
+:root {
+  --bg: #faf8f5;
+  --surface: #fff;
+  --surface2: #f4f1ec;
+  --ink: #1a1a1a;
+  --muted: #6b7280;
+  --subtle: #9ca3af;
+  --line: #e8e4dd;
+  --dark: #141414;
+  --nav: #000;
+  --hl: #ff5722;
+  --hl-h: #e64a19;
+  --hl-dim: rgba(255,87,34,.10);
+  --green: #16a34a;
+  --green-dim: rgba(22,163,74,.10);
+  --amber: #b45309;
+  --amber-dim: rgba(180,83,9,.10);
+  --term-bg: #0d1117;
+  --term-ink: #e6edf3;
+  --term-green: #3fb950;
+  --term-blue: #79c0ff;
+  --term-orange: #ffa657;
+  --term-muted: #8b949e;
+  --term-comment: #6e7681;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f0f0d;
+    --surface: #1b1b18;
+    --surface2: #252521;
+    --ink: #f0ede8;
+    --muted: #9a9890;
+    --subtle: #6b6966;
+    --line: #2e2e2a;
+    --dark: #090908;
+    --hl: #ff6b3d;
+    --hl-h: #ff5722;
+    --hl-dim: rgba(255,107,61,.14);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,.12);
+    --amber: #d97706;
+    --amber-dim: rgba(217,119,6,.12);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f0f0d;
+  --surface: #1b1b18;
+  --surface2: #252521;
+  --ink: #f0ede8;
+  --muted: #9a9890;
+  --subtle: #6b6966;
+  --line: #2e2e2a;
+  --dark: #090908;
+  --hl: #ff6b3d;
+  --hl-h: #ff5722;
+  --hl-dim: rgba(255,107,61,.14);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,.12);
+  --amber: #d97706;
+  --amber-dim: rgba(217,119,6,.12);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.6;
+}
+a { text-decoration: none; color: inherit; }
+::selection { background: var(--hl); color: #fff; }
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+
+/* === NAV === */
+nav {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0; right: 0;
+  z-index: 100;
+  background: var(--nav);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 101;
+  background: var(--nav);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 14px;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -.3px;
+  flex-shrink: 0;
+}
+.brand-mark {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,.08);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hl);
+  font-weight: 900; font-size: 16px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  flex-shrink: 0;
+}
+.nav-prod {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  padding: 2px 8px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 100px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,.6);
+  transition: color .15s;
+}
+.nav-links a:hover { color: #fff; }
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 20px;
+  background: var(--hl);
+  color: #fff !important;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s, transform .15s;
+}
+.nav-cta:hover { background: var(--hl-h) !important; transform: translateY(-1px); }
+.nav-mobile { display: none; }
+
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+  .nav-mobile {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    background: var(--hl);
+    color: #fff;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+/* === HERO === */
+.hero {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 60px + 88px);
+  padding-bottom: 88px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+.pilot-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.pilot-badge .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: blink 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+h1 {
+  font-size: clamp(38px, 5.5vw, 64px);
+  font-weight: 800;
+  letter-spacing: -2.5px;
+  line-height: 1.03;
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+h1 em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--hl);
+}
+.hero-lead {
+  font-size: 18px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 32px;
+  max-width: 490px;
+}
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.btn-pri {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 13px 26px;
+  background: var(--hl);
+  color: #fff;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+.btn-pri:hover { background: var(--hl-h); transform: translateY(-1px); }
+.btn-sec {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 13px 22px;
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: border-color .15s;
+}
+.btn-sec:hover { border-color: var(--muted); }
+.hero-sep-note {
+  font-size: 13px;
+  color: var(--subtle);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* connector card */
+.conn-card {
+  background: var(--dark);
+  border-radius: 20px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.conn-card::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(255,87,34,.16), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cc-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 16px;
+}
+.cc-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.cc-node {
+  flex: 1;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-width: 0;
+}
+.cc-node-t {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 3px;
+}
+.cc-node-n {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cc-arr { color: rgba(255,87,34,.8); font-size: 16px; flex-shrink: 0; }
+.cc-site {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 9px;
+  padding: 10px 13px;
+  margin-bottom: 7px;
+}
+.cc-site:last-child { margin-bottom: 0; }
+.cc-site-n { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.8); }
+.cc-ok {
+  font-size: 11px;
+  font-weight: 600;
+  color: #3fb950;
+  background: rgba(63,185,80,.12);
+  padding: 2px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.cc-cfg {
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+  white-space: nowrap;
+}
+
+@media (max-width: 800px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .conn-card { order: -1; }
+}
+
+/* === SECTION BASE === */
+section { padding-block: 80px; }
+.band-surface { background: var(--surface); }
+.band-bg { background: var(--bg); }
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--hl);
+  margin-bottom: 12px;
+}
+h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  text-wrap: balance;
+}
+h2 em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+.sec-lead {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 540px;
+  line-height: 1.65;
+  margin-bottom: 48px;
+}
+
+/* === HOW IT WORKS === */
+.how-flow {
+  display: grid;
+  grid-template-columns: 1fr 36px 1fr 36px 1fr;
+  gap: 0;
+  align-items: start;
+  margin-top: 40px;
+}
+.flow-node { text-align: center; padding-inline: 12px; }
+.flow-icon {
+  width: 52px; height: 52px;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+  font-size: 20px;
+}
+.flow-hl .flow-icon {
+  background: var(--hl-dim);
+  border-color: rgba(255,87,34,.35);
+}
+.flow-node-t { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.flow-node-d { font-size: 13px; color: var(--muted); line-height: 1.5; max-width: 180px; margin: 0 auto; }
+.flow-arr {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 18px;
+  color: var(--line);
+  font-size: 20px;
+  font-weight: 300;
+}
+
+@media (max-width: 680px) {
+  .how-flow { grid-template-columns: 1fr; max-width: 280px; margin: 40px auto 0; }
+  .flow-arr { display: none; }
+  .flow-node { padding-block: 16px; border-bottom: 1px solid var(--line); padding-inline: 0; }
+  .flow-node:last-child { border-bottom: none; }
+}
+
+/* === DEMO === */
+.demo-wrap {
+  background: var(--term-bg);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.07);
+}
+.demo-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 16px;
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.demo-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.demo-bar-title {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,.3);
+  font-family: ui-monospace, 'SF Mono', monospace;
+  margin-left: 10px;
+}
+.rec-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,100,100,.75);
+  background: rgba(255,100,100,.1);
+  padding: 3px 10px;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+.rec-badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,100,100,.75);
+  flex-shrink: 0;
+}
+.demo-body {
+  padding: 24px;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--term-ink);
+  overflow-x: auto;
+  min-width: 0;
+}
+.dseg { margin-bottom: 22px; }
+.dseg:last-child { margin-bottom: 0; }
+.dseg-h {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--term-comment);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dseg-h::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.05); }
+.dline { display: flex; gap: 10px; align-items: flex-start; }
+.dprompt { color: var(--term-green); flex-shrink: 0; }
+.djson {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 7px;
+  padding: 12px 14px;
+  white-space: pre;
+}
+.tc { color: var(--term-comment); }
+.tg { color: var(--term-green); }
+.tb { color: var(--term-blue); }
+.to { color: var(--term-orange); }
+.ti { color: var(--term-ink); }
+
+/* === SITES TABLE === */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  margin-top: 40px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+thead { background: var(--surface2); }
+th {
+  padding: 11px 18px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+td {
+  padding: 14px 18px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+.site-n { font-weight: 600; display: block; margin-bottom: 2px; }
+.site-u { font-size: 12px; color: var(--subtle); }
+.chip-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-family: ui-monospace, monospace;
+  white-space: nowrap;
+}
+.cv { background: var(--green-dim); color: var(--green); border: 1px solid rgba(22,163,74,.2); }
+.cd { background: var(--surface2); color: var(--muted); border: 1px solid var(--line); }
+.ca { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(180,83,9,.2); }
+.sbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.sv { background: var(--green-dim); color: var(--green); }
+.sa { background: var(--amber-dim); color: var(--amber); }
+.sites-legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--muted);
+  align-items: center;
+}
+.leg { display: flex; align-items: center; gap: 6px; }
+
+/* === APPLY === */
+.apply-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 60px;
+  align-items: start;
+}
+.apply-item {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.a-icon {
+  width: 38px; height: 38px;
+  background: var(--hl-dim);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hl);
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.a-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.a-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 32px;
+}
+.frow { margin-bottom: 18px; }
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+label .req { color: var(--hl); margin-left: 2px; }
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  transition: border-color .15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--hl);
+}
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
+.ferr {
+  font-size: 13px;
+  color: #dc2626;
+  margin-bottom: 10px;
+  display: none;
+}
+.form-submit {
+  width: 100%;
+  padding: 13px;
+  background: var(--hl);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+  margin-top: 4px;
+}
+.form-submit:disabled { opacity: .55; cursor: not-allowed; }
+fieldset { border: 0; min-width: 0; }
+.form-submit:hover { background: var(--hl-h); transform: translateY(-1px); }
+.form-fn {
+  font-size: 12px;
+  color: var(--subtle);
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 48px 20px;
+}
+.form-success.show { display: block; }
+.suc-icon {
+  width: 52px; height: 52px;
+  background: var(--green-dim);
+  border: 1px solid rgba(22,163,74,.2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  color: var(--green);
+  font-size: 22px;
+}
+.suc-t { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.suc-d { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+@media (max-width: 800px) {
+  .apply-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* === SETUP === */
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+.tab-btn {
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .15s, border-color .15s;
+}
+.tab-btn.on { color: var(--ink); border-bottom-color: var(--hl); }
+.tab-panel { display: none; }
+.tab-panel.on { display: block; }
+
+.url-box {
+  display: flex;
+  align-items: stretch;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.url-lbl {
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface2);
+  border-right: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.url-val {
+  flex: 1;
+  padding: 10px 14px;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  color: var(--ink);
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.copy-btn {
+  padding: 10px 16px;
+  background: var(--surface);
+  border: none;
+  border-left: 1px solid var(--line);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: var(--surface2); color: var(--ink); }
+.copy-btn.ok { color: var(--green); }
+
+.setup-steps {
+  list-style: none;
+  counter-reset: st;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 540px;
+}
+.setup-step {
+  display: flex;
+  gap: 14px;
+  counter-increment: st;
+}
+.snum {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--hl-dim);
+  color: var(--hl);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.snum::after { content: counter(st); }
+.sbody { padding-top: 3px; min-width: 0; }
+.st-t { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.st-d { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+.setup-note {
+  margin-top: 28px;
+  padding: 14px 18px;
+  background: var(--amber-dim);
+  border: 1px solid rgba(180,83,9,.2);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--amber);
+  line-height: 1.55;
+  max-width: 540px;
+}
+.setup-note strong { color: var(--amber); }
+
+.faqs {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+  max-width: 640px;
+}
+.faqs h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+.faq-item {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q .faq-arr { font-size: 14px; color: var(--muted); flex-shrink: 0; transition: transform .2s; }
+details[open] .faq-q .faq-arr { transform: rotate(45deg); }
+.faq-a {
+  padding: 0 18px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* === TRUST === */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+.trust-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+}
+.tc-icon {
+  width: 38px; height: 38px;
+  background: var(--hl-dim);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hl);
+  font-size: 17px;
+  margin-bottom: 12px;
+}
+.tc-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+.tc-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+.limits-box {
+  margin-top: 32px;
+  padding: 18px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 13px;
+}
+.limits-box ul { margin-top: 10px; padding-left: 18px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+
+.trust-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+.tlink {
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color .15s;
+}
+.tlink:hover { color: var(--ink); }
+
+/* === FOOTER === */
+footer {
+  background: #000;
+  padding-block: 32px;
+  color: rgba(255,255,255,.4);
+}
+.footer-in {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.foot-brand { display: flex; align-items: center; gap: 9px; }
+.foot-links { display: flex; gap: 22px; flex-wrap: wrap; }
+.foot-links a { font-size: 13px; color: rgba(255,255,255,.35); transition: color .15s; }
+.foot-links a:hover { color: rgba(255,255,255,.75); }
+.foot-copy { font-size: 12px; color: rgba(255,255,255,.2); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#product" class="brand">
+      <div class="brand-mark">W</div>
+      <span>Wildrose</span>
+      <span class="nav-prod">Bridge</span>
+    </a>
+    <div class="nav-links">
+      <a href="#demo">Demo</a>
+      <a href="#sites">Sites</a>
+      <a href="#setup">Setup</a>
+      <a href="https://wildroseautomations.ca" target="_blank" rel="noopener">Rose ↗</a>
+      <a href="#apply" class="nav-cta">Apply for pilot</a>
+    </div>
+    <a href="#apply" class="nav-mobile">Apply</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="band-bg hero" id="product">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="pilot-badge"><span class="dot"></span>Pilot — limited access</div>
+        <h1>Your AI,<br><em>on every website.</em></h1>
+        <p class="hero-lead">
+          Wildrose Bridge connects Claude and ChatGPT to native tools published by websites through WebMCP.
+          Ask your assistant to search a catalog, read a page, or take an approved action — without leaving your chat.
+        </p>
+        <div class="hero-cta">
+          <a href="#apply" class="btn-pri">Apply for pilot access</a>
+          <a href="#demo" class="btn-sec">See a demo ↓</a>
+        </div>
+        <p class="hero-sep-note">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 5.5v4M6.5 4.5h.01" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          A separate product from Rose. Bridge requires individual approval.
+        </p>
+      </div>
+      <div class="conn-card" aria-hidden="true">
+        <div class="cc-label">Your session</div>
+        <div class="cc-flow">
+          <div class="cc-node">
+            <div class="cc-node-t">Your assistant</div>
+            <div class="cc-node-n">Claude / ChatGPT</div>
+          </div>
+          <div class="cc-arr">→</div>
+          <div class="cc-node">
+            <div class="cc-node-t">Bridge</div>
+            <div class="cc-node-n">wildroseautomations.ca</div>
+          </div>
+        </div>
+        <div class="cc-label">Connected sites</div>
+        <div class="cc-site">
+          <span class="cc-site-n">Cloudflare</span>
+          <span class="cc-ok">✓ tested</span>
+        </div>
+        <div class="cc-site">
+          <span class="cc-site-n">Alo Yoga</span>
+          <span class="cc-ok">✓ tested</span>
+        </div>
+        <div class="cc-site">
+          <span class="cc-site-n">Cycles Dupuis</span>
+          <span class="cc-cfg">config required</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="band-surface">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>The bridge between<br><em>conversation and action</em></h2>
+    <p class="sec-lead">
+      WebMCP is a browser standard that lets websites publish tools directly to AI assistants.
+      Wildrose Bridge runs a secure browser session on your behalf, discovers those tools in real time, and executes approved ones.
+    </p>
+    <div class="how-flow" role="list">
+      <div class="flow-node" role="listitem">
+        <div class="flow-icon" aria-hidden="true">💬</div>
+        <div class="flow-node-t">You ask</div>
+        <div class="flow-node-d">Your assistant receives a task that involves a website</div>
+      </div>
+      <div class="flow-arr" aria-hidden="true">→</div>
+      <div class="flow-node flow-hl" role="listitem">
+        <div class="flow-icon" aria-hidden="true">🔗</div>
+        <div class="flow-node-t">Bridge connects</div>
+        <div class="flow-node-d">Discovers the site's current tools, validates inputs, and handles authentication</div>
+      </div>
+      <div class="flow-arr" aria-hidden="true">→</div>
+      <div class="flow-node" role="listitem">
+        <div class="flow-icon" aria-hidden="true">✓</div>
+        <div class="flow-node-t">Action completes</div>
+        <div class="flow-node-d">The site's native tool runs in your isolated session and returns structured results</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="band-bg" id="demo">
+  <div class="wrap">
+    <div class="eyebrow">Demonstration</div>
+    <h2>What a real request looks like</h2>
+    <p class="sec-lead">
+      This is a recording of an actual bridge operation from 21 November 2026.
+      The catalog search ran against Alo Yoga's live WebMCP tools.
+    </p>
+    <div class="demo-wrap" role="region" aria-label="Recorded demonstration">
+      <div class="demo-bar">
+        <span class="demo-dot" style="background:#ff5f57"></span>
+        <span class="demo-dot" style="background:#febc2e"></span>
+        <span class="demo-dot" style="background:#28c840"></span>
+        <span class="demo-bar-title">wildrose-bridge · tool call trace</span>
+        <span class="rec-badge">Recorded</span>
+      </div>
+      <div class="demo-body">
+        <div class="dseg">
+          <div class="dseg-h">User prompt</div>
+          <div class="dline">
+            <span class="dprompt">❯</span>
+            <span class="ti">"Search Alo Yoga for black yoga pants"</span>
+          </div>
+        </div>
+        <div class="dseg">
+          <div class="dseg-h">Bridge — tool discovery</div>
+          <div class="djson"><span class="tc"># GET https://www.aloyoga.com</span>
+<span class="tg">discovered</span> <span class="to">12 tools</span> <span class="tc">via document.modelContext.getTools()</span>
+  <span class="tb">search_catalog</span>      <span class="tc"># read   · no approval required</span>
+  <span class="tb">browse_collection</span>   <span class="tc"># read   · no approval required</span>
+  <span class="tb">get_product</span>         <span class="tc"># read   · no approval required</span>
+  <span class="tb">add_to_cart</span>         <span class="tc"># write  · approval required</span>
+  <span class="tb">checkout_start</span>      <span class="tc"># write  · disabled in this pilot</span>
+  <span class="tc">  … 7 more tools</span></div>
+        </div>
+        <div class="dseg">
+          <div class="dseg-h">Tool call</div>
+          <div class="djson"><span class="tg">call</span> <span class="tb">search_catalog</span> {
+  <span class="to">"query"</span>: <span class="tg">"black yoga pants"</span>,
+  <span class="to">"limit"</span>: <span class="ti">3</span>
+}</div>
+        </div>
+        <div class="dseg">
+          <div class="dseg-h">Site response · 2.3 s</div>
+          <div class="djson">{
+  <span class="to">"results"</span>: [
+    {
+      <span class="to">"title"</span>: <span class="tg">"High-Waist Airlift Legging"</span>,
+      <span class="to">"price"</span>: <span class="tg">"$128"</span>,
+      <span class="to">"color"</span>: <span class="tg">"Black"</span>
+    },
+    {
+      <span class="to">"title"</span>: <span class="tg">"7/8 High-Waist Airlift Legging"</span>,
+      <span class="to">"price"</span>: <span class="tg">"$118"</span>,
+      <span class="to">"color"</span>: <span class="tg">"Black"</span>
+    }
+  ],
+  <span class="to">"total"</span>: <span class="ti">2</span>
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORTED SITES -->
+<section class="band-surface" id="sites">
+  <div class="wrap">
+    <div class="eyebrow">Supported sites</div>
+    <h2>Known WebMCP capabilities</h2>
+    <p class="sec-lead">
+      These sites were checked on 21 November 2026.
+      Tested means a tool was successfully executed in the bridge's browser session.
+      Detected means the tool was registered but not run.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Website</th>
+            <th>Available tools</th>
+            <th>Status</th>
+            <th>Last checked</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="site-n">Cloudflare</span>
+              <span class="site-u">cloudflare.com</span>
+            </td>
+            <td>
+              <div class="chip-row">
+                <span class="chip cv">read_page</span>
+                <span class="chip cd">+1 detected</span>
+              </div>
+            </td>
+            <td><span class="sbadge sv">✓ Tested</span></td>
+            <td style="color:var(--muted);font-size:13px">Nov 21, 2026</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="site-n">Alo Yoga</span>
+              <span class="site-u">aloyoga.com</span>
+            </td>
+            <td>
+              <div class="chip-row">
+                <span class="chip cv">search_catalog</span>
+                <span class="chip cv">browse_collection</span>
+                <span class="chip cd">+10 detected</span>
+              </div>
+            </td>
+            <td><span class="sbadge sv">✓ Tested</span></td>
+            <td style="color:var(--muted);font-size:13px">Nov 21, 2026</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="site-n">Cycles Dupuis</span>
+              <span class="site-u">cyclesdupuis.com</span>
+            </td>
+            <td>
+              <div class="chip-row">
+                <span class="chip ca">availability</span>
+                <span class="chip cd">+3 detected</span>
+              </div>
+            </td>
+            <td><span class="sbadge sa">⚙ Config required</span></td>
+            <td style="color:var(--muted);font-size:13px">Nov 21, 2026</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sites-legend">
+      <div class="leg"><span class="chip cv" style="pointer-events:none">tool name</span> Executed &amp; verified</div>
+      <div class="leg"><span class="chip cd" style="pointer-events:none">+n detected</span> Registered, not yet tested</div>
+      <div class="leg"><span class="chip ca" style="pointer-events:none">tool name</span> Requires site-side configuration</div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section class="band-bg" id="apply">
+  <div class="wrap">
+    <div class="apply-grid">
+      <div>
+        <div class="eyebrow">Pilot access</div>
+        <h2>Apply to join<br><em>the pilot</em></h2>
+        <p class="sec-lead" style="margin-bottom:36px">
+          We're accepting a small number of participants to test the bridge with real AI assistants.
+          Every application is reviewed before access is granted.
+        </p>
+        <div class="apply-item">
+          <div class="a-icon" aria-hidden="true">🔑</div>
+          <div>
+            <div class="a-title">Approval required</div>
+            <div class="a-desc">We review every application and reach out by email. No automatic signup.</div>
+          </div>
+        </div>
+        <div class="apply-item">
+          <div class="a-icon" aria-hidden="true">🔒</div>
+          <div>
+            <div class="a-title">Isolated session</div>
+            <div class="a-desc">Your account gets its own browser context. Activity is not shared with other users.</div>
+          </div>
+        </div>
+        <div class="apply-item">
+          <div class="a-icon" aria-hidden="true">📋</div>
+          <div>
+            <div class="a-title">Read-only pilot</div>
+            <div class="a-desc">Cart, checkout, and booking mutations are disabled. This pilot covers reads and controlled demo actions.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="form-card">
+          <!-- Set data-endpoint to an HTTPS Formspree/custom endpoint returning JSON {"ok":true}.
+               Keep applications disabled until delivery and the privacy notice are verified. -->
+          <p id="application-status" role="status">Online applications are not open yet. Contact <a href="mailto:support@wildroseautomations.ca">support@wildroseautomations.ca</a> about the pilot.</p>
+          <div id="form-fields">
+            <form id="apply-form" method="post" data-endpoint="">
+              <fieldset id="application-fields" disabled>
+              <div class="frow">
+                <label for="f-name">Your name <span class="req">*</span></label>
+                <input type="text" id="f-name" name="name" placeholder="Jane Smith" required autocomplete="name">
+              </div>
+              <div class="frow">
+                <label for="f-email">Email address <span class="req">*</span></label>
+                <input type="email" id="f-email" name="email" placeholder="jane@example.com" required autocomplete="email">
+              </div>
+              <div class="frow">
+                <label for="f-company">Company or website</label>
+                <input type="text" id="f-company" name="company" placeholder="Acme Inc. or yoursite.com" autocomplete="organization">
+              </div>
+              <div class="frow">
+                <label for="f-ai">Preferred AI assistant <span class="req">*</span></label>
+                <select id="f-ai" name="assistant" required>
+                  <option value="" disabled selected>Select one…</option>
+                  <option>Claude</option>
+                  <option>ChatGPT</option>
+                  <option>Both</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="frow">
+                <label for="f-use">How you plan to use it <span class="req">*</span></label>
+                <textarea id="f-use" name="use_case" placeholder="Describe what you'd like to do with the bridge…" required></textarea>
+              </div>
+              <div class="ferr" id="f-err" role="alert"></div>
+              <button type="submit" class="form-submit">Submit application</button>
+              </fieldset>
+              <p class="form-fn">We'll review your application and contact you at the email provided.<br>No credentials required at this stage. <a href="/bridge-privacy">Privacy notice</a> · <a href="/bridge-terms">Pilot terms</a></p>
+            </form>
+          </div>
+          <div class="form-success" id="form-suc" role="status" tabindex="-1">
+            <div class="suc-icon" aria-hidden="true">✓</div>
+            <div class="suc-t">Application received</div>
+            <div class="suc-d">We'll review your application and contact you at the email you provided.<br>Expect a reply within a few business days.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SETUP -->
+<section class="band-surface" id="setup">
+  <div class="wrap">
+    <div class="eyebrow">Connection instructions</div>
+    <h2>Setting up<br><em>your connection</em></h2>
+    <p class="sec-lead">
+      Connect your AI assistant once after your pilot access is approved.
+      The branded connector address below is planned for launch and is not active yet. Invited pilot users should use the connector address supplied with their invitation.
+    </p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn on" role="tab" aria-selected="true" data-tab="claude">Claude</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="chatgpt">ChatGPT</button>
+    </div>
+
+    <div class="tab-panel on" id="tab-claude" role="tabpanel">
+      <div class="url-box">
+        <span class="url-lbl">MCP URL</span>
+        <span class="url-val" id="url-c">https://bridge.wildroseautomations.ca/mcp</span>
+        <button class="copy-btn" id="copy-c" aria-label="Copy connector URL">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="4.5" y="4.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 8.5V2.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Copy
+        </button>
+      </div>
+      <ol class="setup-steps">
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Open Claude.ai settings</div>
+            <div class="st-d">Go to claude.ai → Settings → Integrations.</div>
+          </div>
+        </li>
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Add an MCP connection</div>
+            <div class="st-d">Click Add connection, paste the connector URL above, and name it "Wildrose Bridge".</div>
+          </div>
+        </li>
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Log in and approve permissions</div>
+            <div class="st-d">Claude will redirect you to the bridge's login page. Use the pilot credentials we sent you, then approve the requested scope.</div>
+          </div>
+        </li>
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Ask Claude to use a supported site</div>
+            <div class="st-d">Try: "Search Alo Yoga for black yoga pants." Claude will discover available tools and report back.</div>
+          </div>
+        </li>
+      </ol>
+      <div class="setup-note">
+        <strong>Note:</strong> End-to-end assistant connection testing is in progress for this pilot.
+        Approved applicants will receive verified setup guidance before onboarding.
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-chatgpt" role="tabpanel">
+      <div class="url-box">
+        <span class="url-lbl">MCP URL</span>
+        <span class="url-val" id="url-g">https://bridge.wildroseautomations.ca/mcp</span>
+        <button class="copy-btn" id="copy-g" aria-label="Copy connector URL">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="4.5" y="4.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 8.5V2.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Copy
+        </button>
+      </div>
+      <ol class="setup-steps">
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Open ChatGPT settings</div>
+            <div class="st-d">Go to chatgpt.com → Settings → Integrations (or Plugins).</div>
+          </div>
+        </li>
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Add an MCP server</div>
+            <div class="st-d">Look for "Add MCP" or "Connect a tool", paste the URL above, and name it "Wildrose Bridge".</div>
+          </div>
+        </li>
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Authorize and approve</div>
+            <div class="st-d">ChatGPT will redirect you to the bridge login. Use your pilot credentials and approve the requested permissions.</div>
+          </div>
+        </li>
+        <li class="setup-step">
+          <span class="snum" aria-hidden="true"></span>
+          <div class="sbody">
+            <div class="st-t">Test a site search</div>
+            <div class="st-d">Try: "Using the bridge, search Alo Yoga for black yoga pants." The bridge discovers and calls the available tools.</div>
+          </div>
+        </li>
+      </ol>
+      <div class="setup-note">
+        <strong>Note:</strong> ChatGPT's MCP integration UI is subject to change.
+        Approved applicants will receive step-by-step guidance verified against the current ChatGPT interface.
+      </div>
+    </div>
+
+    <div class="faqs">
+      <h3>Common questions</h3>
+      <details class="faq-item">
+        <summary class="faq-q">How do I disconnect?<span class="faq-arr">+</span></summary>
+        <p class="faq-a">Remove the connection in your assistant's integrations settings. Your pilot account and session remain active until you log out from the bridge directly or contact support to revoke access.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Why am I getting an authentication error?<span class="faq-arr">+</span></summary>
+        <p class="faq-a">The most common cause is an expired authorization window. Try reconnecting from your assistant's integrations settings. Make sure cookies are enabled, and try a different browser if the issue persists. Contact support if you're still stuck.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Can I use it on mobile?<span class="faq-arr">+</span></summary>
+        <p class="faq-a">The bridge runs in the cloud, so your assistant can reach it from any device. The login and consent pages are mobile-compatible. Some assistants' mobile apps may not yet support MCP connections — check your assistant's mobile release notes.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="band-bg" id="trust">
+  <div class="wrap">
+    <div class="eyebrow">Trust &amp; privacy</div>
+    <h2>What we store,<br><em>and what we don't</em></h2>
+    <p class="sec-lead">
+      The pilot is small and deliberately constrained.
+      Here's exactly what happens inside the bridge.
+    </p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="tc-icon" aria-hidden="true">🔐</div>
+        <div class="tc-title">Isolated sessions</div>
+        <div class="tc-desc">Each account gets its own browser context. Cookies and storage are not shared between accounts. One active session per account.</div>
+      </div>
+      <div class="trust-card">
+        <div class="tc-icon" aria-hidden="true">🚫</div>
+        <div class="tc-title">Read-only pilot</div>
+        <div class="tc-desc">Cart, checkout, and booking mutations are disabled. Write tools require explicit confirmation per call. Failed mutations are never retried automatically.</div>
+      </div>
+      <div class="trust-card">
+        <div class="tc-icon" aria-hidden="true">📋</div>
+        <div class="tc-title">Minimal logging</div>
+        <div class="tc-desc">We log each tool call with its site, outcome, and timestamp. We do not log your conversation, tool arguments, or the content of site responses.</div>
+      </div>
+      <div class="trust-card">
+        <div class="tc-icon" aria-hidden="true">🗑</div>
+        <div class="tc-title">Access revocation</div>
+        <div class="tc-desc">Remove the bridge from your assistant's integrations at any time. Contact support to delete your account and session data permanently.</div>
+      </div>
+    </div>
+    <div class="limits-box">
+      <strong style="font-size:14px;font-weight:700;">Known service limits (pilot)</strong>
+      <ul>
+        <li>One active session and three site tabs at a time</li>
+        <li>Browser tool timeout: 25 seconds per call</li>
+        <li>Not all websites support WebMCP — the bridge can only use tools that sites publish</li>
+        <li>Service workers and WebSockets from sites are blocked in this build</li>
+        <li>No availability SLA; this is a staged pilot, not a production service</li>
+      </ul>
+    </div>
+    <div class="trust-links">
+      <span class="tlink">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="1.5" y="2.5" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 4.5l5 4 5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        support@wildroseautomations.ca
+      </span>
+      <a href="/bridge-privacy" class="tlink">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 1L2 3.5v4c0 2.5 2 4.3 4.5 5 2.5-.7 4.5-2.5 4.5-5v-4L6.5 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Privacy policy
+      </a>
+      <a href="/bridge-terms" class="tlink">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="2" y="1.5" width="9" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h4M4.5 7h4M4.5 9h2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Pilot terms
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <div class="foot-brand">
+      <div class="brand-mark" style="width:28px;height:28px;font-size:14px;border-radius:7px;" aria-hidden="true">W</div>
+      <span style="color:rgba(255,255,255,.5);font-size:14px;font-weight:600;">Wildrose Automations</span>
+    </div>
+    <div class="foot-links">
+      <a href="https://wildroseautomations.ca" target="_blank" rel="noopener">Rose</a>
+      <a href="#apply">Apply</a>
+      <a href="/bridge-privacy">Privacy</a>
+      <a href="/bridge-terms">Pilot terms</a>
+      <a href="mailto:support@wildroseautomations.ca">Support</a>
+    </div>
+    <div class="foot-copy">© 2026 Wildrose Automations — Bridge is a separate product from Rose.</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.remove('on');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('on'); });
+      btn.classList.add('on');
+      btn.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById('tab-' + btn.dataset.tab);
+      if (panel) panel.classList.add('on');
+    });
+  });
+
+  // Copy buttons
+  function mkCopy(btnId, valId) {
+    var btn = document.getElementById(btnId);
+    var val = document.getElementById(valId);
+    if (!btn || !val) return;
+    btn.addEventListener('click', function() {
+      var text = val.textContent.trim();
+      Promise.resolve().then(function() { return navigator.clipboard.writeText(text); }).then(function() {
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 7l3 3 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!';
+        btn.classList.add('ok');
+        setTimeout(function() {
+          btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x="4.5" y="4.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 8.5V2.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg> Copy';
+          btn.classList.remove('ok');
+        }, 2200);
+      }).catch(function() {
+        var r = document.createRange();
+        r.selectNodeContents(val);
+        var s = window.getSelection();
+        if (s) { s.removeAllRanges(); s.addRange(r); }
+      });
+    });
+  }
+  mkCopy('copy-c', 'url-c');
+  mkCopy('copy-g', 'url-g');
+
+  // An application is received only after the configured backend acknowledges it.
+  var form = document.getElementById('apply-form');
+  var endpoint = form.dataset.endpoint.trim();
+  var ready = false;
+  try { ready = new URL(endpoint).protocol === 'https:'; } catch (_) {}
+  document.getElementById('application-fields').disabled = !ready;
+  if (ready) document.getElementById('application-status').textContent = 'Applications are open for the limited pilot.';
+  var sending = false;
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (!ready || sending || !form.reportValidity()) return;
+    var err = document.getElementById('f-err');
+    var button = form.querySelector('button[type="submit"]');
+    sending = true;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    err.style.display = 'none';
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 15000);
+    try {
+      var response = await fetch(endpoint, {
+        method: 'POST', body: new FormData(form),
+        headers: { 'Accept': 'application/json' }, signal: controller.signal
+      });
+      var result = await response.json();
+      if (!response.ok || result.ok !== true) throw new Error('Submission not acknowledged');
+      document.getElementById('form-fields').hidden = true;
+      document.getElementById('application-status').hidden = true;
+      var success = document.getElementById('form-suc');
+      success.classList.add('show');
+      success.focus();
+    } catch (_) {
+      err.textContent = 'We could not confirm delivery. Your entries are still here. Contact support@wildroseautomations.ca if you are unsure whether it arrived.';
+      err.style.display = 'block';
+    } finally {
+      clearTimeout(timeout);
+      sending = false;
+      button.disabled = false;
+      button.textContent = 'Submit application';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
