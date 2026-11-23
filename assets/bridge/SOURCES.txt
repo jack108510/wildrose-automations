@@ -5,3 +5,7 @@ lobe-icons-LICENSE: https://raw.githubusercontent.com/lobehub/lobe-icons/master/
 simple-icons-LICENSE: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/LICENSE.md
 Brand marks identify the services in an illustrative demo and do not imply endorsement.
 Alo Yoga is represented by text rather than a downloaded logo asset.
+hostinger.svg: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/hostinger.svg
+resend.svg: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/resend.svg
+clerk.svg: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/clerk.svg
+hubspot.svg: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/hubspot.svg
